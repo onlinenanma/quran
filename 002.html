@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>സൂറത്തുൽ ബഖറഃ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36}}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{width:100%;overflow-x:hidden}
+body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
+.banner{text-align:center;color:#fff;padding:8px 18px 14px;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.banner h1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:400;line-height:1.3}
+.banner .back{display:block;text-align:left;color:var(--gold);font-weight:600;font-size:.8rem;text-decoration:none;margin:0;line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 12px 40px}
+.card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(14px,3vw,26px);box-shadow:0 4px 15px rgba(0,0,0,.06);margin-bottom:18px}
+h2{color:var(--green2);font-size:1.2rem;margin-bottom:12px;text-align:center}
+@media(prefers-color-scheme:dark){h2{color:var(--gold)}}
+.preface p{margin-bottom:14px;text-align:justify;max-width:75ch;margin-inline:auto}
+.preface p:last-child{margin-bottom:0}
+.meta{text-align:center;font-weight:700;color:var(--green2)}
+@media(prefers-color-scheme:dark){.meta{color:var(--gold)}}
+.ar{font-family:"Noto Naskh Arabic",serif;font-size:1.15em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pg{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:8px;padding:10px 6px;text-align:center;line-height:1.5}
+.pg:hover,.pg:focus-visible{background:var(--green2);color:#fff;outline:none}
+.pg b{display:block;font-size:.8rem;color:var(--muted)}
+.pg:hover b,.pg:focus-visible b{color:#fff}
+.pg span{font-weight:800;font-size:1.05rem}
+.sum{display:block;margin-top:14px;text-align:center;text-decoration:none;background:var(--green2);color:#fff;font-weight:700;padding:12px;border-radius:8px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
+
+/* preface toggle */
+.pref-toggle{display:block;width:100%;font-family:inherit;font-size:1.1rem;font-weight:700;background:none;border:none;color:var(--green2);cursor:pointer;text-align:center;padding:2px 0}
+@media(prefers-color-scheme:dark){.pref-toggle{color:var(--gold)}}
+.pref-toggle .arrow{display:inline-block;transition:transform .2s}
+.pref-toggle[aria-expanded="true"] .arrow{transform:rotate(180deg)}
+#prefBody{margin-top:14px}
+
+/* text to speech */
+.tts-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;margin-bottom:12px}
+.tts-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer}
+.tts-btn.playing{background:#d93025}
+.preface.reading{background:rgba(212,175,55,.12)}
+#status{text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status:empty{display:none}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<header class="banner">
+  <h1>2. സൂറത്തുൽ ബഖറഃ (പശു)</h1>
+</header>
+
+<main class="wrap">
+  <section class="card preface">
+    <button id="prefToggle" class="pref-toggle" type="button" aria-expanded="false" aria-controls="prefBody">
+      മുഖവുര <span class="arrow">▾</span>
+    </button>
+
+    <div id="prefBody" hidden>
+      <div class="tts-bar">
+        <button id="ttsBtn" class="tts-btn" type="button">▶ മുഖവുര കേൾക്കാം</button>
+      </div>
+      <div id="status"></div>
+      <p class="meta">മദീനയില്‍ അവതരിച്ചത് – വചനങ്ങള്‍ 286</p>
+      <p>വിശുദ്ധ ഖുര്‍ആനിലെ ഏറ്റവുംവലിയ സൂറത്താണിത്. ഇതിന്റെ മിക്കഭാഗവും നബി തിരുമേനി (ﷺ) യുടെ മദീനാ ജീവിതത്തിന്റെ ആദ്യകാലങ്ങളില്‍ അവതരിച്ചതാകുന്നു. ചുരുക്കം ചില ആയത്തുകള്‍ അവസാനകാലങ്ങളില്‍ അവതരിച്ചവയുമാണ്. ഖുര്‍ആന്റെ അവതരണം ആദ്യംതൊട്ടവസാനംവരെ ക്രമരൂപത്തിലോ, ഓരോ സൂറത്തുകളായോ ആയിരുന്നില്ലെന്നും, സന്ദര്‍ഭവും ആവശ്യവും അനുസരിച്ചു പലപ്പോഴായി അവതരിക്കുകയായിരുന്നു പതിവെന്നും, അപ്പപ്പോള്‍ അവതരിക്കുന്ന ഭാഗങ്ങള്‍ ഇന്നിന്ന സൂറത്തുകളില്‍ ഇന്നിന്ന ഭാഗത്തു ചേര്‍ക്കണമെന്ന് നബി (ﷺ) എഴുത്തുകാരോടു കല്‍പിക്കുകയായിരുന്നു.</p>
+      <p>മൗലികതത്വങ്ങള്‍, വിശ്വാസ സിദ്ധാന്തങ്ങള്‍, കര്‍മപരമായ വിധിവിലക്കുകള്‍, നിയമ നിര്‍ദ്ദേശങ്ങള്‍, സാരോപദേശങ്ങള്‍, ഉപമകള്‍, ദൃഷ്ടാന്തങ്ങള്‍, ചരിത്ര സംഭവങ്ങള്‍, സദാചാരമൂല്യങ്ങള്‍, സന്തോഷ വാര്‍ത്തകള്‍, താക്കീതുകള്‍ എന്നിങ്ങനെയുള്ള തുറകളില്‍, മറ്റുസൂറത്തുകളെ അപേക്ഷിച്ച് ഈ സൂറത്തില്‍ കൂടുതല്‍ കാണാവുന്നതാണ്. അതുകൊണ്ട് തന്നെയായിരിക്കാം ചില നബിവചനങ്ങളില്‍ ഈ സൂറത്തിനെപ്പറ്റി <span class="ar">سنام القرآن وذروته</span> (ഖുര്‍ആന്റെ പൂഞ്ഞും അതിന്റെ കൊടുമുടിയും) എന്നു പറഞ്ഞിരിക്കുന്നതും.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>ആയത്തുകളുടെ ഭാഗങ്ങൾ</h2>
+    <div id="grid" class="grid"></div>
+    <a id="summary" class="sum" href="#" target="_top">📝 സംഗ്രഹം (Summary)</a>
+  </section>
+</main>
+<footer>© ഖുർആൻ മലയാള സാരം</footer>
+
+<script>
+/* ---- Edit these to match your site ---- */
+const TOTAL_AYAH = 286;   // total verses
+const PER_PAGE   = 20;    // verses per page
+const BASE = 'https://sites.google.com/view/quransaram/Surah/002/';
+const PAGE_URL    = p => `${BASE}002-${p}`;   // .../Surah/002/002-1, 002-2, ...
+const SUMMARY_URL = `${BASE}002-summary`;
+
+const grid = document.getElementById('grid');
+const pages = Math.ceil(TOTAL_AYAH / PER_PAGE);
+for (let p = 1; p <= pages; p++) {
+  const from = (p - 1) * PER_PAGE + 1, to = Math.min(p * PER_PAGE, TOTAL_AYAH);
+  const a = document.createElement('a');
+  a.className = 'pg'; a.href = PAGE_URL(p); a.target = '_top';
+  a.innerHTML = `<b>ഭാഗം ${p}</b><span>${from} – ${to}</span>`;
+  grid.appendChild(a);
+}
+document.getElementById('summary').href = SUMMARY_URL;
+
+/* ---------- Preface show / hide ---------- */
+const $ = id => document.getElementById(id);
+const prefToggle = $("prefToggle"), prefBody = $("prefBody");
+prefToggle.addEventListener("click", () => {
+  const open = prefBody.hidden;           // currently hidden -> will open
+  prefBody.hidden = !open;
+  prefToggle.setAttribute("aria-expanded", String(open));
+  if (!open) stopSpeech();                // stop audio when hiding
+});
+
+/* ---------- Text to speech ---------- */
+const SKEY = "quran-reader-settings";
+const statusEl = $("status"), ttsBtn = $("ttsBtn"), prefaceEl = document.querySelector(".preface");
+let token = 0, speaking = false, currentAudio = null;
+const utterances = [];
+const MALE_HINT = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i;
+const FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;
+
+function loadSettings(){ try{ return JSON.parse(localStorage.getItem(SKEY)) || {}; }catch(e){ return {}; } }
+function mlVoices(){
+  const vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+  return vs.filter(v => v.lang.toLowerCase().replace("_","-").startsWith("ml"));
+}
+function resolveVoice(){
+  const vs = mlVoices(); if (!vs.length) return null;
+  const saved = loadSettings().voiceMl;   // voice chosen on chapter 1, if any
+  return (saved && saved !== "auto" && vs.find(v => v.name === saved))
+    || vs.find(v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name))
+    || vs.find(v => !FEMALE_HINT.test(v.name)) || vs[0];
+}
+function cleanForSpeech(t){   // drop Arabic letters and brackets so they are not read wrongly
+  return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g," ")
+          .replace(/[()\u2018\u2019\u201C\u201D"]/g,"").replace(/\s+/g," ").trim();
+}
+function splitText(text, max = 150){
+  const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = []; let cur = "";
+  for (let s of sentences){
+    s = s.trim();
+    while (s.length > max){
+      let cut = s.lastIndexOf(" ", max); if (cut <= 0) cut = max;
+      if (cur){ chunks.push(cur); cur = ""; }
+      chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
+    }
+    if (!s) continue;
+    if (cur && (cur + " " + s).length > max){ chunks.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;
+  }
+  if (cur) chunks.push(cur);
+  return chunks.filter(c => /[^\s.,:;!?।]/.test(c));
+}
+function stopSpeech(){
+  token++; speaking = false;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (currentAudio){ currentAudio.pause(); currentAudio = null; }
+  ttsBtn.textContent = "▶ മുഖവുര കേൾക്കാം"; ttsBtn.classList.remove("playing");
+  prefaceEl.classList.remove("reading"); statusEl.textContent = "";
+}
+function fail(my, msg){ if (my !== token) return; stopSpeech(); statusEl.textContent = msg; }
+
+function playChunks(chunks, my, i = 0){   // fallback: online voice
+  if (my !== token) return;
+  if (i >= chunks.length){ stopSpeech(); return; }
+  statusEl.textContent = "online voice " + (i + 1) + " / " + chunks.length;
+  const a = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]));
+  currentAudio = a; a.playbackRate = 0.92;
+  a.onended = () => playChunks(chunks, my, i + 1);
+  a.onerror = () => fail(my, "Voice is not available on this device or browser.");
+  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+}
+function speakPreface(text, my){
+  const chunks = splitText(cleanForSpeech(text)); if (!chunks.length) return;
+  const voice = resolveVoice();
+  if (!voice){ statusEl.textContent = "no Malayalam voice found, using online voice..."; playChunks(chunks, my); return; }
+  const isMale = MALE_HINT.test(voice.name) && !FEMALE_HINT.test(voice.name);
+  setTimeout(() => {   // Chrome ignores speak() right after cancel()
+    if (my !== token) return;
+    statusEl.textContent = voice.name; utterances.length = 0; let failed = false;
+    chunks.forEach((c, idx) => {
+      const u = new SpeechSynthesisUtterance(c);
+      u.voice = voice; u.lang = voice.lang; u.pitch = isMale ? 1 : 0.5; u.rate = 0.95;
+      u.onerror = e => {
+        if (my !== token || failed || e.error === "canceled" || e.error === "interrupted") return;
+        failed = true; speechSynthesis.cancel(); playChunks(chunks, my);
+      };
+      if (idx === chunks.length - 1) u.onend = () => { if (my === token && !failed) stopSpeech(); };
+      utterances.push(u); speechSynthesis.speak(u);
+    });
+    speechSynthesis.resume();
+  }, 100);
+}
+function toggleSpeech(){
+  if (speaking){ stopSpeech(); return; }
+  stopSpeech(); speaking = true; const my = token;
+  ttsBtn.textContent = "■ നിർത്തുക"; ttsBtn.classList.add("playing"); prefaceEl.classList.add("reading");
+  const text = [document.querySelector(".banner h1").textContent,
+    ...[...prefaceEl.querySelectorAll(".meta, #prefBody p")].map(x => x.textContent)].join(". ");
+  speakPreface(text, my);
+}
+ttsBtn.addEventListener("click", toggleSpeech);
+if (window.speechSynthesis){ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; }
+window.addEventListener("pagehide", stopSpeech);
+</script>
+</body>
+</html>

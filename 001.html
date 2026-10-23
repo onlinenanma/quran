@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>സൂറത്തുൽ ഫാതിഹ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+ <style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;text-align:left;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:8px 18px 38px;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:400;line-height:1.3;margin:0}
+.hero .back{display:block;text-align:left;color:var(--gold);font-weight:600;font-size:.8rem;text-decoration:none;margin-bottom:0;line-height:1.6}
+
+/* ---------- Options card (sticky) ---------- */
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 12px}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.banner .main-btn{padding:7px 20px}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status:empty{display:none}
+
+/* ---------- Verse cards ---------- */
+.verse,.item{min-width:0}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.vhead .small-btn{margin-left:auto;padding:2px 10px;font-size:12px;font-weight:normal}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:1.9;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+
+body.hide-in #intro-wrap{display:none}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+
+/* Introduction */
+.intro-title{font-weight:700;font-size:calc(var(--fs) * 1.2);color:var(--acc)}
+.intro-sub{color:var(--muted);font-size:calc(var(--fs) * .85);margin-bottom:6px;font-weight:600}
+.intro-body{margin:6px 0 10px;text-align:justify}
+.isti{background:var(--soft);border:1px solid var(--gold);border-radius:10px;padding:10px 14px}
+.isti-ar{font-size:calc(var(--fs) * 1.4);text-align:right;line-height:2;margin-bottom:4px;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+@media(prefers-color-scheme:dark){.isti-ar{color:var(--ink)}}
+
+/* Lessons / questions / quiz */
+.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}
+.ai-box h3:first-child{margin-top:0}
+.ai-box>.main-btn{display:block;margin:0 auto}
+.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}
+.ai-out:empty{display:none}
+.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}
+.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}
+.ai-ask{display:flex;gap:6px;margin-top:8px}
+.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}
+.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.quiz-q p{margin:0 0 6px;font-size:var(--fs)}
+.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}
+.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
+.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
+.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>1. സൂറത്തുൽ ഫാതിഹ</h1>
+</header>
+<!-- ================= Controls ================= -->
+<div class="controls" id="controls">
+
+  <div class="banner" id="banner">
+    <div class="banner-row">
+      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾</button>
+    </div>
+    <div class="banner-row">
+      <button id="master" class="main-btn" onclick="toggleContinuous()">▶ തുടക്കം മുതൽ കേൾക്കാം</button>
+      <label class="opt"><input type="checkbox" id="opt-cont" checked> തുടർച്ചയായി കേൾക്കാം</label>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <!-- Options panel -->
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+
+    <div class="ctl-row">
+      <span class="ctl-title">കാണിക്കുക:</span>
+      <label class="opt"><input type="checkbox" id="show-in" onchange="applyDisplay()"> മുഖവുര</label>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+    </div>
+
+    <div class="ctl-row">
+      <span class="ctl-title">ഖിറാഅത്ത് (പാരായണം):</span>
+      <select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select>
+    </div>
+
+    <div class="ctl-row">
+      <span class="ctl-title">ആയത്ത് ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()">
+        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Verses (built by script) ================= -->
+<div id="verses"></div>
+
+<!-- ================= Lessons / questions / quiz ================= -->
+<div class="ai-box">
+  <h3>💡 ഈ പേജിലെ പാഠങ്ങൾ</h3>
+  <button class="main-btn" onclick="showSummary()">പാഠങ്ങൾ സംഗ്രഹിക്കുക</button>
+  <div class="ai-out" id="ai-summary"></div>
+
+  <h3>📝 ക്വിസ്</h3>
+  <button class="main-btn" onclick="startQuiz()">ക്വിസ് തുടങ്ങാം</button>
+  <div id="quiz"></div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  /* =====================================================
+     DATA  –  edit the text here.
+     tf = explanation (വിവരണം). Leave "" if there is none.
+     ===================================================== */
+  const SURAH = 1;   // surah number (shown before the ayah number, and used for the audio file names)
+
+  const VERSES = [
+    {
+      n: 1,
+      ar: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+      ml: "അർ-റഹ്‌മാനും  അർ-റഹീമുമായ അല്ലാഹുവിന്റെ നാമത്തില്‍.",
+      tf: "അല്ലാഹുവിൻറെ നാമം സ്മരിക്കുന്നതിൽ അനുഗ്രഹം (ബറകത്) പ്രതീക്ഷിച്ച് കൊണ്ടും, അവനോട് സഹായം ചോദിച്ചുകൊണ്ടും, അവൻറെ നാമത്തിൽ ഞാൻ ഖുർആൻ പാരായണം ആരംഭിക്കുന്നു. ബിസ്മി അല്ലാഹുവിൻറെ മൂന്ന് ഉന്നതമായ നാമങ്ങൾ ഉൾക്കൊള്ളുന്നുണ്ട്. അവ: 1- ((അല്ലാഹു)); അഥവാ യഥാർത്ഥ ആരാധ്യൻ . ലോകങ്ങളുടെ സ്രഷ്ടാവും രക്ഷാധികാരിയുമായ ഏകആരാധ്യനായ ദൈവത്തിൻറെ നാമമാണ് അല്ലാഹു എന്നത്. അല്ലാഹു എന്നത് അവന്റെ ഏറ്റവും പ്രത്യേകമായ പേരാണ്. അവനല്ലാത്ത മറ്റൊരാൾക്കും പറയാൻ പാടില്ലാത്ത നാമവുമാണത്. \n2- അർ-റഹ്‌മാൻ (الرَّحْمَنُ); സർവ്വവിശാലമായ, എല്ലാ സൃഷ്ടികളെയും വലയം ചെയ്യുന്ന കാരുണ്യം വിശേഷണമായുള്ളവൻ എന്നർത്ഥം.\n3- അർ-റഹീം (الرَّحِيمُ); താൻ ഉദ്ദേശിക്കുന്ന സൃഷ്ടികളിലേക്ക് എത്തുന്ന വിശാലമായ കാരുണ്യത്തിൻ്റെ ഉടമയായുള്ളവൻ. തൻറെ ദാസന്മാരിൽ നിന്ന് വിശ്വസിച്ചവർക്ക് അവൻ പ്രത്യേകമായ കാരുണ്യം ചൊരിയുകയും ചെയ്യുന്നു."
+    },
+    {
+      n: 2,
+      ar: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+      ml: "സർവ്വ സ്തുതികളും ലോകങ്ങളുടെ റബ്ബായ അല്ലാഹുവിന്നാകുന്നു.",
+      tf: "മഹത്വത്തിൻറെയും പൂർണതയുടെയും വിശേഷണമായ എല്ലാ സ്തുതികളും അല്ലാഹുവിന് മാത്രമാണ്; കാരണം അവനാണ് എല്ലാ വസ്തുക്കളുടെയും ഉടമസ്ഥനും സ്രഷ്ടാവും നിയന്താവും. (ആലമൂൻ) എന്നത് (ആലം) എന്നതിൻറെ ബഹുവചനമാണ്. അല്ലാഹുവല്ലാത്ത സർവ്വതും ആലം എന്നതിൽ ഉൾപ്പെടും."
+    },
+    {
+      n: 3,
+      ar: "الرَّحْمَٰنِ الرَّحِيمِ",
+      ml: "അർ-റഹ്‌മാനും  അർ-റഹീമുമായ.",
+      tf: "അല്ലാഹുവിൻ്റെ അതിമനോഹരമായ രണ്ട് നാമങ്ങളായ ‘അർ-റഹ്‌മാൻ’, ‘അർ-റഹീം’ എന്നിവ  എടുത്തു പറഞ്ഞു കൊണ്ട് ഈ വചനത്തിൽ അവനെ ആവർത്തിച്ചു സ്തുതിക്കുകയാണ് ചെയ്യുന്നത്. സർവ്വ സൃഷ്ടികളെയും വലയം ചെയ്തിരിക്കുന്ന സർവ്വ വിശാലമായ കാരുണ്യമുള്ളവൻ എന്നാണ് ‘അർ-റഹ്‌മാൻ’ എന്ന നാമത്തിൻ്റെ ഉദ്ദേശ്യം. ‘അർ-റഹീം’ എന്നാൽ അല്ലാഹുവിൽ വിശ്വസിച്ച സൽകർമ്മികൾക്ക് പ്രത്യേകമായി കരുണ ചൊരിയുന്നവൻ എന്ന ഉദ്ദേശമാണുള്ളത്."
+    },
+    {
+      n: 4,
+      ar: "مَالِكِ يَوْمِ الدِّينِ",
+      ml: "പ്രതിഫല ദിവസത്തിന്‍റെ ഉടമസ്ഥന്‍.",
+      tf: "ഖിയാമത്ത് നാളിലുള്ള എല്ലാത്തിൻറെയും ഉടമസ്ഥൻ എന്ന് അല്ലാഹുവിനെ മഹത്വപ്പെടുത്തലാണ് ഈ ആയത്തിലുള്ളത്. കാരണം ഒരാളും മറ്റൊരാൾക്ക് യാതൊന്നും അധീനമാക്കാത്ത ദിവസമാകുന്നു അത്. \"യൗമുദ്ദീൻ\" എന്നാൽ വിചാരണയുടെയും പ്രതിഫലത്തിൻറെയും ദിവസം."
+    },
+    {
+      n: 5,
+      ar: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+      ml: "നിന്നെ മാത്രം ഞങ്ങള്‍ ആരാധിക്കുന്നു. നിന്നോട്‌ മാത്രം ഞങ്ങള്‍ സഹായം തേടുന്നു.",
+      tf: "ആരാധനയുടെ എല്ലാ ഇനങ്ങളും നിനക്ക് മാത്രമാക്കുന്നു. നിന്നോടൊപ്പം ഞങ്ങൾ മറ്റാരെയും പങ്ക്ചേർക്കുകയില്ല. ഞങ്ങളുടെ എല്ലാ കാര്യങ്ങളിലും നിന്നോട് സഹായം ചോദിക്കുന്നു. മുഴുവൻ നന്മയും നിന്നിൽ നിന്നാണ്. നീയല്ലാതെ സഹായിയായി മറ്റാരുമില്ല.  ആരാധനയും സഹായാര്‍ഥനയും അഭേദ്യമായി ബന്ധപ്പെട്ട കാര്യങ്ങളാണ്. മനുഷ്യര്‍ വിവിധ വ്യക്തികളെയും ശക്തികളെയും ആരാധിച്ചുപോന്നിട്ടുള്ളത് ആരാധ്യരില്‍നിന്ന് അഭൗതികമായ രീതിയില്‍ സഹായം ലഭിക്കുമെന്ന പ്രതീക്ഷയിലാണ്. പ്രപഞ്ചനാഥനല്ലാത്തവരോട് അഭൗതികമായ സഹായത്തിനുവേണ്ടി പ്രാർത്ഥിക്കുന്നത് ഇസ്‌ലാം പഠിപ്പിക്കുന്ന ഏകദൈവത്വത്തിന് വിരുദ്ധമത്രെ."
+    },
+    {
+      n: 6,
+      ar: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+      ml: "ഞങ്ങളെ നീ നേർ‍മാർ‍ഗത്തില്‍ ചേർ‍ക്കേണമേ.",
+      tf: "ചൊവ്വായ പാതയിലേക്ക് ഞങ്ങളെ നീ വഴി കാണിക്കുകയും അതിലൂടെ നടത്തുകയും അതിൽ ഉറപ്പിച്ച് നിർത്തുകയും സന്മാർഗ്ഗം വർദ്ധിപ്പിക്കുകയും ചെയ്യണമേ. വക്രതയില്ലാത്ത വ്യക്തമായ വഴി അല്ലാഹു മുഹമ്മദ് നബിയെ നിയോഗിച്ച ഇസ്ലാമാകുന്നു."
+    },
+    {
+      n: 7,
+      ar: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+      ml: "നീ അനുഗ്രഹിച്ചവരുടെ മാർ‍ഗത്തില്‍. കോപത്തിന്ന്‌ ഇരയായവരുടെ മാർ‍ഗത്തിലല്ല. പിഴച്ചുപോയവരുടെ മാർ‍ഗത്തിലുമല്ല.",
+      tf: "നിഷ്‌കളങ്കമായ ഏകദൈവാരാധനയുടെ മാര്‍ഗത്തില്‍, അല്ലാഹുവോട് നേരിട്ടുള്ള പ്രാര്‍ഥനയുടെ മാര്‍ഗത്തില്‍, അഥവാ പ്രവാചകന്മാരും സജ്ജനങ്ങളും പിന്തുടര്‍ന്ന കളങ്കമില്ലാത്ത തൗഹീദിന്റെ മാര്‍ഗത്തില്‍ ഞങ്ങളെ നീ ചേര്‍ക്കേണമേ എന്നര്‍ഥം.  'കോപത്തിന് ഇരയായവര്‍' എന്ന പദത്തിന്റെ പരിധിയില്‍ അവിശ്വാസവും സത്യനിഷേധവും മര്‍ക്കടമുഷ്ടിയും കൈക്കൊണ്ട എല്ലാവരും ഉള്‍പ്പെടുമെങ്കിലും ഇവിടെ പ്രധാനമായി ഉദ്ദേശിക്കപ്പെട്ടിട്ടുള്ളത്, വേദഗ്രന്ഥത്തിന്റെ വാഹകരാണെന്നതില്‍ അഭിമാനം കൊള്ളുന്നതോടൊപ്പം സ്വാര്‍ഥതാല്പര്യങ്ങള്‍ക്കുവേണ്ടി വേദവാക്യങ്ങള്‍ ദുര്‍വ്യാഖ്യാനം ചെയ്തതുനിമിത്തം അല്ലാഹുവിന്റെ കോപത്തിനു ഇരയായ യഹൂദരാണ്. ഈ നിലപാട് സ്വീകരിക്കുന്ന ഏത് സമുദായക്കാരുടെ അവസ്ഥയും ഇതുപോലെതന്നെ. പിഴച്ചുപോയവര്‍ എന്നതുകൊണ്ട് ഇവിടെ പ്രധാനമായി ഉദ്ദേശിക്കപ്പെട്ടിട്ടുള്ളത് ഈസാ നബിയെ  ദൈവപുത്രനാക്കുകയും പൗരോഹിത്യത്തെ മതത്തിന്റെ അടിത്തറയാക്കുകയും ചെയ്ത ക്രിസ്ത്യാനികളാണ്. ദൈവിക സന്ദേശം ലഭിച്ചിട്ട് അതില്‍നിന്ന് വ്യതിചലിച്ചുപോയ ഏത് സമുദായക്കാരും വഴിപിഴച്ച കൂട്ടത്തില്‍തന്നെ. ഈ സൂറത്തിന്‍റെ അവസാനത്തില്‍ آمين (ആമീന്‍) എന്ന് ചൊല്ലേണ്ടതാകുന്നു .ഈ പ്രാര്‍ത്ഥന സ്വീകരിക്കേണമേ എന്നര്‍ത്ഥം. നബി (ﷺ) അങ്ങനെ ചൊല്ലിയിരുന്നതായി അഹ്മദ്, അബൂദാവൂദ്, തിര്‍മദീ (رحمهم الله) മുതലായവര്‍ രേഖപ്പെടുത്തിയ ഹദീസുകളില്‍ വന്നിട്ടുണ്ട്. ചില രിവായത്തുകളില്‍ തിരുമേനി (ﷺ) അത് നീട്ടിചൊല്ലിയിരുന്നതായും, മറ്റു ചിലതില്‍ ഉറക്കെ ചൊല്ലിയിരുന്നതായും വന്നിരിക്കുന്നു. നമസ്കാരത്തില്‍ ഇതൊരു ബലപ്പെട്ട സുന്നത്തുമത്രെ. നബി (ﷺ) പറയുന്നു : ‘ഇമാം ആമീന്‍ പറയുമ്പോള്‍ നിങ്ങള്‍ ആമീന്‍ പറഞ്ഞുകൊള്ളണം. കാരണം, ഒരാളുടെ ആമീന്‍ പറയല്‍ മലക്കുകള്‍ ആമീന്‍ പറയുന്നതുമായി യോജിച്ചുവന്നാല്‍ അവന് അവന്‍റെ മുന്‍കഴിഞ്ഞ പാപം പൊറുത്തുകൊടുക്കപ്പെടുന്നതാണ്.’(ബുഖാരി, മുസ്‌ലിം)."
+    }
+  ];
+
+  /* ---------- Introduction (മുഖവുര) ---------- */
+  const INTRO = {
+    title: "1: ഫാത്തിഹ (പ്രാരംഭം)",
+    sub: "മക്കയില്‍ അവതരിച്ചത് – വചനങ്ങള്‍ 7",
+    body: "വിശുദ്ധ ഖുര്‍ആനില്‍ ആദ്യം വായിക്കപ്പെടുന്നതും ‘മുസ്ഹഫു’കളില്‍ ഒന്നാമതായി എഴുതപ്പെടുന്നതുമായ സൂറത്ത് (അദ്ധ്യായം) എന്ന നിലക്ക് ഇതിന് ‘സൂറത്തുല്‍ ഫാതിഹഃ (سورة الفاتحة) അഥവാ പ്രാരംഭം എന്നും, ‘ഫാതിഹത്തുല്‍ കിതാബ് ‘ (فاتحة الكتاب) അഥവാ വേദഗ്രന്ഥത്തിന്‍റെ പ്രാരംഭം എന്നും പേര് പറയപ്പെടുന്നു . ഖുര്‍ആന്‍റെ മൂലം – അഥവാ കേന്ദ്രം – എന്ന അര്‍ത്ഥത്തില്‍ ‘ഉമ്മുല്‍ ഖുര്‍ആന്‍’ എന്നും, ‘ഉമ്മുല്‍ കിതാബ്’ (أم القرآن , أم الكتاب) എന്നും പേരുണ്ട്. അല്ലാഹുവിന്‍റെ അത്യുല്‍കൃഷ്ടങ്ങളായ വിശേഷണ നാമങ്ങള്‍, ഏകദൈവ സിദ്ധാന്തം (തൗഹീദ്) മരണാനന്തര ജീവിതം, പ്രതിഫലനടപടി തുടങ്ങിയ മൗലിക സിദ്ധാന്തങ്ങള്‍ , കര്‍മ്മപരവും സാന്മാര്‍ഗികവുമായ നിയമ നിര്‍ദ്ദേശങ്ങള്‍, ചരിത്ര സംഭവങ്ങള്‍ ആദിയായ വിഷയങ്ങളാണ് ഖുര്‍ആനിലെ പ്രധാന പ്രതിപാദ്യ വിഷയങ്ങള്‍. ഇവയുടെയെല്ലാം ഒരു സാരാംശം ഈ സൂറത്തില്‍ അടങ്ങിയിരിക്കുന്നു.",
+    istiAr: "اعوذ بالله من الشيطان الرجيم",
+    istiMl: "(അഊദു – ബില്ലാഹി – മിനശ്ശൈത്വാനി -റജീം) : ശപിക്കപ്പെട്ട പിശാചില്‍ നിന്നും ഞാന്‍ അല്ലാഹുവിനോട് ശരണം തേടുന്നു"
+  };
+  const introSpeech = () => [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ");
+
+  /* =====================================================
+     LESSONS / SUGGESTED QUESTIONS / QUIZ  (edit for each chapter)
+     ===================================================== */
+  const AI_ENDPOINT = "";
+
+  const LESSONS =
+`1. ഖുർആൻ പാരായണം അല്ലാഹുവിന്റെ നാമത്തിൽ, അവനോട് സഹായവും അനുഗ്രഹവും തേടിക്കൊണ്ട് ആരംഭിക്കണം.
+2. എല്ലാ സ്തുതിയും ലോകങ്ങളുടെ രക്ഷിതാവായ അല്ലാഹുവിന് മാത്രമാണ്.
+3. അല്ലാഹു സർവ്വവിശാലമായ കാരുണ്യത്തിന്റെ ഉടമയാണ് (അർ-റഹ്‌മാൻ, അർ-റഹീം).
+4. പ്രതിഫല ദിവസത്തിന്റെ ഉടമസ്ഥൻ അവനാണ്.
+5. ആരാധനയും സഹായാർത്ഥനയും അല്ലാഹുവിനോട് മാത്രം.
+6. നേർമാർഗത്തിനായി നിരന്തരം പ്രാർത്ഥിക്കണം; അത് അനുഗ്രഹിക്കപ്പെട്ടവരുടെ വഴിയാണ്, കോപത്തിന് ഇരയായവരുടെയും വഴിപിഴച്ചവരുടെയും വഴിയല്ല.`;
+
+  const SUGGESTED = [
+    { q: "‘അർ-റഹ്‌മാനും’ ‘അർ-റഹീമും’ തമ്മിലുള്ള വ്യത്യാസം എന്താണ്?",
+      a: "അർ-റഹ്‌മാൻ: എല്ലാ സൃഷ്ടികളെയും വലയം ചെയ്യുന്ന സർവ്വവിശാലമായ കാരുണ്യമുള്ളവൻ. അർ-റഹീം: വിശ്വസിച്ച സൽകർമ്മികൾക്ക് പ്രത്യേകമായി കരുണ ചൊരിയുന്നവൻ." },
+    { q: "‘യൗമുദ്ദീൻ’ എന്നാൽ എന്താണ്?",
+      a: "വിചാരണയുടെയും പ്രതിഫലത്തിന്റെയും ദിവസം (ഖിയാമത്ത് നാൾ). അന്ന് ഒരാളും മറ്റൊരാൾക്ക് യാതൊന്നും അധീനമാക്കുകയില്ല." },
+    { q: "‘ഇയ്യാക നഅ്ബുദു’ എന്ന വചനത്തിന്റെ സന്ദേശം എന്താണ്?",
+      a: "ആരാധനയുടെ എല്ലാ ഇനങ്ങളും അല്ലാഹുവിന് മാത്രമാക്കുക; എല്ലാ കാര്യങ്ങളിലും അവനോട് മാത്രം സഹായം തേടുക. ആരാധനയും സഹായാർത്ഥനയും അഭേദ്യമായി ബന്ധപ്പെട്ടതാണ്." },
+    { q: "‘ആലമീൻ’ എന്നതിൽ എന്തെല്ലാം ഉൾപ്പെടും?",
+      a: "‘ആലം’ എന്നതിന്റെ ബഹുവചനമാണ് ആലമീൻ. അല്ലാഹുവല്ലാത്ത സർവ്വതും അതിൽ ഉൾപ്പെടും." },
+    { q: "സൂറത്തിന്റെ അവസാനം ‘ആമീൻ’ പറയുന്നത് എന്തിന്?",
+      a: "‘ഈ പ്രാർത്ഥന സ്വീകരിക്കേണമേ’ എന്നാണ് അർത്ഥം. നമസ്കാരത്തിൽ ഇത് ബലപ്പെട്ട സുന്നത്താണ്." }
+  ];
+
+  const QUIZ = [
+    { q: "‘മാലിക്കി യൗമിദ്ദീൻ’ എന്നാൽ?", o: ["പ്രതിഫല ദിവസത്തിന്റെ ഉടമസ്ഥൻ", "ലോകങ്ങളുടെ രക്ഷിതാവ്", "ഏറ്റവും കരുണയുള്ളവൻ", "നേർവഴി കാണിക്കുന്നവൻ"], c: 0, e: "വിചാരണയുടെയും പ്രതിഫലത്തിന്റെയും ദിവസത്തിന്റെ ഉടമ." },
+    { q: "സൂറത്തുൽ ഫാതിഹയിൽ എത്ര വചനങ്ങളുണ്ട്?", o: ["5", "6", "7", "8"], c: 2 },
+    { q: "ആരാധനയും സഹായവും ആരോട് മാത്രമാണ് തേടേണ്ടത്?", o: ["അല്ലാഹുവിനോട് മാത്രം", "പ്രവാചകന്മാരോട്", "സജ്ജനങ്ങളോട്", "മലക്കുകളോട്"], c: 0 },
+    { q: "ബിസ്മിയിലുള്ള അല്ലാഹുവിന്റെ മൂന്ന് നാമങ്ങൾ?", o: ["അല്ലാഹു, അർ-റഹ്‌മാൻ, അർ-റഹീം", "അൽ-മാലിക്, അൽ-ഖാലിഖ്, അർ-റസാഖ്", "അല്ലാഹു, അൽ-മാലിക്, അർ-റഹീം", "അർ-റബ്ബ്, അർ-റഹ്‌മാൻ, അൽ-അലീം"], c: 0 },
+    { q: "‘ആമീൻ’ എന്നതിന്റെ അർത്ഥം?", o: ["ഈ പ്രാർത്ഥന സ്വീകരിക്കേണമേ", "അല്ലാഹു ഏറ്റവും വലിയവൻ", "അല്ലാഹുവിനെ സ്തുതിക്കുന്നു", "ഞങ്ങളോട് പൊറുക്കേണമേ"], c: 0 }
+  ];
+
+  /* =====================================================
+     SAVED OPTIONS (same key on every chapter page)
+     ===================================================== */
+  const SKEY = "quran-reader-settings";
+  const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-cont"];
+
+  function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+  function saveSettings() {
+    const s = { fontSize, reciterId, repeat: $("repeat").value };
+    CHECKS.forEach(id => s[id] = $(id).checked);
+    try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+  }
+  function applySettings() {
+    const s = loadSettings();
+    if (s.fontSize) {
+      fontSize = s.fontSize;
+      document.documentElement.style.setProperty("--fs", fontSize + "px");
+      $("fs-label").textContent = fontSize;
+    }
+    CHECKS.forEach(id => { if (id in s) $(id).checked = s[id]; });
+    if (s.repeat) $("repeat").value = s.repeat;
+  }
+
+  /* =====================================================
+     RECITERS (Arabic recitation audio, files named 001001.mp3 ...)
+     ===================================================== */
+  const RECITERS = [
+    { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",
+      base: "https://everyayah.com/data/Ghamadi_40kbps" },
+    { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",
+      base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+    { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",
+      base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+    { id: "hudhaify", name: "അലി ഹുദൈഫി",
+      base: "https://everyayah.com/data/Hudhaify_64kbps" },
+    { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്\u200cലി",
+      base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+    { id: "alili",    name: "അസീസ് അലീലി",
+      base: "https://everyayah.com/data/aziz_alili_128kbps" }
+  ];
+
+  let reciterId = "ghamdy";
+  const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+  const reciterReady = r => !!r.base;
+  const pad3 = n => String(n).padStart(3, "0");
+  const ayahRef = n => SURAH + ": " + pad3(n);          // e.g. "1: 001"
+
+  function audioUrl(n) {
+    return currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+  }
+
+  function changeReciter(id) { reciterId = id; saveSettings(); }
+
+  function initReciters() {
+    const sel = $("reciter");
+    sel.innerHTML = RECITERS.map(r => {
+      const ok = reciterReady(r);
+      return `<option value="${r.id}" ${ok ? "" : "disabled"}>${r.name}${ok ? "" : " (ഓഡിയോ ചേർത്തിട്ടില്ല)"}</option>`;
+    }).join("");
+    const saved = loadSettings().reciterId;
+    const start = RECITERS.find(r => r.id === saved && reciterReady(r)) || RECITERS.find(reciterReady) || RECITERS[0];
+    reciterId = start.id;
+    sel.value = start.id;
+  }
+
+  const KIND_NAME = { in: "മുഖവുര", ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+
+  /* =====================================================
+     BUILD THE PAGE
+     ===================================================== */
+  function introHtml() {
+    return `
+      <div class="verse" id="intro-wrap">
+        <div class="vhead"><span>മുഖവുര</span><button class="small-btn open" id="tgl-in" onclick="toggleIntro()">മുഖവുര മറയ്ക്കുക</button></div>
+        <div class="item" id="item-in-0">
+          <div class="row">
+            <button class="play-btn" id="btn-in-0" title="Play / Stop" onclick="toggleItem('in', 0)">▶</button>
+            <div class="text">
+              <div class="intro-title">${INTRO.title}</div>
+              <div class="intro-sub">${INTRO.sub}</div>
+              <p class="intro-body">${INTRO.body}</p>
+              <div class="isti">
+                <div class="isti-ar" lang="ar" dir="rtl">${INTRO.istiAr}</div>
+                <div>${INTRO.istiMl}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function buildPage() {
+    const wrap = $("verses");
+    wrap.innerHTML = introHtml() + VERSES.map(v => `
+      <div class="verse" id="verse-${v.n}">
+        <div class="vhead"><span>ആയത്ത് ${ayahRef(v.n)}</span></div>
+
+        <div class="item it-ar" id="item-ar-${v.n}">
+          <div class="row rtl">
+            <button class="play-btn" id="btn-ar-${v.n}" title="Play / Stop" onclick="toggleItem('ar', ${v.n})">▶</button>
+            <p class="text ar" lang="ar" dir="rtl">${v.ar}</p>
+          </div>
+        </div>
+
+        <div class="item it-ml" id="item-ml-${v.n}">
+          <div class="row">
+            <button class="play-btn" id="btn-ml-${v.n}" title="Play / Stop" onclick="toggleItem('ml', ${v.n})">▶</button>
+            <p class="text"><span class="tag">സാരം:</span>${v.ml}</p>
+          </div>
+        </div>
+
+        ${v.tf ? `
+        <button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${v.n}">
+          <div class="row">
+            <button class="play-btn" id="btn-tf-${v.n}" title="Play / Stop" onclick="toggleItem('tf', ${v.n})">▶</button>
+            <p class="text"><span class="pl">${v.tf}</span></p>
+          </div>
+        </div>` : ""}
+      </div>
+    `).join("");
+  }
+
+  /* =====================================================
+     FONT SIZE
+     ===================================================== */
+  let fontSize = 18;
+  function changeFont(delta) {
+    fontSize = Math.min(40, Math.max(12, fontSize + delta));
+    document.documentElement.style.setProperty("--fs", fontSize + "px");
+    $("fs-label").textContent = fontSize;
+    saveSettings();
+  }
+
+  /* =====================================================
+     SHOW / HIDE  (the "കാണിക്കുക" boxes decide what is shown AND what is played)
+     ===================================================== */
+  function setIntroVisible(show) {
+    $("item-in-0").classList.toggle("hidden", !show);
+    const btn = $("tgl-in");
+    btn.classList.toggle("open", show);
+    btn.textContent = show ? "മുഖവുര മറയ്ക്കുക" : "മുഖവുര കാണിക്കുക";
+  }
+
+  function toggleIntro() {
+    const willShow = $("item-in-0").classList.contains("hidden");
+    if (!willShow && activeKey === "in-0") stopAll();
+    setIntroVisible(willShow);
+  }
+
+  function setTafseerVisible(n, show) {
+    const block = $("item-tf-" + n);
+    const btn = $("tgl-" + n);
+    if (!block) return;
+    block.classList.toggle("hidden", !show);
+    btn.classList.toggle("open", show);
+  }
+
+  function toggleTafseer(n) {
+    const block = $("item-tf-" + n);
+    const willShow = block.classList.contains("hidden");
+    if (!willShow && activeKey === "tf-" + n) stopAll();
+    setTafseerVisible(n, willShow);
+  }
+
+  function applyDisplay() {
+    const on = id => $(id).checked;
+    document.body.classList.toggle("hide-in", !on("show-in"));
+    document.body.classList.toggle("hide-ar", !on("show-ar"));
+    document.body.classList.toggle("hide-ml", !on("show-ml"));
+    document.body.classList.toggle("hide-tf", !on("show-tf"));
+    if (activeKey && !on("show-" + activeKey.split("-")[0])) stopAll();   // what is playing was just hidden
+    VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  }
+
+  /* =====================================================
+     PLAYBACK STATE
+     ===================================================== */
+  const statusEl = $("status");
+  const masterBtn = $("master");
+  const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
+  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
+  let token = 0;
+  let activeKey = null;
+  let currentAudio = null;
+  let continuous = false;
+  let curLabel = "";
+  let curKind = "ml";
+  const utterances = [];
+
+  /* ---------- Keep the screen on ----------
+     Wake Lock API (needs HTTPS; may be blocked inside an embed) + a tiny muted video as backup. */
+  let wakeLock = null, waking = false;
+  let nsVideo = null, nsTimer = null, nsCanvas = null;
+
+  function startNoSleep() {
+    try {
+      if (nsVideo) { const q = nsVideo.play(); if (q && q.catch) q.catch(() => {}); return; }
+      if (!HTMLCanvasElement.prototype.captureStream) return;
+      nsCanvas = document.createElement("canvas");
+      nsCanvas.width = 16; nsCanvas.height = 16;
+      const ctx = nsCanvas.getContext("2d");
+      let t = 0;
+      const draw = () => { ctx.fillStyle = (t++ % 2) ? "#000000" : "#010101"; ctx.fillRect(0, 0, 16, 16); };
+      draw();
+      nsTimer = setInterval(draw, 500);
+      const v = document.createElement("video");
+      v.setAttribute("playsinline", "");
+      v.setAttribute("muted", "");
+      v.muted = true;
+      v.loop = true;
+      v.style.cssText = "position:fixed;bottom:0;right:0;width:8px;height:8px;opacity:0.05;pointer-events:none;";
+      v.srcObject = nsCanvas.captureStream(5);
+      v.addEventListener("pause", () => { if (nsVideo === v && document.visibilityState === "visible") v.play().catch(() => {}); });
+      document.body.appendChild(v);
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {});
+      nsVideo = v;
+    } catch (e) {}
+  }
+
+  function stopNoSleep() {
+    try {
+      if (nsTimer) { clearInterval(nsTimer); nsTimer = null; }
+      if (nsVideo) { const v = nsVideo; nsVideo = null; v.pause(); v.srcObject = null; v.remove(); }
+    } catch (e) {}
+  }
+
+  async function requestWake() {
+    if (waking || wakeLock) return;
+    waking = true;
+    try {
+      if ("wakeLock" in navigator) {
+        try {
+          wakeLock = await navigator.wakeLock.request("screen");
+          wakeLock.addEventListener("release", () => {
+            wakeLock = null;
+            if (document.visibilityState === "visible") setTimeout(requestWake, 300);
+          });
+          stopNoSleep();
+        } catch (e) {}
+      }
+      if (!wakeLock) startNoSleep();
+    } finally {
+      waking = false;
+    }
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") requestWake();
+  });
+  ["pointerdown", "touchstart", "click", "keydown"].forEach(ev =>
+    document.addEventListener(ev, () => requestWake(), { passive: true }));
+
+  setInterval(() => {
+    if (!wakeLock) requestWake();
+    if (nsVideo && nsVideo.paused) { const p = nsVideo.play(); if (p && p.catch) p.catch(() => {}); }
+  }, 5000);
+
+  /* ---------- Lock-screen info / controls ---------- */
+  function setMediaSession(label) {
+    if (!("mediaSession" in navigator)) return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: label, artist: currentReciter().name, album: "സൂറത്തുൽ ഫാതിഹ"
+      });
+      navigator.mediaSession.setActionHandler("pause", () => stopAll());
+      navigator.mediaSession.setActionHandler("stop", () => stopAll());
+    } catch (e) {}
+  }
+
+  function mark(key) {
+    clearMark();
+    activeKey = key;
+    const btn = $("btn-" + key);
+    const item = $("item-" + key);
+    if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+    if (item) {
+      item.classList.add("reading");
+      if (continuous) item.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  function clearMark() {
+    if (!activeKey) return;
+    const btn = $("btn-" + activeKey);
+    const item = $("item-" + activeKey);
+    if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+    if (item) item.classList.remove("reading");
+    activeKey = null;
+  }
+
+  function stopAll() {
+    token++;
+    continuous = false;
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    clearMark();
+    masterBtn.textContent = MASTER_TEXT;
+    masterBtn.classList.remove("playing");
+    statusEl.textContent = "";
+  }
+
+  function fail(my, msg) {
+    if (my !== token) return;
+    stopAll();
+    statusEl.textContent = msg;
+  }
+
+  /* =====================================================
+     ARABIC: recitation MP3
+     ===================================================== */
+  function playArabic(n, my, done) {
+    if (my !== token) return;
+    const r = currentReciter();
+
+    const audio = new Audio();
+    audio.preload = "auto";
+    currentAudio = audio;
+    audio.onended = () => { if (my === token) done(); };
+    audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + ayahRef(n) +
+      (navigator.onLine ? ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക."
+                        : ": ഓഫ്‌ലൈനാണ്. ഈ ഓഡിയോ മുമ്പ് കേട്ടിട്ടില്ല."));
+    audio.src = audioUrl(n);
+    audio.play().catch(e => {
+      if (my !== token) return;
+      if (e && (e.name === "NotSupportedError" || e.name === "AbortError")) return;
+      fail(my, "Could not play audio. Tap the button again.");
+    });
+  }
+
+  /* =====================================================
+     MALAYALAM: text to speech
+     Best available Malayalam voices are chosen automatically:
+     one for the meaning (സാരം), a different one for the explanation (വിവരണം).
+     ===================================================== */
+  const MALE_HINT   = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i;
+  const FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;
+  const gender = v => FEMALE_HINT.test(v.name) ? "f" : (MALE_HINT.test(v.name) ? "m" : "?");
+
+  function mlVoices() {
+    const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+    return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith("ml"));
+  }
+
+  // Higher = better: neural / natural / Google voices first; offline → only voices stored on the device
+  function quality(v) {
+    let s = 0;
+    if (/neural|natural|online/i.test(v.name)) s += 3;
+    if (/google/i.test(v.name)) s += 2;
+    if (!v.localService && navigator.onLine) s += 1;
+    return s;
+  }
+
+  function pickVoices() {
+    let vs = mlVoices();
+    if (!navigator.onLine) { const local = vs.filter(v => v.localService); if (local.length) vs = local; }
+    if (!vs.length) return null;
+    vs.sort((a, b) => quality(b) - quality(a) || a.name.localeCompare(b.name));
+    const a = vs[0];
+    const b = vs.find(v => v !== a && gender(v) !== gender(a)) || vs.find(v => v !== a);
+    return { ml: a, tf: b || a, same: !b };
+  }
+
+  function voiceProfile(kind) {
+    const p = pickVoices();
+    if (!p) return null;
+    if (kind === "tf") return { voice: p.tf, pitch: p.same ? 0.75 : 1, rate: 0.85 };   // same voice only → lower pitch so it sounds different
+    return { voice: p.ml, pitch: 1, rate: 0.95 };
+  }
+
+  function cleanForSpeech(text) {
+    return text
+      .replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ")
+      .replace(/[()\u2018\u2019\u201C\u201D"]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function splitText(text, max = 120) {
+    const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text];
+    const chunks = [];
+    let cur = "";
+    for (let s of sentences) {
+      s = s.trim();
+      while (s.length > max) {
+        let cut = s.lastIndexOf(" ", max);
+        if (cut <= 0) cut = max;
+        if (cur) { chunks.push(cur); cur = ""; }
+        chunks.push(s.slice(0, cut).trim());
+        s = s.slice(cut).trim();
+      }
+      if (!s) continue;
+      if (cur && (cur + " " + s).length > max) { chunks.push(cur); cur = s; }
+      else { cur = cur ? cur + " " + s : s; }
+    }
+    if (cur) chunks.push(cur);
+    return chunks.filter(c => /[^\s.,:;!?।]/.test(c));
+  }
+
+  // Online fallback: Google Translate voice
+  function playChunks(chunks, langCode, my, done, i = 0) {
+    if (my !== token) return;
+    if (i >= chunks.length) { done(); return; }
+    statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
+    const url = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + langCode
+                + "&q=" + encodeURIComponent(chunks[i]);
+    const audio = new Audio(url);
+    currentAudio = audio;
+    audio.preservesPitch = false;
+    audio.mozPreservesPitch = false;
+    audio.webkitPreservesPitch = false;
+    audio.playbackRate = curKind === "tf" ? 0.78 : 0.92;
+    audio.onended = () => playChunks(chunks, langCode, my, done, i + 1);
+    audio.onerror = () => fail(my, "Voice is not available on this device or browser.");
+    audio.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+  }
+
+  /* Chunks are spoken ONE AT A TIME (the next is queued only when the previous ends).
+     Queuing a whole long explanation at once made the browser hang; a per-chunk
+     watchdog also skips a chunk if the engine stalls. */
+  function speakMalayalam(text, my, done) {
+    const langCode = "ml";
+    const chunks = splitText(cleanForSpeech(text));
+    if (!chunks.length) { done(); return; }
+
+    const found = voiceProfile(curKind);
+    if (!found) {
+      statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice...";
+      playChunks(chunks, langCode, my, done);
+      return;
+    }
+
+    setTimeout(() => {
+      if (my !== token) return;
+      statusEl.textContent = curLabel + " · " + found.voice.name;
+      let i = 0, failed = false;
+
+      const next = () => {
+        if (my !== token || failed) return;
+        if (i >= chunks.length) { done(); return; }
+        const idx = i++;
+        const u = new SpeechSynthesisUtterance(chunks[idx]);
+        u.voice = found.voice;
+        u.lang = found.voice.lang;
+        u.pitch = found.pitch;
+        u.rate = found.rate;
+        let settled = false;
+        const advance = () => { if (settled) return; settled = true; clearTimeout(guard); next(); };
+        const guard = setTimeout(() => {
+          if (my !== token || settled) return;
+          window.speechSynthesis.cancel();
+          advance();
+        }, 5000 + chunks[idx].length * 250);
+
+        u.onend = advance;
+        u.onerror = (e) => {
+          if (my !== token || settled || failed) return;
+          if (e.error === "canceled" || e.error === "interrupted") return;
+          settled = true; failed = true; clearTimeout(guard);
+          window.speechSynthesis.cancel();
+          statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";
+          playChunks(chunks, langCode, my, done, idx);
+        };
+        utterances[0] = u;                      // keep a reference so it is not garbage-collected
+        window.speechSynthesis.speak(u);
+      };
+      next();
+    }, 100);
+  }
+
+  /* =====================================================
+     PLAY ONE ITEM (kind: 'in' | 'ar' | 'ml' | 'tf')
+     ===================================================== */
+  function playItem(kind, n, my, done) {
+    requestWake();
+    curKind = kind === "tf" ? "tf" : "ml";
+    curLabel = kind === "in" ? KIND_NAME.in : "ആയത്ത് " + ayahRef(n) + " – " + KIND_NAME[kind];
+    statusEl.textContent = curLabel;
+    setMediaSession(curLabel);
+    if (kind === "ar") {
+      const total = +$("repeat").value || 1;
+      const loop = k => {
+        if (my !== token) return;
+        statusEl.textContent = curLabel + " · " + currentReciter().name +
+          (total > 1 ? " · ആവർത്തനം " + k + "/" + total : "");
+        playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+      };
+      loop(1);
+      return;
+    }
+    let text;
+    if (kind === "in") text = introSpeech();
+    else text = kind === "ml" ? VERSES[n - 1].ml : VERSES[n - 1].tf;
+    speakMalayalam(text, my, done);
+  }
+
+  /* =====================================================
+     PLAYLIST
+     Order: introduction, then for each verse: ayah, meaning, explanation.
+     Only parts ticked in "കാണിക്കുക" are included.
+     ===================================================== */
+  function buildQueue() {
+    const on = id => $(id).checked;
+    const q = [];
+    if (on("show-in")) q.push({ kind: "in", n: 0 });
+    VERSES.forEach(v => {
+      if (on("show-ar")) q.push({ kind: "ar", n: v.n });
+      if (on("show-ml")) q.push({ kind: "ml", n: v.n });
+      if (on("show-tf") && v.tf) q.push({ kind: "tf", n: v.n });
+    });
+    return q;
+  }
+
+  // Play queue[start...]; cont = true keeps going to the next items, false stops after the first
+  function runQueue(queue, start, cont) {
+    stopAll();
+    requestWake();
+    setPanel(false);
+    continuous = cont;
+    const my = token;
+    if (cont) {
+      masterBtn.textContent = "■ നിർത്തുക";
+      masterBtn.classList.add("playing");
+    }
+    const step = i => {
+      if (my !== token) return;
+      if (i >= queue.length || (!cont && i > start)) {
+        stopAll();
+        if (cont) statusEl.textContent = "പൂർത്തിയായി.";
+        return;
+      }
+      const { kind, n } = queue[i];
+      if (kind === "tf") setTafseerVisible(n, true);
+      if (kind === "in") setIntroVisible(true);
+      mark(kind + "-" + n);
+      playItem(kind, n, my, () => { if (my === token) step(i + 1); });
+    };
+    step(start);
+  }
+
+  // Round button next to each item: play it (and carry on to the following items if "തുടർച്ചയായി" is ticked)
+  function toggleItem(kind, n) {
+    if (activeKey === kind + "-" + n) { stopAll(); return; }
+    if ($("opt-cont").checked) {
+      const q = buildQueue();
+      const idx = q.findIndex(x => x.kind === kind && x.n === n);
+      if (idx >= 0) { runQueue(q, idx, true); return; }
+    }
+    runQueue([{ kind, n }], 0, false);
+  }
+
+  // Main button: start from the beginning / stop
+  function toggleContinuous() {
+    if (continuous || activeKey) { stopAll(); return; }
+    const q = buildQueue();
+    if (!q.length) {
+      statusEl.textContent = "‘കാണിക്കുക’ എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)";
+      return;
+    }
+    runQueue(q, 0, true);
+  }
+
+  /* =====================================================
+     OPTIONS PANEL
+     ===================================================== */
+  const controlsEl = $("controls");
+  const optBtn = $("opt-toggle");
+
+  function setPanel(open) {
+    controlsEl.classList.toggle("open", open);
+    optBtn.classList.toggle("open", open);
+    optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");
+  }
+  function togglePanel(e) {
+    e.stopPropagation();
+    setPanel(!controlsEl.classList.contains("open"));
+  }
+  document.addEventListener("pointerdown", e => {
+    if (!controlsEl.contains(e.target)) setPanel(false);
+  });
+
+  /* =====================================================
+     LESSONS SUMMARY, QUESTIONS (AI) AND QUIZ
+     ===================================================== */
+  const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";
+  const pageText = () => VERSES.map(v => `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");
+  const cleanJson = t => t.replace(/```json|```/g, "").trim();
+
+  async function askAI(prompt) {
+    const res = await fetch(AI_ENDPOINT, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+    if (!res.ok) throw new Error(res.status);
+    return (await res.json()).text;
+  }
+
+  function renderQuestions(list) {
+    $("q-list").innerHTML = "";
+    list.forEach(q => {
+      const b = document.createElement("button");
+      b.className = "q-btn"; b.textContent = q;
+      b.onclick = () => answerQuestion(q);
+      $("q-list").appendChild(b);
+    });
+  }
+
+  async function showSummary() {
+    const out = $("ai-summary");
+    if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }
+    out.textContent = "⏳ ...";
+    try {
+      out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());
+      const qs = JSON.parse(cleanJson(await askAI(AI_RULE +
+        "Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));
+      if (Array.isArray(qs) && qs.length) renderQuestions(qs);
+    } catch (e) { out.textContent = LESSONS; }
+  }
+
+
+
+
+
+  async function startQuiz() {
+    let qs = QUIZ;
+    if (AI_ENDPOINT) {
+      $("quiz").textContent = "⏳ ...";
+      try {
+        const r = JSON.parse(cleanJson(await askAI(AI_RULE +
+          'Return ONLY a JSON array of 5 multiple-choice questions in Malayalam: [{"q":"","o":["","","",""],"c":0,"e":""}] where c is the index of the correct option.\n\n' + pageText())));
+        if (Array.isArray(r) && r.length) qs = r;
+      } catch (e) {}
+    }
+    renderQuiz(qs);
+  }
+
+  function renderQuiz(qs) {
+    let score = 0, answered = 0;
+    const box = $("quiz"); box.innerHTML = "";
+    qs.forEach((q, qi) => {
+      const d = document.createElement("div"); d.className = "quiz-q";
+      d.innerHTML = `<p>${qi + 1}. ${q.q}</p>`;
+      q.o.forEach((t, oi) => {
+        const b = document.createElement("button"); b.className = "quiz-opt"; b.textContent = t;
+        b.onclick = () => {
+          if (d.dataset.done) return;
+          d.dataset.done = 1; answered++;
+          d.querySelectorAll(".quiz-opt")[q.c].classList.add("right");
+          if (oi === q.c) score++; else b.classList.add("wrong");
+          if (q.e) { const e = document.createElement("div"); e.className = "quiz-exp"; e.textContent = q.e; d.appendChild(e); }
+          if (answered === qs.length) res.textContent = `🎉 സ്കോർ: ${score} / ${qs.length}`;
+        };
+        d.appendChild(b);
+      });
+      box.appendChild(d);
+    });
+    const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);
+  }
+
+  /* =====================================================
+     START
+     ===================================================== */
+  buildPage();
+  initReciters();
+  applySettings();
+  applyDisplay();
+  CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
+  renderQuestions(SUGGESTED.map(x => x.q));
+  requestWake();
+
+  if (window.speechSynthesis) window.speechSynthesis.getVoices();   // Chrome loads voices asynchronously
+
+  // Offline support: needs sw.js next to this page (HTTPS hosting). Silently skipped otherwise.
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  }
+</script>
+
+
+</body>
+</html>
