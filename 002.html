@@ -87,7 +87,7 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offse
 /* ---- Edit these to match your site ---- */
 const TOTAL_AYAH = 286;   // total verses
 const PER_PAGE   = 20;    // verses per page
-const BASE = 'https://onlinenanma.github.io/quran/';
+const BASE = 'https://sites.google.com/view/quransaram/Surah/002/';
 const PAGE_URL    = p => `${BASE}002-${p}`;   // .../Surah/002/002-1, 002-2, ...
 const SUMMARY_URL = `${BASE}002-summary`;
 
@@ -112,31 +112,26 @@ prefToggle.addEventListener("click", () => {
   if (!open) stopSpeech();                // stop audio when hiding
 });
 
-/* ---------- Text to speech ---------- */
+/* ---------- Text to speech (Mac & Mobile Fixed) ---------- */
 const SKEY = "quran-reader-settings";
 const statusEl = $("status"), ttsBtn = $("ttsBtn"), prefaceEl = document.querySelector(".preface");
 let token = 0, speaking = false, currentAudio = null;
-const utterances = [];
-const MALE_HINT = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i;
-const FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;
 
 function loadSettings(){ try{ return JSON.parse(localStorage.getItem(SKEY)) || {}; }catch(e){ return {}; } }
 function mlVoices(){
   const vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
-  return vs.filter(v => v.lang.toLowerCase().replace("_","-").startsWith("ml"));
+  return vs.filter(v => v.lang && v.lang.toLowerCase().replace("_","-").startsWith("ml"));
 }
 function resolveVoice(){
   const vs = mlVoices(); if (!vs.length) return null;
-  const saved = loadSettings().voiceMl;   // voice chosen on chapter 1, if any
-  return (saved && saved !== "auto" && vs.find(v => v.name === saved))
-    || vs.find(v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name))
-    || vs.find(v => !FEMALE_HINT.test(v.name)) || vs[0];
+  const saved = loadSettings().voiceMl;
+  return (saved && saved !== "auto" && vs.find(v => v.name === saved)) || vs[0];
 }
-function cleanForSpeech(t){   // drop Arabic letters and brackets so they are not read wrongly
+function cleanForSpeech(t){
   return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g," ")
           .replace(/[()\u2018\u2019\u201C\u201D"]/g,"").replace(/\s+/g," ").trim();
 }
-function splitText(text, max = 150){
+function splitText(text, max = 120){
   const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = []; let cur = "";
   for (let s of sentences){
     s = s.trim();
@@ -160,47 +155,91 @@ function stopSpeech(){
 }
 function fail(my, msg){ if (my !== token) return; stopSpeech(); statusEl.textContent = msg; }
 
-function playChunks(chunks, my, i = 0){   // fallback: online voice
+function playChunks(chunks, my, i = 0){
   if (my !== token) return;
   if (i >= chunks.length){ stopSpeech(); return; }
-  statusEl.textContent = "online voice " + (i + 1) + " / " + chunks.length;
-  const a = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]));
-  currentAudio = a; a.playbackRate = 0.92;
+  statusEl.textContent = "Online voice " + (i + 1) + " / " + chunks.length;
+  
+  // Using standard web audio fetch handling for better Mac compatibility
+  const textEncoded = encodeURIComponent(chunks[i]);
+  const a = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=${textEncoded}`);
+  currentAudio = a; 
+  a.playbackRate = 0.95;
+  
   a.onended = () => playChunks(chunks, my, i + 1);
-  a.onerror = () => fail(my, "Voice is not available on this device or browser.");
-  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+  a.onerror = () => fail(my, "Audio playback blocked or unavailable on this browser.");
+  
+  a.play().catch(() => fail(my, "Tap again to allow audio playback on Mac."));
 }
+
 function speakPreface(text, my){
-  const chunks = splitText(cleanForSpeech(text)); if (!chunks.length) return;
+  const chunks = splitText(cleanForSpeech(text)); 
+  if (!chunks.length) return;
+  
   const voice = resolveVoice();
-  if (!voice){ statusEl.textContent = "no Malayalam voice found, using online voice..."; playChunks(chunks, my); return; }
-  const isMale = MALE_HINT.test(voice.name) && !FEMALE_HINT.test(voice.name);
-  setTimeout(() => {   // Chrome ignores speak() right after cancel()
-    if (my !== token) return;
-    statusEl.textContent = voice.name; utterances.length = 0; let failed = false;
-    chunks.forEach((c, idx) => {
-      const u = new SpeechSynthesisUtterance(c);
-      u.voice = voice; u.lang = voice.lang; u.pitch = isMale ? 1 : 0.5; u.rate = 0.95;
-      u.onerror = e => {
-        if (my !== token || failed || e.error === "canceled" || e.error === "interrupted") return;
-        failed = true; speechSynthesis.cancel(); playChunks(chunks, my);
-      };
-      if (idx === chunks.length - 1) u.onend = () => { if (my === token && !failed) stopSpeech(); };
-      utterances.push(u); speechSynthesis.speak(u);
-    });
-    speechSynthesis.resume();
-  }, 100);
+  // If Mac doesn't have a built-in Malayalam voice, automatically switch to reliable online audio chunks
+  if (!voice){ 
+    statusEl.textContent = "Using online speech engine..."; 
+    playChunks(chunks, my); 
+    return; 
+  }
+
+  statusEl.textContent = "Using voice: " + voice.name; 
+  let idx = 0;
+
+  function speakNext(){
+    if (my !== token || idx >= chunks.length) {
+      if (my === token) stopSpeech();
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(chunks[idx]);
+    u.voice = voice; 
+    u.lang = voice.lang; 
+    u.rate = 0.95;
+    
+    u.onend = () => {
+      idx++;
+      speakNext();
+    };
+    u.onerror = () => {
+      // Fallback to online chunks if speech synthesis errors out on Mac
+      playChunks(chunks, my, idx);
+    };
+    
+    speechSynthesis.speak(u);
+  }
+
+  speakNext();
 }
+
 function toggleSpeech(){
   if (speaking){ stopSpeech(); return; }
-  stopSpeech(); speaking = true; const my = token;
-  ttsBtn.textContent = "■ നിർത്തുക"; ttsBtn.classList.add("playing"); prefaceEl.classList.add("reading");
+  stopSpeech(); 
+  speaking = true; 
+  const my = token;
+  
+  ttsBtn.textContent = "■ നിർത്തുക"; 
+  ttsBtn.classList.add("playing"); 
+  prefaceEl.classList.add("reading");
+  
   const text = [document.querySelector(".banner h1").textContent,
     ...[...prefaceEl.querySelectorAll(".meta, #prefBody p")].map(x => x.textContent)].join(". ");
+  
+  // Direct call inside user gesture to satisfy macOS security policies
+  if (window.speechSynthesis) {
+    speechSynthesis.cancel();
+  }
   speakPreface(text, my);
 }
+
 ttsBtn.addEventListener("click", toggleSpeech);
-if (window.speechSynthesis){ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; }
+
+if (window.speechSynthesis){ 
+  speechSynthesis.getVoices(); 
+  if (typeof speechSynthesis.onvoiceschanged !== "undefined") {
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+  }
+}
 window.addEventListener("pagehide", stopSpeech);
 </script>
 </body>
