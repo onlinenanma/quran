@@ -1,0 +1,338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2299.77">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!doctype html&gt;</p>
+<p class="p1">&lt;html lang="ml"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="utf-8" /&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /&gt;</p>
+<p class="p1">&lt;title&gt;ഖുർആൻ സാരം&lt;/title&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&amp;family=Noto+Sans+Malayalam:wght@400;500;600;700&amp;display=swap" rel="stylesheet" /&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">:root{--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--dial:#fff}</p>
+<p class="p1">@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--dial:#1d2f27}}</p>
+<p class="p1">*{box-sizing:border-box;margin:0;padding:0}</p>
+<p class="p1">html,body{width:100%;overflow-x:hidden}</p>
+<p class="p1">body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}</p>
+<p class="p1">.banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:</p>
+<p class="p1"><span class="Apple-converted-space"> </span>radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),</p>
+<p class="p1"><span class="Apple-converted-space"> </span>repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),</p>
+<p class="p1"><span class="Apple-converted-space"> </span>linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}</p>
+<p class="p1">.bismi{font-family:"Noto Naskh Arabic",serif;font-size:clamp(1.3rem,4.5vw,2rem);color:var(--gold);margin-bottom:6px}</p>
+<p class="p1">.banner h1{font-size:clamp(2rem,8vw,3.8rem);font-weight:700;line-height:1.3}</p>
+<p class="p1">.wrap{max-width:1100px;margin:0 auto;padding:18px 12px 40px}</p>
+<p class="p1">.card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(14px,3vw,24px);box-shadow:0 4px 15px rgba(0,0,0,.06)}</p>
+<p class="p1">.picker{margin:-34px auto 16px;position:relative;max-width:640px;text-align:center}</p>
+<p class="p1">.picker h2{font-size:1.1rem;color:var(--green2);margin-bottom:10px}</p>
+<p class="p1">@media(prefers-color-scheme:dark){.picker h2,.desc h2,.widget-title,.prayer-name,.qibla-angle-text{color:var(--gold)}}</p>
+<p class="p1">.row{display:flex;gap:8px;flex-direction:column}</p>
+<p class="p1">@media(min-width:500px){.row{flex-direction:row}}</p>
+<p class="p1">select,button{font-family:inherit;font-size:.95rem;padding:11px 12px;border-radius:6px;border:1px solid #c9d1cc;width:100%}</p>
+<p class="p1">select{background:var(--paper);color:var(--ink);cursor:pointer}</p>
+<p class="p1">button{background:var(--green2);color:#fff;border-color:var(--green2);font-weight:600;cursor:pointer;white-space:nowrap}</p>
+<p class="p1">@media(min-width:500px){.row button{width:auto}}</p>
+<p class="p1">button:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}</p>
+<p class="p1">.desc{margin-top:20px}</p>
+<p class="p1">.desc p{margin-bottom:14px;text-align:justify;max-width:75ch;margin-inline:auto}</p>
+<p class="p1">.desc .dua{text-align:center;font-weight:600}</p>
+<p class="p1">.desc p:last-child{margin-bottom:0}</p>
+<p class="p1">footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}</p>
+<p class="p1">.widgets-wrapper{display:flex;flex-direction:column;gap:16px;width:100%}</p>
+<p class="p1">@media(min-width:850px){.widgets-wrapper{flex-direction:row;align-items:stretch}}</p>
+<p class="p1">.widget-container{padding:16px;width:100%;display:flex;flex-direction:column;gap:12px}</p>
+<p class="p1">.prayer-widget-box{flex:1.6}</p>
+<p class="p1">.qibla-widget-box{flex:1;align-items:center;text-align:center}</p>
+<p class="p1">.widget-title{color:var(--green);font-size:1.2rem;font-weight:700;text-align:center}</p>
+<p class="p1">.location-subtitle{text-align:center;font-size:.85rem;color:var(--muted);margin:2px 0 8px;font-weight:600;word-break:break-word}</p>
+<p class="p1">.city-selector{display:flex;gap:8px;width:100%;flex-direction:column}</p>
+<p class="p1">@media(min-width:500px){.city-selector{flex-direction:row}.city-selector button{width:auto}}</p>
+<p class="p1">.prayer-times-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;width:100%}</p>
+<p class="p1">.prayer-time-card{background:var(--card);border:1px solid #e2e8f0;border-top:3px solid var(--gold);border-radius:8px;padding:12px 6px;text-align:center}</p>
+<p class="p1">@media(prefers-color-scheme:dark){.prayer-time-card{border-color:#2c3f36;border-top-color:var(--gold)}}</p>
+<p class="p1">.prayer-name{color:var(--green);font-weight:700;font-size:.8rem;margin-bottom:4px}</p>
+<p class="p1">.prayer-time{font-weight:800;font-size:1.15rem}</p>
+<p class="p1">/* Compass */</p>
+<p class="p1">.compass-wrap{position:relative;width:190px;height:190px;margin:14px auto 6px}</p>
+<p class="p1">.phone-marker{position:absolute;top:-12px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid var(--green2);z-index:3}</p>
+<p class="p1">@media(prefers-color-scheme:dark){.phone-marker{border-top-color:#fff}}</p>
+<p class="p1">.compass-container{position:absolute;inset:0;border-radius:50%;border:3px solid var(--green2);background:radial-gradient(circle,var(--dial) 60%,rgba(128,128,128,.15) 100%);color:var(--muted);pointer-events:none;transition:transform .15s ease-out,box-shadow .2s}</p>
+<p class="p1">.compass-container.aligned{box-shadow:0 0 0 4px rgba(46,160,90,.55)}</p>
+<p class="p1">.compass-mark{position:absolute;font-weight:700;font-size:.8rem;line-height:1}</p>
+<p class="p1">.mark-n{top:16px;left:50%;transform:translateX(-50%);color:#d9534f;font-size:.95rem}</p>
+<p class="p1">.mark-e{right:9px;top:50%;margin-top:-6px}.mark-s{bottom:9px;left:50%;transform:translateX(-50%)}.mark-w{left:9px;top:50%;margin-top:-6px}</p>
+<p class="p1">.north-pointer{position:absolute;top:-3px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #d9534f}</p>
+<p class="p1">.north-line{position:absolute;left:50%;top:34px;width:2px;height:calc(50% - 34px);margin-left:-1px;background:#d9534f;opacity:.75}</p>
+<p class="p1">.qibla-needle{position:absolute;inset:0;transition:transform .15s ease-out}</p>
+<p class="p1">.qibla-needle .stem{position:absolute;left:50%;top:44px;width:4px;height:calc(50% - 44px);margin-left:-2px;background:var(--gold);border-radius:2px}</p>
+<p class="p1">.qibla-needle .head{position:absolute;left:50%;top:26px;margin-left:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:22px solid var(--gold);filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}</p>
+<p class="p1">.qibla-needle .kaaba{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--green2);border:2px solid var(--gold);border-radius:50%}</p>
+<p class="p1">.qibla-angle-text{font-size:1.15rem;font-weight:800;color:var(--green)}</p>
+<p class="p1">.compass-status{font-size:.78rem;color:var(--muted)}</p>
+<p class="p1">.legend{display:flex;gap:14px;justify-content:center;font-size:.75rem;color:var(--muted);flex-wrap:wrap}</p>
+<p class="p1">.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}</p>
+<p class="p1">.loading-message{color:var(--muted);font-size:.9rem;grid-column:1/-1;text-align:center;padding:12px}</p>
+<p class="p1">.btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}</p>
+<p class="p1">@media(min-width:500px){.row .btn{width:auto}}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body onload="initWidgets()"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;header class="banner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="bismi"&gt;بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;ഖുർആൻ സാരം&lt;/h1&gt;</p>
+<p class="p1">&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;main class="wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;section class="card picker" aria-labelledby="sh"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 id="sh"&gt;സൂറത്ത് തിരഞ്ഞെടുക്കുക&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;select id="surahSelect" aria-label="സൂറത്ത്"&gt;&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;a id="openLink" class="btn" href="#" target="_top" rel="noopener"&gt;തുറക്കുക&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="widgets-wrapper"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card widget-container prayer-widget-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h3 class="widget-title"&gt;🕌 നമസ്‌കാര സമയങ്ങൾ (Prayer Times)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="locationSubtitle" class="location-subtitle"&gt;ലൊക്കേഷൻ കണ്ടെത്തുന്നു...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="city-selector"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;select id="citySelect" onchange="onCityDropdownChange()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value=""&gt;നഗരം തിരഞ്ഞെടുക്കുക (Select City)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="9.0581,76.5414"&gt;കരുനാഗപ്പള്ളി (Karunagappally)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="8.5241,76.9366"&gt;തിരുവനന്തപുരം (Trivandrum)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="10.8505,76.2711"&gt;കൊച്ചി (Kochi)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="10.5200,76.2100"&gt;തൃശ്ശൂർ (Thrissur)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="11.8588,75.3772"&gt;കോഴിക്കോട് (Kozhikode)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="19.0760,72.8777"&gt;മുംബൈ (Mumbai)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="28.7041,77.1025"&gt;ദില്ലി (Delhi)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="17.3850,78.4867"&gt;ഹൈദരാബാദ് (Hyderabad)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="13.1939,80.1829"&gt;ചെന്നൈ (Chennai)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="12.2958,76.6394"&gt;ബാംഗ്ലൂർ (Bangalore)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="21.4225,39.8262"&gt;മക്ക (Makkah)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="24.4672,39.6112"&gt;മദീന (Madinah)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="21.5433,39.1728"&gt;ജിദ്ദ (Jeddah)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="24.7136,46.6753"&gt;റിയാദ് (Riyadh)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="26.4207,50.0888"&gt;ദമ്മാം (Dammam)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="25.2769,55.2962"&gt;ദുബായ് (Dubai)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="25.2854,51.5310"&gt;ദോഹ (Doha)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="29.3759,47.9774"&gt;കുവൈറ്റ് സിറ്റി (Kuwait)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="26.2278,50.5856"&gt;മനാമ - ബഹ്‌റൈൻ (Manama)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="23.5880,58.3829"&gt;മസ്കറ്റ് (Muscat)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="17.0151,54.0924"&gt;സലാല (Salalah)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button type="button" onclick="requestGPSPermission()"&gt;📍 GPS Precision&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="prayerTimesDisplay" class="prayer-times-grid"&gt;&lt;p class="loading-message"&gt;സമയങ്ങൾ ലോഡ് ചെയ്യുന്നു...&lt;/p&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="card widget-container qibla-widget-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h3 class="widget-title"&gt;🕋 ഖിബ്‌ല ദിശ (Qibla)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="qiblaSubtitle" class="location-subtitle"&gt;ലൊക്കേഷൻ കാത്തിരിക്കുന്നു...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="compass-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="phone-marker" title="Phone direction"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="compassDial" class="compass-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="north-pointer"&gt;&lt;/div&gt;&lt;div class="north-line"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="compass-mark mark-n"&gt;N&lt;/span&gt;&lt;span class="compass-mark mark-e"&gt;E&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="compass-mark mark-s"&gt;S&lt;/span&gt;&lt;span class="compass-mark mark-w"&gt;W&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div id="qiblaNeedle" class="qibla-needle"&gt;&lt;div class="head"&gt;&lt;/div&gt;&lt;div class="stem"&gt;&lt;/div&gt;&lt;div class="kaaba"&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="legend"&gt;&lt;span&gt;&lt;i style="background:#d9534f"&gt;&lt;/i&gt;True North&lt;/span&gt;&lt;span&gt;&lt;i style="background:var(--gold)"&gt;&lt;/i&gt;Qibla&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="qiblaAngle" class="qibla-angle-text"&gt;--°&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="compassStatus" class="compass-status"&gt;Tap Start Compass &amp;middot; keep phone flat&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="btnStartCompass" type="button" style="max-width:250px;font-size:.85rem;padding:8px 14px" onclick="enableLiveCompass(event)"&gt;🧭 Calibrate / Start Compass&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;section class="card desc"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 style="color:var(--green2);font-size:1.25rem;margin-bottom:12px;text-align:center"&gt;സ്വാഗതം&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;അർ-റഹ്‌മാനും അർ-റഹീമുമായ അല്ലാഹുവിന്റെ നാമത്തില്‍. സർവ്വ സ്തുതികളും ലോകങ്ങളുടെ റബ്ബായ അല്ലാഹുവിന്നാകുന്നു. അന്തിമ പ്രാവാചകൻ മുഹമ്മദ് നബി (ﷺ) യുടെ മേൽ അല്ലാഹുവിന്റെ സ്വലാത്തും സലാമും സദാ വർഷിക്കുമാറാകട്ടെ. ആമീൻ.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;വിശുദ്ധ ഖുർആൻ പാരായണത്തിനും പഠനത്തിനും മലയാളികളെ സഹായിക്കുന്ന ഒരു ഡിജിറ്റൽ സംരംഭമാണ് 'ഖുർആൻ മലയാള സാരം'. ഖുർആനിക വചനങ്ങളുടെ സാരവും ചുരുക്കരൂപത്തിലുള്ള വിവരണവും എളുപ്പത്തിൽ വായിക്കാനും, കേട്ട് മനസ്സിലാക്കാനും, മറ്റുള്ളവരിലേക്ക് എത്തിക്കാനും ഈ സൈറ്റ് സഹായിക്കുന്നു. വിശുദ്ധ ഖുർആന്റെ പാരായണം ആവർത്തിച്ച് ആസ്വദിക്കാനും, അതിന്റെ മഹത്തായ ആശയങ്ങൾ ലളിതമായി മനസ്സിലാക്കാനും അനുയോജ്യമായ രീതിയിലാണ് ഇതിന്റെ ഉള്ളടക്കം ക്രമീകരിച്ചിരിക്കുന്നത്.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p&gt;നിങ്ങളുടെ കുടുംബങ്ങൾക്കും സുഹൃത്തക്കൾക്കും ഈ സൈറ്റ് ഷെയർ ചെയ്ത് അവരെ കൂടി ഈ നന്മയിൽ പങ്കാളികളാക്കാൻ ശ്രദ്ദിക്കുമല്ലോ. അള്ളാഹു അവന്റെ റഹ്‌മത് നമ്മുടെ മേൽ ഇരു ലോകത്തും ചൊരിഞ്ഞു തരുമാറാകട്ടെ.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="dua"&gt;റഹ്‌മാനായ റബ്ബേ.. ഈ പരിശ്രമം ഒരു സത്കർമ്മമായി നീ സ്വീകരിക്കുമാറാകണേ.. ആമീൻ.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/section&gt;</p>
+<p class="p1">&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;footer&gt;© ഖുർആൻ മലയാള സാരം&lt;/footer&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">const SURAH_URL = n =&gt; `https://sites.google.com/view/quransaram/Surah/${n}`;</p>
+<p class="p1">const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,അത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");</p>
+<p class="p1">(function(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s=document.getElementById('surahSelect');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>SURAHS.forEach((n,i)=&gt;{const k=String(i+1).padStart(3,'0');s.add(new Option(`${k} - ${n}`,k));});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>s.addEventListener('change',openSurah);</p>
+<p class="p1">})();</p>
+<p class="p2"><br></p>
+<p class="p1">function openSurah(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const v = document.getElementById('surahSelect').value, a = document.getElementById('openLink');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!v) { a.removeAttribute('href'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>a.href = SURAH_URL(v); <span class="Apple-converted-space">  </span>// the visible button now links straight to the surah</p>
+<p class="p1"><span class="Apple-converted-space">  </span>a.click(); <span class="Apple-converted-space">              </span>// also try opening at once</p>
+<p class="p1">}</p>
+<p class="p1">let currentQiblaBearing=0,deviceHeading=0,hasHeading=false;</p>
+<p class="p1">function calculateQibla(lat,lon){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const kl=21.4225*Math.PI/180,ko=39.8262*Math.PI/180,ul=lat*Math.PI/180,uo=lon*Math.PI/180,d=ko-uo;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const y=Math.sin(d),x=Math.cos(ul)*Math.tan(kl)-Math.sin(ul)*Math.cos(d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (Math.atan2(y,x)*180/Math.PI+360)%360;</p>
+<p class="p1">}</p>
+<p class="p1">function updateQiblaUI(lat,lon){currentQiblaBearing=calculateQibla(lat,lon);document.getElementById('qiblaAngle').innerText=`${currentQiblaBearing.toFixed(1)}°`;renderCompass();}</p>
+<p class="p1">/* Dial rotates opposite to the phone heading so the red N pointer always shows true north;</p>
+<p class="p1"><span class="Apple-converted-space">   </span>the gold Qibla needle sits on the dial at the Qibla bearing, so it moves with the phone. */</p>
+<p class="p1">function renderCompass(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const n=document.getElementById('qiblaNeedle'),d=document.getElementById('compassDial');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!d||!n)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.style.transform=`rotate(${-deviceHeading}deg)`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>n.style.transform=`rotate(${currentQiblaBearing}deg)`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(hasHeading){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const diff=Math.abs(((currentQiblaBearing-deviceHeading+540)%360)-180);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const ok=diff&lt;=5;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>d.classList.toggle('aligned',ok);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('compassStatus').innerText=ok?"✓ ഖിബ്‌ല ദിശയിൽ (Facing Qibla)":"Turn until the gold arrow points to the top ▼";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">function handleOrientation(e){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let h=null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(e.webkitCompassHeading!==undefined&amp;&amp;e.webkitCompassHeading!==null)h=e.webkitCompassHeading;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else if(e.absolute===true||(e.alpha!==null&amp;&amp;e.alpha!==undefined))h=(360-e.alpha)%360;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(h!==null&amp;&amp;!isNaN(h)){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const so=(screen.orientation&amp;&amp;screen.orientation.angle)||0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>deviceHeading=(h+so)%360;hasHeading=true;renderCompass();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const b=document.getElementById('btnStartCompass');if(b)b.style.display='none';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">async function enableLiveCompass(e){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(e){e.preventDefault();e.stopPropagation();}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const st=document.getElementById('compassStatus');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(typeof DeviceOrientationEvent!=='undefined'&amp;&amp;typeof DeviceOrientationEvent.requestPermission==='function'){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try{const r=await DeviceOrientationEvent.requestPermission();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(r==='granted')window.addEventListener('deviceorientation',handleOrientation,true);else st.innerText="Permission Denied";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}catch(err){console.error(err);}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}else if('ondeviceorientationabsolute' in window)window.addEventListener('deviceorientationabsolute',handleOrientation,true);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else if('ondeviceorientation' in window)window.addEventListener('deviceorientation',handleOrientation,true);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else st.innerText="Sensors Not Supported";</p>
+<p class="p1">}</p>
+<p class="p1">async function fetchAndDisplayPrayerTimes(lat,lon,name=""){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const disp=document.getElementById('prayerTimesDisplay'),sub=document.getElementById('locationSubtitle'),qsub=document.getElementById('qiblaSubtitle');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>disp.innerHTML=`&lt;p class="loading-message"&gt;ലോഡ് ചെയ്യുന്നു...&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>updateQiblaUI(lat,lon);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const t=new Date(),ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const res=await fetch(`https://api.aladhan.com/v1/timings/${ds}?latitude=${lat}&amp;longitude=${lon}&amp;method=2`);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const data=await res.json();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(data&amp;&amp;data.code===200){</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const tm=data.data.timings,label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>sub.innerText=label;qsub.innerText=label;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let h='';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for(const [k,v] of Object.entries(names))if(tm[k])h+=`&lt;div class="prayer-time-card"&gt;&lt;div class="prayer-name"&gt;${v}&lt;/div&gt;&lt;div class="prayer-time"&gt;${tm[k]}&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>disp.innerHTML=h;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}else disp.innerHTML=`&lt;p class="loading-message"&gt;സമയങ്ങൾ ലഭ്യമായില്ല.&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(err){disp.innerHTML=`&lt;p class="loading-message"&gt;ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.&lt;/p&gt;`;}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">const $ = id =&gt; document.getElementById(id);</p>
+<p class="p1">let dialAngle = 0, sinH = 0, cosH = 1, sensorOn = false;</p>
+<p class="p2"><br></p>
+<p class="p1">function headingFrom(e) { <span class="Apple-converted-space">                      </span>// tilt-compensated compass heading</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (e.webkitCompassHeading != null) return e.webkitCompassHeading; <span class="Apple-converted-space">  </span>// iPhone</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (e.alpha == null) return null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (e.beta == null || e.gamma == null) return (360 - e.alpha) % 360;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const r = Math.PI / 180, a = e.alpha * r, b = e.beta * r, g = e.gamma * r;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const rA = -Math.cos(a) * Math.sin(g) - Math.sin(a) * Math.sin(b) * Math.cos(g);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const rB = -Math.sin(a) * Math.sin(g) + Math.cos(a) * Math.sin(b) * Math.cos(g);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (Math.atan2(rA, rB) / r + 360) % 360;</p>
+<p class="p1">}</p>
+<p class="p1">function setHeading(h) {<span class="Apple-converted-space">                        </span>// smooth the jitter</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const r = Math.PI / 180;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!hasHeading) { sinH = Math.sin(h * r); cosH = Math.cos(h * r); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else { sinH = sinH * 0.75 + Math.sin(h * r) * 0.25; cosH = cosH * 0.75 + Math.cos(h * r) * 0.25; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>deviceHeading = (Math.atan2(sinH, cosH) / r + 360) % 360;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>hasHeading = true; renderCompass();</p>
+<p class="p1">}</p>
+<p class="p1">function handleOrientation(e) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// use only true (absolute) compass data; ignore the relative event</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (e.webkitCompassHeading == null &amp;&amp; e.type !== 'deviceorientationabsolute' &amp;&amp; e.absolute !== true) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const h = headingFrom(e); if (h == null || isNaN(h)) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const so = (screen.orientation &amp;&amp; screen.orientation.angle) || 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setHeading((h + so) % 360);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const b = $('btnStartCompass'); if (b) b.style.display = 'none';</p>
+<p class="p1">}</p>
+<p class="p1">function renderCompass() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const n = $('qiblaNeedle'), d = $('compassDial'); if (!d || !n) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>dialAngle += ((((-deviceHeading - dialAngle + 180) % 360) + 360) % 360) - 180; <span class="Apple-converted-space">  </span>// shortest way round</p>
+<p class="p1"><span class="Apple-converted-space">  </span>d.style.transform = `rotate(${dialAngle}deg)`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>n.style.transform = `rotate(${currentQiblaBearing}deg)`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (hasHeading) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const diff = Math.abs(((currentQiblaBearing - deviceHeading + 540) % 360) - 180), ok = diff &lt;= 5;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>d.classList.toggle('aligned', ok);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>$('compassStatus').innerText = ok ? "✓ ഖിബ്‌ല ദിശയിൽ (Facing Qibla)" : "Turn until the gold arrow points to the top ▼";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">async function startSensors(manual) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const st = $('compassStatus');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (sensorOn) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (typeof DeviceOrientationEvent !== 'undefined' &amp;&amp; typeof DeviceOrientationEvent.requestPermission === 'function') {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!manual) return;<span class="Apple-converted-space">                      </span>// iPhone needs a tap first</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (await DeviceOrientationEvent.requestPermission() !== 'granted') { st.innerText = "Permission Denied"; return; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>window.addEventListener('deviceorientation', handleOrientation, true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else if ('ondeviceorientationabsolute' in window) window.addEventListener('deviceorientationabsolute', handleOrientation, true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else if ('ondeviceorientation' in window) window.addEventListener('deviceorientation', handleOrientation, true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else { st.innerText = "Sensors Not Supported"; return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sensorOn = true;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (err) { console.error(err); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; { if (!hasHeading) st.innerText = "സെൻസർ ഡാറ്റ ലഭിക്കുന്നില്ല. പേജ് നേരിട്ട് തുറന്ന് നോക്കുക (Google Sites embed-ൽ തടയപ്പെടാം)."; }, 2500);</p>
+<p class="p1">}</p>
+<p class="p1">function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }</p>
+<p class="p1">async function initWidgets(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>startSensors(false);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const r=await fetch('https://ip-api.com/json/?fields=status,city,country,lat,lon'),d=await r.json();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d&amp;&amp;d.status==='success'){matchDropdownOption(d.lat,d.lon);fetchAndDisplayPrayerTimes(d.lat,d.lon,`${d.city}, ${d.country}`);return;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try{</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const r=await fetch('https://ipapi.co/json/'),d=await r.json();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(d&amp;&amp;d.latitude&amp;&amp;d.longitude){matchDropdownOption(d.latitude,d.longitude);fetchAndDisplayPrayerTimes(d.latitude,d.longitude,`${d.city}, ${d.country_name}`);return;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}catch(e){}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('citySelect').value="10.8505,76.2711";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>onCityDropdownChange();</p>
+<p class="p1">}</p>
+<p class="p1">function requestGPSPermission(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(navigator.geolocation)navigator.geolocation.getCurrentPosition(</p>
+<p class="p1"><span class="Apple-converted-space">    </span>p=&gt;{const la=p.coords.latitude,lo=p.coords.longitude;matchDropdownOption(la,lo);fetchAndDisplayPrayerTimes(la,lo,"GPS Location");},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>()=&gt;alert("Location access denied or unavailable."));</p>
+<p class="p1">}</p>
+<p class="p1">function matchDropdownOption(lat,lon){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s=document.getElementById('citySelect');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for(const o of s.options){</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!o.value)continue;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const [a,b]=o.value.split(',').map(Number);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(Math.abs(a-lat)&lt;0.4&amp;&amp;Math.abs(b-lon)&lt;0.4){s.value=o.value;break;}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">function onCityDropdownChange(){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s=document.getElementById('citySelect');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if(!s.value)return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const [la,lo]=s.value.split(',');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>fetchAndDisplayPrayerTimes(parseFloat(la),parseFloat(lo),s.options[s.selectedIndex].text);</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2299.77">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ml"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+<p class="p1">&lt;title&gt;സൂറത്തുൽ ബഖറഃ 1–20&lt;/title&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&amp;family=Noto+Sans+Malayalam:wght@400;500;600;700&amp;display=swap" rel="stylesheet" /&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}</p>
+<p class="p1">@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}</p>
+<p class="p1">*{box-sizing:border-box}</p>
+<p class="p1">html{scroll-padding-top:70px}</p>
+<p class="p1">body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}</p>
+<p class="p1">body&gt;*{max-width:1000px;margin-left:auto;margin-right:auto}</p>
+<p class="p1">body&gt;.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:8px 18px 38px;background:</p>
+<p class="p1"><span class="Apple-converted-space"> </span>radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),</p>
+<p class="p1"><span class="Apple-converted-space"> </span>repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),</p>
+<p class="p1"><span class="Apple-converted-space"> </span>linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}</p>
+<p class="p1">.hero h1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:400;line-height:1.3;margin:0}</p>
+<p class="p1">.hero .back{display:block;text-align:left;color:var(--gold);font-weight:600;font-size:.8rem;text-decoration:none;line-height:1.6}</p>
+<p class="p1">.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}</p>
+<p class="p1">.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}</p>
+<p class="p1">.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}</p>
+<p class="p1">.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}</p>
+<p class="p1">.controls.open .panel{display:block}</p>
+<p class="p1">.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}</p>
+<p class="p1">.ctl-title{font-size:13px;color:var(--muted);font-weight:600}</p>
+<p class="p1">.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}</p>
+<p class="p1">.opt input{width:16px;height:16px;accent-color:var(--green2)}</p>
+<p class="p1">.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}</p>
+<p class="p1">.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}</p>
+<p class="p1">.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}</p>
+<p class="p1">.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}</p>
+<p class="p1">.banner .main-btn{padding:7px 20px}</p>
+<p class="p1">.main-btn.playing{background:#d93025}</p>
+<p class="p1">button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}</p>
+<p class="p1">.fs-group{display:inline-flex;align-items:center;gap:4px}</p>
+<p class="p1">#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}</p>
+<p class="p1">#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}</p>
+<p class="p1">#status:empty{display:none}</p>
+<p class="p1">.verse,.item{min-width:0}</p>
+<p class="p1">.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}</p>
+<p class="p1">.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}</p>
+<p class="p1">.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}</p>
+<p class="p1">.item.reading{background:var(--soft);border-color:var(--gold)}</p>
+<p class="p1">.row{display:flex;align-items:flex-start;gap:10px;min-width:0}</p>
+<p class="p1">.row.rtl{direction:rtl}</p>
+<p class="p1">.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}</p>
+<p class="p1">.play-btn.playing{background-color:#d93025}</p>
+<p class="p1">.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}</p>
+<p class="p1">.tag{font-size:12px;color:var(--muted);margin-right:4px}</p>
+<p class="p1">.pl{white-space:pre-line}</p>
+<p class="p1">.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}</p>
+<p class="p1">@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}</p>
+<p class="p1">.hidden{display:none}</p>
+<p class="p1">.tf-btn{display:block;margin:4px 0 6px 6px}</p>
+<p class="p1">.it-tf{border-top:1px dashed var(--line);margin-top:2px}</p>
+<p class="p1">body.hide-ar .it-ar{display:none}</p>
+<p class="p1">body.hide-ml .it-ml{display:none}</p>
+<p class="p1">body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}</p>
+<p class="p1">.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}</p>
+<p class="p1">.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}</p>
+<p class="p1">.ai-box h3:first-child{margin-top:0}</p>
+<p class="p1">.ai-box&gt;.main-btn{display:block;margin:0 auto}</p>
+<p class="p1">.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}</p>
+<p class="p1">.ai-out:empty{display:none}</p>
+<p class="p1">.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}</p>
+<p class="p1">.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}</p>
+<p class="p1">.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}</p>
+<p class="p1">.ai-ask{display:flex;gap:6px;margin-top:8px}</p>
+<p class="p1">.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}</p>
+<p class="p1">.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}</p>
+<p class="p1">.quiz-q p{margin:0 0 6px;font-size:var(--fs)}</p>
+<p class="p1">.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}</p>
+<p class="p1">.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}</p>
+<p class="p1">.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}</p>
+<p class="p1">.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1">&lt;header class="hero"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a class="back" id="backLink" target="_top"&gt;← ആയത്തുകളുടെ പട്ടിക&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;2. സൂറത്തുൽ ബഖറഃ (1–20)&lt;/h1&gt;</p>
+<p class="p1">&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="controls" id="controls"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="banner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="banner-row"&gt;&lt;button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)"&gt;⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾&lt;/button&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="banner-row"&gt;&lt;button id="master" class="main-btn" onclick="toggleContinuous()"&gt;▶ തുടർച്ചയായി കേൾക്കാം&lt;/button&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="status"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="panel" id="panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;അക്ഷര വലിപ്പം:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="fs-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="small-btn" onclick="changeFont(-2)"&gt;A−&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span id="fs-label"&gt;18&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="small-btn" onclick="changeFont(2)"&gt;A+&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;വായിക്കേണ്ട ഭാഗങ്ങൾ:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-ar" checked onchange="applyDisplay()"&gt; ആയത്ത്&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-ml" checked onchange="applyDisplay()"&gt; സാരം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-tf" onchange="applyDisplay()"&gt; വിവരണം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;കേൾക്കേണ്ട ഭാഗങ്ങൾ:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="opt-ar" checked&gt; ആയത്ത്&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="opt-ml" checked&gt; സാരം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="opt-tf"&gt; വിവരണം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;&lt;span class="ctl-title"&gt;ഖിറാഅത്ത് (പാരായണം):&lt;/span&gt;&lt;select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;&lt;span class="ctl-title"&gt;ആയത്ത് ആവർത്തനം:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;select id="repeat" class="opt-sel" onchange="saveSettings()"&gt;&lt;option&gt;1&lt;/option&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;option&gt;5&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;&lt;span class="ctl-title"&gt;സാരം ശബ്ദം:&lt;/span&gt;&lt;select id="voice-ml" class="opt-sel" onchange="saveSettings()"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;&lt;span class="ctl-title"&gt;വിവരണം ശബ്ദം:&lt;/span&gt;&lt;select id="voice-tf" class="opt-sel" onchange="saveSettings()"&gt;&lt;/select&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="verses"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="ai-box" id="ai-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;🤖 ഈ പേജിലെ പാഠങ്ങൾ&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="main-btn" onclick="showSummary()"&gt;പാഠങ്ങൾ സംഗ്രഹിക്കുക&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="ai-out" id="ai-summary"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;❓ ചോദ്യങ്ങൾ (തിരഞ്ഞെടുക്കൂ)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="q-list" id="q-list"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="ai-ask"&gt;&lt;input id="ai-q" placeholder="നിങ്ങളുടെ സ്വന്തം ചോദ്യം..."&gt;&lt;button class="main-btn" onclick="askCustom()"&gt;ചോദിക്കുക&lt;/button&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="ai-out" id="ai-answer"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;📝 ക്വിസ്&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="main-btn" onclick="startQuiz()"&gt;ക്വിസ് തുടങ്ങാം&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="quiz"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">const $ = id =&gt; document.getElementById(id);</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== PAGE SETTINGS – change these for each page ===== */</p>
+<p class="p1">const SURAH = 2; <span class="Apple-converted-space">                      </span>// surah number (audio file names: 002001.mp3 ...)</p>
+<p class="p1">const SURAH_NAME = "സൂറത്തുൽ ബഖറഃ";</p>
+<p class="p1">const BACK_URL = "002.html"; <span class="Apple-converted-space">          </span>// Google Sites: use the full page address, e.g. https://sites.google.com/view/YOUR-SITE/baqara</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== VERSES<span class="Apple-converted-space">  </span>(ml = സാരം, tf = വിവരണം; leave "" and that part is hidden) ===== */</p>
+<p class="p1">const VERSES = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 1,<span class="Apple-converted-space">  </span>ar: "ا لم", ml: "അലിഫ്‌ - ലാം - മീം.", tf: "ഖുർആനിലെ ചില സൂറത്തുകൾ ആരംഭിച്ചിട്ടുള്ള അക്ഷരങ്ങളിൽ പെട്ടതാണ് {الم} \"അലിഫ് ലാം മീം\" എന്നത്. \"അലിഫ്, ബാ, താ\"<span class="Apple-converted-space">  </span>എന്നിങ്ങനെ ഒറ്റയായി വന്നാൽ സ്വയം അർത്ഥമില്ലാത്ത അക്ഷരമാലയിലെ അക്ഷരങ്ങളാണവ. എന്നാൽ ഖുർആനിൽ അവ പരാമർശിക്കപ്പെട്ടതിൽ ചില ലക്ഷ്യങ്ങളും ഉദ്ദേശങ്ങളുമുണ്ട്. കാരണം യുക്തിയില്ലാത്ത ഒന്നും തന്നെ ഖുർആനിലില്ല. അതിൻറെ പ്രധാന ലക്ഷ്യങ്ങളിൽ പെട്ടതാണ്: അറബികൾക്ക് സുപരിചിതമായതും അവർ സംസാരിക്കുന്നതുമായ ഈ അക്ഷരങ്ങൾ തന്നെ കൂടിച്ചേർന്നുണ്ടായ ഖുർആൻ കൊണ്ട്, അതുപോലൊന്ന് കൊണ്ടുവരാൻ അവരെ വെല്ലുവിളിക്കുക എന്നത്. അത് കൊണ്ടാണ് അധികവും, ഇത്തരം അക്ഷരങ്ങൾക്ക് ശേഷം ഖുർആനിനെക്കുറിച്ചും അതിന്റെ സവിശേഷതകളെക്കുറിച്ചും പരാമർശിക്കപെടുന്നത് . ഈ സൂറത്തിലും അങ്ങനെത്തന്നെ." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 2,<span class="Apple-converted-space">  </span>ar: "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ", ml: "ഇതാകുന്നു ഗ്രന്ഥം. അതില്‍ സംശയമേയില്ല. സൂക്ഷ്മത പാലിക്കുന്നവര്‍ക്ക്‌ നേര്‍വഴി കാണിക്കുന്നതത്രെ അത്‌.", tf: "ഈ മഹത്തായ ഖുർആൻ, അത് എവിടെ നിന്ന് അവതരിപ്പിക്കപ്പെട്ടുവെന്നതിലോ, അതിലെ വാക്കുകളിലോ ആശയത്തിലോ യാതൊരുവിധ സംശയവുമില്ല. അത് അല്ലാഹുവിൻറെ സംസാരമാകുന്നു. സൂക്ഷ്മത പാലിക്കുന്നവരെ അവനിലേക്കെത്തുന്ന മാർഗത്തിലേക്ക് അത് നയിക്കുന്നു." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 3,<span class="Apple-converted-space">  </span>ar: "الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ", ml: "അദൃശ്യകാര്യങ്ങളില്‍ വിശ്വസിക്കുകയും, പ്രാര്‍ത്ഥന അഥവാ നമസ്കാരം മുറപ്രകാരം നിര്‍വഹിക്കുകയും, നാം നല്‍കിയ സമ്പത്തില്‍ നിന്ന്‌ ചെലവഴിക്കുകയും,", tf: "(ഗൈബിൽ അഥവാ) അദൃശ്യത്തിൽ വിശ്വസിക്കുന്നവരാകുന്നു മുത്തഖികൾ അഥവാ സൂക്ഷ്മത പാലിക്കുന്നവർ. പരലോകം പോലെ, നമ്മുടെ പഞ്ചേന്ദ്രിയങ്ങൾ കൊണ്ട് കണ്ടെത്താൻ കഴിയാത്തതും നമ്മിൽ നിന്ന് അദൃശ്യമായതും അല്ലാഹുവോ റസൂലോ അറിയിച്ചതുമായ കാര്യങ്ങൾക്കാണ് ഗൈബ് എന്ന് പറയുന്നത് . അല്ലാഹു നിയമമാക്കിയ രൂപത്തിൽ ശർത്തുകളും, റുക്നുകളും, വാജിബുകളും, സുന്നത്തുകളും പാലിച്ച് കൊണ്ട് നമസ്കാരം നിലനിർത്തുന്നവരും, അല്ലാഹു അവർക്ക് നൽകിയിട്ടുള്ളതിൽ നിന്ന് നിർബന്ധമായ സക്കാത്ത് പോലുള്ളതും, നിർബന്ധമല്ലാത്ത മറ്റ് ദാനങ്ങളും അല്ലാഹുവിൻറെ പ്രതിഫലം മാത്രമാഗ്രഹിച്ച് നിർവ്വഹിക്കുന്നവരുമാണവർ." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 4,<span class="Apple-converted-space">  </span>ar: "وَالَّذِينَ يُؤْمِنُونَ بِمَا أُنزِلَ إِلَيْكَ وَمَا أُنزِلَ مِن قَبْلِكَ وَبِالْآخِرَةِ هُمْ يُوقِنُونَ", ml: "നിനക്കും നിന്‍റെമുന്‍ഗാമികള്‍ക്കും നല്‍കപ്പെട്ട സന്ദേശത്തില്‍ വിശ്വസിക്കുകയും, പരലോകത്തില്‍ ദൃഢമായി വിശ്വസിക്കുകയും ചെയ്യുന്നവരത്രെ അവര്‍ (സൂക്ഷ്മത പാലിക്കുന്നവര്‍).", tf: "നബിയേ, താങ്കൾക്ക് അവതരിക്കപ്പെട്ട വഹ്'യിലും താങ്കൾക്ക് മുമ്പുള്ള മറ്റ് നബിമാർക്ക് ഇറക്കപ്പെട്ടതിലും വിവേചനമില്ലാതെ വിശ്വസിക്കുന്നവരും, പരലോകത്തിലും അവിടെയുള്ള പ്രതിഫലത്തിലും ശിക്ഷകളിലും അടിയുറച്ച് വിശ്വസിക്കുന്നവരുമാകുന്നു മുത്തഖികൾ അഥവാ സൂക്ഷ്മത പാലിക്കുന്നവർ." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 5,<span class="Apple-converted-space">  </span>ar: "أُولَـٰئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُولَـٰئِكَ هُمُ الْمُفْلِحُونَ", ml: "അവരുടെ നാഥന്‍ കാണിച്ച നേര്‍വഴിയിലാകുന്നു അവര്‍. അവര്‍ തന്നെയാകുന്നു സാക്ഷാല്‍ വിജയികള്‍.", tf: "മേൽ പറഞ്ഞ വിശേഷണങ്ങൾക്കർഹരായവർ സന്മാർഗം പ്രാപിച്ചവരാകുന്നു.<span class="Apple-converted-space">  </span>ഇഹലോകത്തും പരലോകത്തും അവരാകുന്നു വിജയികൾ. അല്ലാഹുവിലുള്ള വിശ്വാസവും സൽക്കർമ്മങ്ങളും ഇഹലോകത്ത് സന്മാർഗ്ഗവും റബ്ബിന്റെ തൗഫീഖും, പരലോകത്ത് വിജയവും രക്ഷയും നേടിത്തരുന്നു." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 6,<span class="Apple-converted-space">  </span>ar: "إِنَّ الَّذِينَ كَفَرُوا سَوَاءٌ عَلَيْهِمْ أَأَنذَرْتَهُمْ أَمْ لَمْ تُنذِرْهُمْ لَا يُؤْمِنُونَ", ml: "സത്യനിഷേധികളെ സംബന്ധിച്ചിടത്തോളം നീ അവര്‍ക്ക്‌ താക്കീത്‌ നല്‍കിയാലും ഇല്ലെങ്കിലും സമമാകുന്നു. അവര്‍ വിശ്വസിക്കുന്നതല്ല.", tf: "നബി (ﷺ) യും ഖുർആനും പ്രബോധനം ചെയ്യുന്ന തത്വങ്ങളില്‍ വിശ്വസിക്കാതെ സത്യത്തെ മൂടി വെക്കുകയും, ദൃഷ്ടാന്തങ്ങളെ അവഗണിച്ചു തള്ളിക്കളയുകയും ചെയ്യുന്ന സത്യനിഷേധികളായ മുശ്‌രിക്കുകളാണ് ഇവിടെ الَّذِينَ كَفَرُوا (അവിശ്വസിച്ചവര്‍) കൊണ്ടുദ്ദേശ്യം. അവരെ താക്കീത് ചെയ്യുന്നതും ചെയ്യാതിരിക്കുന്നതും ഒരുപോലെയാണ്-അവര്‍ വിശ്വസിക്കുവാന്‍ പോകുന്നില്ല-എന്ന് അല്ലാഹു നബി തിരുമേനി (ﷺ) യെ അറിയിക്കുന്നു. അജ്ഞത കൊണ്ടോ, ദൃഷ്ടാന്തങ്ങളുടെ പോരായ്മ കൊണ്ടോ ഉള്ള നിഷേധമാണെങ്കില്‍, താക്കീത് കൊണ്ടും ഉപദേശം കൊണ്ടും അവര്‍ക്ക് മാനസാന്തരം വന്നേക്കുമെന്ന് പ്രതീക്ഷിക്കുവാനവകാശമുണ്ട്. സത്യം മനസ്സിലായിട്ട് പിന്നെയും കല്‍പ്പിച്ചുകൂട്ടി അതിനെ മറയ്ക്കുന്നവരെ സംബന്ധിച്ച് അതൊന്നും പ്രയോജനപ്പെടുകയില്ലല്ലോ. ഉപദേശങ്ങള്‍ക്ക് ചെവികൊടുക്കുകയും, ദൃഷ്ടാന്തങ്ങളില്‍ ചിന്തിക്കുകയും ചെയ്‌വാന്‍ തയ്യാറില്ലാത്ത എല്ലാ അവിശ്വാസികളുടെയും സ്ഥിതി ഇതുതന്നെ." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 7,<span class="Apple-converted-space">  </span>ar: "خَتَمَ اللَّهُ عَلَىٰ قُلُوبِهِمْ وَعَلَىٰ سَمْعِهِمْ ۖ وَعَلَىٰ أَبْصَارِهِمْ غِشَاوَةٌ ۖ وَلَهُمْ عَذَابٌ عَظِيمٌ", ml: "അവരുടെ മനസ്സുകള്‍ക്കും കാതിനും അല്ലാഹു മുദ്രവെച്ചിരിക്കുകയാണ്‌. അവരുടെ ദൃഷ്ടികളിന്‍മേലും ഒരു മൂടിയുണ്ട്‌. അവര്‍ക്കാകുന്നു കനത്ത ശിക്ഷയുള്ളത്‌.", tf: "മനുഷ്യന്‍ നിരര്‍ത്ഥമായ വിശ്വാസത്തിലും, നിഷിദ്ധമായ പ്രവൃത്തികളിലും അങ്ങേയറ്റം എത്തുകയും, യഥാര്‍ത്ഥത്തിലേക്കുള്ള തിരിഞ്ഞുനോട്ടം ഇല്ലാതാകുകയും ചെയ്യുമ്പോള്‍, ആ അനുസരണക്കേടും തെറ്റുകുറ്റങ്ങളും ചെയ്യുന്നത് നന്നായി തോന്നുകയെന്ന ഒരു ശീലം അതവനില്‍ ഉണ്ടാക്കിത്തീര്‍ക്കുകയും, അവന്‍റെ ഹൃദയം മുദ്രവെക്കപ്പെട്ടതുപോലെ ആയിത്തീരുകയും ചെയ്യുന്നു. ഇതുപോലെത്തന്നെയാണ് طَبَعَ اللَّهُ عَلَىٰ قُلُوبِهِمْ وَسَمْعِهِمْ وَأَبْصَارِهِمْ (അവരുടെ ഹൃദയങ്ങള്‍ക്കും കേള്‍വിക്കും കാഴ്ചകള്‍ക്കും അല്ലാഹു മുദ്രകുത്തി (16: 108) എന്ന വചനവും, مَنْ أَغْفَلْنَا قَلْبَهُ (നാം ഹൃദയത്തെ അശ്രദ്ധയിലാക്കിയവന്‍ (18: 28) എന്നതിലെ അശ്രദ്ധയിലാക്കലും, وَجَعَلْنَا عَلَىٰ قُلُوبِهِمْ أَكِنَّةً (അവരുടെ ഹൃദയങ്ങളില്‍ നാം ചില മൂടികളെ ആക്കി (6:25) എന്നതിലെ മൂടി ഇടലും, وَجَعَلْنَا قُلُوبَهُمْ قَاسِيَةً (അവരുടെ ഹൃദയങ്ങളെ നാം കടുപ്പമുള്ളതാക്കി (5: 13) എന്നതിലെ കടുപ്പമാക്കലുമെല്ലാം ഈ പ്രകാരത്തിലുള്ള അലങ്കാര പ്രയോഗങ്ങളാണ്. മനസ്സിലേക്ക് സത്യവിശ്വാസം പ്രവേശിക്കാതിരിക്കത്തക്കവണ്ണം ആദ്യമേ അല്ലാഹു ഹൃദയങ്ങള്‍ക്ക് മുദ്രവെച്ചു തടസ്സമുണ്ടാക്കുകയും, തന്‍മൂലം സത്യവിശ്വാസം ഉള്‍ക്കൊള്ളുവാന്‍ അവര്‍ക്ക് കഴിയാതെ വരികയും ചെയ്യുക എന്നല്ല അവിടങ്ങളിലൊന്നും ഉദ്ദേശ്യം. അവരുടെ നിഷേധവും ധിക്കാരസ്വഭാവവും മുഴുത്തപ്പോള്‍, അതേ കാരണത്താല്‍ അല്ലാഹു അവരുടെ ഹൃദയങ്ങള്‍ക്ക് മുദ്രവെച്ചു-അഥവാ അതിലേക്ക് വിശ്വാസം കടന്നു ചെല്ലാത്ത അവസ്ഥയിലാക്കി-എന്നേയുള്ളൂ." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 8,<span class="Apple-converted-space">  </span>ar: "وَمِنَ النَّاسِ مَن يَقُولُ آمَنَّا بِاللَّهِ وَبِالْيَوْمِ الْآخِرِ وَمَا هُم بِمُؤْمِنِينَ", ml: "ഞങ്ങള്‍ അല്ലാഹുവിലും അന്ത്യദിനത്തിലും വിശ്വസിച്ചിരിക്കുന്നു എന്ന്‌ പറയുന്ന ചില ആളുകളുണ്ട്‌; (യഥാര്‍ത്ഥത്തില്‍) അവര്‍ വിശ്വാസികളല്ല.", tf: "ഉള്ളില്‍ കുഫ്‌റും പുറമെ ഇസ്‌ലാമിക വേഷവും സ്വീകരിച്ചിരുന്ന കപടവിശ്വാസികൾ<span class="Apple-converted-space">  </span>അഥവാ മുനാഫിക്വുകളെക്കുറിച്ചാണ് ഈ സൂക്തങ്ങളില്‍ പ്രസ്താവിക്കുന്നത്. തങ്ങൾ മുഅ്മിനുകൾ<span class="Apple-converted-space">  </span>അഥവാ വിശ്വാസികളാണെന്ന് അവർ വാദിക്കുന്നു. യഥാർത്ഥത്തിൽ ഉള്ളിൽ അവർ കാഫിറുകൾ അഥവാ അവിശ്വാസികൾ തന്നെയാണ്. \n\nനബി (صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ) യുടെ പ്രവാചകത്വം ലഭിച്ച നാളുകളിൽ ഔസ്, ഖസ്‌റജ് എന്നീ രണ്ട് ഗോത്രക്കാരായിരുന്നു മദീനയിലെ അറബികള്‍.<span class="Apple-converted-space">  </span>അവർക്കിടയിൽ പൊതു നേതൃത്വം കൈവന്ന ഒരു നേതാവായിരുന്നു ഖസ്‌റജ് ഗോത്രക്കാരനായ അബ്ദുല്ലാഹിബ്‌നു ഉബയ്യിബ്‌നിനു സുലൂല്‍. അബ്ദുല്ലായെ എല്ലാവരുടെയും രാജാവായി വാഴിക്കുവാന്‍ ആലോചന നടന്നു വരികയായിരുന്നു. അക്കാലത്താണ് ഇസ്‌ലാമിന്<span class="Apple-converted-space">  </span>മദീനയിൽ സ്വാധീനം ഉണ്ടായിത്തീര്‍ന്നത്. പലരും ഇസ്‌ലാമിലേക്ക് ആകര്‍ഷിക്കപ്പെട്ടതോടെ ആ ആലോചന മുന്നോട്ടു പോകാതായി. നേതൃത്വമോഹിയായ അബ്ദുല്ലാഹിബ്‌നു ഉബയ്യിന്ന് ഇതുമൂലം ഇസ്‌ലാമിനോടും മുസ്‌ലിംകളോടും വെറുപ്പുളവായി. സുപ്രസിദ്ധമായ ബദ്ര്‍ യുദ്ധം കഴിഞ്ഞതോടെ മുസ്‌ലിംകളുടെ യശസ്സും പ്രതാപവും ശക്തിപ്പെട്ടുവല്ലോ. ഇസ്ലാമിന്‍റെ ശക്തി പൂര്‍വ്വാധികം വര്‍ദ്ധിച്ചു കൊണ്ടിരിക്കുന്നത് കണ്ടപ്പോള്‍, അവനും അവന്‍റെ സില്‍ബന്ധികളും അനുഭാവികളും പ്രത്യക്ഷത്തില്‍ ഇസ്‌ലാമിനെ അംഗീകരിച്ച് മുസ്‌ലിംകളായി അഭിനയിച്ചു. വേദക്കാരില്‍പെട്ട ചിലരും ഇക്കൂട്ടത്തിലുണ്ടായിരുന്നു. ഇവിടം മുതല്‍ക്കാണ് ‘മുനാഫിക്വു’കളുടെ തുടക്കം. ക്രമേണ മദീനായിലും, ചുറ്റുപ്രദേശങ്ങളിലുള്ള ‘അഅ്‌റാബി’ അഥവാ (മരുഭൂവാസി)കള്‍ക്കിടയിലും ഇവരുടെ എണ്ണം വര്‍ദ്ധിച്ചു. മക്കയില്‍ നിന്നു ഹിജ്‌റഃ വന്ന മുഹാജിറുകളില്‍ ആരിലും (കാപട്യത്തി)ന്‍റെ രോഗം ബാധിച്ചിട്ടില്ല . അവരാരും മറ്റുള്ളവരുടെ നിര്‍ബന്ധത്തിനോ, സ്വാധീനത്തിനോ വഴങ്ങി ഇസ്‌ലാമിനെ അംഗീകരിച്ചവരോ, അല്ലാഹു അല്ലാത്ത മറ്റാരുടെയെങ്കിലും പ്രീതിക്കു വേണ്ടി സത്യവിശ്വാസം സ്വീകരിച്ചവരല്ലായിരുന്നു അവർ." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 9,<span class="Apple-converted-space">  </span>ar: "يُخَادِعُونَ اللَّهَ وَالَّذِينَ آمَنُوا وَمَا يَخْدَعُونَ إِلَّا أَنفُسَهُمْ وَمَا يَشْعُرُونَ", ml: "അല്ലാഹുവിനെയും വിശ്വാസികളെയും വഞ്ചിക്കുവാനാണ്‌ അവര്‍ ശ്രമിക്കുന്നത്‌. (വാസ്തവത്തില്‍) അവര്‍ ആത്മവഞ്ചന മാത്രമാണ്‌ ചെയ്യുന്നത്‌. അവരത്‌ മനസ്സിലാക്കുന്നില്ല.", tf: "‘മുനാഫിക്വു’കളുടെ അജ്ഞത നിമിത്തം അവർ ധരിച്ച് വെച്ചിരിക്കുന്നത് തങ്ങളുടെ<span class="Apple-converted-space">  </span>നിഷേധം മറച്ചുവെക്കുന്നതിലൂടെ അവർ അല്ലാഹുവിനെയും സത്യവിശ്വാസികളെയുമാണ് വഞ്ചിക്കുന്നത് എന്നാണ്. എന്നാൽ അവർ യാഥാർത്ഥ്യം മനസ്സിലാക്കുന്നില്ല; കാരണം അല്ലാഹു രഹസ്യവും മറഞ്ഞതുമെല്ലാം അറിയുന്നവനത്രെ. അല്ലാഹു അവരുടെ സ്വഭാവഗുണങ്ങളും അവസ്ഥകളും വിശ്വാസികൾക്ക് മുന്നിൽ തുറന്നുകാട്ടിയിരിക്കുന്നു." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 10, ar: "فِي قُلُوبِهِم مَّرَضٌ فَزَادَهُمُ اللَّهُ مَرَضًا ۖ وَلَهُمْ عَذَابٌ أَلِيمٌ بِمَا كَانُوا يَكْذِبُونَ", ml: "അവരുടെ മനസ്സുകളില്‍ ഒരുതരം രോഗമുണ്ട്‌. തന്നിമിത്തം അല്ലാഹു അവര്‍ക്ക്‌ രോഗം വര്‍ദ്ധിപ്പിക്കുകയും ചെയ്തു. കള്ളം പറഞ്ഞുകൊണ്ടിരുന്നതിന്‍റെ ഫലമായി വേദനയേറിയ ശിക്ഷയാണ്‌ അവര്‍ക്കുണ്ടായിരിക്കുക.", tf: "അവരുടെ ഹൃദയങ്ങളിൽ ഈമാനിനു വിരുദ്ധമായ സംശയമുണ്ട്. അല്ലാഹു അവരുടെ സംശയത്തിനു മേൽ സംശയം വർധിപ്പിച്ചു നൽകി. അവരുടെ ആ പ്രവർത്തനത്തിനനുസരിച്ചുള്ള പ്രതിഫലമായി നരകത്തിൻറെ ഏറ്റവും അടിത്തട്ടിൽ അവർക്ക് വേദനാജനകമായ ശിക്ഷയുണ്ട്. അല്ലാഹുവിനെയും ജനങ്ങളെയും കുറിച്ച് കളവ് പറഞ്ഞതും, നബി (സ) കൊണ്ട് വന്ന ദീനിനെ നിഷേധിച്ചതുമാണ് കാരണം." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 11, ar: "وَإِذَا قِيلَ لَهُمْ لَا تُفْسِدُوا فِي الْأَرْضِ قَالُوا إِنَّمَا نَحْنُ مُصْلِحُونَ", ml: "നിങ്ങള്‍ നാട്ടില്‍ കുഴപ്പമുണ്ടാക്കാതിരിക്കൂ എന്ന്‌ അവരോട്‌ ആരെങ്കിലും പറഞ്ഞാല്‍, ഞങ്ങള്‍ സല്‍പ്രവര്‍ത്തനങ്ങള്‍ മാത്രമാണല്ലോ ചെയ്യുന്നത്‌ എന്നായിരിക്കും അവരുടെ മറുപടി.", tf: "സത്യനിഷേധം, സത്യവിശ്വാസികളെ കബളിപ്പിക്കല്‍, ജനമദ്ധ്യെ ആശയക്കുഴപ്പം സൃഷ്ടിക്കല്‍, വാക്കിനെതിരായ പ്രവര്‍ത്തനം, ഇസ്‌ലാമിന്‍റെ ശത്രുക്കളുമായുള്ള രഹസ്യബന്ധങ്ങള്‍ എന്നിങ്ങനെ പലതരത്തിലുള്ള അവരുടെ ചെയ്തികളെ ഉദ്ദേശിച്ചാണ് നാട്ടില്‍ നാശമുണ്ടാക്കരുതെന്ന് അവരോട് പറയുന്നത്. കുഫ്റും പാപങ്ങളുമൊക്കെ കൊണ്ട് ഭൂമിയിൽ കുഴപ്പമുണ്ടാക്കരുത് എന്ന് അവരോട് പറയപ്പെട്ടാൽ, അവർ അത് നിഷേധിക്കുകയും ഞങ്ങൾ നന്മയുടെയും രഞ്ജിപ്പിന്റെയും ആളുകളാണ് എന്ന് പറയുകയും ചെയ്യും." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 12, ar: "أَلَا إِنَّهُمْ هُمُ الْمُفْسِدُونَ وَلَـٰكِن لَّا يَشْعُرُونَ", ml: "എന്നാല്‍ യഥാര്‍ത്ഥത്തില്‍ അവര്‍ തന്നെയാകുന്നു കുഴപ്പക്കാര്‍. പക്ഷെ, അവരത്‌ മനസ്സിലാക്കുന്നില്ല.", tf: "കപട മനസ്ഥിതി ഉള്ളവരുടെ ദുഷ്ട പ്രവര്‍ത്തനങ്ങളാണ് യഥാര്‍ത്ഥത്തില്‍ നാട്ടില്‍ നാശവും കുഴപ്പവും ഉണ്ടാക്കിത്തീര്‍ക്കുക. പുറമെ മുസ്ലിംകളായി നടിക്കുന്ന ചിലർ ഇക്കാലത്തുമുണ്ട്. അവർ പ്രത്യക്ഷത്തിൽ<span class="Apple-converted-space">  </span>മുസ്‌ലിംകളുടെയും ഇസ്‌ലാമിന്‍റെയും ഗുണകാംക്ഷികളും സമുദായോദ്ധാരകന്മാരുമാണെന്ന് നടിക്കുകയും ചെയ്യും. ഇസ്‌ലാമിനെ തുരങ്കം വെക്കുന്ന നിരീശ്വര നിര്‍മത യുക്തിവാദങ്ങളും, ഭൗതിക താല്‍പര്യങ്ങളുമായിരിക്കും അവരുടെ യഥാര്‍ത്ഥ കൈമുതല്‍. മുസ്‌ലിം ബഹുജനങ്ങളില്‍ നിന്ന് അവരറിയാതെ അവരുടെ വിശ്വാസവും മതഭക്തിയും നശിപ്പിച്ചുകൊണ്ട് പുരോഗമനത്തിന്‍റെ പേരില്‍ കാലത്തിനൊത്ത കോലം കെട്ടിക്കുകയായിരിക്കും അവരുടെ ലക്ഷ്യം. സത്യ വിശ്വാസികള്‍ ഇത്തരക്കാരെ ഇസ്‌ലാമിന്‍റെ പ്രത്യക്ഷ ശത്രുക്കളെക്കാള്‍ സൂക്ഷിക്കേണ്ടതാകുന്നു (والله المستعان)." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 13, ar: "وَإِذَا قِيلَ لَهُمْ آمِنُوا كَمَا آمَنَ النَّاسُ قَالُوا أَنُؤْمِنُ كَمَا آمَنَ السُّفَهَاءُ ۗ أَلَا إِنَّهُمْ هُمُ السُّفَهَاءُ وَلَـٰكِن لَّا يَعْلَمُونَ", ml: "മറ്റുള്ളവര്‍ വിശ്വസിച്ചത്‌ പോലെ നിങ്ങളും വിശ്വസിക്കൂ എന്ന്‌ അവരോട്‌ ആരെങ്കിലും പറഞ്ഞാല്‍ ഈ മൂഢന്‍മാര്‍ വിശ്വസിച്ചത്‌ പോലെ ഞങ്ങളും വിശ്വസിക്കുകയോ? എന്നായിരിക്കും അവര്‍ മറുപടി പറയുക. എന്നാല്‍ യഥാര്‍ത്ഥത്തില്‍ അവര്‍ തന്നെയാകുന്നു മൂഢന്‍മാര്‍. പക്ഷെ, അവരത്‌ അറിയുന്നില്ല.", tf: "ഞങ്ങള്‍ സത്യവിശ്വാസം സ്വീകരിച്ചിട്ടുണ്ടെന്നും മുസ്‌ലിംകളാണെന്നുമൊക്കെ നിങ്ങള്‍ പറയുന്നുവല്ലോ, നിങ്ങളുടെ പ്രവര്‍ത്തനങ്ങളും നടപടിയുമാണെങ്കില്‍ അതിനു കടകവിരുദ്ധവുമാണ്. നിങ്ങള്‍ പറയുന്നത് നേരാണെങ്കില്‍ ഈ നില മാറ്റി യഥാര്‍ത്ഥ സത്യവിശ്വാസികള്‍ വിശ്വസിച്ചതുപോലെയുള്ള വിശ്വാസം നിങ്ങള്‍ സ്വീകരിക്കേണ്ടതാണ് എന്നൊക്കെയാണ് آمِنُوا كَمَا آمَنَ النَّاسُ (മനുഷ്യര്‍ വിശ്വസിച്ചതുപോലെ നിങ്ങള്‍ വിശ്വസിക്കുവിന്‍) എന്ന് പറഞ്ഞതിന്‍റെ താത്പര്യം. സത്യവിശ്വാസികളെപ്പറ്റി, അവരൊക്കെ തനി ഭോഷന്മാരായത് കൊണ്ടാണ് അത്രത്തോളം ആ വിശ്വാസത്തില്‍ ലയിക്കുവാന്‍ കാരണം, ഞങ്ങള്‍ അതിനുമാത്രം അധഃപതിച്ചിട്ടില്ല, അവരെപ്പോലെയുള്ള വിശ്വാസം സ്വീകരിക്കുവാന്‍ ഞങ്ങളെ കിട്ടുകയില്ല എന്നൊക്കെയാണ് മറുപടിയില്‍ അവര്‍ വ്യംഗ്യമായി സൂചിപ്പിക്കുന്നത്. വാസ്തവം നേരെമറിച്ചാണുള്ളത്. യഥാര്‍ത്ഥ ഭോഷന്മാര്‍ അഥവാ ബുദ്ധിയില്ലാത്തവർ അവരല്ലാതെ മറ്റാരുമല്ല, പക്ഷേ അതു മനസ്സിലാക്കാനുള്ള തന്റേടവും വിവേകവും അവര്‍ക്കില്ല എന്ന് അല്ലാഹു ചൂണ്ടിക്കാട്ടുന്നു." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 14, ar: "وَإِذَا لَقُوا الَّذِينَ آمَنُوا قَالُوا آمَنَّا وَإِذَا خَلَوْا إِلَىٰ شَيَاطِينِهِمْ قَالُوا إِنَّا مَعَكُمْ إِنَّمَا نَحْنُ مُسْتَهْزِئُونَ", ml: "വിശ്വാസികളെ കണ്ടുമുട്ടുമ്പോള്‍ അവര്‍ പറയും; ഞങ്ങള്‍ വിശ്വസിച്ചിരിക്കുന്നു എന്ന്‌. അവര്‍ തങ്ങളുടെ (കൂട്ടാളികളായ) പിശാചുക്കളുടെ അടുത്ത്‌ തനിച്ചാകുമ്പോള്‍ അവരോട്‌ പറയും: ഞങ്ങള്‍ നിങ്ങളോടൊപ്പം തന്നെയാകുന്നു. ഞങ്ങള്‍ (മറ്റവരെ) കളിയാക്കുക മാത്രമായിരുന്നു.", tf: "മുഅ്മിനുകളെ അവർ കണ്ട് മുട്ടിയാൽ \"നിങ്ങൾ വിശ്വസിക്കുന്ന കാര്യത്തിൽ ഞങ്ങളും വിശ്വസിക്കുന്നു\" എന്നവർ പറയും. മുഅ്മിനുകളെക്കുറിച്ചുള്ള ഭയം കാരണമാണ് അവരങ്ങനെ പറയുന്നത്. മുഅ്മിനുകളുടെ അരികിൽ നിന്ന് പിരിഞ്ഞുപോകുകയും അവരുടെ നേതാക്കന്മാരോടൊപ്പം തനിച്ചാവുകയും ചെയ്യുമ്പോൾ, അവരുടെ അനുയായികൾ തന്നെയാണ് തങ്ങളെന്ന കാര്യം ഉറപ്പിച്ചുകൊണ്ട് അവർ പറയും: ഞങ്ങൾ നിങ്ങളോടൊപ്പം നിങ്ങളുടെ മാർഗത്തിൽ തന്നെയാണ്. പുറമേക്ക് മുഅ്മിനുകളോട് ഞങ്ങൾ യോജിപ്പ് പ്രകടിപ്പിക്കുന്നത് അവരെ പരിഹസിക്കാനും കളിയാക്കാനുമാണ്." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 15, ar: "اللَّهُ يَسْتَهْزِئُ بِهِمْ وَيَمُدُّهُمْ فِي طُغْيَانِهِمْ يَعْمَهُونَ", ml: "എന്നാല്‍ അല്ലാഹുവാകട്ടെ, അവരെ പരിഹസിക്കുകയും, അതിക്രമങ്ങളില്‍ വിഹരിക്കുവാന്‍ അവരെ അയച്ചുവിട്ടിരിക്കുകയുമാകുന്നു.", tf: "മുഅ്മിനുകളെ പരിഹസിക്കുന്നതിന് പകരമായി അല്ലാഹു അവരെയും പരിഹസിക്കുന്നു. അവരുടെ പ്രവർത്തനത്തിനനുസരിച്ച പ്രതിഫലം. അതുകൊണ്ടാണ് ദുൻയാവിൽ അവർക്ക് അല്ലാഹു മുസ്ലിംകളുടെ അതേ വിധിവിലക്കുകൾ ബാധകമാക്കിയത്. എന്നാൽ പരലോകത്ത് അവരുടെ കാപട്യത്തിനും കുഫ്റിനുമുള്ള പ്രതിഫലം തന്നെ അവൻ നൽകും. അതുപോലെ, അവരുടെ വഴികേടിലും അതിക്രമത്തിലും വിഹരിക്കാൻ അല്ലാഹു അവരെ അയച്ചു വിട്ടിരിക്കുന്നു. അങ്ങനെ സംശയാലുക്കളും പരിഭ്രാന്തരുമായി അവർ കഴിഞ്ഞു കൂടുന്നു." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 16, ar: "أُولَـٰئِكَ الَّذِينَ اشْتَرَوُا الضَّلَالَةَ بِالْهُدَىٰ فَمَا رَبِحَت تِّجَارَتُهُمْ وَمَا كَانُوا مُهْتَدِينَ", ml: "സന്‍മാര്‍ഗം വിറ്റ്‌ പകരം ദുര്‍മാര്‍ഗം വാങ്ങിയവരാകുന്നു അവര്‍. എന്നാല്‍ അവരുടെ കച്ചവടം ലാഭകരമാവുകയോ, അവര്‍ ലക്ഷ്യം പ്രാപിക്കുകയോ ചെയ്തില്ല.", tf: "വിശ്വാസത്തിന് പകരം അവിശ്വാസത്തെ പകരമാക്കിയ ഇവർ; അല്ലാഹുവിലുള്ള വിശ്വാസത്തിന് പകരം അവർ സ്വീകരിച്ചിരിക്കുന്നത് നിഷേധമത്രെ. എന്നാൽ അവരുടെ കച്ചവടം ലാഭകരമായില്ല. കാരണം അല്ലാഹുവിലുള്ള വിശ്വാസമാണ് അവർക്ക് നഷ്ടമായത്. അവർ സത്യത്തിലേക്ക് സന്മാർഗം പ്രാപിച്ചവരുമല്ല." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 17, ar: "مَثَلُهُمْ كَمَثَلِ الَّذِي اسْتَوْقَدَ نَارًا فَلَمَّا أَضَاءَتْ مَا حَوْلَهُ ذَهَبَ اللَّهُ بِنُورِهِمْ وَتَرَكَهُمْ فِي ظُلُمَاتٍ لَّا يُبْصِرُونَ", ml: "അവരെ ഉപമിക്കാവുന്നത്‌ ഒരാളോടാകുന്നു: അയാള്‍ തീ കത്തിച്ചു. പരിസരമാകെ പ്രകാശിതമായപ്പോള്‍ അല്ലാഹു അവരുടെ പ്രകാശം കെടുത്തിക്കളയുകയും ഒന്നും കാണാനാവാതെ ഇരുട്ടില്‍ (തപ്പുവാന്‍) അവരെ വിടുകയും ചെയ്തു.", tf: "ഈ മുനാഫിഖുകളെക്കുറിച്ച് അല്ലാഹു ഒരു തീയിന്റെ ഉദാഹരണം പറയുന്നു. ഒരാൾ വെളിച്ചം ലഭിക്കാനായി തീ കത്തിച്ചു. അതിന്റെ പ്രകാശം പരക്കുകയും വെളിച്ചം കൊണ്ടുള്ള പ്രയോജനം ലഭിക്കുമെന്നുമായപ്പോഴേക്കും അത് കെട്ടുപോയി. പ്രകാശം പരത്തുകയെന്ന തീയിന്റെ പ്രയോജനം ഇല്ലാതായി. പൊള്ളലുണ്ടാക്കുകയെന്ന ഉപദ്രവം മാത്രം ബാക്കിയായി. അങ്ങനെ, അവിടെയുണ്ടായിരുന്നവർ ഒന്നും കാണുകയോ സന്മാർഗ്ഗം പ്രാപിക്കുകയോ ചെയ്യാത്തവരായി അവശേഷിക്കുന്നു. റസൂൽ മദീനയില്‍ വന്ന അവസരത്തില്‍ ചില ആളുകള്‍ ഇസ്‌ലാമില്‍ പ്രവേശിച്ചു. പിന്നീട് അവര്‍ കപടവിശ്വാസികളായി മാറി. അവർ<span class="Apple-converted-space">  </span>ആദ്യം ശിര്‍ക്കാകുന്ന ഇരുട്ടിലായിരുന്നു. എന്നിട്ടു അവർ ഇസ്‌ലാം സ്വീകരിച്ചു. അങ്ങിനെയിരിക്കെ (വീണ്ടും) അവിശ്വാസിയായി. അതോടെ അവർ വീണ്ടും ഇരുട്ടിലായി." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 18, ar: "صُمٌّ بُكْمٌ عُمْيٌ فَهُمْ لَا يَرْجِعُونَ", ml: "ബധിരരും ഊമകളും അന്ധന്‍മാരുമാകുന്നു അവര്‍. അതിനാല്‍ അവര്‍ (സത്യത്തിലേക്ക്‌) തിരിച്ചുവരികയില്ല.", tf: "സത്യം ഉൾക്കൊള്ളാൻ വേണ്ടിയുള്ള കേൾവി കേൾക്കാത്ത ബധിരന്മാരാണവർ. യാഥാർത്ഥ്യം സംസാരിക്കാത്ത മൂകൻമാരാണവർ. അത് കാണാത്ത അന്ധൻമാരുമാകുന്നു അവർ. അതിനാൽ അവരുടെ വഴികേടിൽ നിന്ന് അവർ തിരിച്ചുവരികയില്ല." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 19, ar: "أَوْ كَصَيِّبٍ مِّنَ السَّمَاءِ فِيهِ ظُلُمَاتٌ وَرَعْدٌ وَبَرْقٌ يَجْعَلُونَ أَصَابِعَهُمْ فِي آذَانِهِم مِّنَ الصَّوَاعِقِ حَذَرَ الْمَوْتِ ۚ وَاللَّهُ مُحِيطٌ بِالْكَافِرِينَ", ml: "അല്ലെങ്കില്‍ (അവരെ) ഉപമിക്കാവുന്നത്‌ ആകാശത്തുനിന്നു ചൊരിയുന്ന ഒരു പേമാരിയോടാകുന്നു. അതോടൊപ്പം കൂരിരുട്ടും ഇടിയും മിന്നലുമുണ്ട്‌. ഇടിനാദങ്ങള്‍ നിമിത്തം മരണം ഭയന്ന്‌ അവര്‍ വിരലുകള്‍ ചെവിയില്‍ തിരുകുന്നു. എന്നാല്‍ അല്ലാഹു സത്യനിഷേധികളെ വലയം ചെയ്തിരിക്കുകയാണ്‌.", tf: "കപടവിശ്വാസികള്‍ക്ക് മറ്റൊരു ഉപമകൂടി അല്ലാഹു ചൂണ്ടിക്കാട്ടുന്നു: അവരുടെ നന്‍മക്കുവേണ്ടി അല്ലാഹുവില്‍നിന്നു അവതരിച്ചുകൊണ്ടിരിക്കുന്ന ഖുർആന്‍ വചനങ്ങള്‍, സന്ദേശങ്ങള്‍, ദൃഷ്ടാന്തങ്ങള്‍, വിധിവിലക്കുകള്‍ ആദിയായവയാണ് മഴയോട് ഉപമിക്കപ്പെട്ടിരിക്കുന്നത്. മഴ ഭൂമിയെ ജീവസ്സുള്ളതാക്കുന്നതുപോലെ അവ മനുഷ്യനും ജീവസ്സുണ്ടാക്കുന്നുവല്ലോ. ശക്തിയായ മഴ വര്‍ഷിക്കുമ്പോള്‍ ഇടിയും മിന്നലും സ്വാഭാവികമാണ്. കപടവിശ്വാസികളുടെ സംശയം, കാപട്യം, ആശയക്കുഴപ്പം, ദുര്‍മോഹം ആദിയായവയാണ് ഇരുട്ടിനോട് സാദൃശ്യപ്പെടുത്തിയിരിക്കുന്നത്. ദിവ്യ സന്ദേശങ്ങളില്‍ അടങ്ങിയിട്ടുള്ള താക്കീതുകള്‍, മുന്നറിയിപ്പുകള്‍ മുതലായവ ഇടികളോടും, അതിലെ ദൃഷ്ടാന്തങ്ങള്‍, സന്തോഷ വാര്‍ത്തകള്‍ മുതലായവ മിന്നലുകളോടും ഉപമിക്കപ്പെട്ടിരിക്കുന്നു. താക്കീതുകളും ശാസനകളും കേട്ട് സഹിക്കവയ്യാതെ ബധിരന്മാരെപ്പോലെ അവര്‍ തിരിഞ്ഞു കളയുന്നതിനെയാണ് ഇടിവാള്‍ നിമിത്തം മരണത്തെ ഭയന്ന് കാതുപൊത്തുന്നതിനോട് ഉപമിച്ചിരിക്കുന്നത്. പക്ഷേ, അവര്‍ കാതുപൊത്തിയതുകൊണ്ട് രക്ഷ കിട്ടുവാന്‍ പോകുന്നില്ല എന്നത്രെ ‘അല്ലാഹു അവിശ്വാസികളെ വലയം ചെയ്യുന്നവനാണ്’ എന്ന് പറഞ്ഞതിന്റെ താല്‍പര്യം." },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ n: 20, ar: "يَكَادُ الْبَرْقُ يَخْطَفُ أَبْصَارَهُمْ ۖ كُلَّمَا أَضَاءَ لَهُم مَّشَوْا فِيهِ وَإِذَا أَظْلَمَ عَلَيْهِمْ قَامُوا ۚ وَلَوْ شَاءَ اللَّهُ لَذَهَبَ بِسَمْعِهِمْ وَأَبْصَارِهِمْ ۚ إِنَّ اللَّهَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ", ml: "മിന്നല്‍ അവരുടെ കണ്ണുകളെ റാഞ്ചിയെടുക്കുമാറാകുന്നു. അത്‌ (മിന്നല്‍) അവര്‍ക്ക്‌ വെളിച്ചം നല്‍കുമ്പോഴെല്ലാം അവര്‍ ആ വെളിച്ചത്തില്‍ നടന്നു പോകും. ഇരുട്ടാകുമ്പോള്‍ അവര്‍ നിന്നു പോകുകയും ചെയ്യും. അല്ലാഹു ഉദ്ദേശിച്ചിരുന്നെങ്കില്‍ അവരുടെ കേള്‍വിയും കാഴ്ചയും അവന്‍ തീരെ നശിപ്പിച്ചുകളയുക തന്നെ ചെയ്യുമായിരുന്നു. നിസ്സംശയം അല്ലാഹു ഏത്‌ കാര്യത്തിനും കഴിവുള്ളവനാണ്‌.", tf: "സത്യമാര്‍ഗം സ്വീകരിച്ചാല്‍ ഭൗതികമായും പാരത്രികമായും ലഭിക്കുവാനിരിക്കുന്ന നന്‍മകളെപ്പറ്റി ചിലപ്പോള്‍ അവര്‍ക്ക് ബോധോദയം ഉണ്ടാകും. അങ്ങനെ, ഗതി അല്‍പം മുന്നോട്ടാകും. അപ്പോഴേക്കും സ്വാര്‍ത്ഥ വിചാരങ്ങളും പരീക്ഷണഘട്ടങ്ങളും ഓര്‍മവരും. അതോടെ അത് സ്തംഭനത്തിലാകും. അതാണ് മിന്നല്‍ വെളിച്ചത്തില്‍ മുമ്പോട്ട് നടക്കുമെന്നും ഇരുട്ടായാല്‍ നിന്നു പോകുമെന്നും പറഞ്ഞത്. കണ്ടും കേട്ടും കാര്യങ്ങള്‍ ഗ്രഹിക്കുവാനുള്ള കഴിവ് അല്ലാഹു അവര്‍ക്ക് നല്‍കിയതിനെ അവര്‍ ദുരുപയോഗപ്പെടുത്തിയിരിക്കെ, അവയെ നിശ്ശേഷം എടുത്തുകളയുവാന്‍ അവന് ഒട്ടും പ്രയാസമില്ല. എങ്കിലും അതവന്‍ ഉദ്ദേശിച്ചിട്ടില്ലാത്തതു കൊണ്ട് സംഭവിച്ചിട്ടില്ലെന്ന് മാത്രം.\n\nതീ കൊണ്ടും മഴ കൊണ്ടും ഉള്ള ഉപമകളിൽ പരാമർശിക്കപ്പെട്ടവരും മുനാഫിഖുകളും തമ്മിലുള്ള സാദൃശ്യം അവർ അത് കൊണ്ട് ഒരു പ്രയോജനവും നേടുന്നില്ല എന്നതാണ് . തീ കൊണ്ടുള്ള ഉപമയിൽ, തീ കത്തിക്കുന്നവർക്ക് ഇരുട്ടും പൊള്ളലുമല്ലാതെ മറ്റൊരു പ്രയോജനവും ലഭിച്ചില്ല. മഴകൊണ്ടുള്ള ഉപമയിൽ, മഴയോട് ഉപമിക്കപ്പെട്ടത് ഖുർആനാകുന്നു. അതിലെ താക്കീതുകളും ശാസനകളും ഇടിയുടെ ശബ്ദങ്ങളോടും, ഇടക്കിടെ അവർക്ക് പ്രകടമാകുന്ന സത്യങ്ങളെ മിന്നലുകളോടും ഉപമിക്കപ്പെട്ടിരിക്കുന്നു. സത്യത്തിൽ നിന്ന് അവർ പിന്തിരിയുന്നതും അത് അവർ സ്വീകരിക്കാത്തതും, ഇടിയുടെ ശക്തി കാരണം ചെവി പൊത്തുന്നതിനോടുമാണ് ഉപമിച്ചിരിക്കുന്നത്. മഴ കൊണ്ട് അവർക്ക് ഇടിയും മിന്നലും നിമിത്തമുള്ള ഭയമല്ലാതെ ഒന്നും പ്രയോജനപ്പെട്ടില്ല. ഇപ്രകാരം മുനാഫിഖുകൾ ഇസ്ലാമിൽ കാഠിന്യവും തീവ്രതയുമല്ലാതെ മറ്റൊന്നും കാണുന്നില്ല." }</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== LESSONS / QUESTIONS / QUIZ – optional. While all three are empty the box is hidden. ===== */</p>
+<p class="p1">const AI_ENDPOINT = "";</p>
+<p class="p1">const LESSONS = ``;</p>
+<p class="p1">const SUGGESTED = []; <span class="Apple-converted-space">  </span>// [{ q: "ചോദ്യം", a: "ഉത്തരം" }, ...]</p>
+<p class="p1">const QUIZ = [];<span class="Apple-converted-space">        </span>// [{ q: "ചോദ്യം", o: ["a","b","c","d"], c: 0, e: "വിശദീകരണം" }, ...]</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== SAVED OPTIONS (shared with every chapter page) ===== */</p>
+<p class="p1">const SKEY = "quran-reader-settings";</p>
+<p class="p1">const CHECKS = ["show-ar", "show-ml", "show-tf", "opt-ar", "opt-ml", "opt-tf"];</p>
+<p class="p1">let fontSize = 18, reciterId = "ghamdy";</p>
+<p class="p1">function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }</p>
+<p class="p1">function saveSettings() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s = loadSettings();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value, voiceMl: $("voice-ml").value, voiceTf: $("voice-tf").value });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>CHECKS.forEach(id =&gt; s[id] = $(id).checked);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}</p>
+<p class="p1">}</p>
+<p class="p1">function applySettings() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s = loadSettings();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>CHECKS.forEach(id =&gt; { if (id in s) $(id).checked = s[id]; });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (s.repeat) $("repeat").value = s.repeat;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== RECITERS ===== */</p>
+<p class="p1">const RECITERS = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id: "ghamdy", <span class="Apple-converted-space">  </span>name: "സഅദ് അൽ ഗാമിദി",<span class="Apple-converted-space">        </span>base: "https://everyayah.com/data/Ghamadi_40kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id: "ayyoub", <span class="Apple-converted-space">  </span>name: "മുഹമ്മദ് അയ്യൂബ്", <span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id: "bafsar", <span class="Apple-converted-space">  </span>name: "അബ്ദുല്ല ബസ്ഫർ",<span class="Apple-converted-space">        </span>base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id: "hudhaify", name: "അലി ഹുദൈഫി",<span class="Apple-converted-space">            </span>base: "https://everyayah.com/data/Hudhaify_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id: "muaiqly",<span class="Apple-converted-space">  </span>name: "മാഹിർ അൽ മുഅയ്ഖ്\u200cലി", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id: "alili",<span class="Apple-converted-space">    </span>name: "അസീസ് അലീലി", <span class="Apple-converted-space">          </span>base: "https://everyayah.com/data/aziz_alili_128kbps" }</p>
+<p class="p1">];</p>
+<p class="p1">const pad3 = x =&gt; String(x).padStart(3, "0");</p>
+<p class="p1">const currentReciter = () =&gt; RECITERS.find(r =&gt; r.id === reciterId) || RECITERS[0];</p>
+<p class="p1">const audioUrl = n =&gt; currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";</p>
+<p class="p1">function changeReciter(id) { reciterId = id; saveSettings(); }</p>
+<p class="p1">function initReciters() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sel = $("reciter");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sel.innerHTML = RECITERS.map(r =&gt; `&lt;option value="${r.id}"&gt;${r.name}&lt;/option&gt;`).join("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const saved = loadSettings().reciterId;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>reciterId = (RECITERS.find(r =&gt; r.id === saved) || RECITERS[0]).id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sel.value = reciterId;</p>
+<p class="p1">}</p>
+<p class="p1">const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== BUILD PAGE ===== */</p>
+<p class="p1">function buildPage() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>$("verses").innerHTML = VERSES.map(v =&gt; `</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="verse" id="verse-${v.n}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="vhead"&gt;&lt;span&gt;ആയത്ത് ${v.n}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="item it-ar" id="item-ar-${v.n}"&gt;&lt;div class="row rtl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="play-btn" id="btn-ar-${v.n}" onclick="toggleItem('ar', ${v.n})"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text ar" lang="ar" dir="rtl"&gt;${v.ar}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${v.ml ? `&lt;div class="item it-ml" id="item-ml-${v.n}"&gt;&lt;div class="row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="play-btn" id="btn-ml-${v.n}" onclick="toggleItem('ml', ${v.n})"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text"&gt;&lt;span class="tag"&gt;സാരം:&lt;/span&gt;${v.ml}&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;` : ""}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${v.tf ? `&lt;button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})"&gt;വിവരണം&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="item it-tf hidden" id="item-tf-${v.n}"&gt;&lt;div class="row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="play-btn" id="btn-tf-${v.n}" onclick="toggleItem('tf', ${v.n})"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text"&gt;&lt;span class="pl"&gt;${v.tf}&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;` : ""}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`).join("");</p>
+<p class="p1">}</p>
+<p class="p1">function changeFont(d) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>fontSize = Math.min(40, Math.max(12, fontSize + d));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.documentElement.style.setProperty("--fs", fontSize + "px");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>$("fs-label").textContent = fontSize; saveSettings();</p>
+<p class="p1">}</p>
+<p class="p1">function setTafseerVisible(n, show) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const b = $("item-tf-" + n), t = $("tgl-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!b) return; b.classList.toggle("hidden", !show); t.classList.toggle("open", show);</p>
+<p class="p1">}</p>
+<p class="p1">function toggleTafseer(n) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const willShow = $("item-tf-" + n).classList.contains("hidden");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!willShow &amp;&amp; activeKey === "tf-" + n) stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setTafseerVisible(n, willShow);</p>
+<p class="p1">}</p>
+<p class="p1">function applyDisplay() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const on = id =&gt; $(id).checked;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.body.classList.toggle("hide-ar", !on("show-ar"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.body.classList.toggle("hide-ml", !on("show-ml"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.body.classList.toggle("hide-tf", !on("show-tf"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!on("show-tf") &amp;&amp; activeKey &amp;&amp; activeKey.startsWith("tf-") &amp;&amp; !continuous) stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>VERSES.forEach(v =&gt; { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== PLAYBACK STATE ===== */</p>
+<p class="p1">const statusEl = $("status"), masterBtn = $("master");</p>
+<p class="p1">const MASTER_TEXT = "▶ തുടർച്ചയായി കേൾക്കാം", OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";</p>
+<p class="p1">let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";</p>
+<p class="p1">const utterances = [];</p>
+<p class="p2"><br></p>
+<p class="p1">/* ----- keep screen on ----- */</p>
+<p class="p1">let wakeLock = null, waking = false, nsVideo = null, nsTimer = null, nsCanvas = null;</p>
+<p class="p1">function startNoSleep() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (nsVideo) { const q = nsVideo.play(); if (q &amp;&amp; q.catch) q.catch(() =&gt; {}); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!HTMLCanvasElement.prototype.captureStream) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>nsCanvas = document.createElement("canvas"); nsCanvas.width = 16; nsCanvas.height = 16;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const ctx = nsCanvas.getContext("2d"); let t = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const draw = () =&gt; { ctx.fillStyle = (t++ % 2) ? "#000000" : "#010101"; ctx.fillRect(0, 0, 16, 16); };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>draw(); nsTimer = setInterval(draw, 500);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const v = document.createElement("video");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>v.setAttribute("playsinline", ""); v.setAttribute("muted", ""); v.muted = true; v.loop = true;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>v.style.cssText = "position:fixed;bottom:0;right:0;width:4px;height:4px;opacity:0.02;pointer-events:none;";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>v.srcObject = nsCanvas.captureStream(5); document.body.appendChild(v);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const p = v.play(); if (p &amp;&amp; p.catch) p.catch(() =&gt; {}); nsVideo = v;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (e) {}</p>
+<p class="p1">}</p>
+<p class="p1">function stopNoSleep() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (nsTimer) { clearInterval(nsTimer); nsTimer = null; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (nsVideo) { nsVideo.pause(); nsVideo.srcObject = null; nsVideo.remove(); nsVideo = null; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (e) {}</p>
+<p class="p1">}</p>
+<p class="p1">async function requestWake() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (waking || wakeLock) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>waking = true;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if ("wakeLock" in navigator) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>wakeLock = await navigator.wakeLock.request("screen");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>wakeLock.addEventListener("release", () =&gt; { wakeLock = null; if (document.visibilityState === "visible") setTimeout(requestWake, 300); });</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stopNoSleep();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!wakeLock) startNoSleep();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} finally { waking = false; }</p>
+<p class="p1">}</p>
+<p class="p1">document.addEventListener("visibilitychange", () =&gt; { if (document.visibilityState === "visible") requestWake(); });</p>
+<p class="p1">["pointerdown", "touchstart", "click", "keydown"].forEach(ev =&gt; document.addEventListener(ev, () =&gt; requestWake(), { passive: true }));</p>
+<p class="p1">setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!wakeLock) requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (nsVideo &amp;&amp; nsVideo.paused) { const p = nsVideo.play(); if (p &amp;&amp; p.catch) p.catch(() =&gt; {}); }</p>
+<p class="p1">}, 5000);</p>
+<p class="p2"><br></p>
+<p class="p1">function setMediaSession(label) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!("mediaSession" in navigator)) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>navigator.mediaSession.metadata = new MediaMetadata({ title: label, artist: currentReciter().name, album: SURAH_NAME });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>navigator.mediaSession.setActionHandler("pause", () =&gt; stopAll());</p>
+<p class="p1"><span class="Apple-converted-space">    </span>navigator.mediaSession.setActionHandler("stop", () =&gt; stopAll());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (e) {}</p>
+<p class="p1">}</p>
+<p class="p1">function mark(key) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearMark(); activeKey = key;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn = $("btn-" + key), item = $("item-" + key);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (item) { item.classList.add("reading"); if (continuous) item.scrollIntoView({ behavior: "smooth", block: "center" }); }</p>
+<p class="p1">}</p>
+<p class="p1">function clearMark() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!activeKey) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn = $("btn-" + activeKey), item = $("item-" + activeKey);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (item) item.classList.remove("reading");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>activeKey = null;</p>
+<p class="p1">}</p>
+<p class="p1">function stopAll() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>token++; continuous = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (window.speechSynthesis) window.speechSynthesis.cancel();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (currentAudio) { currentAudio.pause(); currentAudio = null; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearMark();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>masterBtn.textContent = MASTER_TEXT; masterBtn.classList.remove("playing"); statusEl.textContent = "";</p>
+<p class="p1">}</p>
+<p class="p1">function fail(my, msg) { if (my !== token) return; stopAll(); statusEl.textContent = msg; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ----- Arabic recitation ----- */</p>
+<p class="p1">function playArabic(n, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const r = currentReciter(), audio = new Audio();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.preload = "auto"; currentAudio = audio;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.onended = () =&gt; { if (my === token) done(); };</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.onerror = () =&gt; fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.src = audioUrl(n);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.play().catch(e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (e &amp;&amp; (e.name === "NotSupportedError" || e.name === "AbortError")) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>fail(my, "Could not play audio. Tap the button again.");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ----- Malayalam text to speech ----- */</p>
+<p class="p1">const MALE_HINT = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i, FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;</p>
+<p class="p1">function mlVoices() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return vs.filter(v =&gt; v.lang.toLowerCase().replace("_", "-").startsWith("ml"));</p>
+<p class="p1">}</p>
+<p class="p1">function populateVoices() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const vs = mlVoices(), s = loadSettings();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const opts = '&lt;option value="auto"&gt;യാന്ത്രികം (Auto)&lt;/option&gt;' + vs.map(v =&gt; `&lt;option value="${v.name}"&gt;${v.name}&lt;/option&gt;`).join("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>[["voice-ml", s.voiceMl], ["voice-tf", s.voiceTf]].forEach(([id, val]) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>$(id).innerHTML = opts; $(id).value = val || "auto"; if (!$(id).value) $(id).value = "auto";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p1">function resolveVoice(kind) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const vs = mlVoices(); if (!vs.length) return null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const chosen = vs.find(v =&gt; v.name === $(kind === "tf" ? "voice-tf" : "voice-ml").value);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (chosen) return chosen;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const base = vs.find(v =&gt; MALE_HINT.test(v.name) &amp;&amp; !FEMALE_HINT.test(v.name)) || vs.find(v =&gt; !FEMALE_HINT.test(v.name)) || vs[0];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return kind === "tf" ? (vs.find(v =&gt; v !== base) || base) : base;</p>
+<p class="p1">}</p>
+<p class="p1">function voiceProfile(kind) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const v = resolveVoice(kind); if (!v) return null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const isMale = MALE_HINT.test(v.name) &amp;&amp; !FEMALE_HINT.test(v.name);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let pitch = isMale ? 1 : 0.5, rate = 0.95;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (kind === "tf") { rate = 0.85; if (resolveVoice("ml") === v) pitch = pitch &gt; 0.9 ? 0.7 : 1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return { voice: v, pitch, rate };</p>
+<p class="p1">}</p>
+<p class="p1">function cleanForSpeech(t) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ").replace(/[()\u2018\u2019\u201C\u201D"]/g, "").replace(/\s+/g, " ").trim();</p>
+<p class="p1">}</p>
+<p class="p1">function splitText(text, max = 150) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = []; let cur = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for (let s of sentences) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>s = s.trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>while (s.length &gt; max) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let cut = s.lastIndexOf(" ", max); if (cut &lt;= 0) cut = max;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (cur) { chunks.push(cur); cur = ""; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!s) continue;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (cur &amp;&amp; (cur + " " + s).length &gt; max) { chunks.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (cur) chunks.push(cur);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return chunks.filter(c =&gt; /[^\s.,:;!?।]/.test(c));</p>
+<p class="p1">}</p>
+<p class="p1">function playChunks(chunks, my, done, i = 0) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (i &gt;= chunks.length) { done(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const audio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&amp;client=tw-ob&amp;tl=ml&amp;q=" + encodeURIComponent(chunks[i]));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>currentAudio = audio;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.preservesPitch = false; audio.mozPreservesPitch = false; audio.webkitPreservesPitch = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.playbackRate = curKind === "tf" ? 0.78 : 0.92;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.onended = () =&gt; playChunks(chunks, my, done, i + 1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.onerror = () =&gt; fail(my, "Voice is not available on this device or browser.");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.play().catch(() =&gt; fail(my, "Could not play audio. Tap the button again."));</p>
+<p class="p1">}</p>
+<p class="p1">function speakMalayalam(text, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const chunks = splitText(cleanForSpeech(text));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!chunks.length) { done(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const found = voiceProfile(curKind);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!found) { statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice..."; playChunks(chunks, my, done); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = curLabel + " · " + found.voice.name;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>utterances.length = 0; let failed = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>chunks.forEach((chunk, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const u = new SpeechSynthesisUtterance(chunk);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>u.onerror = e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (my !== token || failed || e.error === "canceled" || e.error === "interrupted") return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>failed = true; window.speechSynthesis.cancel();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>playChunks(chunks, my, done);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (idx === chunks.length - 1) u.onend = () =&gt; { if (my === token &amp;&amp; !failed) done(); };</p>
+<p class="p1"><span class="Apple-converted-space">      </span>utterances.push(u); window.speechSynthesis.speak(u);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, 100);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ----- play one item / continuous ----- */</p>
+<p class="p1">function playItem(kind, n, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>curKind = kind === "tf" ? "tf" : "ml";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>statusEl.textContent = curLabel; setMediaSession(curLabel);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (kind === "ar") {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const total = +$("repeat").value || 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const loop = k =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = curLabel + " · " + currentReciter().name + (total &gt; 1 ? " · ആവർത്തനം " + k + "/" + total : "");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>playArabic(n, my, () =&gt; (k &lt; total ? loop(k + 1) : done()));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>loop(1); return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>speakMalayalam(VERSES[n - 1][kind], my, done);</p>
+<p class="p1">}</p>
+<p class="p1">function toggleItem(kind, n) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const key = kind + "-" + n;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (activeKey === key) { stopAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>stopAll(); const my = token; mark(key);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>playItem(kind, n, my, () =&gt; { if (my === token) stopAll(); });</p>
+<p class="p1">}</p>
+<p class="p1">function toggleContinuous() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (continuous) { stopAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>stopAll(); requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const kinds = ["ar", "ml", "tf"].filter(k =&gt; $("opt-" + k).checked);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!kinds.length) { statusEl.textContent = "ആയത്ത്, സാരം, വിവരണം എന്നിവയിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)"; return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const queue = [];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>VERSES.forEach(v =&gt; kinds.forEach(k =&gt; { if (k !== "ar" &amp;&amp; !v[k]) return; queue.push({ kind: k, n: v.n }); }));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>continuous = true; const my = token;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing"); setPanel(false);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const step = i =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (i &gt;= queue.length) { stopAll(); statusEl.textContent = "പൂർത്തിയായി."; return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const { kind, n } = queue[i];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (kind === "tf" &amp;&amp; $("show-tf").checked) setTafseerVisible(n, true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>mark(kind + "-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>playItem(kind, n, my, () =&gt; { if (my === token) step(i + 1); });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>step(0);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ----- options panel ----- */</p>
+<p class="p1">const controlsEl = $("controls"), optBtn = $("opt-toggle");</p>
+<p class="p1">function setPanel(open) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>controlsEl.classList.toggle("open", open); optBtn.classList.toggle("open", open);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");</p>
+<p class="p1">}</p>
+<p class="p1">function togglePanel(e) { e.stopPropagation(); setPanel(!controlsEl.classList.contains("open")); }</p>
+<p class="p1">document.addEventListener("pointerdown", e =&gt; { if (!controlsEl.contains(e.target)) setPanel(false); });</p>
+<p class="p2"><br></p>
+<p class="p1">/* ----- lessons / questions / quiz ----- */</p>
+<p class="p1">const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";</p>
+<p class="p1">const pageText = () =&gt; VERSES.map(v =&gt; `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");</p>
+<p class="p1">const cleanJson = t =&gt; t.replace(/```json|```/g, "").trim();</p>
+<p class="p1">async function askAI(prompt) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const res = await fetch(AI_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!res.ok) throw new Error(res.status);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return (await res.json()).text;</p>
+<p class="p1">}</p>
+<p class="p1">function renderQuestions(list) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>$("q-list").innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>list.forEach(q =&gt; { const b = document.createElement("button"); b.className = "q-btn"; b.textContent = q; b.onclick = () =&gt; answerQuestion(q); $("q-list").appendChild(b); });</p>
+<p class="p1">}</p>
+<p class="p1">async function showSummary() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const out = $("ai-summary");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>out.textContent = "⏳ ...";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const qs = JSON.parse(cleanJson(await askAI(AI_RULE + "Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (Array.isArray(qs) &amp;&amp; qs.length) renderQuestions(qs);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (e) { out.textContent = LESSONS; }</p>
+<p class="p1">}</p>
+<p class="p1">async function answerQuestion(q) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const out = $("ai-answer"), hit = SUGGESTED.find(x =&gt; x.q === q);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!AI_ENDPOINT) { out.textContent = hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."; return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>out.textContent = "⏳ ...";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try { out.textContent = await askAI(AI_RULE + "Question: " + q + "\n\n" + pageText()); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>catch (e) { out.textContent = hit ? hit.a : "ക്ഷമിക്കണം, ഉത്തരം ലഭ്യമായില്ല."; }</p>
+<p class="p1">}</p>
+<p class="p1">function askCustom() { const q = $("ai-q").value.trim(); if (q) answerQuestion(q); }</p>
+<p class="p1">async function startQuiz() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let qs = QUIZ;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (AI_ENDPOINT) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>$("quiz").textContent = "⏳ ...";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const r = JSON.parse(cleanJson(await askAI(AI_RULE + 'Return ONLY a JSON array of 5 multiple-choice questions in Malayalam: [{"q":"","o":["","","",""],"c":0,"e":""}] where c is the index of the correct option.\n\n' + pageText())));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (Array.isArray(r) &amp;&amp; r.length) qs = r;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderQuiz(qs);</p>
+<p class="p1">}</p>
+<p class="p1">function renderQuiz(qs) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let score = 0, answered = 0; const box = $("quiz"); box.innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>qs.forEach((q, qi) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const d = document.createElement("div"); d.className = "quiz-q"; d.innerHTML = `&lt;p&gt;${qi + 1}. ${q.q}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>q.o.forEach((t, oi) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const b = document.createElement("button"); b.className = "quiz-opt"; b.textContent = t;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>b.onclick = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (d.dataset.done) return; d.dataset.done = 1; answered++;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>d.querySelectorAll(".quiz-opt")[q.c].classList.add("right");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (oi === q.c) score++; else b.classList.add("wrong");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (q.e) { const e = document.createElement("div"); e.className = "quiz-exp"; e.textContent = q.e; d.appendChild(e); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (answered === qs.length) res.textContent = `🎉 സ്കോർ: ${score} / ${qs.length}`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>d.appendChild(b);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>box.appendChild(d);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">// ===== UPDATE BLOCK =====</p>
+<p class="p1">// Paste this whole block into the page's &lt;script&gt;, just ABOVE the line:<span class="Apple-converted-space">  </span>/* ===== START ===== */</p>
+<p class="p1">// Later definitions replace the older functions of the same name, so nothing else needs deleting.</p>
+<p class="p2"><br></p>
+<p class="p1">// --- options panel: one "കാണിക്കുക" row, no voice pickers, continuous checkbox + start button ---</p>
+<p class="p1">(function () {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["voice-ml", "voice-tf", "opt-ar"].forEach(id =&gt; { const r = $(id) &amp;&amp; $(id).closest(".ctl-row"); if (r) r.remove(); });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(".ctl-title").forEach(t =&gt; { if (t.textContent.includes("വായിക്കേണ്ട")) t.textContent = "കാണിക്കുക:"; });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const m = $("master"); m.textContent = "▶ തുടക്കം മുതൽ കേൾക്കാം"; m.parentNode.style.flexWrap = "wrap";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>m.parentNode.insertAdjacentHTML("afterbegin", '&lt;label class="opt"&gt;&lt;input type="checkbox" id="cont" checked&gt; തുടർച്ചയായി കേൾക്കുക&lt;/label&gt;');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>CHECKS.splice(0, CHECKS.length, "show-ar", "show-ml", "show-tf", "cont");</p>
+<p class="p1">})();</p>
+<p class="p2"><br></p>
+<p class="p1">// --- verse heading: surah number before ayah number (e.g. 2: 001) ---</p>
+<p class="p1">const _build = buildPage;</p>
+<p class="p1">buildPage = function () {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>_build();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>VERSES.forEach(v =&gt; { const s = document.querySelector("#verse-" + v.n + " .vhead span"); if (s) s.textContent = "ആയത്ത് " + SURAH + ": " + pad3(v.n); });</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">function saveSettings() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s = loadSettings();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>CHECKS.forEach(id =&gt; s[id] = $(id).checked);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// --- automatic Malayalam voices: best one for സാരം, a different one for വിവരണം ---</p>
+<p class="p1">const vScore = v =&gt; (/natural|neural|enhanced|premium|online/i.test(v.name) ? 3 : 0) + (/google/i.test(v.name) ? 1 : 0) + (v.localService ? 0 : 1);</p>
+<p class="p1">function populateVoices() {}</p>
+<p class="p1">function resolveVoice(kind) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const vs = mlVoices().sort((a, b) =&gt; vScore(b) - vScore(a)); if (!vs.length) return null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return kind === "tf" ? (vs[1] || vs[0]) : vs[0];</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// --- speak one short chunk at a time (long explanations no longer jam the queue) ---</p>
+<p class="p1">function speakMalayalam(text, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const chunks = splitText(cleanForSpeech(text));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!chunks.length) { done(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const found = voiceProfile(curKind);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!found) { statusEl.textContent = curLabel + " · online voice..."; playChunks(chunks, my, done); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const next = i =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (i &gt;= chunks.length) { done(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = curLabel + " · " + found.voice.name + " " + (i + 1) + "/" + chunks.length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const u = new SpeechSynthesisUtterance(chunks[i]); utterances[0] = u;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let started = false, over = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const fallback = () =&gt; { if (over) return; over = true; clearTimeout(wd); window.speechSynthesis.cancel(); playChunks(chunks, my, done, i); };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const wd = setTimeout(() =&gt; { if (my === token &amp;&amp; !started) fallback(); }, 5000); <span class="Apple-converted-space">  </span>// engine stuck -&gt; online voice</p>
+<p class="p1"><span class="Apple-converted-space">    </span>u.onstart = () =&gt; { started = true; };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>u.onend = () =&gt; { if (over) return; over = true; clearTimeout(wd); next(i + 1); };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>u.onerror = e =&gt; { if (my !== token || e.error === "canceled" || e.error === "interrupted") return; fallback(); };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.speechSynthesis.speak(u);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; next(0), 100);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// --- silent audio loop: keeps the page "playing media" so the phone is less likely to dim/stop speech ---</p>
+<p class="p1">let keep = null;</p>
+<p class="p1">function startKeep() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (keep) { keep.play().catch(() =&gt; {}); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const sr = 8000, n = sr, b = new DataView(new ArrayBuffer(44 + n));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const w = (o, s) =&gt; [...s].forEach((c, i) =&gt; b.setUint8(o + i, c.charCodeAt(0)));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>b.setUint32(24, sr, true); b.setUint32(28, sr, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let i = 0; i &lt; n; i++) b.setUint8(44 + i, 128);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>keep = new Audio(URL.createObjectURL(new Blob([b], { type: "audio/wav" }))); keep.loop = true; keep.play().catch(() =&gt; {});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (e) {}</p>
+<p class="p1">}</p>
+<p class="p1">function stopKeep() { if (keep) keep.pause(); }</p>
+<p class="p2"><br></p>
+<p class="p1">function stopAll() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>token++; continuous = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (window.speechSynthesis) window.speechSynthesis.cancel();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (currentAudio) { currentAudio.pause(); currentAudio = null; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearMark(); stopKeep();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>masterBtn.textContent = "▶ തുടക്കം മുതൽ കേൾക്കാം"; masterBtn.classList.remove("playing"); statusEl.textContent = "";</p>
+<p class="p1">}</p>
+<p class="p1">function mark(key) { <span class="Apple-converted-space">  </span>// scroll to the START of the item so long explanations begin in view</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearMark(); activeKey = key;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const btn = $("btn-" + key), item = $("item-" + key);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (item) { item.classList.add("reading"); if (continuous) item.scrollIntoView({ behavior: "smooth", block: "start" }); }</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// --- recitation audio: saved on the device after the first play (less mobile data, works offline) ---</p>
+<p class="p1">async function cachedSrc(url) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!window.caches) return url;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const c = await caches.open("quran-audio-v1"); let r = await c.match(url);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!r) { r = await fetch(url, { mode: "cors" }); if (!r.ok) return url; await c.put(url, r.clone()); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return URL.createObjectURL(await r.blob());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} catch (e) { return url; }</p>
+<p class="p1">}</p>
+<p class="p1">async function playArabic(n, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const r = currentReciter(), audio = new Audio();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.preload = "auto"; currentAudio = audio;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.onended = () =&gt; { if (my === token) done(); };</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.onerror = () =&gt; fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const src = await cachedSrc(audioUrl(n)); if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.src = src;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>audio.play().catch(e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (e &amp;&amp; (e.name === "NotSupportedError" || e.name === "AbortError")) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>fail(my, "Could not play audio. Tap the button again.");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// --- play queue: ☑ തുടർച്ചയായി = carry on to the next verse from wherever you started ---</p>
+<p class="p1">const ORDER = ["ar", "ml", "tf"];</p>
+<p class="p1">function fullQueue(startKind, startN) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const on = ORDER.filter(k =&gt; $("show-" + k).checked), q = [];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>VERSES.forEach(v =&gt; ORDER.forEach(k =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (k !== "ar" &amp;&amp; !v[k]) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (on.includes(k) || (k === startKind &amp;&amp; v.n === startN)) q.push({ kind: k, n: v.n });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return q;</p>
+<p class="p1">}</p>
+<p class="p1">function runQueue(queue, fromMaster) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>stopAll(); requestWake(); startKeep();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!queue.length) { stopKeep(); statusEl.textContent = "കാണിക്കുക എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)"; return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>continuous = queue.length &gt; 1; const my = token;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (fromMaster) { masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing"); setPanel(false); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const step = i =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (i &gt;= queue.length) { stopAll(); statusEl.textContent = "പൂർത്തിയായി."; return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const { kind, n } = queue[i]; mark(kind + "-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>playItem(kind, n, my, () =&gt; { if (my === token) step(i + 1); });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>step(0);</p>
+<p class="p1">}</p>
+<p class="p1">function toggleItem(kind, n) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (activeKey === kind + "-" + n) { stopAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const q = fullQueue(kind, n), i = q.findIndex(x =&gt; x.kind === kind &amp;&amp; x.n === n);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>runQueue($("cont").checked ? q.slice(i) : [q[i]]);</p>
+<p class="p1">}</p>
+<p class="p1">function toggleContinuous() { <span class="Apple-converted-space">  </span>// "start from the beginning" button</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (masterBtn.classList.contains("playing")) { stopAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>runQueue(fullQueue(), true);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">// --- optional: offline page loading (only works when the file is hosted with sw.js beside it) ---</p>
+<p class="p1">if ("serviceWorker" in navigator &amp;&amp; /^https?:$/.test(location.protocol)) navigator.serviceWorker.register("sw.js").catch(() =&gt; {});</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">/* ===== START ===== */</p>
+<p class="p1">$("backLink").href = BACK_URL;</p>
+<p class="p1">$("ai-box").hidden = !LESSONS &amp;&amp; !SUGGESTED.length &amp;&amp; !QUIZ.length &amp;&amp; !AI_ENDPOINT;</p>
+<p class="p1">buildPage(); initReciters(); populateVoices(); applySettings(); applyDisplay();</p>
+<p class="p1">CHECKS.forEach(id =&gt; $(id).addEventListener("change", saveSettings));</p>
+<p class="p1">renderQuestions(SUGGESTED.map(x =&gt; x.q));</p>
+<p class="p1">requestWake();</p>
+<p class="p1">if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged = () =&gt; populateVoices(); }</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>

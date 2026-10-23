@@ -1,0 +1,958 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2299.77">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ml"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;സൂറത്തുൽ ഫാതിഹ&lt;/title&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&amp;family=Noto+Sans+Malayalam:wght@400;500;600;700&amp;display=swap" rel="stylesheet" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space"> </span>&lt;style&gt;</p>
+<p class="p1">:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}</p>
+<p class="p1">@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}</p>
+<p class="p1">*{box-sizing:border-box}</p>
+<p class="p1">html{scroll-padding-top:70px}</p>
+<p class="p1">body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;text-align:left;color:var(--ink);background:var(--paper);line-height:1.8}</p>
+<p class="p1">body&gt;*{max-width:1000px;margin-left:auto;margin-right:auto}</p>
+<p class="p2"><br></p>
+<p class="p1">body&gt;.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:8px 18px 38px;background:</p>
+<p class="p1"><span class="Apple-converted-space"> </span>radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),</p>
+<p class="p1"><span class="Apple-converted-space"> </span>repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),</p>
+<p class="p1"><span class="Apple-converted-space"> </span>linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}</p>
+<p class="p1">.hero h1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:400;line-height:1.3;margin:0}</p>
+<p class="p1">.hero .back{display:block;text-align:left;color:var(--gold);font-weight:600;font-size:.8rem;text-decoration:none;margin-bottom:0;line-height:1.6}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ---------- Options card (sticky) ---------- */</p>
+<p class="p1">.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}</p>
+<p class="p1">.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}</p>
+<p class="p1">.banner-row{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 12px}</p>
+<p class="p1">.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}</p>
+<p class="p1">.controls.open .panel{display:block}</p>
+<p class="p1">.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}</p>
+<p class="p1">.ctl-title{font-size:13px;color:var(--muted);font-weight:600}</p>
+<p class="p1">.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}</p>
+<p class="p1">.opt input{width:16px;height:16px;accent-color:var(--green2)}</p>
+<p class="p1">.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}</p>
+<p class="p1">.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}</p>
+<p class="p1">.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}</p>
+<p class="p1">.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}</p>
+<p class="p1">.banner .main-btn{padding:7px 20px}</p>
+<p class="p1">.main-btn.playing{background:#d93025}</p>
+<p class="p1">button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}</p>
+<p class="p1">.fs-group{display:inline-flex;align-items:center;gap:4px}</p>
+<p class="p1">#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}</p>
+<p class="p1">#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}</p>
+<p class="p1">#status:empty{display:none}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ---------- Verse cards ---------- */</p>
+<p class="p1">.verse,.item{min-width:0}</p>
+<p class="p1">.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}</p>
+<p class="p1">.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}</p>
+<p class="p1">.vhead .small-btn{margin-left:auto;padding:2px 10px;font-size:12px;font-weight:normal}</p>
+<p class="p1">.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}</p>
+<p class="p1">.item.reading{background:var(--soft);border-color:var(--gold)}</p>
+<p class="p1">.row{display:flex;align-items:flex-start;gap:10px;min-width:0}</p>
+<p class="p1">.row.rtl{direction:rtl}</p>
+<p class="p1">.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}</p>
+<p class="p1">.play-btn.playing{background-color:#d93025}</p>
+<p class="p1">.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}</p>
+<p class="p1">.tag{font-size:12px;color:var(--muted);margin-right:4px}</p>
+<p class="p1">.pl{white-space:pre-line}</p>
+<p class="p1">.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:1.9;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}</p>
+<p class="p1">@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}</p>
+<p class="p1">.hidden{display:none}</p>
+<p class="p1">.tf-btn{display:block;margin:4px 0 6px 6px}</p>
+<p class="p1">.it-tf{border-top:1px dashed var(--line);margin-top:2px}</p>
+<p class="p2"><br></p>
+<p class="p1">body.hide-in #intro-wrap{display:none}</p>
+<p class="p1">body.hide-ar .it-ar{display:none}</p>
+<p class="p1">body.hide-ml .it-ml{display:none}</p>
+<p class="p1">body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Introduction */</p>
+<p class="p1">.intro-title{font-weight:700;font-size:calc(var(--fs) * 1.2);color:var(--acc)}</p>
+<p class="p1">.intro-sub{color:var(--muted);font-size:calc(var(--fs) * .85);margin-bottom:6px;font-weight:600}</p>
+<p class="p1">.intro-body{margin:6px 0 10px;text-align:justify}</p>
+<p class="p1">.isti{background:var(--soft);border:1px solid var(--gold);border-radius:10px;padding:10px 14px}</p>
+<p class="p1">.isti-ar{font-size:calc(var(--fs) * 1.4);text-align:right;line-height:2;margin-bottom:4px;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}</p>
+<p class="p1">@media(prefers-color-scheme:dark){.isti-ar{color:var(--ink)}}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Lessons / questions / quiz */</p>
+<p class="p1">.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}</p>
+<p class="p1">.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}</p>
+<p class="p1">.ai-box h3:first-child{margin-top:0}</p>
+<p class="p1">.ai-box&gt;.main-btn{display:block;margin:0 auto}</p>
+<p class="p1">.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}</p>
+<p class="p1">.ai-out:empty{display:none}</p>
+<p class="p1">.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}</p>
+<p class="p1">.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}</p>
+<p class="p1">.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}</p>
+<p class="p1">.ai-ask{display:flex;gap:6px;margin-top:8px}</p>
+<p class="p1">.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}</p>
+<p class="p1">.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}</p>
+<p class="p1">.quiz-q p{margin:0 0 6px;font-size:var(--fs)}</p>
+<p class="p1">.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}</p>
+<p class="p1">.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}</p>
+<p class="p1">.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}</p>
+<p class="p1">.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1">&lt;header class="hero"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;1. സൂറത്തുൽ ഫാതിഹ&lt;/h1&gt;</p>
+<p class="p1">&lt;/header&gt;</p>
+<p class="p1">&lt;!-- ================= Controls ================= --&gt;</p>
+<p class="p1">&lt;div class="controls" id="controls"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="banner" id="banner"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="banner-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)"&gt;⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="banner-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="master" class="main-btn" onclick="toggleContinuous()"&gt;▶ തുടക്കം മുതൽ കേൾക്കാം&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="opt-cont" checked&gt; തുടർച്ചയായി കേൾക്കാം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="status"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Options panel --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="panel" id="panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;അക്ഷര വലിപ്പം:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="fs-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="small-btn" onclick="changeFont(-2)"&gt;A−&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span id="fs-label"&gt;18&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="small-btn" onclick="changeFont(2)"&gt;A+&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;കാണിക്കുക:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-in" onchange="applyDisplay()"&gt; മുഖവുര&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-ar" checked onchange="applyDisplay()"&gt; ആയത്ത്&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-ml" checked onchange="applyDisplay()"&gt; സാരം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label class="opt"&gt;&lt;input type="checkbox" id="show-tf" onchange="applyDisplay()"&gt; വിവരണം&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;ഖിറാഅത്ത് (പാരായണം):&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"&gt;&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctl-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="ctl-title"&gt;ആയത്ത് ആവർത്തനം:&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;select id="repeat" class="opt-sel" onchange="saveSettings()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;option&gt;1&lt;/option&gt;&lt;option&gt;2&lt;/option&gt;&lt;option&gt;3&lt;/option&gt;&lt;option&gt;4&lt;/option&gt;&lt;option&gt;5&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ================= Verses (built by script) ================= --&gt;</p>
+<p class="p1">&lt;div id="verses"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ================= Lessons / questions / quiz ================= --&gt;</p>
+<p class="p1">&lt;div class="ai-box"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;💡 ഈ പേജിലെ പാഠങ്ങൾ&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="main-btn" onclick="showSummary()"&gt;പാഠങ്ങൾ സംഗ്രഹിക്കുക&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="ai-out" id="ai-summary"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;📝 ക്വിസ്&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="main-btn" onclick="startQuiz()"&gt;ക്വിസ് തുടങ്ങാം&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="quiz"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const $ = id =&gt; document.getElementById(id);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>DATA<span class="Apple-converted-space">  </span>–<span class="Apple-converted-space">  </span>edit the text here.</p>
+<p class="p1"><span class="Apple-converted-space">     </span>tf = explanation (വിവരണം). Leave "" if there is none.</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const SURAH = 1; <span class="Apple-converted-space">  </span>// surah number (shown before the ayah number, and used for the audio file names)</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const VERSES = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 1,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "അർ-റഹ്‌മാനും<span class="Apple-converted-space">  </span>അർ-റഹീമുമായ അല്ലാഹുവിന്റെ നാമത്തില്‍.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "അല്ലാഹുവിൻറെ നാമം സ്മരിക്കുന്നതിൽ അനുഗ്രഹം (ബറകത്) പ്രതീക്ഷിച്ച് കൊണ്ടും, അവനോട് സഹായം ചോദിച്ചുകൊണ്ടും, അവൻറെ നാമത്തിൽ ഞാൻ ഖുർആൻ പാരായണം ആരംഭിക്കുന്നു. ബിസ്മി അല്ലാഹുവിൻറെ മൂന്ന് ഉന്നതമായ നാമങ്ങൾ ഉൾക്കൊള്ളുന്നുണ്ട്. അവ: 1- ((അല്ലാഹു)); അഥവാ യഥാർത്ഥ ആരാധ്യൻ . ലോകങ്ങളുടെ സ്രഷ്ടാവും രക്ഷാധികാരിയുമായ ഏകആരാധ്യനായ ദൈവത്തിൻറെ നാമമാണ് അല്ലാഹു എന്നത്. അല്ലാഹു എന്നത് അവന്റെ ഏറ്റവും പ്രത്യേകമായ പേരാണ്. അവനല്ലാത്ത മറ്റൊരാൾക്കും പറയാൻ പാടില്ലാത്ത നാമവുമാണത്. \n2- അർ-റഹ്‌മാൻ (الرَّحْمَنُ); സർവ്വവിശാലമായ, എല്ലാ സൃഷ്ടികളെയും വലയം ചെയ്യുന്ന കാരുണ്യം വിശേഷണമായുള്ളവൻ എന്നർത്ഥം.\n3- അർ-റഹീം (الرَّحِيمُ); താൻ ഉദ്ദേശിക്കുന്ന സൃഷ്ടികളിലേക്ക് എത്തുന്ന വിശാലമായ കാരുണ്യത്തിൻ്റെ ഉടമയായുള്ളവൻ. തൻറെ ദാസന്മാരിൽ നിന്ന് വിശ്വസിച്ചവർക്ക് അവൻ പ്രത്യേകമായ കാരുണ്യം ചൊരിയുകയും ചെയ്യുന്നു."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 2,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "സർവ്വ സ്തുതികളും ലോകങ്ങളുടെ റബ്ബായ അല്ലാഹുവിന്നാകുന്നു.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "മഹത്വത്തിൻറെയും പൂർണതയുടെയും വിശേഷണമായ എല്ലാ സ്തുതികളും അല്ലാഹുവിന് മാത്രമാണ്; കാരണം അവനാണ് എല്ലാ വസ്തുക്കളുടെയും ഉടമസ്ഥനും സ്രഷ്ടാവും നിയന്താവും. (ആലമൂൻ) എന്നത് (ആലം) എന്നതിൻറെ ബഹുവചനമാണ്. അല്ലാഹുവല്ലാത്ത സർവ്വതും ആലം എന്നതിൽ ഉൾപ്പെടും."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 3,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "الرَّحْمَٰنِ الرَّحِيمِ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "അർ-റഹ്‌മാനും<span class="Apple-converted-space">  </span>അർ-റഹീമുമായ.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "അല്ലാഹുവിൻ്റെ അതിമനോഹരമായ രണ്ട് നാമങ്ങളായ ‘അർ-റഹ്‌മാൻ’, ‘അർ-റഹീം’ എന്നിവ<span class="Apple-converted-space">  </span>എടുത്തു പറഞ്ഞു കൊണ്ട് ഈ വചനത്തിൽ അവനെ ആവർത്തിച്ചു സ്തുതിക്കുകയാണ് ചെയ്യുന്നത്. സർവ്വ സൃഷ്ടികളെയും വലയം ചെയ്തിരിക്കുന്ന സർവ്വ വിശാലമായ കാരുണ്യമുള്ളവൻ എന്നാണ് ‘അർ-റഹ്‌മാൻ’ എന്ന നാമത്തിൻ്റെ ഉദ്ദേശ്യം. ‘അർ-റഹീം’ എന്നാൽ അല്ലാഹുവിൽ വിശ്വസിച്ച സൽകർമ്മികൾക്ക് പ്രത്യേകമായി കരുണ ചൊരിയുന്നവൻ എന്ന ഉദ്ദേശമാണുള്ളത്."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 4,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "مَالِكِ يَوْمِ الدِّينِ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "പ്രതിഫല ദിവസത്തിന്‍റെ ഉടമസ്ഥന്‍.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "ഖിയാമത്ത് നാളിലുള്ള എല്ലാത്തിൻറെയും ഉടമസ്ഥൻ എന്ന് അല്ലാഹുവിനെ മഹത്വപ്പെടുത്തലാണ് ഈ ആയത്തിലുള്ളത്. കാരണം ഒരാളും മറ്റൊരാൾക്ക് യാതൊന്നും അധീനമാക്കാത്ത ദിവസമാകുന്നു അത്. \"യൗമുദ്ദീൻ\" എന്നാൽ വിചാരണയുടെയും പ്രതിഫലത്തിൻറെയും ദിവസം."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 5,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "നിന്നെ മാത്രം ഞങ്ങള്‍ ആരാധിക്കുന്നു. നിന്നോട്‌ മാത്രം ഞങ്ങള്‍ സഹായം തേടുന്നു.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "ആരാധനയുടെ എല്ലാ ഇനങ്ങളും നിനക്ക് മാത്രമാക്കുന്നു. നിന്നോടൊപ്പം ഞങ്ങൾ മറ്റാരെയും പങ്ക്ചേർക്കുകയില്ല. ഞങ്ങളുടെ എല്ലാ കാര്യങ്ങളിലും നിന്നോട് സഹായം ചോദിക്കുന്നു. മുഴുവൻ നന്മയും നിന്നിൽ നിന്നാണ്. നീയല്ലാതെ സഹായിയായി മറ്റാരുമില്ല.<span class="Apple-converted-space">  </span>ആരാധനയും സഹായാര്‍ഥനയും അഭേദ്യമായി ബന്ധപ്പെട്ട കാര്യങ്ങളാണ്. മനുഷ്യര്‍ വിവിധ വ്യക്തികളെയും ശക്തികളെയും ആരാധിച്ചുപോന്നിട്ടുള്ളത് ആരാധ്യരില്‍നിന്ന് അഭൗതികമായ രീതിയില്‍ സഹായം ലഭിക്കുമെന്ന പ്രതീക്ഷയിലാണ്. പ്രപഞ്ചനാഥനല്ലാത്തവരോട് അഭൗതികമായ സഹായത്തിനുവേണ്ടി പ്രാർത്ഥിക്കുന്നത് ഇസ്‌ലാം പഠിപ്പിക്കുന്ന ഏകദൈവത്വത്തിന് വിരുദ്ധമത്രെ."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 6,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "ഞങ്ങളെ നീ നേർ‍മാർ‍ഗത്തില്‍ ചേർ‍ക്കേണമേ.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "ചൊവ്വായ പാതയിലേക്ക് ഞങ്ങളെ നീ വഴി കാണിക്കുകയും അതിലൂടെ നടത്തുകയും അതിൽ ഉറപ്പിച്ച് നിർത്തുകയും സന്മാർഗ്ഗം വർദ്ധിപ്പിക്കുകയും ചെയ്യണമേ. വക്രതയില്ലാത്ത വ്യക്തമായ വഴി അല്ലാഹു മുഹമ്മദ് നബിയെ നിയോഗിച്ച ഇസ്ലാമാകുന്നു."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{</p>
+<p class="p1"><span class="Apple-converted-space">      </span>n: 7,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ar: "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>ml: "നീ അനുഗ്രഹിച്ചവരുടെ മാർ‍ഗത്തില്‍. കോപത്തിന്ന്‌ ഇരയായവരുടെ മാർ‍ഗത്തിലല്ല. പിഴച്ചുപോയവരുടെ മാർ‍ഗത്തിലുമല്ല.",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>tf: "നിഷ്‌കളങ്കമായ ഏകദൈവാരാധനയുടെ മാര്‍ഗത്തില്‍, അല്ലാഹുവോട് നേരിട്ടുള്ള പ്രാര്‍ഥനയുടെ മാര്‍ഗത്തില്‍, അഥവാ പ്രവാചകന്മാരും സജ്ജനങ്ങളും പിന്തുടര്‍ന്ന കളങ്കമില്ലാത്ത തൗഹീദിന്റെ മാര്‍ഗത്തില്‍ ഞങ്ങളെ നീ ചേര്‍ക്കേണമേ എന്നര്‍ഥം.<span class="Apple-converted-space">  </span>'കോപത്തിന് ഇരയായവര്‍' എന്ന പദത്തിന്റെ പരിധിയില്‍ അവിശ്വാസവും സത്യനിഷേധവും മര്‍ക്കടമുഷ്ടിയും കൈക്കൊണ്ട എല്ലാവരും ഉള്‍പ്പെടുമെങ്കിലും ഇവിടെ പ്രധാനമായി ഉദ്ദേശിക്കപ്പെട്ടിട്ടുള്ളത്, വേദഗ്രന്ഥത്തിന്റെ വാഹകരാണെന്നതില്‍ അഭിമാനം കൊള്ളുന്നതോടൊപ്പം സ്വാര്‍ഥതാല്പര്യങ്ങള്‍ക്കുവേണ്ടി വേദവാക്യങ്ങള്‍ ദുര്‍വ്യാഖ്യാനം ചെയ്തതുനിമിത്തം അല്ലാഹുവിന്റെ കോപത്തിനു ഇരയായ യഹൂദരാണ്. ഈ നിലപാട് സ്വീകരിക്കുന്ന ഏത് സമുദായക്കാരുടെ അവസ്ഥയും ഇതുപോലെതന്നെ. പിഴച്ചുപോയവര്‍ എന്നതുകൊണ്ട് ഇവിടെ പ്രധാനമായി ഉദ്ദേശിക്കപ്പെട്ടിട്ടുള്ളത് ഈസാ നബിയെ<span class="Apple-converted-space">  </span>ദൈവപുത്രനാക്കുകയും പൗരോഹിത്യത്തെ മതത്തിന്റെ അടിത്തറയാക്കുകയും ചെയ്ത ക്രിസ്ത്യാനികളാണ്. ദൈവിക സന്ദേശം ലഭിച്ചിട്ട് അതില്‍നിന്ന് വ്യതിചലിച്ചുപോയ ഏത് സമുദായക്കാരും വഴിപിഴച്ച കൂട്ടത്തില്‍തന്നെ. ഈ സൂറത്തിന്‍റെ അവസാനത്തില്‍ آمين (ആമീന്‍) എന്ന് ചൊല്ലേണ്ടതാകുന്നു .ഈ പ്രാര്‍ത്ഥന സ്വീകരിക്കേണമേ എന്നര്‍ത്ഥം. നബി (ﷺ) അങ്ങനെ ചൊല്ലിയിരുന്നതായി അഹ്മദ്, അബൂദാവൂദ്, തിര്‍മദീ (رحمهم الله) മുതലായവര്‍ രേഖപ്പെടുത്തിയ ഹദീസുകളില്‍ വന്നിട്ടുണ്ട്. ചില രിവായത്തുകളില്‍ തിരുമേനി (ﷺ) അത് നീട്ടിചൊല്ലിയിരുന്നതായും, മറ്റു ചിലതില്‍ ഉറക്കെ ചൊല്ലിയിരുന്നതായും വന്നിരിക്കുന്നു. നമസ്കാരത്തില്‍ ഇതൊരു ബലപ്പെട്ട സുന്നത്തുമത്രെ. നബി (ﷺ) പറയുന്നു : ‘ഇമാം ആമീന്‍ പറയുമ്പോള്‍ നിങ്ങള്‍ ആമീന്‍ പറഞ്ഞുകൊള്ളണം. കാരണം, ഒരാളുടെ ആമീന്‍ പറയല്‍ മലക്കുകള്‍ ആമീന്‍ പറയുന്നതുമായി യോജിച്ചുവന്നാല്‍ അവന് അവന്‍റെ മുന്‍കഴിഞ്ഞ പാപം പൊറുത്തുകൊടുക്കപ്പെടുന്നതാണ്.’(ബുഖാരി, മുസ്‌ലിം)."</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* ---------- Introduction (മുഖവുര) ---------- */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const INTRO = {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>title: "1: ഫാത്തിഹ (പ്രാരംഭം)",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sub: "മക്കയില്‍ അവതരിച്ചത് – വചനങ്ങള്‍ 7",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body: "വിശുദ്ധ ഖുര്‍ആനില്‍ ആദ്യം വായിക്കപ്പെടുന്നതും ‘മുസ്ഹഫു’കളില്‍ ഒന്നാമതായി എഴുതപ്പെടുന്നതുമായ സൂറത്ത് (അദ്ധ്യായം) എന്ന നിലക്ക് ഇതിന് ‘സൂറത്തുല്‍ ഫാതിഹഃ (سورة الفاتحة) അഥവാ പ്രാരംഭം എന്നും, ‘ഫാതിഹത്തുല്‍ കിതാബ് ‘ (فاتحة الكتاب) അഥവാ വേദഗ്രന്ഥത്തിന്‍റെ പ്രാരംഭം എന്നും പേര് പറയപ്പെടുന്നു . ഖുര്‍ആന്‍റെ മൂലം – അഥവാ കേന്ദ്രം – എന്ന അര്‍ത്ഥത്തില്‍ ‘ഉമ്മുല്‍ ഖുര്‍ആന്‍’ എന്നും, ‘ഉമ്മുല്‍ കിതാബ്’ (أم القرآن , أم الكتاب) എന്നും പേരുണ്ട്. അല്ലാഹുവിന്‍റെ അത്യുല്‍കൃഷ്ടങ്ങളായ വിശേഷണ നാമങ്ങള്‍, ഏകദൈവ സിദ്ധാന്തം (തൗഹീദ്) മരണാനന്തര ജീവിതം, പ്രതിഫലനടപടി തുടങ്ങിയ മൗലിക സിദ്ധാന്തങ്ങള്‍ , കര്‍മ്മപരവും സാന്മാര്‍ഗികവുമായ നിയമ നിര്‍ദ്ദേശങ്ങള്‍, ചരിത്ര സംഭവങ്ങള്‍ ആദിയായ വിഷയങ്ങളാണ് ഖുര്‍ആനിലെ പ്രധാന പ്രതിപാദ്യ വിഷയങ്ങള്‍. ഇവയുടെയെല്ലാം ഒരു സാരാംശം ഈ സൂറത്തില്‍ അടങ്ങിയിരിക്കുന്നു.",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>istiAr: "اعوذ بالله من الشيطان الرجيم",</p>
+<p class="p1"><span class="Apple-converted-space">    </span>istiMl: "(അഊദു – ബില്ലാഹി – മിനശ്ശൈത്വാനി -റജീം) : ശപിക്കപ്പെട്ട പിശാചില്‍ നിന്നും ഞാന്‍ അല്ലാഹുവിനോട് ശരണം തേടുന്നു"</p>
+<p class="p1"><span class="Apple-converted-space">  </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const introSpeech = () =&gt; [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>LESSONS / SUGGESTED QUESTIONS / QUIZ<span class="Apple-converted-space">  </span>(edit for each chapter)</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const AI_ENDPOINT = "";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const LESSONS =</p>
+<p class="p1">`1. ഖുർആൻ പാരായണം അല്ലാഹുവിന്റെ നാമത്തിൽ, അവനോട് സഹായവും അനുഗ്രഹവും തേടിക്കൊണ്ട് ആരംഭിക്കണം.</p>
+<p class="p1">2. എല്ലാ സ്തുതിയും ലോകങ്ങളുടെ രക്ഷിതാവായ അല്ലാഹുവിന് മാത്രമാണ്.</p>
+<p class="p1">3. അല്ലാഹു സർവ്വവിശാലമായ കാരുണ്യത്തിന്റെ ഉടമയാണ് (അർ-റഹ്‌മാൻ, അർ-റഹീം).</p>
+<p class="p1">4. പ്രതിഫല ദിവസത്തിന്റെ ഉടമസ്ഥൻ അവനാണ്.</p>
+<p class="p1">5. ആരാധനയും സഹായാർത്ഥനയും അല്ലാഹുവിനോട് മാത്രം.</p>
+<p class="p1">6. നേർമാർഗത്തിനായി നിരന്തരം പ്രാർത്ഥിക്കണം; അത് അനുഗ്രഹിക്കപ്പെട്ടവരുടെ വഴിയാണ്, കോപത്തിന് ഇരയായവരുടെയും വഴിപിഴച്ചവരുടെയും വഴിയല്ല.`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const SUGGESTED = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "‘അർ-റഹ്‌മാനും’ ‘അർ-റഹീമും’ തമ്മിലുള്ള വ്യത്യാസം എന്താണ്?",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>a: "അർ-റഹ്‌മാൻ: എല്ലാ സൃഷ്ടികളെയും വലയം ചെയ്യുന്ന സർവ്വവിശാലമായ കാരുണ്യമുള്ളവൻ. അർ-റഹീം: വിശ്വസിച്ച സൽകർമ്മികൾക്ക് പ്രത്യേകമായി കരുണ ചൊരിയുന്നവൻ." },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "‘യൗമുദ്ദീൻ’ എന്നാൽ എന്താണ്?",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>a: "വിചാരണയുടെയും പ്രതിഫലത്തിന്റെയും ദിവസം (ഖിയാമത്ത് നാൾ). അന്ന് ഒരാളും മറ്റൊരാൾക്ക് യാതൊന്നും അധീനമാക്കുകയില്ല." },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "‘ഇയ്യാക നഅ്ബുദു’ എന്ന വചനത്തിന്റെ സന്ദേശം എന്താണ്?",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>a: "ആരാധനയുടെ എല്ലാ ഇനങ്ങളും അല്ലാഹുവിന് മാത്രമാക്കുക; എല്ലാ കാര്യങ്ങളിലും അവനോട് മാത്രം സഹായം തേടുക. ആരാധനയും സഹായാർത്ഥനയും അഭേദ്യമായി ബന്ധപ്പെട്ടതാണ്." },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "‘ആലമീൻ’ എന്നതിൽ എന്തെല്ലാം ഉൾപ്പെടും?",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>a: "‘ആലം’ എന്നതിന്റെ ബഹുവചനമാണ് ആലമീൻ. അല്ലാഹുവല്ലാത്ത സർവ്വതും അതിൽ ഉൾപ്പെടും." },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "സൂറത്തിന്റെ അവസാനം ‘ആമീൻ’ പറയുന്നത് എന്തിന്?",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>a: "‘ഈ പ്രാർത്ഥന സ്വീകരിക്കേണമേ’ എന്നാണ് അർത്ഥം. നമസ്കാരത്തിൽ ഇത് ബലപ്പെട്ട സുന്നത്താണ്." }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const QUIZ = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "‘മാലിക്കി യൗമിദ്ദീൻ’ എന്നാൽ?", o: ["പ്രതിഫല ദിവസത്തിന്റെ ഉടമസ്ഥൻ", "ലോകങ്ങളുടെ രക്ഷിതാവ്", "ഏറ്റവും കരുണയുള്ളവൻ", "നേർവഴി കാണിക്കുന്നവൻ"], c: 0, e: "വിചാരണയുടെയും പ്രതിഫലത്തിന്റെയും ദിവസത്തിന്റെ ഉടമ." },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "സൂറത്തുൽ ഫാതിഹയിൽ എത്ര വചനങ്ങളുണ്ട്?", o: ["5", "6", "7", "8"], c: 2 },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "ആരാധനയും സഹായവും ആരോട് മാത്രമാണ് തേടേണ്ടത്?", o: ["അല്ലാഹുവിനോട് മാത്രം", "പ്രവാചകന്മാരോട്", "സജ്ജനങ്ങളോട്", "മലക്കുകളോട്"], c: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "ബിസ്മിയിലുള്ള അല്ലാഹുവിന്റെ മൂന്ന് നാമങ്ങൾ?", o: ["അല്ലാഹു, അർ-റഹ്‌മാൻ, അർ-റഹീം", "അൽ-മാലിക്, അൽ-ഖാലിഖ്, അർ-റസാഖ്", "അല്ലാഹു, അൽ-മാലിക്, അർ-റഹീം", "അർ-റബ്ബ്, അർ-റഹ്‌മാൻ, അൽ-അലീം"], c: 0 },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ q: "‘ആമീൻ’ എന്നതിന്റെ അർത്ഥം?", o: ["ഈ പ്രാർത്ഥന സ്വീകരിക്കേണമേ", "അല്ലാഹു ഏറ്റവും വലിയവൻ", "അല്ലാഹുവിനെ സ്തുതിക്കുന്നു", "ഞങ്ങളോട് പൊറുക്കേണമേ"], c: 0 }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>SAVED OPTIONS (same key on every chapter page)</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const SKEY = "quran-reader-settings";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-cont"];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function saveSettings() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const s = { fontSize, reciterId, repeat: $("repeat").value };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>CHECKS.forEach(id =&gt; s[id] = $(id).checked);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function applySettings() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const s = loadSettings();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (s.fontSize) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>fontSize = s.fontSize;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.documentElement.style.setProperty("--fs", fontSize + "px");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>$("fs-label").textContent = fontSize;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>CHECKS.forEach(id =&gt; { if (id in s) $(id).checked = s[id]; });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (s.repeat) $("repeat").value = s.repeat;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>RECITERS (Arabic recitation audio, files named 001001.mp3 ...)</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const RECITERS = [</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: "ghamdy", <span class="Apple-converted-space">  </span>name: "സഅദ് അൽ ഗാമിദി",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/Ghamadi_40kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: "ayyoub", <span class="Apple-converted-space">  </span>name: "മുഹമ്മദ് അയ്യൂബ്",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: "bafsar", <span class="Apple-converted-space">  </span>name: "അബ്ദുല്ല ബസ്ഫർ",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: "hudhaify", name: "അലി ഹുദൈഫി",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/Hudhaify_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: "muaiqly",<span class="Apple-converted-space">  </span>name: "മാഹിർ അൽ മുഅയ്ഖ്\u200cലി",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },</p>
+<p class="p1"><span class="Apple-converted-space">    </span>{ id: "alili",<span class="Apple-converted-space">    </span>name: "അസീസ് അലീലി",</p>
+<p class="p1"><span class="Apple-converted-space">      </span>base: "https://everyayah.com/data/aziz_alili_128kbps" }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>let reciterId = "ghamdy";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const currentReciter = () =&gt; RECITERS.find(r =&gt; r.id === reciterId) || RECITERS[0];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const reciterReady = r =&gt; !!r.base;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pad3 = n =&gt; String(n).padStart(3, "0");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ayahRef = n =&gt; SURAH + ": " + pad3(n);<span class="Apple-converted-space">          </span>// e.g. "1: 001"</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function audioUrl(n) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function changeReciter(id) { reciterId = id; saveSettings(); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function initReciters() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const sel = $("reciter");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sel.innerHTML = RECITERS.map(r =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const ok = reciterReady(r);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return `&lt;option value="${r.id}" ${ok ? "" : "disabled"}&gt;${r.name}${ok ? "" : " (ഓഡിയോ ചേർത്തിട്ടില്ല)"}&lt;/option&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}).join("");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const saved = loadSettings().reciterId;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const start = RECITERS.find(r =&gt; r.id === saved &amp;&amp; reciterReady(r)) || RECITERS.find(reciterReady) || RECITERS[0];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>reciterId = start.id;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>sel.value = start.id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>const KIND_NAME = { in: "മുഖവുര", ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>BUILD THE PAGE</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function introHtml() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="verse" id="intro-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="vhead"&gt;&lt;span&gt;മുഖവുര&lt;/span&gt;&lt;button class="small-btn open" id="tgl-in" onclick="toggleIntro()"&gt;മുഖവുര മറയ്ക്കുക&lt;/button&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="item" id="item-in-0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="play-btn" id="btn-in-0" title="Play / Stop" onclick="toggleItem('in', 0)"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="intro-title"&gt;${INTRO.title}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="intro-sub"&gt;${INTRO.sub}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;p class="intro-body"&gt;${INTRO.body}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="isti"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="isti-ar" lang="ar" dir="rtl"&gt;${INTRO.istiAr}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div&gt;${INTRO.istiMl}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function buildPage() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const wrap = $("verses");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>wrap.innerHTML = introHtml() + VERSES.map(v =&gt; `</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="verse" id="verse-${v.n}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="vhead"&gt;&lt;span&gt;ആയത്ത് ${ayahRef(v.n)}&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="item it-ar" id="item-ar-${v.n}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="row rtl"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="play-btn" id="btn-ar-${v.n}" title="Play / Stop" onclick="toggleItem('ar', ${v.n})"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text ar" lang="ar" dir="rtl"&gt;${v.ar}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="item it-ml" id="item-ml-${v.n}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="play-btn" id="btn-ml-${v.n}" title="Play / Stop" onclick="toggleItem('ml', ${v.n})"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text"&gt;&lt;span class="tag"&gt;സാരം:&lt;/span&gt;${v.ml}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>${v.tf ? `</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})"&gt;വിവരണം&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="item it-tf hidden" id="item-tf-${v.n}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="play-btn" id="btn-tf-${v.n}" title="Play / Stop" onclick="toggleItem('tf', ${v.n})"&gt;▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text"&gt;&lt;span class="pl"&gt;${v.tf}&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;` : ""}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>`).join("");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>FONT SIZE</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let fontSize = 18;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function changeFont(delta) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>fontSize = Math.min(40, Math.max(12, fontSize + delta));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.documentElement.style.setProperty("--fs", fontSize + "px");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>$("fs-label").textContent = fontSize;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>saveSettings();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>SHOW / HIDE<span class="Apple-converted-space">  </span>(the "കാണിക്കുക" boxes decide what is shown AND what is played)</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function setIntroVisible(show) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>$("item-in-0").classList.toggle("hidden", !show);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const btn = $("tgl-in");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.classList.toggle("open", show);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.textContent = show ? "മുഖവുര മറയ്ക്കുക" : "മുഖവുര കാണിക്കുക";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function toggleIntro() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const willShow = $("item-in-0").classList.contains("hidden");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!willShow &amp;&amp; activeKey === "in-0") stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setIntroVisible(willShow);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function setTafseerVisible(n, show) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const block = $("item-tf-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const btn = $("tgl-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!block) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>block.classList.toggle("hidden", !show);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.classList.toggle("open", show);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function toggleTafseer(n) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const block = $("item-tf-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const willShow = block.classList.contains("hidden");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!willShow &amp;&amp; activeKey === "tf-" + n) stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setTafseerVisible(n, willShow);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function applyDisplay() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const on = id =&gt; $(id).checked;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.body.classList.toggle("hide-in", !on("show-in"));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.body.classList.toggle("hide-ar", !on("show-ar"));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.body.classList.toggle("hide-ml", !on("show-ml"));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.body.classList.toggle("hide-tf", !on("show-tf"));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (activeKey &amp;&amp; !on("show-" + activeKey.split("-")[0])) stopAll(); <span class="Apple-converted-space">  </span>// what is playing was just hidden</p>
+<p class="p1"><span class="Apple-converted-space">    </span>VERSES.forEach(v =&gt; { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>PLAYBACK STATE</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const statusEl = $("status");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const masterBtn = $("master");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let token = 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let activeKey = null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let currentAudio = null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let continuous = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let curLabel = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let curKind = "ml";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const utterances = [];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* ---------- Keep the screen on ----------</p>
+<p class="p1"><span class="Apple-converted-space">     </span>Wake Lock API (needs HTTPS; may be blocked inside an embed) + a tiny muted video as backup. */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let wakeLock = null, waking = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let nsVideo = null, nsTimer = null, nsCanvas = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function startNoSleep() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (nsVideo) { const q = nsVideo.play(); if (q &amp;&amp; q.catch) q.catch(() =&gt; {}); return; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!HTMLCanvasElement.prototype.captureStream) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>nsCanvas = document.createElement("canvas");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>nsCanvas.width = 16; nsCanvas.height = 16;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const ctx = nsCanvas.getContext("2d");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let t = 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const draw = () =&gt; { ctx.fillStyle = (t++ % 2) ? "#000000" : "#010101"; ctx.fillRect(0, 0, 16, 16); };</p>
+<p class="p1"><span class="Apple-converted-space">      </span>draw();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>nsTimer = setInterval(draw, 500);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const v = document.createElement("video");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.setAttribute("playsinline", "");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.setAttribute("muted", "");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.muted = true;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.loop = true;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.style.cssText = "position:fixed;bottom:0;right:0;width:8px;height:8px;opacity:0.05;pointer-events:none;";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.srcObject = nsCanvas.captureStream(5);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>v.addEventListener("pause", () =&gt; { if (nsVideo === v &amp;&amp; document.visibilityState === "visible") v.play().catch(() =&gt; {}); });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.body.appendChild(v);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const p = v.play();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (p &amp;&amp; p.catch) p.catch(() =&gt; {});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>nsVideo = v;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function stopNoSleep() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (nsTimer) { clearInterval(nsTimer); nsTimer = null; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (nsVideo) { const v = nsVideo; nsVideo = null; v.pause(); v.srcObject = null; v.remove(); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function requestWake() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (waking || wakeLock) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>waking = true;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if ("wakeLock" in navigator) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>wakeLock = await navigator.wakeLock.request("screen");</p>
+<p class="p1"><span class="Apple-converted-space">          </span>wakeLock.addEventListener("release", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>wakeLock = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (document.visibilityState === "visible") setTimeout(requestWake, 300);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>});</p>
+<p class="p1"><span class="Apple-converted-space">          </span>stopNoSleep();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!wakeLock) startNoSleep();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} finally {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>waking = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.addEventListener("visibilitychange", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (document.visibilityState === "visible") requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["pointerdown", "touchstart", "click", "keydown"].forEach(ev =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener(ev, () =&gt; requestWake(), { passive: true }));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!wakeLock) requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (nsVideo &amp;&amp; nsVideo.paused) { const p = nsVideo.play(); if (p &amp;&amp; p.catch) p.catch(() =&gt; {}); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, 5000);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* ---------- Lock-screen info / controls ---------- */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function setMediaSession(label) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!("mediaSession" in navigator)) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>navigator.mediaSession.metadata = new MediaMetadata({</p>
+<p class="p1"><span class="Apple-converted-space">        </span>title: label, artist: currentReciter().name, album: "സൂറത്തുൽ ഫാതിഹ"</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>navigator.mediaSession.setActionHandler("pause", () =&gt; stopAll());</p>
+<p class="p1"><span class="Apple-converted-space">      </span>navigator.mediaSession.setActionHandler("stop", () =&gt; stopAll());</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function mark(key) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>clearMark();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>activeKey = key;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const btn = $("btn-" + key);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const item = $("item-" + key);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (item) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>item.classList.add("reading");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (continuous) item.scrollIntoView({ behavior: "smooth", block: "center" });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function clearMark() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!activeKey) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const btn = $("btn-" + activeKey);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const item = $("item-" + activeKey);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (item) item.classList.remove("reading");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>activeKey = null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function stopAll() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>token++;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>continuous = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (window.speechSynthesis) window.speechSynthesis.cancel();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (currentAudio) { currentAudio.pause(); currentAudio = null; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>clearMark();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>masterBtn.textContent = MASTER_TEXT;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>masterBtn.classList.remove("playing");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function fail(my, msg) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = msg;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>ARABIC: recitation MP3</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function playArabic(n, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const r = currentReciter();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const audio = new Audio();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.preload = "auto";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>currentAudio = audio;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.onended = () =&gt; { if (my === token) done(); };</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.onerror = () =&gt; fail(my, r.name + " – ആയത്ത് " + ayahRef(n) +</p>
+<p class="p1"><span class="Apple-converted-space">      </span>(navigator.onLine ? ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക."</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>: ": ഓഫ്‌ലൈനാണ്. ഈ ഓഡിയോ മുമ്പ് കേട്ടിട്ടില്ല."));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.src = audioUrl(n);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.play().catch(e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (e &amp;&amp; (e.name === "NotSupportedError" || e.name === "AbortError")) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>fail(my, "Could not play audio. Tap the button again.");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>MALAYALAM: text to speech</p>
+<p class="p1"><span class="Apple-converted-space">     </span>Best available Malayalam voices are chosen automatically:</p>
+<p class="p1"><span class="Apple-converted-space">     </span>one for the meaning (സാരം), a different one for the explanation (വിവരണം).</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const MALE_HINT <span class="Apple-converted-space">  </span>= /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const gender = v =&gt; FEMALE_HINT.test(v.name) ? "f" : (MALE_HINT.test(v.name) ? "m" : "?");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function mlVoices() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return vs.filter(v =&gt; v.lang.toLowerCase().replace("_", "-").startsWith("ml"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Higher = better: neural / natural / Google voices first; offline → only voices stored on the device</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function quality(v) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let s = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (/neural|natural|online/i.test(v.name)) s += 3;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (/google/i.test(v.name)) s += 2;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!v.localService &amp;&amp; navigator.onLine) s += 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function pickVoices() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let vs = mlVoices();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!navigator.onLine) { const local = vs.filter(v =&gt; v.localService); if (local.length) vs = local; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!vs.length) return null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>vs.sort((a, b) =&gt; quality(b) - quality(a) || a.name.localeCompare(b.name));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const a = vs[0];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const b = vs.find(v =&gt; v !== a &amp;&amp; gender(v) !== gender(a)) || vs.find(v =&gt; v !== a);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return { ml: a, tf: b || a, same: !b };</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function voiceProfile(kind) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const p = pickVoices();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!p) return null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (kind === "tf") return { voice: p.tf, pitch: p.same ? 0.75 : 1, rate: 0.85 }; <span class="Apple-converted-space">  </span>// same voice only → lower pitch so it sounds different</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return { voice: p.ml, pitch: 1, rate: 0.95 };</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function cleanForSpeech(text) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return text</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ")</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.replace(/[()\u2018\u2019\u201C\u201D"]/g, "")</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.replace(/\s+/g, " ")</p>
+<p class="p1"><span class="Apple-converted-space">      </span>.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function splitText(text, max = 120) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const chunks = [];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cur = "";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let s of sentences) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>s = s.trim();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>while (s.length &gt; max) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let cut = s.lastIndexOf(" ", max);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (cut &lt;= 0) cut = max;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (cur) { chunks.push(cur); cur = ""; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>chunks.push(s.slice(0, cut).trim());</p>
+<p class="p1"><span class="Apple-converted-space">        </span>s = s.slice(cut).trim();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (!s) continue;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (cur &amp;&amp; (cur + " " + s).length &gt; max) { chunks.push(cur); cur = s; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else { cur = cur ? cur + " " + s : s; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (cur) chunks.push(cur);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return chunks.filter(c =&gt; /[^\s.,:;!?।]/.test(c));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Online fallback: Google Translate voice</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function playChunks(chunks, langCode, my, done, i = 0) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (i &gt;= chunks.length) { done(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const url = "https://translate.google.com/translate_tts?ie=UTF-8&amp;client=tw-ob&amp;tl=" + langCode</p>
+<p class="p1"><span class="Apple-converted-space">                </span>+ "&amp;q=" + encodeURIComponent(chunks[i]);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const audio = new Audio(url);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>currentAudio = audio;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.preservesPitch = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.mozPreservesPitch = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.webkitPreservesPitch = false;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.playbackRate = curKind === "tf" ? 0.78 : 0.92;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.onended = () =&gt; playChunks(chunks, langCode, my, done, i + 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.onerror = () =&gt; fail(my, "Voice is not available on this device or browser.");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>audio.play().catch(() =&gt; fail(my, "Could not play audio. Tap the button again."));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Chunks are spoken ONE AT A TIME (the next is queued only when the previous ends).</p>
+<p class="p1"><span class="Apple-converted-space">     </span>Queuing a whole long explanation at once made the browser hang; a per-chunk</p>
+<p class="p1"><span class="Apple-converted-space">     </span>watchdog also skips a chunk if the engine stalls. */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function speakMalayalam(text, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const langCode = "ml";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const chunks = splitText(cleanForSpeech(text));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!chunks.length) { done(); return; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const found = voiceProfile(curKind);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!found) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice...";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>playChunks(chunks, langCode, my, done);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = curLabel + " · " + found.voice.name;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let i = 0, failed = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const next = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (my !== token || failed) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (i &gt;= chunks.length) { done(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const idx = i++;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const u = new SpeechSynthesisUtterance(chunks[idx]);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>u.voice = found.voice;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>u.lang = found.voice.lang;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>u.pitch = found.pitch;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>u.rate = found.rate;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let settled = false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const advance = () =&gt; { if (settled) return; settled = true; clearTimeout(guard); next(); };</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const guard = setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (my !== token || settled) return;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>window.speechSynthesis.cancel();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>advance();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}, 5000 + chunks[idx].length * 250);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>u.onend = advance;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>u.onerror = (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (my !== token || settled || failed) return;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (e.error === "canceled" || e.error === "interrupted") return;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>settled = true; failed = true; clearTimeout(guard);</p>
+<p class="p1"><span class="Apple-converted-space">          </span>window.speechSynthesis.cancel();</p>
+<p class="p1"><span class="Apple-converted-space">          </span>statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";</p>
+<p class="p1"><span class="Apple-converted-space">          </span>playChunks(chunks, langCode, my, done, idx);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>utterances[0] = u;<span class="Apple-converted-space">                      </span>// keep a reference so it is not garbage-collected</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.speechSynthesis.speak(u);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>next();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}, 100);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>PLAY ONE ITEM (kind: 'in' | 'ar' | 'ml' | 'tf')</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function playItem(kind, n, my, done) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>curKind = kind === "tf" ? "tf" : "ml";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>curLabel = kind === "in" ? KIND_NAME.in : "ആയത്ത് " + ayahRef(n) + " – " + KIND_NAME[kind];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>statusEl.textContent = curLabel;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setMediaSession(curLabel);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (kind === "ar") {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const total = +$("repeat").value || 1;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const loop = k =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>statusEl.textContent = curLabel + " · " + currentReciter().name +</p>
+<p class="p1"><span class="Apple-converted-space">          </span>(total &gt; 1 ? " · ആവർത്തനം " + k + "/" + total : "");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>playArabic(n, my, () =&gt; (k &lt; total ? loop(k + 1) : done()));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>};</p>
+<p class="p1"><span class="Apple-converted-space">      </span>loop(1);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let text;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (kind === "in") text = introSpeech();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else text = kind === "ml" ? VERSES[n - 1].ml : VERSES[n - 1].tf;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>speakMalayalam(text, my, done);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>PLAYLIST</p>
+<p class="p1"><span class="Apple-converted-space">     </span>Order: introduction, then for each verse: ayah, meaning, explanation.</p>
+<p class="p1"><span class="Apple-converted-space">     </span>Only parts ticked in "കാണിക്കുക" are included.</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function buildQueue() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const on = id =&gt; $(id).checked;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const q = [];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (on("show-in")) q.push({ kind: "in", n: 0 });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>VERSES.forEach(v =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (on("show-ar")) q.push({ kind: "ar", n: v.n });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (on("show-ml")) q.push({ kind: "ml", n: v.n });</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (on("show-tf") &amp;&amp; v.tf) q.push({ kind: "tf", n: v.n });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return q;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Play queue[start...]; cont = true keeps going to the next items, false stops after the first</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function runQueue(queue, start, cont) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>requestWake();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setPanel(false);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>continuous = cont;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const my = token;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (cont) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>masterBtn.textContent = "■ നിർത്തുക";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>masterBtn.classList.add("playing");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const step = i =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (my !== token) return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (i &gt;= queue.length || (!cont &amp;&amp; i &gt; start)) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stopAll();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (cont) statusEl.textContent = "പൂർത്തിയായി.";</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const { kind, n } = queue[i];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (kind === "tf") setTafseerVisible(n, true);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (kind === "in") setIntroVisible(true);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mark(kind + "-" + n);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>playItem(kind, n, my, () =&gt; { if (my === token) step(i + 1); });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>step(start);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Round button next to each item: play it (and carry on to the following items if "തുടർച്ചയായി" is ticked)</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function toggleItem(kind, n) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (activeKey === kind + "-" + n) { stopAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if ($("opt-cont").checked) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const q = buildQueue();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const idx = q.findIndex(x =&gt; x.kind === kind &amp;&amp; x.n === n);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (idx &gt;= 0) { runQueue(q, idx, true); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>runQueue([{ kind, n }], 0, false);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Main button: start from the beginning / stop</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function toggleContinuous() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (continuous || activeKey) { stopAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const q = buildQueue();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!q.length) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>statusEl.textContent = "‘കാണിക്കുക’ എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>runQueue(q, 0, true);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>OPTIONS PANEL</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const controlsEl = $("controls");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const optBtn = $("opt-toggle");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function setPanel(open) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>controlsEl.classList.toggle("open", open);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>optBtn.classList.toggle("open", open);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function togglePanel(e) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>e.stopPropagation();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setPanel(!controlsEl.classList.contains("open"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.addEventListener("pointerdown", e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!controlsEl.contains(e.target)) setPanel(false);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>LESSONS SUMMARY, QUESTIONS (AI) AND QUIZ</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pageText = () =&gt; VERSES.map(v =&gt; `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const cleanJson = t =&gt; t.replace(/```json|```/g, "").trim();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function askAI(prompt) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const res = await fetch(AI_ENDPOINT, {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>method: "POST", headers: { "Content-Type": "application/json" },</p>
+<p class="p1"><span class="Apple-converted-space">      </span>body: JSON.stringify({ prompt })</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!res.ok) throw new Error(res.status);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return (await res.json()).text;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function renderQuestions(list) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>$("q-list").innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>list.forEach(q =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const b = document.createElement("button");</p>
+<p class="p1"><span class="Apple-converted-space">      </span>b.className = "q-btn"; b.textContent = q;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>b.onclick = () =&gt; answerQuestion(q);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>$("q-list").appendChild(b);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function showSummary() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const out = $("ai-summary");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>out.textContent = "⏳ ...";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const qs = JSON.parse(cleanJson(await askAI(AI_RULE +</p>
+<p class="p1"><span class="Apple-converted-space">        </span>"Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (Array.isArray(qs) &amp;&amp; qs.length) renderQuestions(qs);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch (e) { out.textContent = LESSONS; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function startQuiz() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let qs = QUIZ;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (AI_ENDPOINT) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>$("quiz").textContent = "⏳ ...";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const r = JSON.parse(cleanJson(await askAI(AI_RULE +</p>
+<p class="p1"><span class="Apple-converted-space">          </span>'Return ONLY a JSON array of 5 multiple-choice questions in Malayalam: [{"q":"","o":["","","",""],"c":0,"e":""}] where c is the index of the correct option.\n\n' + pageText())));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (Array.isArray(r) &amp;&amp; r.length) qs = r;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch (e) {}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderQuiz(qs);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function renderQuiz(qs) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let score = 0, answered = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const box = $("quiz"); box.innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>qs.forEach((q, qi) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const d = document.createElement("div"); d.className = "quiz-q";</p>
+<p class="p1"><span class="Apple-converted-space">      </span>d.innerHTML = `&lt;p&gt;${qi + 1}. ${q.q}&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>q.o.forEach((t, oi) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const b = document.createElement("button"); b.className = "quiz-opt"; b.textContent = t;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>b.onclick = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (d.dataset.done) return;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>d.dataset.done = 1; answered++;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>d.querySelectorAll(".quiz-opt")[q.c].classList.add("right");</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (oi === q.c) score++; else b.classList.add("wrong");</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (q.e) { const e = document.createElement("div"); e.className = "quiz-exp"; e.textContent = q.e; d.appendChild(e); }</p>
+<p class="p1"><span class="Apple-converted-space">          </span>if (answered === qs.length) res.textContent = `🎉 സ്കോർ: ${score} / ${qs.length}`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>d.appendChild(b);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>box.appendChild(d);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* =====================================================</p>
+<p class="p1"><span class="Apple-converted-space">     </span>START</p>
+<p class="p1"><span class="Apple-converted-space">     </span>===================================================== */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>buildPage();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>initReciters();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>applySettings();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>applyDisplay();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>CHECKS.forEach(id =&gt; $(id).addEventListener("change", saveSettings));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderQuestions(SUGGESTED.map(x =&gt; x.q));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>requestWake();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (window.speechSynthesis) window.speechSynthesis.getVoices(); <span class="Apple-converted-space">  </span>// Chrome loads voices asynchronously</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Offline support: needs sw.js next to this page (HTTPS hosting). Silently skipped otherwise.</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if ("serviceWorker" in navigator &amp;&amp; /^https?:$/.test(location.protocol)) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.addEventListener("load", () =&gt; navigator.serviceWorker.register("sw.js").catch(() =&gt; {}));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
