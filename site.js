@@ -61,7 +61,42 @@
       }, 8000);
     }
   });
-
+  /* ===== natural voices on every device ===== */
+  var MALE = /midhun|\bmale\b|ravi|prabhat|hemant|madhur|rishi/i, FEMALE = /female|sobhana|swara|lekha|heera|soumya|veena|neerja/i;
+  function isM(v) { return MALE.test(v.name) && !FEMALE.test(v.name); }
+  function vscore(v) {
+    var n = v.name || '', s = 0;
+    if (/natural|neural/i.test(n)) s += 10;            // Edge / Windows online natural voices
+    if (/enhanced|premium|siri/i.test(n)) s += 8;      // iPhone / Mac
+    if (/online/i.test(n)) s += 6;
+    if (/google/i.test(n)) s += 5;                     // Chrome / Android
+    if (v.localService === false) s += 2;
+    if (/compact|espeak|festival/i.test(n)) s -= 6;    // robotic ones last
+    return s;
+  }
+  function byLang(l) {
+    return window.speechSynthesis ? speechSynthesis.getVoices().filter(function (v) {
+      return v.lang.toLowerCase().replace('_', '-').indexOf(l) === 0; }) : [];
+  }
+  function pick(kind, lang) {          // kind: 'ml' meaning voice, 'tf' explanation voice
+    var vs = lang ? byLang(lang) : (typeof window.mlVoices === 'function' ? window.mlVoices() : byLang('ml'));
+    if (!vs.length) return null;
+    vs = vs.slice().sort(function (a, b) { return vscore(b) - vscore(a) || a.name.localeCompare(b.name); });
+    var best = vscore(vs[0]), pool = vs.filter(function (v) { return vscore(v) >= best - 2; });
+    var a = pool.filter(isM)[0] || pool[0];
+    if (kind !== 'tf') return a;
+    return pool.filter(function (v) { return v !== a && isM(v) !== isM(a); })[0] ||
+           vs.filter(function (v) { return v !== a; })[0] || a;
+  }
+  window.quranVoice = function (lang) { return pick('ml', lang); };
+  onReady(function () {
+    if (typeof window.resolveVoice === 'function') window.resolveVoice = function (kind) { return pick(kind); };
+    if (typeof window.voiceProfile === 'function') window.voiceProfile = function (kind) {
+      var v = pick(kind); if (!v) return null;
+      var natural = vscore(v) >= 8, same = pick('ml') === pick('tf');
+      return { voice: v, pitch: (kind === 'tf' && same && !natural) ? 0.8 : 1, rate: kind === 'tf' ? 0.85 : 0.95 };
+    };
+  });
   /* offline support */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () {
