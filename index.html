@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ml">
 <head>
+ <meta name="referrer" content="no-referrer">
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>ഖുർആൻ സാരം</title>
@@ -70,11 +71,64 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .loading-message{color:var(--muted);font-size:.9rem;grid-column:1/-1;text-align:center;padding:12px}
 .btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
 @media(min-width:500px){.row .btn{width:auto}}
+
+.langpick{font-family:inherit;font-size:.8rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:14px;padding:2px 8px;max-width:80px}
+.langpick option{color:#22302a}
+.goog-te-banner-frame,.skiptranslate iframe{display:none!important}
+body{top:0!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+
+
 </style>
+
+
 </head>
 <body onload="initWidgets()">
 
 <header class="banner">
+ 
+ <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
+  <option value="">🌐Language</option>
+  <option value="ml">മലയാളം</option>
+<option value="en">English</option>
+<option value="hi">हिन्दी</option>
+<option value="ta">தமிழ்</option>
+<option value="te">తెలుగు</option>
+<option value="kn">ಕನ್ನಡ</option>
+<option value="mr">मराठी</option>
+<option value="gu">ગુજરાતી</option>
+<option value="pa">ਪੰਜਾਬੀ</option>
+<option value="bn">বাংলা</option>
+<option value="ur">اردو</option>
+<option value="ne">नेपाली</option>
+<option value="si">සිංහල</option>
+<option value="ar">العربية</option>
+<option value="fa">فارسی</option>
+<option value="tr">Türkçe</option>
+<option value="id">Indonesia</option>
+<option value="ms">Melayu</option>
+<option value="th">ไทย</option>
+<option value="vi">Tiếng Việt</option>
+<option value="zh-CN">中文简体</option>
+<option value="zh-TW">中文繁體</option>
+<option value="ja">日本語</option>
+<option value="ko">한국어</option>
+<option value="fr">Français</option>
+<option value="de">Deutsch</option>
+<option value="es">Español</option>
+<option value="pt">Português</option>
+<option value="it">Italiano</option>
+<option value="ru">Русский</option>
+<option value="nl">Nederlands</option>
+<option value="pl">Polski</option>
+<option value="uk">Українська</option>
+<option value="sv">Svenska</option>
+<option value="el">Ελληνικά</option>
+<option value="ro">Română</option>
+<option value="sw">Kiswahili</option>
+<option value="am">አማርኛ</option>
+<option value="ha">Hausa</option>
+</select>
   <div class="bismi">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
   <h1>ഖുർആൻ സാരം</h1>
 </header>
@@ -318,5 +372,26 @@ function onCityDropdownChange(){
   fetchAndDisplayPrayerTimes(parseFloat(la),parseFloat(lo),s.options[s.selectedIndex].text);
 }
 </script>
+
+<div id="gt_el" style="display:none"></div>
+<script>
+(function () {
+  const sel = document.getElementById('langPick');
+  const m = document.cookie.match(/googtrans=\/[^/]*\/([a-z-]+)/i);
+ if (m && m[1] !== 'ml') sel.value = m[1];     // show the current language
+  sel.addEventListener('change', () => {
+    const l = sel.value; if (!l) return;
+    const gone = 'expires=Thu, 01 Jan 1970 00:00:00 GMT', host = location.hostname;
+    ['', '; domain=' + host].forEach(d => document.cookie = 'googtrans=; ' + gone + '; path=/' + d);
+    if (l !== 'ml') document.cookie = 'googtrans=/ml/' + l + '; path=/';
+    location.reload();                                         // the widget translates on load
+  });
+})();
+function googleTranslateElementInit() {
+ new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
+}
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+
 </body>
 </html>
