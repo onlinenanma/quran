@@ -94,10 +94,16 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
 .quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
 .quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
-</style>
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hero .topnav .back{display:inline-block;padding:4px 0}
+ </style>
 </head>
 <body>
 <header class="hero">
+  <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/">🏠 ഹോം</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖 സൂറത്ത് പട്ടിക</a>
+  </div>
   <h1>1. സൂറത്തുൽ ഫാതിഹ</h1>
 </header>
 <!-- ================= Controls ================= -->
@@ -998,6 +1004,44 @@ function playItem(kind, n, my, done) {
     loop(1); return;
   }
   speakMalayalam(spokenText(kind, n, curLang), my, done);
+}
+  /* ===== PATCH 2: detect translation per item ===== */
+function shownText(kind, n) {
+  const sel = kind === "in" ? "#item-in-0 .text" : "#item-" + kind + "-" + n + (kind === "tf" ? " .pl" : " .text");
+  const el = document.querySelector(sel); if (!el) return "";
+  const c = el.cloneNode(true); c.querySelectorAll(".tag,.isti-ar").forEach(x => x.remove());
+  return c.textContent.replace(/\s+/g, " ").trim();
+}
+function targetLang(text) {
+  const h = (document.documentElement.lang || "").toLowerCase().split("-")[0];
+  if (h && h !== "ml") return h;
+  const g = document.cookie.match(/googtrans=\/[^/]*\/([a-z-]+)/i); if (g) return g[1].toLowerCase().split("-")[0];
+  if (/[\u0900-\u097F]/.test(text)) return "hi";
+  if (/[\u0B80-\u0BFF]/.test(text)) return "ta";
+  if (/[\u0C80-\u0CFF]/.test(text)) return "kn";
+  const nl = (navigator.language || "en").toLowerCase().split("-")[0];
+  return nl === "ml" ? "en" : nl;
+}
+function playItem(kind, n, my, done) {
+  requestWake();
+  curKind = kind === "tf" ? "tf" : "ml";
+  curLabel = kind === "in" ? KIND_NAME.in : "ആയത്ത് " + ayahRef(n) + " – " + KIND_NAME[kind];
+  statusEl.textContent = curLabel; setMediaSession(curLabel);
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      statusEl.textContent = curLabel + " · " + currentReciter().name + (total > 1 ? " · ആവർത്തനം " + k + "/" + total : "");
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1); return;
+  }
+  const shown = shownText(kind, n);
+  const mlChars = (shown.match(/[\u0D00-\u0D7F]/g) || []).length;
+  const translated = shown.length > 0 && mlChars / shown.length < 0.2;   // mostly not Malayalam any more
+  curLang = translated ? targetLang(shown) : "ml";
+  const original = kind === "in" ? introSpeech() : (kind === "ml" ? VERSES[n - 1].ml : VERSES[n - 1].tf);
+  speakMalayalam(translated ? shown : original, my, done);
 }
   /* =====================================================
      START
