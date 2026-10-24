@@ -79,7 +79,11 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 </head>
 <body>
 <header class="hero">
-  <a class="back" id="backLink" target="_top">← ആയത്തുകളുടെ പട്ടിക</a>
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/">🏠പ്രധാന താൾ</a>
+   <a class="back" href="https://onlinenanma.github.io/quran/002">ബാക്കി ഭാഗങ്ങൾ </a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖സൂറത്തുകൾ</a>
+  </div>
   <h1>2. സൂറത്തുൽ ബഖറഃ (1–20)</h1>
 </header>
 
@@ -704,6 +708,7 @@ CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
 renderQuestions(SUGGESTED.map(x => x.q));
 requestWake();
 if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged = () => populateVoices(); }
+
 </script>
 </body>
 </html>
