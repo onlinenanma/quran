@@ -41,8 +41,9 @@
         savePref(sel.value); location.reload();
       });
     }
-    /* load the translator only when needed (saves data for Malayalam readers) */
-    if (lang !== 'ml') {
+       if (lang !== 'ml') {
+      var rm = document.querySelector('meta[name="referrer"]');          // Google's translator needs a referrer
+      if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
       window.googleTranslateElementInit = function () {
         new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
       };
@@ -50,6 +51,14 @@
       var s = document.createElement('script');
       s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; s.async = true;
       document.head.appendChild(s);
+      setTimeout(function () {                                           // visible hint if it did not start
+        if (!document.querySelector('.goog-te-combo, html.translated-ltr, html.translated-rtl')) {
+          var t = document.createElement('div'); t.className = 'notranslate'; t.setAttribute('translate', 'no');
+          t.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#d93025;color:#fff;padding:8px 12px;border-radius:8px;font:13px sans-serif;text-align:center';
+          t.textContent = 'Translation could not load. Check your internet / ad-blocker.';
+          document.body.appendChild(t); setTimeout(function () { t.remove(); }, 8000);
+        }
+      }, 8000);
     }
   });
 
