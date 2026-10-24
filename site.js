@@ -30,7 +30,15 @@
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}';
   document.head.appendChild(st);
-
+  /* keep Arabic text untranslated: mark elements that are mostly Arabic */
+  function markArabic(root) {
+    var AR = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/g;
+    root.querySelectorAll('h1,h2,h3,p,span,div,a,li').forEach(function (e) {
+      if (e.children.length) return;                       // only elements with no child elements
+      var t = e.textContent, n = (t.match(AR) || []).length, len = t.replace(/\s/g, '').length;
+      if (n && len && n / len > 0.5) e.setAttribute('translate', 'no');
+    });
+  }
   onReady(function () {
     /* language picker (optional – any page that has <select id="langPick"> gets it wired) */
     var sel = document.getElementById('langPick');
@@ -42,6 +50,7 @@
       });
     }
        if (lang !== 'ml') {
+          markArabic(document.body);  
       var rm = document.querySelector('meta[name="referrer"]');          // Google's translator needs a referrer
       if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
       window.googleTranslateElementInit = function () {
