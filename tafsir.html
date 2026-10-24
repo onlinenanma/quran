@@ -52,7 +52,10 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 </head>
 <body>
 <header class="banner">
-  <a class="back" href="https://sites.google.com/view/quransaram" target="_top">← സൂറത്ത് പട്ടിക</a>
+  <div style="display:flex;justify-content:space-between;gap:12px">
+    <a class="back" href="https://onlinenanma.github.io/quran/">🏠 ഹോം</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖 സൂറത്ത് പട്ടിക</a>
+  </div>
   <h1>ആയത്തും തഫ്സീറും</h1>
 </header>
 
@@ -224,5 +227,6 @@ if (window.speechSynthesis) { speechSynthesis.getVoices(); speechSynthesis.onvoi
 window.addEventListener("pagehide", stop);
 window.onload = go;
 </script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
 </body>
 </html>
