@@ -76,7 +76,7 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
 .quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
  .topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.banner .topnav .back{display:inline-block;padding:4px 0}
+.hero .topnav .back{display:inline-block;padding:4px 0}
 </style>
 </head>
 <body>
@@ -149,7 +149,6 @@ const $ = id => document.getElementById(id);
 /* ===== PAGE SETTINGS – change these for each page ===== */
 const SURAH = 2;                       // surah number (audio file names: 002001.mp3 ...)
 const SURAH_NAME = "സൂറത്തുൽ ബഖറഃ";
-const BACK_URL = "002.html";           // Google Sites: use the full page address, e.g. https://sites.google.com/view/YOUR-SITE/baqara
 
 /* ===== VERSES  (ml = സാരം, tf = വിവരണം; leave "" and that part is hidden) ===== */
 const VERSES = [
@@ -703,7 +702,6 @@ if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) navigat
 
 
 /* ===== START ===== */
-$("backLink").href = BACK_URL;
 $("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
 buildPage(); initReciters(); populateVoices(); applySettings(); applyDisplay();
 CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
