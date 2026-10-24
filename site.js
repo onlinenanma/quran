@@ -81,7 +81,8 @@
       });
     }
        if (lang !== 'ml') {
-          markArabic(document.body);  
+          markArabic(document.body); 
+          wrapArabic(document.body); 
       var rm = document.querySelector('meta[name="referrer"]');          // Google's translator needs a referrer
       if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
       window.googleTranslateElementInit = function () {
