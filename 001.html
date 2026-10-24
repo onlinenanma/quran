@@ -1103,10 +1103,7 @@ function playItem(kind, n, my, done) {
 
   if (window.speechSynthesis) window.speechSynthesis.getVoices();   // Chrome loads voices asynchronously
 
-  // Offline support: needs sw.js next to this page (HTTPS hosting). Silently skipped otherwise.
-  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-  }
+  
 </script>
 <div id="gt_el" style="display:none"></div>
 <script>
