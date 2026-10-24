@@ -139,6 +139,15 @@ function resolveVoice(){
     || vs.find(v => !FEMALE_HINT.test(v.name)) || vs[0];
 }
 function cleanForSpeech(t){   // drop Arabic letters and brackets so they are not read wrongly
+
+ let clean = cleanForSpeech(text);
+  const ml = (clean.match(/[\u0D00-\u0D7F]/g) || []).length;
+  const translated = clean.length > 0 && ml / clean.length < 0.5;      // less than half Malayalam = translated
+  curLang = translated ? targetLang(clean) : "ml";
+  if (translated) clean = clean.replace(/(^|\s)\d+\s*[-–:.)]\s*/g, " ");   // drop "2." style numbers
+  speak(clean, my);
+
+ 
   return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g," ")
           .replace(/[()\u2018\u2019\u201C\u201D"]/g,"").replace(/\s+/g," ").trim();
 }
