@@ -373,25 +373,7 @@ function onCityDropdownChange(){
 }
 </script>
 
-<div id="gt_el" style="display:none"></div>
-<script>
-(function () {
-  const sel = document.getElementById('langPick');
-  const m = document.cookie.match(/googtrans=\/[^/]*\/([a-z-]+)/i);
- if (m && m[1] !== 'ml') sel.value = m[1];     // show the current language
-  sel.addEventListener('change', () => {
-    const l = sel.value; if (!l) return;
-    const gone = 'expires=Thu, 01 Jan 1970 00:00:00 GMT', host = location.hostname;
-    ['', '; domain=' + host].forEach(d => document.cookie = 'googtrans=; ' + gone + '; path=/' + d);
-    if (l !== 'ml') document.cookie = 'googtrans=/ml/' + l + '; path=/';
-    location.reload();                                         // the widget translates on load
-  });
-})();
-function googleTranslateElementInit() {
- new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
-}
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
 
 </body>
 </html>
