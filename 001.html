@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
+  <meta name="referrer" content="no-referrer">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>സൂറത്തുൽ ഫാതിഹ</title>
@@ -680,7 +681,7 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
      Queuing a whole long explanation at once made the browser hang; a per-chunk
      watchdog also skips a chunk if the engine stalls. */
   function speakMalayalam(text, my, done) {
-    const langCode = "ml";
+    const langCode = curLang;
     const chunks = splitText(cleanForSpeech(text));
     if (!chunks.length) { done(); return; }
 
@@ -918,6 +919,86 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
     const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);
   }
 
+  /* ===== PATCH: shared audio + follow page translation ===== */
+const sharedAudio = new Audio();
+let curLang = "ml";
+
+function silentWavUrl() {
+  const n = 800, b = new DataView(new ArrayBuffer(44 + n)), w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
+  w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+  b.setUint32(24, 8000, true); b.setUint32(28, 8000, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
+  for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
+}
+const SILENT = silentWavUrl();
+const _run = runQueue;
+runQueue = function (...a) { try { sharedAudio.src = SILENT; sharedAudio.play().catch(() => {}); } catch (e) {} return _run(...a); };
+
+/* Malayalam by default; if the page was translated, use the translated language */
+function pageLang() {
+  const h = document.documentElement, l = (h.lang || "ml").toLowerCase().split("-")[0];
+  const translated = l !== "ml" || !/[\u0D00-\u0D7F]/.test($("verse-1").textContent);
+  if (!translated) return "ml";
+  return l !== "ml" ? l : (navigator.language || "en").toLowerCase().split("-")[0];
+}
+function mlVoices() {   // voices for the language being spoken (name kept so the picker still works)
+  const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith(curLang));
+}
+function spokenText(kind, n, lang) {
+  if (lang === "ml") return kind === "in" ? introSpeech() : (kind === "ml" ? VERSES[n - 1].ml : VERSES[n - 1].tf);
+  const el = document.querySelector("#item-" + kind + "-" + (kind === "in" ? 0 : n) + " " + (kind === "tf" ? ".pl" : ".text"));
+  if (!el) return "";
+  const c = el.cloneNode(true); c.querySelectorAll(".tag,.isti-ar").forEach(x => x.remove());
+  return c.textContent;   // the translated text currently on screen
+}
+
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  sharedAudio.onended = sharedAudio.onerror = null; sharedAudio.pause(); currentAudio = null;
+  clearMark();
+  masterBtn.textContent = MASTER_TEXT; masterBtn.classList.remove("playing"); statusEl.textContent = "";
+}
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const a = sharedAudio, r = currentReciter();
+  a.onended = () => { if (my === token) done(); };
+  a.onerror = () => fail(my, r.name + " – ആയത്ത് " + ayahRef(n) + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല.");
+  a.preservesPitch = true; a.playbackRate = 1; a.src = audioUrl(n); currentAudio = a;
+  a.play().catch(e => {
+    if (my !== token || (e && (e.name === "NotSupportedError" || e.name === "AbortError"))) return;
+    fail(my, "Could not play audio. Tap the button again.");
+  });
+}
+function playChunks(chunks, langCode, my, done, i = 0) {   // online fallback voice
+  if (my !== token) return;
+  if (i >= chunks.length) { done(); return; }
+  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
+  const a = sharedAudio;
+  a.onended = () => playChunks(chunks, langCode, my, done, i + 1);
+  a.onerror = () => fail(my, "Online voice is blocked or offline. Try Edge, or Chrome on Android with the language's voice installed.");
+  a.preservesPitch = false; a.src = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + langCode + "&q=" + encodeURIComponent(chunks[i]);
+  a.playbackRate = curKind === "tf" ? 0.78 : 0.92; currentAudio = a;
+  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+}
+function playItem(kind, n, my, done) {
+  requestWake();
+  curLang = pageLang();
+  curKind = kind === "tf" ? "tf" : "ml";
+  curLabel = kind === "in" ? KIND_NAME.in : "ആയത്ത് " + ayahRef(n) + " – " + KIND_NAME[kind];
+  statusEl.textContent = curLabel; setMediaSession(curLabel);
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      statusEl.textContent = curLabel + " · " + currentReciter().name + (total > 1 ? " · ആവർത്തനം " + k + "/" + total : "");
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1); return;
+  }
+  speakMalayalam(spokenText(kind, n, curLang), my, done);
+}
   /* =====================================================
      START
      ===================================================== */
