@@ -39,7 +39,38 @@
       if (n && len && n / len > 0.5) e.setAttribute('translate', 'no');
     });
   }
-  onReady(function () {
+    /* wrap every Arabic phrase inside normal text so Google leaves it alone */
+  function wrapArabic(root) {
+    var A = '[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]',
+        RE = new RegExp(A + '+(?:[ \\u00a0\\u200c\\u200d]+' + A + '+)*', 'g'),
+        skip = /^(SCRIPT|STYLE|TEXTAREA|INPUT|SELECT|OPTION|CODE|PRE)$/;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        var p = n.parentNode;
+        if (!p || skip.test(p.nodeName) || (p.closest && p.closest('[translate="no"],.notranslate'))) return NodeFilter.FILTER_REJECT;
+        RE.lastIndex = 0;
+        return RE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);                 // collect first, then edit
+    nodes.forEach(function (node) {
+      var text = node.nodeValue, frag = document.createDocumentFragment(), last = 0, m;
+      RE.lastIndex = 0;
+      while ((m = RE.exec(text))) {
+        if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        var s = document.createElement('span');
+        s.setAttribute('translate', 'no'); s.className = 'notranslate';
+        s.style.fontFamily = '"Noto Naskh Arabic",serif';
+        s.textContent = m[0]; frag.appendChild(s);
+        last = m.index + m[0].length;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  window.quranWrapArabic = wrapArabic;                             // pages that load text later can call this
+   onReady(function () {
     /* language picker (optional – any page that has <select id="langPick"> gets it wired) */
     var sel = document.getElementById('langPick');
     if (sel) {
