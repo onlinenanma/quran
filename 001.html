@@ -83,7 +83,7 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .ai-box>.main-btn{display:block;margin:0 auto}
 .ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}
 .ai-out:empty{display:none}
-.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0} div
 .q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}
 .q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}
 .ai-ask{display:flex;gap:6px;margin-top:8px}
@@ -96,12 +96,28 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
 .topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .hero .topnav .back{display:inline-block;padding:4px 0}
+   .langpick{font-family:inherit;font-size:.8rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:14px;padding:2px 8px;max-width:120px}
+.langpick option{color:#22302a}
+.goog-te-banner-frame,.skiptranslate iframe{display:none!important}
+body{top:0!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
  </style>
 </head>
 <body>
 <header class="hero">
   <div class="topnav">
     <a class="back" href="https://onlinenanma.github.io/quran/">🏠 ഹോം</a>
+    <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
+  <option value="">🌐</option>
+  <option value="ml">മലയാളം (original)</option>
+  <option value="en">English</option>
+  <option value="hi">हिन्दी</option>
+  <option value="ta">தமிழ்</option>
+  <option value="kn">ಕನ್ನಡ</option>
+  <option value="ar">العربية</option>
+  <option value="ur">اردو</option>
+  <option value="bn">বাংলা</option>
+</select>
     <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖 സൂറത്ത് പട്ടിക</a>
   </div>
   <h1>1. സൂറത്തുൽ ഫാതിഹ</h1>
@@ -347,7 +363,7 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
               <div class="intro-sub">${INTRO.sub}</div>
               <p class="intro-body">${INTRO.body}</p>
               <div class="isti">
-                <div class="isti-ar" lang="ar" dir="rtl">${INTRO.istiAr}</div>
+<div class="isti-ar" translate="no" lang="ar" dir="rtl">${INTRO.istiAr}</div>    
                 <div>${INTRO.istiMl}</div>
               </div>
             </div>
@@ -365,7 +381,7 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
         <div class="item it-ar" id="item-ar-${v.n}">
           <div class="row rtl">
             <button class="play-btn" id="btn-ar-${v.n}" title="Play / Stop" onclick="toggleItem('ar', ${v.n})">▶</button>
-            <p class="text ar" lang="ar" dir="rtl">${v.ar}</p>
+            <p class="text ar" translate="no" lang="ar" dir="rtl">${v.ar}</p>
           </div>
         </div>
 
@@ -1061,7 +1077,25 @@ function playItem(kind, n, my, done) {
     window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
   }
 </script>
-
+<div id="gt_el" style="display:none"></div>
+<script>
+(function () {
+  const sel = document.getElementById('langPick');
+  const m = document.cookie.match(/googtrans=\/[^/]*\/([a-z-]+)/i);
+  if (m && m[1] !== 'ml') sel.value = m[1].split('-')[0];      // show the current language
+  sel.addEventListener('change', () => {
+    const l = sel.value; if (!l) return;
+    const gone = 'expires=Thu, 01 Jan 1970 00:00:00 GMT', host = location.hostname;
+    ['', '; domain=' + host].forEach(d => document.cookie = 'googtrans=; ' + gone + '; path=/' + d);
+    if (l !== 'ml') document.cookie = 'googtrans=/ml/' + l + '; path=/';
+    location.reload();                                         // the widget translates on load
+  });
+})();
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false, includedLanguages: 'en,hi,ta,kn,ar,ur,bn' }, 'gt_el');
+}
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
 
 </body>
 </html>
