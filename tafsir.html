@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ml">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>ആയത്തും തഫ്സീറും</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -65,6 +65,15 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
     <div class="controls">
       <label>സൂറത്ത്: <input type="number" id="sNo" min="1" max="114" value="1"></label>
       <label>ആയത്ത്: <input type="number" id="aNo" min="1" value="1"></label>
+      <label>പാരായണം: 
+        <select id="reciterSelect">
+          <option value="ar.alafasy" selected>Mishary Rashid Alafasy</option>
+          <option value="ar.abdurrahmansudais">Abdul Rahman Al-Sudais</option>
+          <option value="ar.abdulbasit">Abdul Basit</option>
+          <option value="ar.minshawi">Mohamed Siddiq El-Minshawi</option>
+          <option value="ar.hudhaify">Ali Al-Hudhaify</option>
+        </select>
+      </label>
       <button type="button" onclick="go()">കാണിക്കുക</button>
       <button type="button" class="alt" id="prev" onclick="step(-1)">◀ മുമ്പത്തേത്</button>
       <button type="button" class="alt" id="next" onclick="step(1)">അടുത്തത് ▶</button>
@@ -89,11 +98,11 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
     <h2 style="margin-bottom:12px">തഫ്സീർ</h2>
     <div class="bar">
       <select id="tsel" onchange="loadTafsir()" aria-label="തഫ്സീർ തെരഞ്ഞെടുക്കാം">
-        <option value="169">തഫ്സീർ ഇബ്നു കഥീർ (ഇംഗ്ലീഷ്)</option>
-        <option value="14">തഫ്സീർ ഇബ്നു കഥീർ (അറബിക്)</option>
-        <option value="16">തഫ്സീർ ഇബ്നു കഥീർ (അറബിക്) ചുരുക്കം</option>
-        <option value="15">തഫ്സീർ ത്വബരീ</option>
-        <option value="91">തഫ്സീർ സഅദീ</option>
+        <option value="169">ഇബ്നു കഥീർ (ഇംഗ്ലീഷ്)</option>
+        <option value="14">ഇബ്നു കഥീർ (അറബിക്)</option>
+        <option value="16">ഇബ്നു കഥീർ (അറബിക്) ചുരുക്കം</option>
+        <option value="15">ത്വബരീ</option>
+        <option value="91">സഅദീ</option>
       </select>
       <div class="grp">
         <button type="button" class="alt" onclick="fs(-2)" aria-label="അക്ഷരം ചെറുതാക്കുക">A−</button>
@@ -131,8 +140,11 @@ async function go() {
   if (!(s >= 1 && s <= 114) || !(a >= 1)) { $("err").textContent = "ദയവായി സാധുവായ സൂറത്ത്, ആയത്ത് നമ്പർ നൽകുക."; return; }
   S = s; A = a;
   try {
-    const r = await fetch(`https://api.alquran.cloud/v1/ayah/${S}:${A}/editions/ar.alafasy,ml.abdulhameed`);
-    const d = await r.json();
+    const selectedReciter = $("reciterSelect").value;
+    const apiUrl = `https://api.alquran.cloud/v1/ayah/${S}:${A}/editions/${selectedReciter},ml.abdulhameed`;
+
+    const res = await fetch(apiUrl);
+    const d = await res.json();
     if (d.code !== 200 || d.data.length < 2) throw 0;
     const [ar, ml] = d.data;
     MAX = ar.surah.numberOfAyahs; $("aNo").max = MAX; trans = ml.text;
@@ -200,7 +212,7 @@ function stop() {
 function say(text, lang, my, st) {
   if (!window.speechSynthesis) { st.textContent = "Speech is not supported in this browser."; return; }
   const ch = split(text), v = voice(lang);
-  const next = i => {                       // one chunk at a time keeps long tafsir stable on phones
+  const next = i => {                         // one chunk at a time keeps long tafsir stable on phones
     if (my !== token) return;
     if (i >= ch.length) { stop(); return; }
     st.textContent = (v ? v.name : "default voice") + " · " + (i + 1) + "/" + ch.length;
