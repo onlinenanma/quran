@@ -12,11 +12,11 @@
 [hidden]{display:none!important}
 html,body{width:100%;overflow-x:hidden}
 body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
-.banner{text-align:center;color:#fff;padding:14px 0 16px;background:
+.banner{text-align:center;color:#fff;padding:14px 18px 16px;background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
-.banner h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.banner h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4}
 .wrap{max-width:1000px;margin:0 auto;padding:18px 12px 40px}
 .search{display:block;width:100%;font-family:inherit;font-size:1rem;padding:11px 14px;margin-bottom:16px;border:2px solid var(--gold);border-radius:10px;background:var(--card);color:var(--ink)}
 .search:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
@@ -32,34 +32,18 @@ body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:
 .empty{text-align:center;color:var(--muted);padding:20px}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
 
-.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
-.topnav .back{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  color: var(--gold);
-  text-decoration: none;
-  font-size: clamp(0.95rem, 3.4vw, 1.1rem);
-  font-weight: 500;
-  white-space: nowrap;
-}
-.topnav .back:hover,
-.topnav .back:focus {
-  color: #fff;
-  text-decoration: none;
-  outline: none;
-}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.banner .topnav .back{display:inline-block;padding:12px 0}
 </style>
 </head>
 <body>
 <header class="banner">
  <div class="topnav">
-    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1.25em;">🏠</span> പ്രധാന താൾ</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">സൂറത്തുകൾ <span style="font-size: 1.25em;">📖</span></a>
- </div>
+    <a class="back" href="https://onlinenanma.github.io/quran/">🏠 പ്രധാന താൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖 സൂറത്തുകൾ</a>
+  </div>
  
- <h1>സൂറത്തുകൾ</h1>
-</header>
+ <h1>സൂറത്തുകൾ</h1></header>
 
 <main class="wrap">
   <input id="q" class="search" type="search" placeholder="സൂറത്ത് തിരയുക (പേര് / നമ്പർ)" aria-label="സൂറത്ത് തിരയുക" />
@@ -76,13 +60,13 @@ const SURAHS = [
 ["അൽ മാഇദഃ","المائدة"],["അൽ അൻആം","الأنعام"],["അൽ അഅ്റാഫ്","الأعراف"],["അൽ അൻഫാൽ","الأنفال"],
 ["അത്തൗബഃ","التوبة"],["യൂനുസ്","يونس"],["ഹൂദ്","هود"],["യൂസുഫ്","يوسف"],
 ["അർറഅ്ദ്","الرعد"],["ഇബ്റാഹീം","ഇബ്റാഹീം"],["അൽ ഹിജ്റ്","الحجر"],["അന്നഹ്ൽ","النحل"],
-["അൽ ഇസ്റാഅ്","الإسراء"],["അൽ കഹ്ഫ്","الكهف"],["മർയം","മര്യമ്"],["ത്വാഹാ","طه"],
+["അൽ ഇസ്റാഅ്","الإسراء"],["അൽ കഹ്ഫ്","الكهف"],["മർയം","مريم"],["ത്വാഹാ","طه"],
 ["അൽ അമ്പിയാഅ്","الأنبياء"],["അൽ ഹജ്ജ്","الحج"],["അൽ മുഅ്മിനൂൻ","المؤمنون"],["അന്നൂർ","النور"],
 ["അൽ ഫുർഖാൻ","الفرقان"],["അശ്ശുഅറാഅ്","الشعراء"],["അന്നംല്","النمل"],["അൽ ഖസ്വസ്വ്","القصص"],
 ["അൽ അൻകബൂത്ത്","العنكبوت"],["അർറൂം","الروم"],["ലുഖ്മാൻ","لقمان"],["അസ്സജ്ദഃ","السجدة"],
 ["അൽ അഹ്സാബ്","الأحزاب"],["സബഅ്","سبأ"],["ഫാത്വിർ","ഫاطر"],["യാസീൻ","يس"],
 ["അസ്സ്വാഫ്ഫാത്ത്","الصافات"],["സ്വാദ്","ص"],["അസ്സുമർ","الزمر"],["ഗാഫിർ","غافر"],
-["ഫുസ്സിലത്ത്","فصلت"],["അശ്ശൂറാ","الشورى"],["അസ്സുഖറുഫ്","الزخرف"],["അദ്ദുഖാൻ","الدخان"],
+["ഫുസ്സിലത്ത്","فصلت"],["അശ്ശൂറാ","الشورى"],["അസ്സുഖ്റുഫ്","الزخرف"],["അദ്ദുഖാൻ","الدخان"],
 ["അൽ ജാസിയഃ","الجاثية"],["അൽ അഹ്ഖാഫ്","الأحقاف"],["മുഹമ്മദ്","محمد"],["അൽ ഫത്ഹ്","الفتح"],
 ["അൽ ഹുജുറാത്ത്","الحجرات"],["ഖാഫ്","ق"],["അദ്ദാരിയാത്ത്","الذاريات"],["അത്ത്വൂർ","الطور"],
 ["അന്നജ്മ്","النجم"],["അൽ ഖമർ","القمر"],["അർറഹ്മാൻ","الرحمن"],["അൽ വാഖിഅഃ","الواقعة"],
@@ -98,4 +82,34 @@ const SURAHS = [
 ["അള്ളുഹാ","الضحى"],["അൽ ഇൻശിറാഹ്","الشرح"],["അത്തീൻ","التين"],["അൽ അലഖ്","العلق"],
 ["അൽ ഖദ്ർ","القدر"],["അൽ ബയ്യിനഃ","البينة"],["അസ്സൽസലഃ","الزلزلة"],["അൽ ആദിയാത്ത്","العاديات"],
 ["അൽ ഖാരിഅഃ","القارعة"],["അത്തകാസുർ","التكاثر"],["അൽ അസ്ർ","العصر"],["അൽ ഹുമസഃ","الهمزة"],
-["അൽ ഫീൽ","الفيل"],["ഖുറൈശ്","قريش"],
+["അൽ ഫീൽ","الفيل"],["ഖുറൈശ്","قريش"],["അൽ മാഊൻ","الماعون"],["അൽ കൗസർ","الكوثر"],
+["അൽ കാഫിറൂൻ","الكافرون"],["അന്നസ്ർ","النصر"],["അൽ മസദ്","المسد"],["അൽ ഇഖ്ലാസ്","الإخلاص"],
+["അൽ ഫലഖ്","الفلق"],["അന്നാസ്","الناس"]
+];
+
+const grid = document.getElementById('grid'), empty = document.getElementById('empty');
+SURAHS.forEach(([ml, ar], i) => {
+  const n = i + 1;
+  const a = document.createElement('a');
+  a.className = 'sr'; 
+  a.href = BASE + pad(n); 
+  
+  // Use _parent so it loads inside the same Google Sites main frame smoothly on both mobile and PC
+  a.target = '_parent';
+
+  a.dataset.s = (n + ' ' + ml + ' ' + ar).toLowerCase();
+  a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${ml}</b><span class="ar">${ar}</span></span>`;
+  grid.appendChild(a);
+});
+
+document.getElementById('q').addEventListener('input', e => {
+  const t = e.target.value.trim().toLowerCase(); let shown = 0;
+  grid.querySelectorAll('.sr').forEach(a => {
+    const ok = !t || a.dataset.s.includes(t); a.hidden = !ok; if (ok) shown++;
+  });
+  empty.hidden = shown > 0;
+});
+</script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html> 
