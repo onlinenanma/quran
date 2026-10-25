@@ -3,7 +3,8 @@
    1) remembers the chosen language for the whole site
    2) loads Google Translate only when a language other than Malayalam is chosen
    3) natural voices + text to speech in the translated language
-   4) registers the offline service worker (/quran/sw.js) */
+   4) recitation audio: saves only Al-Ghamdi for offline use
+   5) registers the offline service worker (/quran/sw.js) */
 (function () {
   var KEY = 'quran-lang', YEAR = 'max-age=31536000';
 
@@ -83,10 +84,6 @@
         savePref(sel.value); location.reload();
       });
     }
-    if (lang === 'ml' && !document.querySelector('meta[name="referrer"]')) {
-      var nr = document.createElement('meta'); nr.name = 'referrer'; nr.content = 'no-referrer'; document.head.appendChild(nr);
-    }
-     
     if (lang !== 'ml') {
       markArabic(document.body);
       wrapArabic(document.body);
@@ -173,7 +170,7 @@
     if (my !== token) return;
     if (i >= chunks.length) { done(); return; }
     statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
-       var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
+    var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
     a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
     currentAudio = a; a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
     a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
@@ -223,15 +220,16 @@
       };
     }
   });
-  /* more reciters for every chapter page (list from everyayah.com) */
+
+  /* ===== more reciters for every chapter page (folder names from everyayah.com) ===== */
   var EXTRA_RECITERS = [
-    { id: 'alafasy',   name: 'മിഷാരി അൽ അഫാസി',          base: 'https://everyayah.com/data/Alafasy_64kbps' },
-    { id: 'sudais',    name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',     base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
-    { id: 'shuraym',   name: 'സഊദ് അശ്ശുറൈം',            base: 'https://everyayah.com/data/Saood_ash-Shuraym_64kbps' },
-    { id: 'husary',    name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',    base: 'https://everyayah.com/data/Husary_64kbps' },
-    { id: 'abdulbasit',name: 'അബ്ദുൽ ബാസിത്വ്',           base: 'https://everyayah.com/data/Abdul_Basit_Murattal_64kbps' },
-    { id: 'jibreel',   name: 'മുഹമ്മദ് ജിബ്രീൽ',          base: 'https://everyayah.com/data/Muhammad_Jibreel_64kbps' },
-    { id: 'budair',    name: 'സ്വലാഹ് അൽ ബുദൈർ',         base: 'https://everyayah.com/data/Salah_Al_Budair_128kbps' }
+    { id: 'alafasy',    name: 'മിഷാരി അൽ അഫാസി',         base: 'https://everyayah.com/data/Alafasy_64kbps' },
+    { id: 'sudais',     name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',    base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
+    { id: 'shuraym',    name: 'സഊദ് അശ്ശുറൈം',           base: 'https://everyayah.com/data/Saood_ash-Shuraym_64kbps' },
+    { id: 'husary',     name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',   base: 'https://everyayah.com/data/Husary_64kbps' },
+    { id: 'abdulbasit', name: 'അബ്ദുൽ ബാസിത്വ്',          base: 'https://everyayah.com/data/Abdul_Basit_Murattal_64kbps' },
+    { id: 'jibreel',    name: 'മുഹമ്മദ് ജിബ്രീൽ',         base: 'https://everyayah.com/data/Muhammad_Jibreel_64kbps' },
+    { id: 'budair',     name: 'സ്വലാഹ് അൽ ബുദൈർ',        base: 'https://everyayah.com/data/Salah_Al_Budair_128kbps' }
   ];
   onReady(function () {
     if (typeof RECITERS === 'undefined' || typeof initReciters !== 'function') return;
@@ -240,6 +238,60 @@
     });
     initReciters();                                     // rebuild the dropdown with the longer list
   });
+
+  /* ===== recitation audio and the phone's storage =====
+     - default reciter (Al-Ghamdi): each verse is saved on the device the first time it plays
+     - every other reciter: streamed only, nothing is saved
+     - offline: plays from the saved files (for another reciter, the saved Al-Ghamdi file of the same verse)
+     - at most MAX_FILES verses are kept; the oldest are removed first */
+  var DEFAULT_REC = '/Ghamadi_40kbps/', AUDIO_CACHE = 'quran-audio-v1', MAX_FILES = 1000;
+  function isDefaultRec(url) { return url.indexOf(DEFAULT_REC) > -1; }
+  function trimAudio(c) {
+    return c.keys().then(function (ks) { for (var i = 0; i < ks.length - MAX_FILES; i++) c.delete(ks[i]); });
+  }
+  window.cachedSrc = function (url) {                    // replaces the page's own cachedSrc()
+    if (!window.caches) return Promise.resolve(url);
+    var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
+    var alt = url.replace(/\/data\/[^/]+\//, '/data/Ghamadi_40kbps/');
+    return caches.open(AUDIO_CACHE).then(function (c) {
+      var saved = function () {                          // saved copy of this verse: its own file, else Al-Ghamdi's
+        return c.match(url).then(function (h) { return h || c.match(alt); })
+                .then(function (h) { return h ? blobUrl(h) : url; });
+      };
+      if (!navigator.onLine) return saved();
+      if (!isDefaultRec(url)) return url;                // other reciters: stream only
+      return c.match(url).then(function (hit) {
+        if (hit) return blobUrl(hit);
+        return fetch(url, { mode: 'cors' }).then(function (r) {
+          if (!r.ok) return url;
+          return c.put(url, r.clone()).then(function () { trimAudio(c); return blobUrl(r); });
+        }).catch(saved);                                 // connection failed → use what is saved
+      });
+    }).catch(function () { return url; });
+  };
+  if (window.caches) {                                   // one-time clean-up: remove other reciters saved by earlier versions
+    caches.open(AUDIO_CACHE).then(function (c) {
+      return c.keys().then(function (ks) { ks.forEach(function (r) { if (!isDefaultRec(r.url)) c.delete(r); }); });
+    }).catch(function () {});
+  }
+
+  /* ===== error messages =====
+     - verse recitation (Arabic audio) fails  -> VERSE_ERROR
+     - text to speech (സാരം / വിവരണം / മുഖവുര) fails -> its own message, with TRY_AGAIN added in front */
+  var VERSE_ERROR = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, അല്ലെങ്കിൽ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക';
+  var TRY_AGAIN = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, ';
+  onReady(function () {
+    if (typeof window.fail !== 'function') return;
+    var origFail = window.fail;
+    window.fail = function (my, msg) {
+      msg = msg || '';
+      var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');   // read before fail() clears it
+      if (recitation) msg = VERSE_ERROR;
+      else if (msg.indexOf(TRY_AGAIN) !== 0) msg = TRY_AGAIN + msg;
+      origFail(my, msg);
+    };
+  });
+
   /* offline support */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () {
