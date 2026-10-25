@@ -165,7 +165,7 @@ body{top:0!important}
   <div class="tafsir-card">
     <h3>📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ (Tafsir)</h3>
     <p>വിശുദ്ധ ഖുർആന്റെ സമഗ്രമായ വ്യാഖ്യാനങ്ങളും വിശദീകരണങ്ങളും വായിക്കുക.</p>
-    <a href="https://onlinenanma.github.io/quran/tafsir" target="_blank" class="tafsir-btn">തഫ്സീറുകൾ വായിക്കാം</a>
+    <a href="https://onlinenanma.github.io/quran/tafsir" target="_top" class="tafsir-btn">തഫ്സീറുകൾ വായിക്കാം</a>
   </div>
 
   <!-- Hijri Date Sub-Banner -->
@@ -183,15 +183,15 @@ body{top:0!important}
             <option value="">Select Major International City</option>
 
             <optgroup label="India & Kerala">
-              <option value="10.8505,76.2711">Kochi, India</option>
+              <option value="9.9312,76.2673">Kochi, India</option>
               <option value="10.5200,76.2100">Thrissur, India</option>
-              <option value="11.8588,75.3772">Kozhikode, India</option>
+              <option value="11.2588,75.7804">Kozhikode, India</option>
               <option value="8.5241,76.9366">Trivandrum, India</option>
               <option value="9.0581,76.5414">Karunagappally, India</option>
               <option value="19.0760,72.8777">Mumbai, India</option>
               <option value="28.7041,77.1025">Delhi, India</option>
-              <option value="12.2958,76.6394">Bangalore, India</option>
-              <option value="13.1939,80.1829">Chennai, India</option>
+              <option value="12.9716,77.5946">Bangalore, India</option>
+              <option value="13.0827,80.2707">Chennai, India</option>
               <option value="17.3850,78.4867">Hyderabad, India</option>
             </optgroup>
 
@@ -397,76 +397,112 @@ async function startSensors(manual) {
 
 function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }
 
-async function fetchHijriDate(lat, lon) {
-  try {
-    const today = new Date();
-    const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-    const res = await fetch(`https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lon}&method=2`);
-    const data = await res.json();
-    if (data && data.code === 200) {
-      const h = data.data.date.hijri;
-      document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`;
-    }
-  } catch (e) {
-    document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്`;
-  }
+function showHijri(h){
+  try{ document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`; }catch(e){}
 }
+
+let locLocked = false;   // true once the visitor picks a city / uses GPS, so a late IP lookup cannot override it
+let ptGen = 0;           // ignore prayer-time answers that arrive late
+const LOC_KEY = 'qs-loc';
+function rememberLocation(lat, lon, name){ try{ localStorage.setItem(LOC_KEY, JSON.stringify({lat, lon, name})); }catch(e){} }
 
 async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
   const disp=document.getElementById('prayerTimesDisplay'),sub=document.getElementById('locationSubtitle'),qsub=document.getElementById('qiblaSubtitle');
-  disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
+  const my=++ptGen;
   updateQiblaUI(lat,lon);
-  fetchHijriDate(lat, lon);
+  const t=new Date(), ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
+  const key=`qs-pt:${lat.toFixed(2)},${lon.toFixed(2)}:${ds}`;
+  const label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+  const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};
+  const draw=c=>{
+    sub.innerText=label; qsub.innerText=label;
+    let h='';
+    for(const [k,v] of Object.entries(names)) if(c.tm[k]) h+=`<div class="prayer-time-card"><div class="prayer-name">${v}</div><div class="prayer-time">${c.tm[k]}</div></div>`;
+    disp.innerHTML=h;
+    if(c.h) showHijri(c.h);
+  };
+
+  /* today's times for this place are kept on the device: no repeat download (saves mobile data) */
+  try{ const c=JSON.parse(localStorage.getItem(key)); if(c&&c.tm){ draw(c); return; } }catch(e){}
+
+  disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
   try{
-    const t=new Date(),ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
     const res=await fetch(`https://api.aladhan.com/v1/timings/${ds}?latitude=${lat}&longitude=${lon}&method=2`);
     const data=await res.json();
+    if(my!==ptGen) return;
     if(data&&data.code===200){
-      const tm=data.data.timings,label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
-      sub.innerText=label;qsub.innerText=label;
-      const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};
-      let h='';
-      for(const [k,v] of Object.entries(names))if(tm[k])h+=`<div class="prayer-time-card"><div class="prayer-name">${v}</div><div class="prayer-time">${tm[k]}</div></div>`;
-      disp.innerHTML=h;
+      const c={tm:data.data.timings,h:data.data.date.hijri};
+      try{
+        for(let i=localStorage.length-1;i>=0;i--){ const k=localStorage.key(i); if(k&&k.startsWith('qs-pt:')&&!k.endsWith(':'+ds)) localStorage.removeItem(k); }
+        localStorage.setItem(key,JSON.stringify(c));
+      }catch(e){}
+      draw(c);
     }else disp.innerHTML=`<p class="loading-message">സമയങ്ങൾ ലഭ്യമായില്ല.</p>`;
-  }catch(err){disp.innerHTML=`<p class="loading-message">ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.</p>`;}
+  }catch(err){
+    if(my!==ptGen) return;
+    disp.innerHTML=`<p class="loading-message">ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.</p>`;
+    document.getElementById('hijriDateDisplay').innerText=`🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്`;
+  }
 }
 
 async function initWidgets(){
   startSensors(false);
+
+  /* the last city / GPS place the visitor chose is used again: no IP lookup needed */
   try{
-    const r=await fetch('https://ip-api.com/json/?fields=status,city,country,lat,lon'),d=await r.json();
-    if(d&&d.status==='success'){matchDropdownOption(d.lat,d.lon);fetchAndDisplayPrayerTimes(d.lat,d.lon,`${d.city}, ${d.country}`);return;}
+    const saved=JSON.parse(localStorage.getItem(LOC_KEY));
+    if(saved&&isFinite(saved.lat)&&isFinite(saved.lon)){
+      locLocked=true; matchDropdownOption(saved.lat,saved.lon);
+      fetchAndDisplayPrayerTimes(saved.lat,saved.lon,saved.name||"");
+      return;
+    }
   }catch(e){}
-  try{
-    const r=await fetch('https://ipapi.co/json/'),d=await r.json();
-    if(d&&d.latitude&&d.longitude){matchDropdownOption(d.latitude,d.longitude);fetchAndDisplayPrayerTimes(d.latitude,d.longitude,`${d.city}, ${d.country_name}`);return;}
-  }catch(e){}
-  document.getElementById('citySelect').value="10.8505,76.2711";
-  onCityDropdownChange();
+
+  /* otherwise find the place from the IP address (HTTPS services only) */
+  const sources=[
+    ['https://ipapi.co/json/', d=>d&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country_name}`}:null],
+    ['https://ipwho.is/',      d=>d&&d.success&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country}`}:null]
+  ];
+  for(const [url,pick] of sources){
+    try{
+      const r=await fetch(url), p=pick(await r.json());
+      if(p){ if(!locLocked){ matchDropdownOption(p.lat,p.lon); fetchAndDisplayPrayerTimes(p.lat,p.lon,p.place); } return; }
+    }catch(e){}
+  }
+  if(locLocked) return;
+  document.getElementById('citySelect').value="9.9312,76.2673";   // default: Kochi
+  onCityDropdownChange(true);
 }
 
 function requestGPSPermission(){
   if(navigator.geolocation)navigator.geolocation.getCurrentPosition(
-    p=>{const la=p.coords.latitude,lo=p.coords.longitude;matchDropdownOption(la,lo);fetchAndDisplayPrayerTimes(la,lo,"GPS Location");},
+    p=>{const la=p.coords.latitude,lo=p.coords.longitude;locLocked=true;matchDropdownOption(la,lo);rememberLocation(la,lo,"GPS Location");fetchAndDisplayPrayerTimes(la,lo,"GPS Location");},
     ()=>alert("Location access denied or unavailable."));
 }
 
+/* select the nearest listed city (within ~0.4°), or clear the box if none is close */
 function matchDropdownOption(lat,lon){
   const s=document.getElementById('citySelect');
+  let best=null,bd=0.4;
   for(const o of s.options){
     if(!o.value)continue;
-    const [a,b]=o.value.split(',').map(Number);
-    if(Math.abs(a-lat)<0.4&&Math.abs(b-lon)<0.4){s.value=o.value;break;}
+    const [a,b]=o.value.split(',').map(Number), d=Math.max(Math.abs(a-lat),Math.abs(b-lon));
+    if(d<bd){bd=d;best=o;}
   }
+  s.value=best?best.value:"";
 }
 
-function onCityDropdownChange(){
+function onCityDropdownChange(auto){
   const s=document.getElementById('citySelect');
   if(!s.value)return;
-  const [la,lo]=s.value.split(',');
-  fetchAndDisplayPrayerTimes(parseFloat(la),parseFloat(lo),s.options[s.selectedIndex].text);
+  const [la,lo]=s.value.split(',').map(parseFloat), name=s.options[s.selectedIndex].text;
+  if(auto!==true){ locLocked=true; rememberLocation(la,lo,name); }
+  fetchAndDisplayPrayerTimes(la,lo,name);
 }
+
+/* compass help window: close by tapping outside it or with Esc */
+document.getElementById('calibModal').addEventListener('click',e=>{ if(e.target.id==='calibModal') toggleCalibModal(false); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') toggleCalibModal(false); });
 </script>
 
 <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
