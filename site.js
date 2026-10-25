@@ -173,7 +173,8 @@
     if (my !== token) return;
     if (i >= chunks.length) { done(); return; }
     statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
-    var a = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]));
+       var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
+    a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
     currentAudio = a; a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
     a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
     a.onerror = function () { fail(my, 'Online voice is blocked or offline. Try Edge, or a device with the ' + code + ' voice installed.'); };
