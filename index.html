@@ -1,736 +1,403 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="ml">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Prayer Times & Qibla Widgets</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>ഖുർആൻ സാരം</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--dial:#fff}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--dial:#1d2f27}}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;overflow-x:hidden}
+body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
+.banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.bismi{font-family:"Noto Naskh Arabic",serif;font-size:clamp(1.3rem,4.5vw,2rem);color:var(--gold);margin-bottom:6px}
+.banner h1{font-size:clamp(2rem,8vw,3.8rem);font-weight:700;line-height:1.3}
+.wrap{max-width:1100px;margin:0 auto;padding:18px 12px 40px}
+.card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(14px,3vw,24px);box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.picker{margin:-34px auto 16px;position:relative;max-width:640px;text-align:center}
+.picker h2{font-size:1.1rem;color:var(--green2);margin-bottom:10px}
+@media(prefers-color-scheme:dark){.picker h2,.desc h2,.widget-title,.prayer-name,.qibla-angle-text{color:var(--gold)}}
+.row{display:flex;gap:8px;flex-direction:column}
+@media(min-width:500px){.row{flex-direction:row}}
+select,button{font-family:inherit;font-size:.95rem;padding:11px 12px;border-radius:6px;border:1px solid #c9d1cc;width:100%}
+select{background:var(--paper);color:var(--ink);cursor:pointer}
+button{background:var(--green2);color:#fff;border-color:var(--green2);font-weight:600;cursor:pointer;white-space:nowrap}
+@media(min-width:500px){.row button{width:auto}}
+button:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.desc{margin-top:20px}
+.desc p{margin-bottom:14px;text-align:justify;max-width:75ch;margin-inline:auto}
+.desc .dua{text-align:center;font-weight:600}
+.desc p:last-child{margin-bottom:0}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
+.widgets-wrapper{display:flex;flex-direction:column;gap:16px;width:100%}
+@media(min-width:850px){.widgets-wrapper{flex-direction:row;align-items:stretch}}
+.widget-container{padding:16px;width:100%;display:flex;flex-direction:column;gap:12px}
+.prayer-widget-box{flex:1.6}
+.qibla-widget-box{flex:1;align-items:center;text-align:center}
+.widget-title{color:var(--green);font-size:1.2rem;font-weight:700;text-align:center}
+.location-subtitle{text-align:center;font-size:.85rem;color:var(--muted);margin:2px 0 8px;font-weight:600;word-break:break-word}
+.city-selector{display:flex;gap:8px;width:100%;flex-direction:column}
+@media(min-width:500px){.city-selector{flex-direction:row}.city-selector button{width:auto}}
+.prayer-times-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;width:100%}
+.prayer-time-card{background:var(--card);border:1px solid #e2e8f0;border-top:3px solid var(--gold);border-radius:8px;padding:12px 6px;text-align:center}
+@media(prefers-color-scheme:dark){.prayer-time-card{border-color:#2c3f36;border-top-color:var(--gold)}}
+.prayer-name{color:var(--green);font-weight:700;font-size:.8rem;margin-bottom:4px}
+.prayer-time{font-weight:800;font-size:1.15rem}
+/* Compass */
+.compass-wrap{position:relative;width:190px;height:190px;margin:14px auto 6px}
+.phone-marker{position:absolute;top:-12px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid var(--green2);z-index:3}
+@media(prefers-color-scheme:dark){.phone-marker{border-top-color:#fff}}
+.compass-container{position:absolute;inset:0;border-radius:50%;border:3px solid var(--green2);background:radial-gradient(circle,var(--dial) 60%,rgba(128,128,128,.15) 100%);color:var(--muted);pointer-events:none;transition:transform .15s ease-out,box-shadow .2s}
+.compass-container.aligned{box-shadow:0 0 0 4px rgba(46,160,90,.55)}
+.compass-mark{position:absolute;font-weight:700;font-size:.8rem;line-height:1}
+.mark-n{top:16px;left:50%;transform:translateX(-50%);color:#d9534f;font-size:.95rem}
+.mark-e{right:9px;top:50%;margin-top:-6px}.mark-s{bottom:9px;left:50%;transform:translateX(-50%)}.mark-w{left:9px;top:50%;margin-top:-6px}
+.north-pointer{position:absolute;top:-3px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #d9534f}
+.north-line{position:absolute;left:50%;top:34px;width:2px;height:calc(50% - 34px);margin-left:-1px;background:#d9534f;opacity:.75}
+.qibla-needle{position:absolute;inset:0;transition:transform .15s ease-out}
+.qibla-needle .stem{position:absolute;left:50%;top:44px;width:4px;height:calc(50% - 44px);margin-left:-2px;background:var(--gold);border-radius:2px}
+.qibla-needle .head{position:absolute;left:50%;top:26px;margin-left:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:22px solid var(--gold);filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+.qibla-needle .kaaba{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--green2);border:2px solid var(--gold);border-radius:50%}
+.qibla-angle-text{font-size:1.15rem;font-weight:800;color:var(--green)}
+.compass-status{font-size:.78rem;color:var(--muted)}
+.legend{display:flex;gap:14px;justify-content:center;font-size:.75rem;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+.loading-message{color:var(--muted);font-size:.9rem;grid-column:1/-1;text-align:center;padding:12px}
+.btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
+@media(min-width:500px){.row .btn{width:auto}}
 
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+/* Updated Langpick selector styling to fix text truncation */
+.langpick{font-family:inherit;font-size:.85rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 16px;min-width:145px;white-space:nowrap;cursor:pointer}
+.langpick option{color:#22302a}
+.goog-te-banner-frame,.skiptranslate iframe{display:none!important}
+body{top:0!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
 
-  <style>
-    :root {
-      --accent-color: #1a3a2e;
-      --gold-border: #d4af37;
-      --card-bg: #ffffff;
-      --text-dark: #2c3e50;
-      --text-muted: #555555;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      width: 100%;
-      height: auto;
-      background-color: transparent;
-      font-family: "Noto Sans Malayalam", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: var(--text-dark);
-      overflow-x: hidden;
-    }
-
-    body {
-      padding: 10px;
-    }
-
-    /* Main Container Structure */
-    .page-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-    }
-
-    /* Hijri Date Box (Compact Sub-Card) */
-    .hijri-banner {
-      background: #f4f8f6;
-      color: var(--accent-color);
-      padding: 10px 14px;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 700;
-      border: 1px solid var(--gold-border);
-    }
-
-    /* Tafsir Card Box */
-    .tafsir-card {
-      background: var(--card-bg);
-      border: 2px solid var(--gold-border);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-      transition: transform 0.2s ease;
-    }
-
-    .tafsir-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .tafsir-card h3 {
-      color: var(--accent-color);
-      font-size: 1.15rem;
-      margin-bottom: 6px;
-    }
-
-    .tafsir-card p {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-
-    .tafsir-btn {
-      display: inline-block;
-      background: var(--accent-color);
-      color: #ffffff;
-      padding: 8px 18px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.2s;
-    }
-
-    .tafsir-btn:hover {
-      background: #254d3e;
-    }
-
-    /* Main Widgets Wrapper: Side-by-side on PC, Stacked on Mobile */
-    .widgets-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: 100%;
-      height: auto;
-    }
-
-    @media (min-width: 850px) {
-      .widgets-wrapper {
-        flex-direction: row;
-        align-items: stretch;
-      }
-    }
-
-    /* Shared Widget Container Styles */
-    .widget-container {
-      background: var(--card-bg);
-      padding: 16px;
-      border-radius: 12px;
-      width: 100%;
-      height: auto;
-      border: 2px solid var(--gold-border);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .prayer-widget-box {
-      flex: 1.6;
-    }
-
-    .qibla-widget-box {
-      flex: 1;
-      align-items: center;
-      text-align: center;
-    }
-
-    .widget-title {
-      color: var(--accent-color);
-      font-size: 1.2rem;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    .location-subtitle {
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin: 2px 0 8px;
-      font-weight: 500;
-      word-break: break-word;
-    }
-
-    .city-selector {
-      display: flex;
-      gap: 8px;
-      width: 100%;
-      margin-bottom: 6px;
-      flex-direction: column;
-    }
-
-    @media (min-width: 500px) {
-      .city-selector {
-        flex-direction: row;
-      }
-    }
-
-    .city-selector select, 
-    .city-selector button,
-    .btn-compass,
-    .btn-calib-info {
-      padding: 10px 12px;
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      width: 100%;
-    }
-
-    .city-selector select {
-      background: #fafafa;
-      color: var(--text-dark);
-      cursor: pointer;
-    }
-
-    .city-selector button,
-    .btn-compass {
-      background: var(--accent-color);
-      color: #ffffff;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid var(--accent-color);
-      white-space: nowrap;
-      position: relative;
-      z-index: 10;
-      pointer-events: auto;
-    }
-
-    .btn-calib-info {
-      background: #f0f4f2;
-      color: var(--accent-color);
-      border: 1px solid var(--accent-color);
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-
-    @media (min-width: 500px) {
-      .city-selector button {
-        width: auto;
-      }
-    }
-
-    /* Prayer Times Grid */
-    .prayer-times-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
-      gap: 10px;
-      width: 100%;
-    }
-
-    .prayer-time-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-top: 3px solid var(--gold-border);
-      border-radius: 8px;
-      padding: 12px 6px;
-      text-align: center;
-    }
-
-    .prayer-time-card .prayer-name {
-      color: var(--accent-color);
-      font-weight: 700;
-      font-size: 0.8rem;
-      margin-bottom: 4px;
-    }
-
-    .prayer-time-card .prayer-time {
-      color: var(--text-dark);
-      font-weight: 800;
-      font-size: 1.15rem;
-    }
-
-    /* Compass UI */
-    .compass-container {
-      position: relative;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 3px solid var(--accent-color);
-      background: radial-gradient(circle, #ffffff 60%, #f4f6f8 100%);
-      margin: 8px auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-      transition: transform 0.1s ease-out;
-    }
-
-    .compass-mark {
-      position: absolute;
-      font-weight: bold;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-    .mark-n { top: 4px; color: #d9534f; }
-    .mark-e { right: 8px; }
-    .mark-s { bottom: 4px; }
-    .mark-w { left: 8px; }
-
-    .qibla-needle {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: transform 0.15s ease-out;
-    }
-
-    .needle-pointer {
-      width: 0;
-      height: 0;
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      border-bottom: 42px solid var(--gold-border);
-      position: absolute;
-      top: 14px;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
-    }
-
-    .qibla-angle-text {
-      font-size: 1.15rem;
-      font-weight: 800;
-      color: var(--accent-color);
-    }
-
-    .compass-status {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .loading-message {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 12px;
-    }
-
-    /* Calibration Instructions Popup Modal */
-    .calib-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-
-    .calib-modal-content {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 420px;
-      width: 100%;
-      border: 2px solid var(--gold-border);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      text-align: left;
-    }
-
-    .calib-modal-content h4 {
-      color: var(--accent-color);
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .calib-modal-content ul {
-      padding-left: 20px;
-      margin-bottom: 14px;
-      font-size: 0.88rem;
-      color: var(--text-dark);
-      line-height: 1.5;
-    }
-
-    .calib-modal-content ul li {
-      margin-bottom: 6px;
-    }
-
-    .close-modal-btn {
-      width: 100%;
-      background: var(--accent-color);
-      color: white;
-      padding: 8px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
+.tafsir-link{display:block;text-align:center;text-decoration:none;color:var(--green2);font-weight:700;font-size:1.15rem;line-height:1.6;margin-bottom:16px}
+.tafsir-link small{font-weight:400;font-size:.8rem;color:var(--muted)}
+.tafsir-link:hover,.tafsir-link:focus-visible{background:var(--green2);color:#fff;outline:none}
+.tafsir-link:hover small,.tafsir-link:focus-visible small{color:#fff}
+@media(prefers-color-scheme:dark){.tafsir-link{color:var(--gold)}}
+</style>
 </head>
-
 <body onload="initWidgets()">
 
-  <div class="page-wrapper">
-    
-    <!-- Tafsir Card Box -->
-    <div class="tafsir-card">
-      <h3>📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ (Tafsir)</h3>
-      <p>വിശുദ്ധ ഖുർആന്റെ സമഗ്രമായ വ്യാഖ്യാനങ്ങളും വിശദീകരണങ്ങളും വായിക്കുക.</p>
-      <a href="https://onlinenanma.github.io/quran/tafsir" target="_blank" class="tafsir-btn">തഫ്സീറുകൾ വായിക്കാം</a>
+<header class="banner">
+ <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
+  <option value="">🌐 Language</option>
+  <option value="ml">മലയാളം</option>
+  <option value="en">English</option>
+  <option value="hi">हिन्दी</option>
+  <option value="ta">தமிழ்</option>
+  <option value="te">తెలుగు</option>
+  <option value="kn">ಕನ್ನಡ</option>
+  <option value="mr">मराठी</option>
+  <option value="gu">ગુજરાતી</option>
+  <option value="pa">ਪੰਜਾਬੀ</option>
+  <option value="bn">বাংলা</option>
+  <option value="ur">اردو</option>
+  <option value="ne">नेपाली</option>
+  <option value="si">සිංහල</option>
+  <option value="ar">العربية</option>
+  <option value="fa">فارسی</option>
+  <option value="tr">Türkçe</option>
+  <option value="id">Indonesia</option>
+  <option value="ms">Melayu</option>
+  <option value="th">ไทย</option>
+  <option value="vi">Tiếng Việt</option>
+  <option value="zh-CN">中文简体</option>
+  <option value="zh-TW">中文繁體</option>
+  <option value="ja">日本語</option>
+  <option value="ko">한국어</option>
+  <option value="fr">Français</option>
+  <option value="de">Deutsch</option>
+  <option value="es">Español</option>
+  <option value="pt">Português</option>
+  <option value="it">Italiano</option>
+  <option value="ru">Русский</option>
+  <option value="nl">Nederlands</option>
+  <option value="pl">Polski</option>
+  <option value="uk">Українська</option>
+  <option value="sv">Svenska</option>
+  <option value="el">Ελληνικά</option>
+  <option value="ro">Română</option>
+  <option value="sw">Kiswahili</option>
+  <option value="am">አማርኛ</option>
+  <option value="ha">Hausa</option>
+</select>
+  <div class="bismi">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+  <h1>ഖുർആൻ സാരം</h1>
+</header>
+
+<main class="wrap">
+  <section class="card picker" aria-labelledby="sh">
+    <h2 id="sh">സൂറത്ത് തിരഞ്ഞെടുക്കുക</h2>
+    <div class="row">
+      <select id="surahSelect" aria-label="സൂറത്ത്"></select>
+      <a id="openLink" class="btn" href="#" target="_top" rel="noopener">തുറക്കുക</a>
     </div>
+  </section>
 
-    <!-- Hijri Date Sub-Banner -->
-    <div id="hijriDateDisplay" class="hijri-banner">
-      🌙 ഹിജ്റ തീയതി: ലോഡ് ചെയ്യുന്നു...
-    </div>
+  <div class="widgets-wrapper">
+    <div class="card widget-container prayer-widget-box">
+      <div>
+        <h3 class="widget-title">🕌 നമസ്‌കാര സമയങ്ങൾ (Prayer Times)</h3>
+        <div id="locationSubtitle" class="location-subtitle">ലൊക്കേഷൻ കണ്ടെത്തുന്നു...</div>
+        <div class="city-selector">
+          <select id="citySelect" onchange="onCityDropdownChange()">
+            <option value="">Select Major International City</option>
 
-    <!-- Main Widgets Grid Wrapper -->
-    <div class="widgets-wrapper">
-      
-      <!-- Widget 1: Prayer Times -->
-      <div class="widget-container prayer-widget-box">
-        <div>
-          <h3 class="widget-title">🕌 നമസ്‌കാര സമയങ്ങൾ (Prayer Times)</h3>
-          <div id="locationSubtitle" class="location-subtitle">ലൊക്കേഷൻ കണ്ടെത്തുന്ന...</div>
+            <optgroup label="India & Kerala">
+              <option value="10.8505,76.2711">Kochi, India</option>
+              <option value="10.5200,76.2100">Thrissur, India</option>
+              <option value="11.8588,75.3772">Kozhikode, India</option>
+              <option value="8.5241,76.9366">Trivandrum, India</option>
+              <option value="9.0581,76.5414">Karunagappally, India</option>
+              <option value="19.0760,72.8777">Mumbai, India</option>
+              <option value="28.7041,77.1025">Delhi, India</option>
+              <option value="12.2958,76.6394">Bangalore, India</option>
+              <option value="13.1939,80.1829">Chennai, India</option>
+              <option value="17.3850,78.4867">Hyderabad, India</option>
+            </optgroup>
 
-          <div class="city-selector">
-            <select id="citySelect" onchange="onCityDropdownChange()">
-              <option value="">Select Major International City</option>
+            <optgroup label="Middle East & Gulf">
+              <option value="21.4225,39.8262">Makkah, Saudi Arabia</option>
+              <option value="24.4672,39.6112">Madinah, Saudi Arabia</option>
+              <option value="21.5433,39.1728">Jeddah, Saudi Arabia</option>
+              <option value="24.7136,46.6753">Riyadh, Saudi Arabia</option>
+              <option value="26.4207,50.0888">Dammam, Saudi Arabia</option>
+              <option value="25.2769,55.2962">Dubai, UAE</option>
+              <option value="24.4539,54.3773">Abu Dhabi, UAE</option>
+              <option value="25.2854,51.5310">Doha, Qatar</option>
+              <option value="29.3759,47.9774">Kuwait City, Kuwait</option>
+              <option value="26.2278,50.5856">Manama, Bahrain</option>
+              <option value="23.5880,58.3829">Muscat, Oman</option>
+              <option value="17.0151,54.0924">Salalah, Oman</option>
+              <option value="30.0444,31.2357">Cairo, Egypt</option>
+              <option value="31.9454,35.9284">Amman, Jordan</option>
+              <option value="41.0082,28.9784">Istanbul, Turkey</option>
+            </optgroup>
 
-              <optgroup label="India & Kerala">
-                <option value="10.8505,76.2711">Kochi, India</option>
-                <option value="10.5200,76.2100">Thrissur, India</option>
-                <option value="11.8588,75.3772">Kozhikode, India</option>
-                <option value="8.5241,76.9366">Trivandrum, India</option>
-                <option value="9.0581,76.5414">Karunagappally, India</option>
-                <option value="19.0760,72.8777">Mumbai, India</option>
-                <option value="28.7041,77.1025">Delhi, India</option>
-                <option value="12.2958,76.6394">Bangalore, India</option>
-                <option value="13.1939,80.1829">Chennai, India</option>
-                <option value="17.3850,78.4867">Hyderabad, India</option>
-              </optgroup>
+            <optgroup label="Asia & Oceania">
+              <option value="3.1390,101.6869">Kuala Lumpur, Malaysia</option>
+              <option value="-6.2088,106.8456">Jakarta, Indonesia</option>
+              <option value="1.3521,103.8198">Singapore</option>
+              <option value="23.8103,90.4125">Dhaka, Bangladesh</option>
+              <option value="24.8607,67.0011">Karachi, Pakistan</option>
+              <option value="35.6762,139.6503">Tokyo, Japan</option>
+              <option value="37.5665,126.9780">Seoul, South Korea</option>
+              <option value="13.7563,100.5018">Bangkok, Thailand</option>
+              <option value="-33.8688,151.2093">Sydney, Australia</option>
+              <option value="-37.8136,144.9631">Melbourne, Australia</option>
+            </optgroup>
 
-              <optgroup label="Middle East & Gulf">
-                <option value="21.4225,39.8262">Makkah, Saudi Arabia</option>
-                <option value="24.4672,39.6112">Madinah, Saudi Arabia</option>
-                <option value="21.5433,39.1728">Jeddah, Saudi Arabia</option>
-                <option value="24.7136,46.6753">Riyadh, Saudi Arabia</option>
-                <option value="26.4207,50.0888">Dammam, Saudi Arabia</option>
-                <option value="25.2769,55.2962">Dubai, UAE</option>
-                <option value="24.4539,54.3773">Abu Dhabi, UAE</option>
-                <option value="25.2854,51.5310">Doha, Qatar</option>
-                <option value="29.3759,47.9774">Kuwait City, Kuwait</option>
-                <option value="26.2278,50.5856">Manama, Bahrain</option>
-                <option value="23.5880,58.3829">Muscat, Oman</option>
-                <option value="17.0151,54.0924">Salalah, Oman</option>
-                <option value="30.0444,31.2357">Cairo, Egypt</option>
-                <option value="31.9454,35.9284">Amman, Jordan</option>
-                <option value="41.0082,28.9784">Istanbul, Turkey</option>
-              </optgroup>
+            <optgroup label="Europe">
+              <option value="51.5074,-0.1278">London, United Kingdom</option>
+              <option value="48.8566,2.3522">Paris, France</option>
+              <option value="52.5200,13.4050">Berlin, Germany</option>
+              <option value="52.3676,4.9041">Amsterdam, Netherlands</option>
+              <option value="55.7558,37.6173">Moscow, Russia</option>
+              <option value="40.4168,-3.7038">Madrid, Spain</option>
+              <option value="41.9028,12.4964">Rome, Italy</option>
+            </optgroup>
 
-              <optgroup label="Asia & Oceania">
-                <option value="3.1390,101.6869">Kuala Lumpur, Malaysia</option>
-                <option value="-6.2088,106.8456">Jakarta, Indonesia</option>
-                <option value="1.3521,103.8198">Singapore</option>
-                <option value="23.8103,90.4125">Dhaka, Bangladesh</option>
-                <option value="24.8607,67.0011">Karachi, Pakistan</option>
-                <option value="35.6762,139.6503">Tokyo, Japan</option>
-                <option value="37.5665,126.9780">Seoul, South Korea</option>
-                <option value="13.7563,100.5018">Bangkok, Thailand</option>
-                <option value="-33.8688,151.2093">Sydney, Australia</option>
-                <option value="-37.8136,144.9631">Melbourne, Australia</option>
-              </optgroup>
-
-              <optgroup label="Europe">
-                <option value="51.5074,-0.1278">London, United Kingdom</option>
-                <option value="48.8566,2.3522">Paris, France</option>
-                <option value="52.5200,13.4050">Berlin, Germany</option>
-                <option value="52.3676,4.9041">Amsterdam, Netherlands</option>
-                <option value="55.7558,37.6173">Moscow, Russia</option>
-                <option value="40.4168,-3.7038">Madrid, Spain</option>
-                <option value="41.9028,12.4964">Rome, Italy</option>
-              </optgroup>
-
-              <optgroup label="Americas & Africa">
-                <option value="40.7128,-74.0060">New York, USA</option>
-                <option value="34.0522,-118.2437">Los Angeles, USA</option>
-                <option value="41.8781,-87.6298">Chicago, USA</option>
-                <option value="43.6532,-79.3832">Toronto, Canada</option>
-                <option value="-23.5505,-46.6333">São Paulo, Brazil</option>
-                <option value="-33.9249,18.4241">Cape Town, South Africa</option>
-                <option value="6.5244,3.3792">Lagos, Nigeria</option>
-              </optgroup>
-            </select>
-
-            <button type="button" onclick="requestGPSPermission()">📍 GPS Precision</button>
-          </div>
-        </div>
-
-        <div id="prayerTimesDisplay" class="prayer-times-grid">
-          <p class="loading-message">സമയങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p>
+            <optgroup label="Americas & Africa">
+              <option value="40.7128,-74.0060">New York, USA</option>
+              <option value="34.0522,-118.2437">Los Angeles, USA</option>
+              <option value="41.8781,-87.6298">Chicago, USA</option>
+              <option value="43.6532,-79.3832">Toronto, Canada</option>
+              <option value="-23.5505,-46.6333">São Paulo, Brazil</option>
+              <option value="-33.9249,18.4241">Cape Town, South Africa</option>
+              <option value="6.5244,3.3792">Lagos, Nigeria</option>
+            </optgroup>
+          </select>
+          <button type="button" onclick="requestGPSPermission()">📍 GPS Precision</button>
         </div>
       </div>
+      <div id="prayerTimesDisplay" class="prayer-times-grid"><p class="loading-message">സമയങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p></div>
+    </div>
 
-      <!-- Widget 2: Qibla Direction -->
-      <div class="widget-container qibla-widget-box">
-        <h3 class="widget-title">🕋 ഖിബ്‌ല ദിശ (Qibla)</h3>
-        <div id="qiblaSubtitle" class="location-subtitle">ലൊക്കേഷൻ കാത്തിരിക്കുന്നു...</div>
-
+    <div class="card widget-container qibla-widget-box">
+      <h3 class="widget-title">🕋 ഖിബ്‌ല ദിശ (Qibla)</h3>
+      <div id="qiblaSubtitle" class="location-subtitle">ലൊക്കേഷൻ കാത്തിരിക്കുന്നു...</div>
+      <div class="compass-wrap">
+        <div class="phone-marker" title="Phone direction"></div>
         <div id="compassDial" class="compass-container">
-          <span class="compass-mark mark-n">N</span>
-          <span class="compass-mark mark-e">E</span>
-          <span class="compass-mark mark-s">S</span>
-          <span class="compass-mark mark-w">W</span>
-          
-          <div id="qiblaNeedle" class="qibla-needle">
-            <div class="needle-pointer"></div>
-          </div>
+          <div class="north-pointer"></div><div class="north-line"></div>
+          <span class="compass-mark mark-n">N</span><span class="compass-mark mark-e">E</span>
+          <span class="compass-mark mark-s">S</span><span class="compass-mark mark-w">W</span>
+          <div id="qiblaNeedle" class="qibla-needle"><div class="head"></div><div class="stem"></div><div class="kaaba"></div></div>
         </div>
-
-        <div id="qiblaAngle" class="qibla-angle-text">--°</div>
-        <div id="compassStatus" class="compass-status">(True North)</div>
-        
-        <button id="btnStartCompass" class="btn-compass" style="max-width: 250px; font-size: 0.85rem; padding: 8px 14px; margin-top: 4px;" onclick="enableLiveCompass(event)" ontouchstart="enableLiveCompass(event)">
-          🧭 Start Live Compass
-        </button>
-
-        <button class="btn-calib-info" style="max-width: 250px; font-size: 0.8rem; padding: 6px 12px;" onclick="toggleCalibModal(true)">
-          ℹ️ Compass Calibration Guide
-        </button>
       </div>
-
-    </div>
-
-  </div>
-
-  <!-- Calibration Guide Modal Popup -->
-  <div id="calibModal" class="calib-modal">
-    <div class="calib-modal-content">
-      <h4>🧭 Compass Calibration Guide</h4>
-      <ul>
-        <li><strong>Hold Phone Flat:</strong> Keep your mobile device completely flat parallel to the ground for optimal magnetic sensor readings.</li>
-        <li><strong>Figure-8 Motion:</strong> Wave your phone slowly in a horizontal "8" pattern 2-3 times in the air to calibrate the built-in sensor.</li>
-        <li><strong>Avoid Magnetic Cases:</strong> Remove phone cases containing magnets, metallic rings, or magnetic latches.</li>
-        <li><strong>Stay Away from Electronics:</strong> Move away from metal tables, laptops, or large electrical appliances.</li>
-      </ul>
-      <button class="close-modal-btn" onclick="toggleCalibModal(false)">Close / മനസ്സിലായി</button>
+      <div class="legend"><span><i style="background:#d9534f"></i>True North</span><span><i style="background:var(--gold)"></i>Qibla</span></div>
+      <div id="qiblaAngle" class="qibla-angle-text">--°</div>
+      <div id="compassStatus" class="compass-status">Tap Start Compass &middot; keep phone flat</div>
+      <button id="btnStartCompass" type="button" style="max-width:250px;font-size:.85rem;padding:8px 14px" onclick="enableLiveCompass(event)">🧭 Calibrate / Start Compass</button>
     </div>
   </div>
 
-  <script>
-    let currentQiblaBearing = 0;
-    let deviceHeading = 0;
+  <section class="card desc">
+    <h2 style="color:var(--green2);font-size:1.25rem;margin-bottom:12px;text-align:center">സ്വാഗതം</h2>
+    <p>അർ-റഹ്‌മാനും അർ-റഹീമുമായ അല്ലാഹുവിന്റെ നാമത്തില്‍. സർവ്വ സ്തുതികളും ലോകങ്ങളുടെ റബ്ബായ അല്ലാഹുവിന്നാകുന്നു. അന്തിമ പ്രാവാചകൻ മുഹമ്മദ് നബി (ﷺ) യുടെ മേൽ അല്ലാഹുവിന്റെ സ്വലാത്തും സലാമും സദാ വർഷിക്കുമാറാകട്ടെ. ആമീൻ.</p>
+    <p>വിശുദ്ധ ഖുർആൻ പാരായണത്തിനും പഠനത്തിനും സഹായിക്കുന്ന ഒരു ഡിജിറ്റൽ സംരംഭമാണ് 'ഖുർആൻ സാരം'. ഖുർആനിക വചനങ്ങളുടെ സാരവും ചുരുക്കരൂപത്തിലുള്ള വിവരണവും എളുപ്പത്തിൽ വായിക്കാനും, കേട്ട് മനസ്സിലാക്കാനും, മറ്റുള്ളവരിലേക്ക് എത്തിക്കാനും ഈ സൈറ്റ് സഹായിക്കുന്നു. വിശുദ്ധ ഖുർആന്റെ പാരായണം ആവർത്തിച്ച് ആസ്വദിക്കാനും, അതിന്റെ മഹത്തായ ആശയങ്ങൾ ലളിതമായി മനസ്സിലാക്കാനും അനുയോജ്യമായ രീതിയിലാണ് ഇതിന്റെ ഉള്ളടക്കം ക്രമീകരിച്ചിരിക്കുന്നത്.</p>
+    <p>നിങ്ങളുടെ കുടുംബങ്ങൾക്കും സുഹൃത്തക്കൾക്കും ഈ സൈറ്റ് ഷെയർ ചെയ്ത് അവരെ കൂടി ഈ നന്മയിൽ പങ്കാളികളാക്കാൻ ശ്രദ്ദിക്കുമല്ലോ. അള്ളാഹു അവന്റെ റഹ്‌മത് നമ്മുടെ മേൽ ഇരു ലോകത്തും ചൊരിഞ്ഞു തരുമാറാകട്ടെ.</p>
+    <p class="dua">റഹ്‌മാനായ റബ്ബേ.. ഈ പരിശ്രമം ഒരു സത്കർമ്മമായി നീ സ്വീകരിക്കുമാറാകണേ.. ആമീൻ.</p>
+  </section>
+</main>
 
-    function toggleCalibModal(show) {
-      document.getElementById('calibModal').style.display = show ? 'flex' : 'none';
-    }
+<footer>© ഖുർആൻ സാരം</footer>
 
-    function calculateQibla(lat, lon) {
-      const kaabaLat = 21.4225 * Math.PI / 180;
-      const kaabaLon = 39.8262 * Math.PI / 180;
-      const userLat = lat * Math.PI / 180;
-      const userLon = lon * Math.PI / 180;
+<script>
+const SURAH_URL = n => `https://onlinenanma.github.io/quran/${n}`;
+const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,അത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
+(function(){
+  const s=document.getElementById('surahSelect');
+  s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
+  SURAHS.forEach((n,i)=>{const k=String(i+1).padStart(3,'0');s.add(new Option(`${k} - ${n}`,k));});
+  s.addEventListener('change',openSurah);
+})();
 
-      const dLon = kaabaLon - userLon;
-      const y = Math.sin(dLon);
-      const x = Math.cos(userLat) * Math.tan(kaabaLat) - Math.sin(userLat) * Math.cos(dLon);
-      
-      let qibla = Math.atan2(y, x) * 180 / Math.PI;
-      return (qibla + 360) % 360;
-    }
+function openSurah(){
+  const v = document.getElementById('surahSelect').value, a = document.getElementById('openLink');
+  if (!v) { a.removeAttribute('href'); return; }
+  a.href = SURAH_URL(v);
+  a.click();
+}
 
-    function updateQiblaUI(lat, lon) {
-      currentQiblaBearing = calculateQibla(lat, lon);
-      document.getElementById('qiblaAngle').innerText = `${currentQiblaBearing.toFixed(1)}°`;
-      renderCompass();
-    }
+let currentQiblaBearing=0,deviceHeading=0,hasHeading=false,dialAngle=0,sinH=0,cosH=1,sensorOn=false;
 
-    function renderCompass() {
-      const needle = document.getElementById('qiblaNeedle');
-      const dial = document.getElementById('compassDial');
-      if (dial && needle) {
-        dial.style.transform = `rotate(${-deviceHeading}deg)`;
-        needle.style.transform = `rotate(${currentQiblaBearing}deg)`;
-      }
-    }
+function calculateQibla(lat,lon){
+  const kl=21.4225*Math.PI/180,ko=39.8262*Math.PI/180,ul=lat*Math.PI/180,uo=lon*Math.PI/180,d=ko-uo;
+  const y=Math.sin(d),x=Math.cos(ul)*Math.tan(kl)-Math.sin(ul)*Math.cos(d);
+  return (Math.atan2(y,x)*180/Math.PI+360)%360;
+}
 
-    function handleOrientation(event) {
-      let heading = null;
+function updateQiblaUI(lat,lon){
+  currentQiblaBearing=calculateQibla(lat,lon);
+  document.getElementById('qiblaAngle').innerText=`${currentQiblaBearing.toFixed(1)}°`;
+  renderCompass();
+}
 
-      if (event.webkitCompassHeading !== undefined && event.webkitCompassHeading !== null) {
-        heading = event.webkitCompassHeading;
-      } else if (event.absolute === true || event.alpha !== null) {
-        heading = 360 - event.alpha;
-      }
+function headingFrom(e) {
+  if (e.webkitCompassHeading != null) return e.webkitCompassHeading;
+  if (e.alpha == null) return null;
+  if (e.beta == null || e.gamma == null) return (360 - e.alpha) % 360;
+  const r = Math.PI / 180, a = e.alpha * r, b = e.beta * r, g = e.gamma * r;
+  const rA = -Math.cos(a) * Math.sin(g) - Math.sin(a) * Math.sin(b) * Math.cos(g);
+  const rB = -Math.sin(a) * Math.sin(g) + Math.cos(a) * Math.sin(b) * Math.cos(g);
+  return (Math.atan2(rA, rB) / r + 360) % 360;
+}
 
-      if (heading !== null && !isNaN(heading)) {
-        deviceHeading = heading;
-        renderCompass();
-        document.getElementById('compassStatus').innerText = "Live Sensor Active";
-        const btn = document.getElementById('btnStartCompass');
-        if (btn) btn.style.display = 'none';
-      }
-    }
+function setHeading(h) {
+  const r = Math.PI / 180;
+  if (!hasHeading) { sinH = Math.sin(h * r); cosH = Math.cos(h * r); }
+  else { sinH = sinH * 0.75 + Math.sin(h * r) * 0.25; cosH = cosH * 0.75 + Math.cos(h * r) * 0.25; }
+  deviceHeading = (Math.atan2(sinH, cosH) / r + 360) % 360;
+  hasHeading = true; 
+  renderCompass();
+}
 
-    async function enableLiveCompass(e) {
-      if (e) { e.preventDefault(); e.stopPropagation(); }
-      const statusEl = document.getElementById('compassStatus');
+function handleOrientation(e) {
+  if (e.webkitCompassHeading == null && e.type !== 'deviceorientationabsolute' && e.absolute !== true) return;
+  const h = headingFrom(e); if (h == null || isNaN(h)) return;
+  const so = (screen.orientation && screen.orientation.angle) || 0;
+  setHeading((h + so) % 360);
+  const b = document.getElementById('btnStartCompass'); if (b) b.style.display = 'none';
+}
 
-      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        try {
-          const response = await DeviceOrientationEvent.requestPermission();
-          if (response === 'granted') {
-            window.addEventListener('deviceorientation', handleOrientation, true);
-          } else {
-            statusEl.innerText = "Permission Denied";
-          }
-        } catch (err) { console.error(err); }
-      } else if ('ondeviceorientationabsolute' in window) {
-        window.addEventListener('deviceorientationabsolute', handleOrientation, true);
-      } else if ('ondeviceorientation' in window) {
-        window.addEventListener('deviceorientation', handleOrientation, true);
-      } else {
-        statusEl.innerText = "Sensors Not Supported";
-      }
-    }
+function renderCompass(){
+  const n = document.getElementById('qiblaNeedle'), d = document.getElementById('compassDial');
+  if(!d||!n)return;
+  dialAngle += ((((-deviceHeading - dialAngle + 180) % 360) + 360) % 360) - 180;
+  d.style.transform=`rotate(${dialAngle}deg)`;
+  n.style.transform=`rotate(${currentQiblaBearing}deg)`;
+  if(hasHeading){
+    const diff=Math.abs(((currentQiblaBearing-deviceHeading+540)%360)-180), ok=diff<=5;
+    d.classList.toggle('aligned',ok);
+    document.getElementById('compassStatus').innerText=ok?"✓ ഖിബ്‌ല ദിശയിൽ (Facing Qibla)":"Turn until the gold arrow points to the top ▼";
+  }
+}
 
-    async function fetchHijriDate(lat, lon) {
-      try {
-        const today = new Date();
-        const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-        const res = await fetch(`https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lon}&method=2`);
-        const data = await res.json();
-        if (data && data.code === 200) {
-          const h = data.data.date.hijri;
-          document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`;
-        }
-      } catch (e) {
-        document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി ലഭ്യമാണ്`;
-      }
-    }
+async function startSensors(manual) {
+  const st = document.getElementById('compassStatus');
+  if (sensorOn) return;
+  try {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+      if (!manual) return;
+      if (await DeviceOrientationEvent.requestPermission() !== 'granted') { st.innerText = "Permission Denied"; return; }
+      window.addEventListener('deviceorientation', handleOrientation, true);
+    } else if ('ondeviceorientationabsolute' in window) window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+    else if ('ondeviceorientation' in window) window.addEventListener('deviceorientation', handleOrientation, true);
+    else { st.innerText = "Sensors Not Supported"; return; }
+    sensorOn = true;
+  } catch (err) { console.error(err); }
+  setTimeout(() => { if (!hasHeading) st.innerText = "സെൻസർ ഡാറ്റ ലഭിക്കുന്നില്ല. പേജ് നേരിട്ട് തുറന്ന് നോക്കുക."; }, 2500);
+}
 
-    async function fetchAndDisplayPrayerTimes(lat, lon, locationName = "") {
-      const display = document.getElementById('prayerTimesDisplay');
-      const subtitle = document.getElementById('locationSubtitle');
-      const qiblaSubtitle = document.getElementById('qiblaSubtitle');
-      
-      display.innerHTML = `<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
-      updateQiblaUI(lat, lon);
-      fetchHijriDate(lat, lon);
+function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }
 
-      try {
-        const today = new Date();
-        const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-        const response = await fetch(`https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lon}&method=2`);
-        const data = await response.json();
+async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
+  const disp=document.getElementById('prayerTimesDisplay'),sub=document.getElementById('locationSubtitle'),qsub=document.getElementById('qiblaSubtitle');
+  disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
+  updateQiblaUI(lat,lon);
+  try{
+    const t=new Date(),ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
+    const res=await fetch(`https://api.aladhan.com/v1/timings/${ds}?latitude=${lat}&longitude=${lon}&method=2`);
+    const data=await res.json();
+    if(data&&data.code===200){
+      const tm=data.data.timings,label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+      sub.innerText=label;qsub.innerText=label;
+      const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};
+      let h='';
+      for(const [k,v] of Object.entries(names))if(tm[k])h+=`<div class="prayer-time-card"><div class="prayer-name">${v}</div><div class="prayer-time">${tm[k]}</div></div>`;
+      disp.innerHTML=h;
+    }else disp.innerHTML=`<p class="loading-message">സമയങ്ങൾ ലഭ്യമായില്ല.</p>`;
+  }catch(err){disp.innerHTML=`<p class="loading-message">ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.</p>`;}
+}
 
-        if (data && data.code === 200) {
-          const timings = data.data.timings;
-          
-          if (locationName) {
-            subtitle.innerText = `📍 ${locationName}`;
-            qiblaSubtitle.innerText = `📍 ${locationName}`;
-          } else {
-            subtitle.innerText = `📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
-            qiblaSubtitle.innerText = `📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
-          }
+async function initWidgets(){
+  startSensors(false);
+  try{
+    const r=await fetch('https://ip-api.com/json/?fields=status,city,country,lat,lon'),d=await r.json();
+    if(d&&d.status==='success'){matchDropdownOption(d.lat,d.lon);fetchAndDisplayPrayerTimes(d.lat,d.lon,`${d.city}, ${d.country}`);return;}
+  }catch(e){}
+  try{
+    const r=await fetch('https://ipapi.co/json/'),d=await r.json();
+    if(d&&d.latitude&&d.longitude){matchDropdownOption(d.latitude,d.longitude);fetchAndDisplayPrayerTimes(d.latitude,d.longitude,`${d.city}, ${d.country_name}`);return;}
+  }catch(e){}
+  document.getElementById('citySelect').value="10.8505,76.2711";
+  onCityDropdownChange();
+}
 
-          const namesMap = {
-            Fajr: "ഫജ്ർ (Fajr)",
-            Sunrise: "സൂര്യോദയം (Sunrise)",
-            Dhuhr: "ദുഹ്ർ (Dhuhr)",
-            Asr: "അസർ (Asr)",
-            Maghrib: "മഗ്‌രിബ് (Maghrib)",
-            Isha: "ഇശാഅ് (Isha)"
-          };
+function requestGPSPermission(){
+  if(navigator.geolocation)navigator.geolocation.getCurrentPosition(
+    p=>{const la=p.coords.latitude,lo=p.coords.longitude;matchDropdownOption(la,lo);fetchAndDisplayPrayerTimes(la,lo,"GPS Location");},
+    ()=>alert("Location access denied or unavailable."));
+}
 
-          let html = '';
-          for (const [key, label] of Object.entries(namesMap)) {
-            if (timings[key]) {
-              html += `
-                <div class="prayer-time-card">
-                  <div class="prayer-name">${label}</div>
-                  <div class="prayer-time">${timings[key]}</div>
-                </div>
-              `;
-            }
-          }
-          display.innerHTML = html;
-        } else {
-          display.innerHTML = `<p class="loading-message">സമയങ്ങൾ ലഭ്യമായില്ല.</p>`;
-        }
-      } catch (err) {
-        display.innerHTML = `<p class="loading-message">ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.</p>`;
-      }
-    }
+function matchDropdownOption(lat,lon){
+  const s=document.getElementById('citySelect');
+  for(const o of s.options){
+    if(!o.value)continue;
+    const [a,b]=o.value.split(',').map(Number);
+    if(Math.abs(a-lat)<0.4&&Math.abs(b-lon)<0.4){s.value=o.value;break;}
+  }
+}
 
-    async function initWidgets() {
-      if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', handleOrientation, true);
-      }
+function onCityDropdownChange(){
+  const s=document.getElementById('citySelect');
+  if(!s.value)return;
+  const [la,lo]=s.value.split(',');
+  fetchAndDisplayPrayerTimes(parseFloat(la),parseFloat(lo),s.options[s.selectedIndex].text);
+}
+</script>
 
-      try {
-        const res = await fetch('https://ip-api.com/json/?fields=status,city,country,lat,lon');
-        const data = await res.json();
-        if (data && data.status === 'success') {
-          matchDropdownOption(data.lat, data.lon);
-          fetchAndDisplayPrayerTimes(data.lat, data.lon, `${data.city}, ${data.country}`);
-          return;
-        }
-      } catch (e) {}
-
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data && data.latitude && data.longitude) {
-          matchDropdownOption(data.latitude, data.longitude);
-          fetchAndDisplayPrayerTimes(data.latitude, data.longitude, `${data.city}, ${data.country_name}`);
-          return;
-        }
-      } catch (e) {}
-
-      document.getElementById('citySelect').value = "10.8505,76.2711";
-      onCityDropdownChange();
-    }
-
-    function requestGPSPermission() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            matchDropdownOption(lat, lon);
-            fetchAndDisplayPrayerTimes(lat, lon, "GPS Location");
-          },
-          () => { alert("Location access denied or unavailable."); }
-        );
-      }
-    }
-
-    function matchDropdownOption(lat, lon) {
-      const select = document.getElementById('citySelect');
-      for (let option of select.options) {
-        if (!option.value) continue;
-        const [optLat, optLon] = option.value.split(',').map(Number);
-        if (Math.abs(optLat - lat) < 0.4 && Math.abs(optLon - lon) < 0.4) {
-          select.value = option.value;
-          break;
-        }
-      }
-    }
-
-    function onCityDropdownChange() {
-      const select = document.getElementById('citySelect');
-      const val = select.value;
-      if (!val) return;
-      const [lat, lon] = val.split(',');
-      const selectedText = select.options[select.selectedIndex].text;
-      fetchAndDisplayPrayerTimes(parseFloat(lat), parseFloat(lon), selectedText);
-    }
-  </script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
 
 </body>
 </html>
