@@ -91,11 +91,14 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offse
 
 <script>
 /* ---- Edit these to match your site ---- */
-const TOTAL_AYAH = 286;   // total verses
-const PER_PAGE   = 20;    // verses per page
+const AYAH_COUNT = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+const SURAH = 2;                                   // change this number for each surah's page
+const TOTAL_AYAH = AYAH_COUNT[SURAH - 1];          // filled in automatically
+const PER_PAGE = 20;
 const BASE = 'https://onlinenanma.github.io/quran/';
-const PAGE_URL    = p => `${BASE}002-${p}`;   // .../002-1, 002-2, ...
-const SUMMARY_URL = `${BASE}002-summary`;
+const pad = String(SURAH).padStart(3, '0');
+const PAGE_URL = p => `${BASE}${pad}-${p}`;
+const SUMMARY_URL = `${BASE}${pad}-summary`;
 
 const grid = document.getElementById('grid');
 const pages = Math.ceil(TOTAL_AYAH / PER_PAGE);
