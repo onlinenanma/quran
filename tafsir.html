@@ -42,7 +42,6 @@ audio{width:100%;margin-top:10px}
 .bar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between;margin-bottom:12px}
 .bar .grp{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .st{font-size:.75rem;color:var(--muted);min-height:1.2em;margin-top:6px}
-/* tafsir: large reading area, no inner scroll box */
 .tafsir{background:var(--paper);border-radius:10px;padding:clamp(14px,3.5vw,28px);font-size:var(--tfs);line-height:2;min-height:55vh;white-space:pre-line;overflow-wrap:anywhere;text-align:left}
 .tafsir.rtl{direction:rtl;text-align:right;font-family:"Noto Naskh Arabic",serif;font-size:calc(var(--tfs) * 1.2);line-height:2.3}
 .pager{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:14px;color:var(--muted);font-size:.9rem}
@@ -68,7 +67,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
       <label>പാരായണം: 
         <select id="reciterSelect">
           <option value="ar.alafasy" selected>Mishary Rashid Alafasy</option>
-          <option value="ar.abdurrahmansudais">Abdul Rahman Al-Sudais</option>
+          <option value="ar.sudais">Abdul Rahman Al-Sudais</option>
           <option value="ar.abdulbasit">Abdul Basit</option>
           <option value="ar.minshawi">Mohamed Siddiq El-Minshawi</option>
           <option value="ar.hudhaify">Ali Al-Hudhaify</option>
@@ -98,11 +97,11 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
     <h2 style="margin-bottom:12px">തഫ്സീർ</h2>
     <div class="bar">
       <select id="tsel" onchange="loadTafsir()" aria-label="തഫ്സീർ തെരഞ്ഞെടുക്കാം">
-        <option value="169">ഇബ്നു കഥീർ (ഇംഗ്ലീഷ്)</option>
-        <option value="14">ഇബ്നു കഥീർ (അറബിക്)</option>
-        <option value="16">ഇബ്നു കഥീർ (അറബിക്) ചുരുക്കം</option>
-        <option value="15">ത്വബരീ</option>
-        <option value="91">സഅദീ</option>
+        <option value="169">തഫ്സീർ ഇബ്നു കഥീർ (ഇംഗ്ലീഷ്)</option>
+        <option value="14">തഫ്സീർ ഇബ്നു കഥീർ (അറബിക്)</option>
+        <option value="16">തഫ്സീർ ഇബ്നു കഥീർ (അറബിക്) ചുരുക്കം</option>
+        <option value="15">തഫ്സീർ ത്വബരീ</option>
+        <option value="91">തഫ്സീർ സഅദീ</option>
       </select>
       <div class="grp">
         <button type="button" class="alt" onclick="fs(-2)" aria-label="അക്ഷരം ചെറുതാക്കുക">A−</button>
