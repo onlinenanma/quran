@@ -57,8 +57,8 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 <body>
 <header class="banner">
   <div style="display:flex;justify-content:space-between;gap:12px">
-    <a class="back" href="https://onlinenanma.github.io/quran/">🏠 ഹോം</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖 സൂറത്ത് പട്ടിക</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/" target="_top">🏠 ഹോം</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index" target="_top">📖 സൂറത്ത് പട്ടിക</a>
   </div>
   <h1>ആയത്തും തഫ്സീറും</h1>
 </header>
@@ -73,11 +73,11 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
       </div>
       <div class="control-row">
         <label style="flex: 2;">പാരായണം: 
-          <select id="reciterFolder">
+          <select id="reciterFolder" onchange="setAudio()">
             <option value="Alafasy_64kbps" selected>Mishary Rashid Alafasy</option>
-            <option value="Sudais_64kbps">Abdul Rahman Al-Sudais</option>
-            <option value="Abdul_Basit_64kbps">Abdul Basit</option>
-            <option value="Minshaw_64kbps">Mohamed Siddiq El-Minshawi</option>
+            <option value="Abdurrahmaan_As-Sudais_64kbps">Abdul Rahman Al-Sudais</option>
+            <option value="Abdul_Basit_Murattal_64kbps">Abdul Basit</option>
+            <option value="Minshawy_Murattal_128kbps">Mohamed Siddiq El-Minshawi</option>
             <option value="Husary_64kbps">Mahmoud Khalil Al-Hussary</option>
             <option value="Hudhaify_64kbps">Ali Al-Hudhaify</option>
           </select>
@@ -129,7 +129,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 
 <script>
 const $ = id => document.getElementById(id);
-let S = 1, A = 1, MAX = 286, trans = "", raw = "", token = 0, tfs = 20;
+let S = 1, A = 1, trans = "", raw = "", token = 0, tfs = 20, gen = 0, tgen = 0;
 const utt = [];
 
 /* HTML -> plain text, keeping paragraph breaks */
@@ -144,50 +144,74 @@ function fs(d) {
 }
 fs(0);
 
+/* ---------- keep the screen awake while listening (otherwise it dims and speech stops) ---------- */
+let wl = null;
+async function wakeOn() { try { if ("wakeLock" in navigator && !wl) { wl = await navigator.wakeLock.request("screen"); wl.addEventListener("release", () => { wl = null; }); } } catch (e) {} }
+function wakeOff() { try { if (wl) wl.release(); } catch (e) {} wl = null; }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && ($("bV").classList.contains("stop") || $("bT").classList.contains("stop"))) wakeOn(); });
+
 /* ---------- verse ---------- */
+/* Number of ayahs in each of the 114 surahs (total 6236) */
+const COUNTS = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+function setSurahLimit() { $("aNo").max = COUNTS[(parseInt($("sNo").value) || 1) - 1] || 286; }
+$("sNo").addEventListener("input", setSurahLimit);
+
+/* EveryAyah audio: <folder>/SSSAAA.mp3 ; if the chosen reciter's file is missing, Alafasy is used */
+const DEFAULT_FOLDER = "Alafasy_64kbps";
+const audioSrc = folder => `https://everyayah.com/data/${folder}/${String(S).padStart(3, "0")}${String(A).padStart(3, "0")}.mp3`;
+function setAudio() { const a = $("aud"); a.dataset.fb = ""; $("err").textContent = ""; a.src = audioSrc($("reciterFolder").value); }
+$("aud").addEventListener("error", () => {
+  const a = $("aud");
+  if (a.src && $("reciterFolder").value !== DEFAULT_FOLDER && !a.dataset.fb) {
+    a.dataset.fb = "1";
+    $("err").textContent = "തിരഞ്ഞെടുത്ത ഖാരിഇന്റെ ഓഡിയോ ലഭ്യമല്ല; മിശാരി അൽ അഫാസിയുടെ പാരായണം ഉപയോഗിക്കുന്നു.";
+    a.src = audioSrc(DEFAULT_FOLDER);
+  }
+});
+
 async function go() {
   stop(); $("err").textContent = "";
   const s = parseInt($("sNo").value), a = parseInt($("aNo").value);
   if (!(s >= 1 && s <= 114) || !(a >= 1)) { $("err").textContent = "ദയവായി സാധുവായ സൂറത്ത്, ആയത്ത് നമ്പർ നൽകുക."; return; }
-  S = s; A = a;
+  if (a > COUNTS[s - 1]) { $("err").textContent = `ഈ സൂറത്തിൽ ${COUNTS[s - 1]} ആയത്തുകൾ മാത്രമേയുള്ളൂ.`; return; }
+  S = s; A = a; setSurahLimit();
+  const my = ++gen;                                   // ignore answers that arrive late
   try {
-    // Fetch Arabic text and Malayalam translation
-    const apiUrl = `https://api.alquran.cloud/v1/ayah/${S}:${A}/editions/quran-uthmani,ml.abdulhameed`;
-    const res = await fetch(apiUrl);
+    const res = await fetch(`https://api.alquran.cloud/v1/ayah/${S}:${A}/editions/quran-uthmani,ml.abdulhameed`);
     const d = await res.json();
-    if (d.code !== 200 || d.data.length < 2) throw 0;
+    if (my !== gen) return;
+    if (d.code !== 200 || !d.data || d.data.length < 2) throw 0;
     const [ar, ml] = d.data;
-    MAX = ar.surah.numberOfAyahs; $("aNo").max = MAX; trans = ml.text;
+    trans = ml.text;
     $("ref").textContent = `${ar.surah.englishName} (${ar.surah.name}) · ${S}: ${String(ar.numberInSurah).padStart(3, "0")}`;
-    $("ar").textContent = ar.text; $("tr").textContent = trans; 
-
-    // Generate strict 64kbps audio link using EveryAyah direct CDN path with padded numbers
-    const folder = $("reciterFolder").value;
-    const padS = String(S).padStart(3, "0");
-    const padA = String(A).padStart(3, "0");
-    $("aud").src = `https://everyayah.com/data/${folder}/${padS}${padA}.mp3`;
-
-  } catch (e) { $("err").textContent = "വിവരങ്ങൾ ലഭ്യമാക്കാൻ സാധിച്ചില്ല. ഇന്റർനെറ്റ് പരിശോധിക്കുക."; return; }
+    $("ar").textContent = ar.text; $("tr").textContent = trans;
+    setAudio();
+  } catch (e) { if (my === gen) $("err").textContent = "വിവരങ്ങൾ ലഭ്യമാക്കാൻ സാധിച്ചില്ല. ഇന്റർനെറ്റ് പരിശോധിക്കുക."; return; }
+  try { history.replaceState(null, "", "?s=" + S + "&a=" + A); } catch (e) {}   // refresh keeps the verse; same tab
   loadTafsir();
 }
 function step(d) {
   let s = S, a = A + d;
-  if (a > MAX) { s++; a = 1; } else if (a < 1) { s--; a = 999; }
+  if (a > COUNTS[s - 1]) { s++; a = 1; }
+  else if (a < 1) { s--; a = COUNTS[s - 1] || 1; }   // previous surah: its last verse
   if (s < 1 || s > 114) return;
   $("sNo").value = s; $("aNo").value = a; go();
-  if (a === 999) setTimeout(() => { $("aNo").value = MAX; go(); }, 0);   // previous surah: jump to its last verse
 }
 
 /* ---------- tafsir ---------- */
 async function loadTafsir() {
-  stop(); $("tafsir").textContent = "തഫ്സീർ ലോഡ് ചെയ്യുന്നു...";
+  stop();
+  const my = ++tgen;
+  $("tafsir").textContent = "തഫ്സീർ ലോഡ് ചെയ്യുന്നു...";
   try {
     const r = await fetch(`https://api.quran.com/api/v4/tafsirs/${$("tsel").value}/by_ayah/${S}:${A}`);
+    if (!r.ok) throw new Error(r.status);
     const d = await r.json();
+    if (my !== tgen) return;
     raw = d && d.tafsir && d.tafsir.text ? toText(d.tafsir.text).trim() : "Tafsir content not available for this verse.";
     raw = raw.replace(/\n{3,}/g, "\n\n");
     show();
-  } catch (e) { $("tafsir").textContent = "തഫ്സീർ ലോഡ് ചെയ്യുന്നതിൽ പിശക് സംഭവിച്ചു."; }
+  } catch (e) { if (my === tgen) $("tafsir").textContent = "തഫ്സീർ ലോഡ് ചെയ്യുന്നതിൽ പിശക് സംഭവിച്ചു."; }
 }
 function show() {
   const t = $("tafsir");
@@ -207,7 +231,7 @@ function clean(t, lang) {
   return t.replace(/[()\u2018\u2019\u201C\u201D"]/g, "").replace(/\s+/g, " ").trim();
 }
 function split(text, max = 150) {
-  const sents = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], out = []; let cur = "";
+  const sents = text.match(/[^.,:;!?।،؛؟]+[.,:;!?।،؛؟]*/g) || [text], out = []; let cur = "";
   for (let s of sents) {
     s = s.trim();
     while (s.length > max) {
@@ -219,12 +243,13 @@ function split(text, max = 150) {
     if (cur && (cur + " " + s).length > max) { out.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;
   }
   if (cur) out.push(cur);
-  return out.filter(c => /[^\s.,:;!?।]/.test(c));
+  return out.filter(c => /[^\s.,:;!?।،؛؟]/.test(c));
 }
 function stop() {
   token++; if (window.speechSynthesis) speechSynthesis.cancel();
   ["bV", "bT"].forEach(id => { $(id).textContent = "🔊 കേൾക്കാം"; $(id).classList.remove("stop"); });
   $("sV").textContent = ""; $("sT").textContent = "";
+  wakeOff();
 }
 function say(text, lang, my, st) {
   if (!window.speechSynthesis) { st.textContent = "Speech is not supported in this browser."; return; }
@@ -236,8 +261,11 @@ function say(text, lang, my, st) {
     const u = new SpeechSynthesisUtterance(ch[i]); utt[0] = u;
     if (v) u.voice = v;
     u.lang = v ? v.lang : { ml: "ml-IN", ar: "ar-SA", en: "en-US" }[lang]; u.rate = 0.95;
-    u.onend = () => next(i + 1);
-    u.onerror = e => { if (my === token && e.error !== "canceled" && e.error !== "interrupted") { stop(); st.textContent = "Speech error: " + e.error; } };
+    let done = false;
+    const adv = () => { if (done) return; done = true; clearTimeout(guard); next(i + 1); };
+    const guard = setTimeout(() => { if (my === token && !done) { speechSynthesis.cancel(); adv(); } }, 5000 + ch[i].length * 250);   // skip a stalled chunk
+    u.onend = adv;
+    u.onerror = e => { if (my === token && !done && e.error !== "canceled" && e.error !== "interrupted") { done = true; clearTimeout(guard); stop(); st.textContent = "Speech error: " + e.error; } };
     speechSynthesis.speak(u);
   };
   setTimeout(() => next(0), 100);
@@ -249,12 +277,18 @@ function toggle(k) {
   const text = k === "V" ? trans : $("tafsir").textContent; if (!text) return;
   const lang = k === "V" ? "ml" : ($("tsel").value === "169" ? "en" : "ar");
   b.textContent = "⏹ നിർത്തുക"; b.classList.add("stop");
+  wakeOn();
   say(clean(text, lang), lang, token, $("s" + k));
 }
 if (window.speechSynthesis) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; }
 ["sNo", "aNo"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") go(); }));
 window.addEventListener("pagehide", stop);
-window.onload = go;
+window.addEventListener("load", () => {
+  const q = new URLSearchParams(location.search);
+  const s = parseInt(q.get("s") || q.get("surah")), a = parseInt(q.get("a") || q.get("ayah"));
+  if (s >= 1 && s <= 114) { $("sNo").value = s; $("aNo").value = a >= 1 ? a : 1; }
+  go();
+});
 </script>
 <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
 </body>
