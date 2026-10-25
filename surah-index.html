@@ -16,7 +16,7 @@ body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
-.banner h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4}
+.banner h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px;}
 .wrap{max-width:1000px;margin:0 auto;padding:18px 12px 40px}
 .search{display:block;width:100%;font-family:inherit;font-size:1rem;padding:11px 14px;margin-bottom:16px;border:2px solid var(--gold);border-radius:10px;background:var(--card);color:var(--ink)}
 .search:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
@@ -30,10 +30,26 @@ body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:
 .nm .ar{font-family:"Noto Naskh Arabic",serif;font-size:1.05rem;color:var(--muted)}
 .sr:hover .ar,.sr:focus-visible .ar{color:#fff}
 .empty{text-align:center;color:var(--muted);padding:20px}
-footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
+<footer>© ഖുർആൻ സാരം</footer>
 
-.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.banner .topnav .back{display:inline-block;padding:12px 0}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;overflow:hidden;}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:8px 4px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
 </style>
 </head>
 <body>
@@ -41,7 +57,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
  <div class="topnav">
     <a class="back" href="https://onlinenanma.github.io/quran/">🏠 പ്രധാന താൾ</a>
     <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖 സൂറത്തുകൾ</a>
-  </div>
+ </div>
  
  <h1>സൂറത്തുകൾ</h1></header>
 
@@ -60,7 +76,7 @@ const SURAHS = [
 ["അൽ മാഇദഃ","المائدة"],["അൽ അൻആം","الأنعام"],["അൽ അഅ്റാഫ്","الأعراف"],["അൽ അൻഫാൽ","الأنفال"],
 ["അത്തൗബഃ","التوبة"],["യൂനുസ്","يونس"],["ഹൂദ്","هود"],["യൂസുഫ്","يوسف"],
 ["അർറഅ്ദ്","الرعد"],["ഇബ്റാഹീം","ഇബ്റാഹീം"],["അൽ ഹിജ്റ്","الحجر"],["അന്നഹ്ൽ","النحل"],
-["അൽ ഇസ്റാഅ്","الإسراء"],["അൽ കഹ്ഫ്","الكهف"],["മർയം","مريم"],["ത്വാഹാ","طه"],
+["അൽ ഇസ്റാഅ്","الإسراء"],["അൽ കഹ്ഫ്","الكهف"],["മർയം","മര്യമ്"],["ത്വാഹാ","طه"],
 ["അൽ അമ്പിയാഅ്","الأنبياء"],["അൽ ഹജ്ജ്","الحج"],["അൽ മുഅ്മിനൂൻ","المؤمنون"],["അന്നൂർ","النور"],
 ["അൽ ഫുർഖാൻ","الفرقان"],["അശ്ശുഅറാഅ്","الشعراء"],["അന്നംല്","النمل"],["അൽ ഖസ്വസ്വ്","القصص"],
 ["അൽ അൻകബൂത്ത്","العنكبوت"],["അർറൂം","الروم"],["ലുഖ്മാൻ","لقمان"],["അസ്സജ്ദഃ","السجدة"],
@@ -94,7 +110,6 @@ SURAHS.forEach(([ml, ar], i) => {
   a.className = 'sr'; 
   a.href = BASE + pad(n); 
   
-  // Use _parent so it loads inside the same Google Sites main frame smoothly on both mobile and PC
   a.target = '_parent';
 
   a.dataset.s = (n + ' ' + ml + ' ' + ar).toLowerCase();
