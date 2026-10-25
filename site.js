@@ -83,6 +83,10 @@
         savePref(sel.value); location.reload();
       });
     }
+    if (lang === 'ml' && !document.querySelector('meta[name="referrer"]')) {
+      var nr = document.createElement('meta'); nr.name = 'referrer'; nr.content = 'no-referrer'; document.head.appendChild(nr);
+    }
+     
     if (lang !== 'ml') {
       markArabic(document.body);
       wrapArabic(document.body);
