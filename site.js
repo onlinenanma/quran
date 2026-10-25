@@ -223,7 +223,23 @@
       };
     }
   });
-
+  /* more reciters for every chapter page (list from everyayah.com) */
+  var EXTRA_RECITERS = [
+    { id: 'alafasy',   name: 'മിഷാരി അൽ അഫാസി',          base: 'https://everyayah.com/data/Alafasy_64kbps' },
+    { id: 'sudais',    name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',     base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
+    { id: 'shuraym',   name: 'സഊദ് അശ്ശുറൈം',            base: 'https://everyayah.com/data/Saood_ash-Shuraym_64kbps' },
+    { id: 'husary',    name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',    base: 'https://everyayah.com/data/Husary_64kbps' },
+    { id: 'abdulbasit',name: 'അബ്ദുൽ ബാസിത്വ്',           base: 'https://everyayah.com/data/Abdul_Basit_Murattal_64kbps' },
+    { id: 'jibreel',   name: 'മുഹമ്മദ് ജിബ്രീൽ',          base: 'https://everyayah.com/data/Muhammad_Jibreel_64kbps' },
+    { id: 'budair',    name: 'സ്വലാഹ് അൽ ബുദൈർ',         base: 'https://everyayah.com/data/Salah_Al_Budair_128kbps' }
+  ];
+  onReady(function () {
+    if (typeof RECITERS === 'undefined' || typeof initReciters !== 'function') return;
+    EXTRA_RECITERS.forEach(function (r) {
+      if (!RECITERS.some(function (x) { return x.id === r.id; })) RECITERS.push(r);
+    });
+    initReciters();                                     // rebuild the dropdown with the longer list
+  });
   /* offline support */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () {
