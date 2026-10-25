@@ -67,14 +67,14 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .compass-wrap{position:relative;width:190px;height:190px;margin:14px auto 6px}
 .phone-marker{position:absolute;top:-12px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid var(--green2);z-index:3}
 @media(prefers-color-scheme:dark){.phone-marker{border-top-color:#fff}}
-.compass-container{position:absolute;inset:0;border-radius:50%;border:3px solid var(--green2);background:radial-gradient(circle,var(--dial) 60%,rgba(128,128,128,.15) 100%);color:var(--muted);pointer-events:none;transition:transform .15s ease-out,box-shadow .2s}
+.compass-container{position:absolute;inset:0;border-radius:50%;border:3px solid var(--green2);background:radial-gradient(circle,var(--dial) 60%,rgba(128,128,128,.15) 100%);color:var(--muted);pointer-events:none;transition:transform .1s ease-out,box-shadow .2s}
 .compass-container.aligned{box-shadow:0 0 0 4px rgba(46,160,90,.55)}
 .compass-mark{position:absolute;font-weight:700;font-size:.8rem;line-height:1}
 .mark-n{top:16px;left:50%;transform:translateX(-50%);color:#d9534f;font-size:.95rem}
 .mark-e{right:9px;top:50%;margin-top:-6px}.mark-s{bottom:9px;left:50%;transform:translateX(-50%)}.mark-w{left:9px;top:50%;margin-top:-6px}
 .north-pointer{position:absolute;top:-3px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #d9534f}
 .north-line{position:absolute;left:50%;top:34px;width:2px;height:calc(50% - 34px);margin-left:-1px;background:#d9534f;opacity:.75}
-.qibla-needle{position:absolute;inset:0;transition:transform .15s ease-out}
+.qibla-needle{position:absolute;inset:0;transition:transform .1s ease-out}
 .qibla-needle .stem{position:absolute;left:50%;top:44px;width:4px;height:calc(50% - 44px);margin-left:-2px;background:var(--gold);border-radius:2px}
 .qibla-needle .head{position:absolute;left:50%;top:26px;margin-left:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:22px solid var(--gold);filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
 .qibla-needle .kaaba{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--green2);border:2px solid var(--gold);border-radius:50%}
@@ -353,11 +353,12 @@ function setHeading(h) {
 }
 
 function handleOrientation(e) {
-  if (e.webkitCompassHeading == null && e.type !== 'deviceorientationabsolute' && e.absolute !== true) return;
-  const h = headingFrom(e); if (h == null || isNaN(h)) return;
+  const h = headingFrom(e); 
+  if (h == null || isNaN(h)) return;
   const so = (screen.orientation && screen.orientation.angle) || 0;
   setHeading((h + so) % 360);
-  const b = document.getElementById('btnStartCompass'); if (b) b.style.display = 'none';
+  const b = document.getElementById('btnStartCompass'); 
+  if (b) b.style.display = 'none';
 }
 
 function renderCompass(){
@@ -381,9 +382,14 @@ async function startSensors(manual) {
       if (!manual) return;
       if (await DeviceOrientationEvent.requestPermission() !== 'granted') { st.innerText = "Permission Denied"; return; }
       window.addEventListener('deviceorientation', handleOrientation, true);
-    } else if ('ondeviceorientationabsolute' in window) window.addEventListener('deviceorientationabsolute', handleOrientation, true);
-    else if ('ondeviceorientation' in window) window.addEventListener('deviceorientation', handleOrientation, true);
-    else { st.innerText = "Sensors Not Supported"; return; }
+    } else if ('ondeviceorientationabsolute' in window) {
+      window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+    } else if ('ondeviceorientation' in window) {
+      window.addEventListener('deviceorientation', handleOrientation, true);
+    } else { 
+      st.innerText = "Sensors Not Supported"; 
+      return; 
+    }
     sensorOn = true;
   } catch (err) { console.error(err); }
   setTimeout(() => { if (!hasHeading) st.innerText = "സെൻസർ ഡാറ്റ ലഭിക്കുന്നില്ല. പേജ് നേരിട്ട് തുറന്ന് നോക്കുക."; }, 2500);
