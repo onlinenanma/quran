@@ -135,8 +135,9 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
   <h3>💡 ഈ പേജിലെ പാഠങ്ങൾ</h3>
   <button class="main-btn" onclick="showSummary()">പാഠങ്ങൾ സംഗ്രഹിക്കുക</button>
   <div class="ai-out" id="ai-summary"></div>
-  <h3>❓ ചോദ്യങ്ങൾ തിരഞ്ഞെടുക്കൂ(ഉത്തരങ്ങൾ കാണാൻ താഴോട്ട് സ്ക്രോൾ ചെയ്യൂ..)</h3>
-   <h4>(ഉത്തരങ്ങൾ കാണാൻ താഴോട്ട് സ്ക്രോൾ ചെയ്യൂ..)</h4>
+  <h3>❓ ചോദ്യങ്ങൾ (തിരഞ്ഞെടുക്കൂ)</h3>
+  <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 6px;">ഉത്തരങ്ങൾ കാണാൻ താഴോട്ട് സ്ക്രോൾ ചെയ്യൂ..</div>
+  <div class="q-list" id="q-list"></div>
   <div class="q-list" id="q-list"></div>
   <div class="ai-ask"><input id="ai-q" placeholder="നിങ്ങളുടെ സ്വന്തം ചോദ്യം..."><button class="main-btn" onclick="askCustom()">ചോദിക്കുക</button></div>
   <div class="ai-out" id="ai-answer"></div>
@@ -535,10 +536,37 @@ async function showSummary() {
 }
 async function answerQuestion(q) {
   const out = $("ai-answer"), hit = SUGGESTED.find(x => x.q === q);
-  if (!AI_ENDPOINT) { out.textContent = hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."; return; }
-  out.textContent = "⏳ ...";
-  try { out.textContent = await askAI(AI_RULE + "Question: " + q + "\n\n" + pageText()); }
-  catch (e) { out.textContent = hit ? hit.a : "ക്ഷമിക്കണം, ഉത്തരം ലഭ്യമായില്ല."; }
+  
+  // ചോദ്യത്തിന് തൊട്ടടുത്തുള്ള ഉത്തരമറിയാൻ ഡിവിഷൻ കണ്ടെത്തുകയോ ഉണ്ടാക്കുകയോ ചെയ്യുക
+  let ansContainer = $("inline-answer-" + CSS.escape(q));
+  if (!ansContainer) {
+    // നിലവിലുള്ള ചോദ്യത്തിന്റെ ബട്ടൺ കണ്ടെത്തി അതിന് താഴെ ഉത്തരം കാണിക്കാനായി പുതിയ എലമെന്റ് ഉണ്ടാക്കുന്നു
+    const buttons = document.querySelectorAll(".q-btn");
+    let targetBtn = Array.from(buttons).find(b => b.textContent === q);
+    if (targetBtn) {
+      ansContainer = document.createElement("div");
+      ansContainer.id = "inline-answer-" + CSS.escape(q);
+      ansContainer.style.cssText = "margin: 6px 0 12px 0; padding: 10px 12px; background: var(--paper); border-left: 3px solid var(--gold); border-radius: 4px; font-size: var(--fs); line-height: 1.7;";
+      targetBtn.parentNode.insertBefore(ansContainer, targetBtn.nextSibling);
+    } else {
+      ansContainer = out; // ലഭ്യമല്ലെങ്കിൽ സാധാരണ ഔട്ട്പുട്ട് ബോക്സ് ഉപയോഗിക്കുക
+    }
+  }
+
+  ansContainer.innerHTML = "<strong>ഉത്തരം:</strong> ⏳ ചിന്തിക്കുന്നു...";
+  
+  if (!AI_ENDPOINT) {
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."}`;
+    return;
+  }
+  
+  try { 
+    const resText = await askAI(AI_RULE + "Question: " + q + "\n\n" + pageText());
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${resText}`;
+  }
+  catch (e) { 
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "ക്ഷമിക്കണം, ഉത്തരം ലഭ്യമായില്ല."}`; 
+  }
 }
 function askCustom() { const q = $("ai-q").value.trim(); if (q) answerQuestion(q); }
 async function startQuiz() {
