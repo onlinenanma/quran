@@ -62,6 +62,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 @media(prefers-color-scheme:dark){.prayer-time-card{border-color:#2c3f36;border-top-color:var(--gold)}}
 .prayer-name{color:var(--green);font-weight:700;font-size:.8rem;margin-bottom:4px}
 .prayer-time{font-weight:800;font-size:1.15rem}
+
 /* Compass */
 .compass-wrap{position:relative;width:190px;height:190px;margin:14px auto 6px}
 .phone-marker{position:absolute;top:-12px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid var(--green2);z-index:3}
@@ -85,7 +86,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
 @media(min-width:500px){.row .btn{width:auto}}
 
-/* Language Picker Box (Sized to fit text instead of full width) */
+/* Language Picker Box (Sized to fit text) */
 .langpick{font-family:inherit;font-size:.85rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 14px;width:auto;display:inline-block;cursor:pointer;white-space:nowrap}
 .langpick option{color:#22302a}
 .goog-te-banner-frame,.skiptranslate iframe{display:none!important}
@@ -97,7 +98,7 @@ body{top:0!important}
 .calib-modal-content{background:var(--card);color:var(--ink);padding:20px;border-radius:12px;max-width:420px;width:100%;border:2px solid var(--gold);box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left}
 .calib-modal-content h4{color:var(--green);font-size:1.1rem;margin-bottom:10px;text-align:center}
 @media(prefers-color-scheme:dark){.calib-modal-content h4{color:var(--gold)}}
-.calib-modal-content ul{padding-left:20px;margin-bottom:14px;font-size:.88net;line-height:1.5}
+.calib-modal-content ul{padding-left:20px;margin-bottom:14px;font-size:.88rem;line-height:1.5}
 .calib-modal-content ul li{margin-bottom:6px}
 .close-modal-btn{width:100%;background:var(--green2);color:white;padding:8px;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
 </style>
@@ -313,7 +314,7 @@ function openSurah(){
   a.click();
 }
 
-let currentQiblaBearing=0,deviceHeading=0,hasHeading=false,dialAngle=0,sinH=0,cosH=1,sensorOn=false;
+let currentQiblaBearing=0, deviceHeading=0, hasHeading=false, dialAngle=0, sinH=0, cosH=1, sensorOn=false;
 
 function toggleCalibModal(show) {
   document.getElementById('calibModal').style.display = show ? 'flex' : 'none';
@@ -331,6 +332,7 @@ function updateQiblaUI(lat,lon){
   renderCompass();
 }
 
+/* Tilt-Compensated Compass Math */
 function headingFrom(e) {
   if (e.webkitCompassHeading != null) return e.webkitCompassHeading;
   if (e.alpha == null) return null;
