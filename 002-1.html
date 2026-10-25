@@ -726,8 +726,20 @@ function playChunks(chunks, my, done, i = 0) {
   a.playbackRate = curKind === "tf" ? 0.85 : 0.95; currentAudio = a;
   a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
 }
-
+async function playArabic(n, my, done) {
+  if (my !== token) return;
+  const r = currentReciter(), audio = sharedAudio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
+  const src = await cachedSrc(audioUrl(n)); if (my !== token) return;
+  audio.playbackRate = 1; audio.src = src; currentAudio = audio;
+  audio.play().catch(e => {
+    if (my !== token || (e && (e.name === "NotSupportedError" || e.name === "AbortError"))) return;
+    fail(my, "Could not play audio. Tap the button again.");
+  });
+}
 /* ===== START ===== */
+document.querySelector(".ai-ask").style.display = AI_ENDPOINT ? "" : "none";
 $("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
 buildPage(); initReciters(); populateVoices(); applySettings(); applyDisplay();
 CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
