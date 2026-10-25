@@ -74,12 +74,12 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
       <div class="control-row">
         <label style="flex: 2;">പാരായണം: 
           <select id="reciterFolder">
-            <option value="Alafasy_128kbps" selected>Mishary Rashid Alafasy</option>
-            <option value="Abdurrahmaan_As-Sudais_192kbps">Abdul Rahman Al-Sudais</option>
-            <option value="Abdul_Basit_Murattal_192kbps">Abdul Basit (Murattal)</option>
-            <option value="Minshaw_Murattal_128kbps">Mohamed Siddiq El-Minshawi</option>
-            <option value="Husary_128kbps">Mahmoud Khalil Al-Hussary</option>
-            <option value="Hudhaify_128kbps">Ali Al-Hudhaify</option>
+            <option value="Alafasy_64kbps" selected>Mishary Rashid Alafasy</option>
+            <option value="Sudais_64kbps">Abdul Rahman Al-Sudais</option>
+            <option value="Abdul_Basit_64kbps">Abdul Basit</option>
+            <option value="Minshaw_64kbps">Mohamed Siddiq El-Minshawi</option>
+            <option value="Husary_64kbps">Mahmoud Khalil Al-Hussary</option>
+            <option value="Hudhaify_64kbps">Ali Al-Hudhaify</option>
           </select>
         </label>
       </div>
@@ -161,7 +161,7 @@ async function go() {
     $("ref").textContent = `${ar.surah.englishName} (${ar.surah.name}) · ${S}: ${String(ar.numberInSurah).padStart(3, "0")}`;
     $("ar").textContent = ar.text; $("tr").textContent = trans; 
 
-    // Generate reliable audio link using EveryAyah direct CDN path with padded numbers
+    // Generate strict 64kbps audio link using EveryAyah direct CDN path with padded numbers
     const folder = $("reciterFolder").value;
     const padS = String(S).padStart(3, "0");
     const padA = String(A).padStart(3, "0");
