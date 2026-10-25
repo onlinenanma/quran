@@ -12,29 +12,25 @@
 [hidden]{display:none!important}
 html,body{width:100%;overflow-x:hidden}
 body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.6}
-.banner{text-align:center;color:#fff;padding:14px 18px 16px;background:
- radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
- repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
- linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
-.banner h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px;}
-.wrap{max-width:1000px;margin:0 auto;padding:18px 12px 40px}
-.search{display:block;width:100%;font-family:inherit;font-size:1rem;padding:11px 14px;margin-bottom:16px;border:2px solid var(--gold);border-radius:10px;background:var(--card);color:var(--ink)}
-.search:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.sr{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:8px;padding:10px}
-.sr:hover,.sr:focus-visible{background:var(--green2);color:#fff;outline:none}
-.no{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--green2);color:#fff;font-weight:700;font-size:.85rem}
-.sr:hover .no,.sr:focus-visible .no{background:var(--gold);color:var(--green)}
-.nm{display:flex;flex-direction:column;min-width:0;line-height:1.4}
-.nm b{font-weight:600;font-size:.95rem}
-.nm .ar{font-family:"Noto Naskh Arabic",serif;font-size:1.05rem;color:var(--muted)}
-.sr:hover .ar,.sr:focus-visible .ar{color:#fff}
-.empty{text-align:center;color:var(--muted);padding:20px}
-<footer>© ഖുർആൻ സാരം</footer>
-
- .topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.banner .topnav .back{display:inline-block;padding:12px 0}
  
+.banner {
+  text-align: center;
+  color: #fff;
+  padding: 14px 0 16px; /* Removed left/right padding so topnav reaches edges */
+  background: 
+    radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+    repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+    linear-gradient(160deg,var(--green),var(--green2));
+  border-bottom: 4px solid var(--gold);
+}
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 0 12px; /* Adds a tiny safe padding from the exact device edge */
+}
 .topnav .back {
   display: inline-flex;
   align-items: center;
