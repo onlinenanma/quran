@@ -34,6 +34,20 @@ button:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-
 .desc .dua{text-align:center;font-weight:600}
 .desc p:last-child{margin-bottom:0}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
+
+/* Hijri Banner */
+.hijri-banner{background:#f4f8f6;color:var(--green);padding:10px 14px;border-radius:8px;text-align:center;font-size:.9rem;font-weight:700;border:1px solid var(--gold);margin-bottom:16px}
+@media(prefers-color-scheme:dark){.hijri-banner{background:#17261f;color:var(--gold)}}
+
+/* Tafsir Card */
+.tafsir-card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.06);margin-bottom:16px;transition:transform .2s ease}
+.tafsir-card:hover{transform:translateY(-2px)}
+.tafsir-card h3{color:var(--green);font-size:1.15rem;margin-bottom:6px}
+@media(prefers-color-scheme:dark){.tafsir-card h3{color:var(--gold)}}
+.tafsir-card p{font-size:.88rem;color:var(--muted);margin-bottom:12px}
+.tafsir-btn{display:inline-block;background:var(--green2);color:#fff;padding:8px 18px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.9rem;transition:background .2s}
+.tafsir-btn:hover{background:#254d3e}
+
 .widgets-wrapper{display:flex;flex-direction:column;gap:16px;width:100%}
 @media(min-width:850px){.widgets-wrapper{flex-direction:row;align-items:stretch}}
 .widget-container{padding:16px;width:100%;display:flex;flex-direction:column;gap:12px}
@@ -71,18 +85,21 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
 @media(min-width:500px){.row .btn{width:auto}}
 
-/* Updated Langpick selector styling to fix text truncation */
-.langpick{font-family:inherit;font-size:.85rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 16px;min-width:145px;white-space:nowrap;cursor:pointer}
+/* Language Picker Box (Sized to fit text instead of full width) */
+.langpick{font-family:inherit;font-size:.85rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 14px;width:auto;display:inline-block;cursor:pointer;white-space:nowrap}
 .langpick option{color:#22302a}
 .goog-te-banner-frame,.skiptranslate iframe{display:none!important}
 body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 
-.tafsir-link{display:block;text-align:center;text-decoration:none;color:var(--green2);font-weight:700;font-size:1.15rem;line-height:1.6;margin-bottom:16px}
-.tafsir-link small{font-weight:400;font-size:.8rem;color:var(--muted)}
-.tafsir-link:hover,.tafsir-link:focus-visible{background:var(--green2);color:#fff;outline:none}
-.tafsir-link:hover small,.tafsir-link:focus-visible small{color:#fff}
-@media(prefers-color-scheme:dark){.tafsir-link{color:var(--gold)}}
+/* Calibration Modal */
+.calib-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:16px}
+.calib-modal-content{background:var(--card);color:var(--ink);padding:20px;border-radius:12px;max-width:420px;width:100%;border:2px solid var(--gold);box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left}
+.calib-modal-content h4{color:var(--green);font-size:1.1rem;margin-bottom:10px;text-align:center}
+@media(prefers-color-scheme:dark){.calib-modal-content h4{color:var(--gold)}}
+.calib-modal-content ul{padding-left:20px;margin-bottom:14px;font-size:.88net;line-height:1.5}
+.calib-modal-content ul li{margin-bottom:6px}
+.close-modal-btn{width:100%;background:var(--green2);color:white;padding:8px;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
 </style>
 </head>
 <body onload="initWidgets()">
@@ -142,6 +159,18 @@ body{top:0!important}
       <a id="openLink" class="btn" href="#" target="_top" rel="noopener">തുറക്കുക</a>
     </div>
   </section>
+
+  <!-- Tafsir Card Box -->
+  <div class="tafsir-card">
+    <h3>📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ (Tafsir)</h3>
+    <p>വിശുദ്ധ ഖുർആന്റെ സമഗ്രമായ വ്യാഖ്യാനങ്ങളും വിശദീകരണങ്ങളും വായിക്കുക.</p>
+    <a href="https://onlinenanma.github.io/quran/tafsir" target="_blank" class="tafsir-btn">തഫ്സീറുകൾ വായിക്കാം</a>
+  </div>
+
+  <!-- Hijri Date Sub-Banner -->
+  <div id="hijriDateDisplay" class="hijri-banner">
+    🌙 ഹിജ്റ തീയതി: ലോഡ് ചെയ്യുന്നു...
+  </div>
 
   <div class="widgets-wrapper">
     <div class="card widget-container prayer-widget-box">
@@ -237,7 +266,8 @@ body{top:0!important}
       <div class="legend"><span><i style="background:#d9534f"></i>True North</span><span><i style="background:var(--gold)"></i>Qibla</span></div>
       <div id="qiblaAngle" class="qibla-angle-text">--°</div>
       <div id="compassStatus" class="compass-status">Tap Start Compass &middot; keep phone flat</div>
-      <button id="btnStartCompass" type="button" style="max-width:250px;font-size:.85rem;padding:8px 14px" onclick="enableLiveCompass(event)">🧭 Calibrate / Start Compass</button>
+      <button id="btnStartCompass" type="button" style="max-width:250px;font-size:.85rem;padding:8px 14px;margin-bottom:6px" onclick="enableLiveCompass(event)">🧭 Calibrate / Start Compass</button>
+      <button type="button" style="max-width:250px;font-size:.8rem;padding:6px 12px;background:#f0f4f2;color:var(--green);border:1px solid var(--green)" onclick="toggleCalibModal(true)">ℹ️ Compass Calibration Guide</button>
     </div>
   </div>
 
@@ -252,9 +282,23 @@ body{top:0!important}
 
 <footer>© ഖുർആൻ സാരം</footer>
 
+<!-- Calibration Guide Modal Popup -->
+<div id="calibModal" class="calib-modal">
+  <div class="calib-modal-content">
+    <h4>🧭 Compass Calibration Guide</h4>
+    <ul>
+      <li><strong>Hold Phone Flat:</strong> Keep your mobile device completely flat parallel to the ground for optimal magnetic sensor readings.</li>
+      <li><strong>Figure-8 Motion:</strong> Wave your phone slowly in a horizontal "8" pattern 2-3 times in the air to calibrate the built-in sensor.</li>
+      <li><strong>Avoid Magnetic Cases:</strong> Remove phone cases containing magnets, metallic rings, or magnetic latches.</li>
+      <li><strong>Stay Away from Electronics:</strong> Move away from metal tables, laptops, or large electrical appliances.</li>
+    </ul>
+    <button class="close-modal-btn" onclick="toggleCalibModal(false)">Close / മനസ്സിലായി</button>
+  </div>
+</div>
+
 <script>
 const SURAH_URL = n => `https://onlinenanma.github.io/quran/${n}`;
-const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,അത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
+const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
 (function(){
   const s=document.getElementById('surahSelect');
   s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
@@ -270,6 +314,10 @@ function openSurah(){
 }
 
 let currentQiblaBearing=0,deviceHeading=0,hasHeading=false,dialAngle=0,sinH=0,cosH=1,sensorOn=false;
+
+function toggleCalibModal(show) {
+  document.getElementById('calibModal').style.display = show ? 'flex' : 'none';
+}
 
 function calculateQibla(lat,lon){
   const kl=21.4225*Math.PI/180,ko=39.8262*Math.PI/180,ul=lat*Math.PI/180,uo=lon*Math.PI/180,d=ko-uo;
@@ -341,10 +389,26 @@ async function startSensors(manual) {
 
 function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }
 
+async function fetchHijriDate(lat, lon) {
+  try {
+    const today = new Date();
+    const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+    const res = await fetch(`https://api.aladhan.com/v1/timings/${dateStr}?latitude=${lat}&longitude=${lon}&method=2`);
+    const data = await res.json();
+    if (data && data.code === 200) {
+      const h = data.data.date.hijri;
+      document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`;
+    }
+  } catch (e) {
+    document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്`;
+  }
+}
+
 async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
   const disp=document.getElementById('prayerTimesDisplay'),sub=document.getElementById('locationSubtitle'),qsub=document.getElementById('qiblaSubtitle');
   disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
   updateQiblaUI(lat,lon);
+  fetchHijriDate(lat, lon);
   try{
     const t=new Date(),ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
     const res=await fetch(`https://api.aladhan.com/v1/timings/${ds}?latitude=${lat}&longitude=${lon}&method=2`);
