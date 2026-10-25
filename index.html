@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Prayer Times, Qibla & Tafsir Widgets</title>
+  <title>Prayer Times & Qibla Widgets</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
@@ -44,17 +44,16 @@
       width: 100%;
     }
 
-    /* Hijri Date Box */
+    /* Hijri Date Box (Compact Sub-Card) */
     .hijri-banner {
-      background: linear-gradient(135deg, var(--accent-color), #275d49);
-      color: #ffffff;
-      padding: 12px 16px;
-      border-radius: 10px;
+      background: #f4f8f6;
+      color: var(--accent-color);
+      padding: 10px 14px;
+      border-radius: 8px;
       text-align: center;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: 2px solid var(--gold-border);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid var(--gold-border);
     }
 
     /* Tafsir Card Box */
@@ -116,7 +115,7 @@
       }
     }
 
-    /* Shared Widget Container Styles (Full Width & Auto Fit Height) */
+    /* Shared Widget Container Styles */
     .widget-container {
       background: var(--card-bg);
       padding: 16px;
@@ -172,7 +171,8 @@
 
     .city-selector select, 
     .city-selector button,
-    .btn-compass {
+    .btn-compass,
+    .btn-calib-info {
       padding: 10px 12px;
       border: 1px solid #d0d7de;
       border-radius: 6px;
@@ -199,6 +199,15 @@
       position: relative;
       z-index: 10;
       pointer-events: auto;
+    }
+
+    .btn-calib-info {
+      background: #f0f4f2;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
     }
 
     @media (min-width: 500px) {
@@ -303,6 +312,62 @@
       text-align: center;
       padding: 12px;
     }
+
+    /* Calibration Instructions Popup Modal */
+    .calib-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .calib-modal-content {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 420px;
+      width: 100%;
+      border: 2px solid var(--gold-border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: left;
+    }
+
+    .calib-modal-content h4 {
+      color: var(--accent-color);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .calib-modal-content ul {
+      padding-left: 20px;
+      margin-bottom: 14px;
+      font-size: 0.88rem;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    .calib-modal-content ul li {
+      margin-bottom: 6px;
+    }
+
+    .close-modal-btn {
+      width: 100%;
+      background: var(--accent-color);
+      color: white;
+      padding: 8px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -310,16 +375,16 @@
 
   <div class="page-wrapper">
     
-    <!-- Hijri Date Widget Bar -->
-    <div id="hijriDateDisplay" class="hijri-banner">
-      📅 ഹിജ്റ തീയതി ലോഡ് ചെയ്യുന്നു... (Loading Hijri Date...)
-    </div>
-
     <!-- Tafsir Card Box -->
     <div class="tafsir-card">
       <h3>📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ (Tafsir)</h3>
       <p>വിശുദ്ധ ഖുർആന്റെ സമഗ്രമായ വ്യാഖ്യാനങ്ങളും വിശദീകരണങ്ങളും വായിക്കുക.</p>
       <a href="https://onlinenanma.github.io/quran/tafsir" target="_blank" class="tafsir-btn">തഫ്സീറുകൾ വായിക്കാം</a>
+    </div>
+
+    <!-- Hijri Date Sub-Banner -->
+    <div id="hijriDateDisplay" class="hijri-banner">
+      🌙 ഹിജ്റ തീയതി: ലോഡ് ചെയ്യുന്നു...
     </div>
 
     <!-- Main Widgets Grid Wrapper -->
@@ -429,7 +494,11 @@
         <div id="compassStatus" class="compass-status">(True North)</div>
         
         <button id="btnStartCompass" class="btn-compass" style="max-width: 250px; font-size: 0.85rem; padding: 8px 14px; margin-top: 4px;" onclick="enableLiveCompass(event)" ontouchstart="enableLiveCompass(event)">
-          🧭 Calibrate / Start Live Compass
+          🧭 Start Live Compass
+        </button>
+
+        <button class="btn-calib-info" style="max-width: 250px; font-size: 0.8rem; padding: 6px 12px;" onclick="toggleCalibModal(true)">
+          ℹ️ Compass Calibration Guide
         </button>
       </div>
 
@@ -437,9 +506,27 @@
 
   </div>
 
+  <!-- Calibration Guide Modal Popup -->
+  <div id="calibModal" class="calib-modal">
+    <div class="calib-modal-content">
+      <h4>🧭 Compass Calibration Guide</h4>
+      <ul>
+        <li><strong>Hold Phone Flat:</strong> Keep your mobile device completely flat parallel to the ground for optimal magnetic sensor readings.</li>
+        <li><strong>Figure-8 Motion:</strong> Wave your phone slowly in a horizontal "8" pattern 2-3 times in the air to calibrate the built-in sensor.</li>
+        <li><strong>Avoid Magnetic Cases:</strong> Remove phone cases containing magnets, metallic rings, or magnetic latches.</li>
+        <li><strong>Stay Away from Electronics:</strong> Move away from metal tables, laptops, or large electrical appliances.</li>
+      </ul>
+      <button class="close-modal-btn" onclick="toggleCalibModal(false)">Close / മനസ്സിലായി</button>
+    </div>
+  </div>
+
   <script>
     let currentQiblaBearing = 0;
     let deviceHeading = 0;
+
+    function toggleCalibModal(show) {
+      document.getElementById('calibModal').style.display = show ? 'flex' : 'none';
+    }
 
     function calculateQibla(lat, lon) {
       const kaabaLat = 21.4225 * Math.PI / 180;
@@ -521,7 +608,7 @@
           document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`;
         }
       } catch (e) {
-        document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്`;
+        document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി ലഭ്യമാണ്`;
       }
     }
 
