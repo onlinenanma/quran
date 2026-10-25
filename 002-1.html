@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
+<meta name="referrer" content="no-referrer">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>സൂറത്തുൽ ബഖറഃ 1–20</title>
@@ -700,6 +701,30 @@ function toggleContinuous() {   // "start from the beginning" button
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 
+
+
+// ===== ONLINE VOICE FIX: one shared audio element, unlocked on the tap (needed by Safari / Chrome) =====
+const sharedAudio = new Audio();
+const SILENT = (function () {
+  const n = 800, b = new DataView(new ArrayBuffer(44 + n)), w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
+  w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+  b.setUint32(24, 8000, true); b.setUint32(28, 8000, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
+  for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
+})();
+const _run = runQueue;
+runQueue = function (...a) { try { sharedAudio.src = SILENT; sharedAudio.play().catch(() => {}); } catch (e) {} return _run(...a); };
+function playChunks(chunks, my, done, i = 0) {
+  if (my !== token) return;
+  if (i >= chunks.length) { done(); return; }
+  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
+  const a = sharedAudio;
+  a.onended = () => playChunks(chunks, my, done, i + 1);
+  a.onerror = () => fail(my, "Online voice is blocked or offline. Check the internet, or use Edge / a phone with the Malayalam voice installed.");
+  a.src = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]);
+  a.playbackRate = curKind === "tf" ? 0.85 : 0.95; currentAudio = a;
+  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+}
 
 /* ===== START ===== */
 $("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
