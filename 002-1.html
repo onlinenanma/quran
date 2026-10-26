@@ -13,12 +13,11 @@
 html{scroll-padding-top:70px}
 body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
 body>*{max-width:1000px;margin-left:auto;margin-right:auto}
-body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:8px 18px 38px;background:
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
-.hero h1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:400;line-height:1.3;margin:0}
-.hero .back{display:block;text-align:left;color:var(--gold);font-weight:600;font-size:.8rem;text-decoration:none;line-height:1.6}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
 .controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
 .banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
 .banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
@@ -76,18 +75,34 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
 .quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
 .quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
-.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.hero .topnav .back{display:inline-block;padding:4px 0}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
 </style>
 </head>
 <body>
 <header class="hero">
  <div class="topnav">
-    <a class="back" href="https://onlinenanma.github.io/quran/">🏠പ്രധാന താൾ</a>
-   <a class="back" href="https://onlinenanma.github.io/quran/002">📄താളുകൾ</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">📖സൂറത്തുകൾ</a>
-  </div>
-  <h1>2. സൂറത്തുൽ ബഖറഃ (1–20)</h1>
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1.25em;">🏠</span> പ്രധാന താൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/002"><span style="font-size: 1.25em;">📄</span> താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">സൂറത്തുകൾ <span style="font-size: 1.25em;">📖</span></a>
+ </div>
+ <h1>2. സൂറത്തുൽ ബഖറഃ (1–20)</h1>
 </header>
 
  <div>
