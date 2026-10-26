@@ -14,12 +14,12 @@ html{scroll-padding-top:70px}
 body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;text-align:left;color:var(--ink);background:var(--paper);line-height:1.8}
 body>*{max-width:1000px;margin-left:auto;margin-right:auto}
 
-body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:8px 18px 38px;background:
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
-.hero h1{font-size:clamp(1.15rem,4.5vw,1.6rem);font-weight:400;line-height:1.3;margin:0}
-.hero .back{display:block;text-align:left;color:var(--gold);font-weight:600;font-size:.8rem;text-decoration:none;margin-bottom:0;line-height:1.6}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
 
 /* ---------- Options card (sticky) ---------- */
 .controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
@@ -93,17 +93,15 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}
 .quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
 .quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
-.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
 
- .topnav{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;overflow:hidden;}
+.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
 .topnav .back{
   display:inline-flex;
   align-items:center;
-  gap:4px;
-  padding:8px 4px;
+  gap:6px;
   color: var(--gold);
   text-decoration: none;
-  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-size: clamp(0.95rem, 3.4vw, 1.1rem);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -112,8 +110,8 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
   color: #fff;
   text-decoration: none;
   outline: none;
-}  
-   
+}   
+    
 .langpick{font-family:inherit;font-size:.8rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:14px;padding:2px 8px;max-width:80px}
 .langpick option{color:#22302a}
 .goog-te-banner-frame,.skiptranslate iframe{display:none!important}
@@ -124,8 +122,8 @@ body{top:0!important}
 <body>
 <header class="hero">
   <div class="topnav">
-    <a class="back" href="https://onlinenanma.github.io/quran/">🏠പ്രധാന താൾ</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">സൂറത്തുകൾ📖 </a>
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1.25em;">🏠</span> പ്രധാന താൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">സൂറത്തുകൾ <span style="font-size: 1.25em;">📖</span></a>
   </div>
   <h1>1. സൂറത്തുൽ ഫാതിഹ</h1>
 </header>
