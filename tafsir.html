@@ -75,7 +75,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 <header class="banner">
   <div class="topnav">
     <a class="back" href="https://onlinenanma.github.io/quran/" target="_top"><span style="font-size: 1.25em;">🏠</span> ഹോം</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/surah-index" target="_top">സൂറത്തുകൾ<span style="font-size: 1.25em;">📖</span></a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index" target="_top">സൂറത്ത് പട്ടിക <span style="font-size: 1.25em;">📖</span></a>
   </div>
   <h1>ആയത്തും തഫ്സീറും</h1>
 </header>
@@ -128,7 +128,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
       <select id="tsel" onchange="loadTafsir()" aria-label="തഫ്സീർ തെരഞ്ഞെടുക്കാം">
         <option value="169">Ibn Kathir(Englsih)</option>
         <option value="14">Ibn Kathir(Arabic)</option>
-        <option value="16">Ibn Kathir Summary(Arabic)ം</option>
+        <option value="16">Ibn Kathir Summary(Arabic)</option>
         <option value="15">Tabri</option>
         <option value="91">Saadi</option>
       </select>
@@ -138,7 +138,8 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
         <button type="button" id="bT" onclick="toggle('T')">🔊 കേൾക്കാം</button>
       </div>
     </div>
-    <div class="tafsir" id="tafsir"></div>
+    <!-- Added class="notranslate" below to prevent automatic translation widgets from altering original text -->
+    <div class="tafsir notranslate" id="tafsir" translate="no"></div>
     <div class="st" id="sT"></div>
   </section>
 </main>
@@ -192,7 +193,7 @@ async function go() {
   if (!(s >= 1 && s <= 114) || !(a >= 1)) { $("err").textContent = "ദയവായി സാധുവായ സൂറത്ത്, ആയത്ത് നമ്പർ നൽകുക."; return; }
   if (a > COUNTS[s - 1]) { $("err").textContent = `ഈ സൂറത്തിൽ ${COUNTS[s - 1]} ആയത്തുകൾ മാത്രമേയുള്ളൂ.`; return; }
   S = s; A = a; setSurahLimit();
-  const my = ++gen;                           // ignore answers that arrive late
+  const my = ++gen;                         // ignore answers that arrive late
   try {
     const res = await fetch(`https://api.alquran.cloud/v1/ayah/${S}:${A}/editions/quran-uthmani,ml.abdulhameed`);
     const d = await res.json();
