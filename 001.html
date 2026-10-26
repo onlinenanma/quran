@@ -94,9 +94,27 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 .quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
 .quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
 .quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
-.topnav{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.hero .topnav .back{display:inline-block;padding:4px 0}
-   .langpick{font-family:inherit;font-size:.8rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:14px;padding:2px 8px;max-width:80px}
+
+ .topnav{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;overflow:hidden;}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:8px 4px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}  
+   
+.langpick{font-family:inherit;font-size:.8rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:14px;padding:2px 8px;max-width:80px}
 .langpick option{color:#22302a}
 .goog-te-banner-frame,.skiptranslate iframe{display:none!important}
 body{top:0!important}
