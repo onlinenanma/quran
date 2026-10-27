@@ -292,6 +292,23 @@
     };
   });
 
+  /* ===== voice check: add #voices to the end of any page address to see which voices the browser lists ===== */
+  if (location.hash === '#voices') onReady(function () {
+    var box = document.createElement('pre');
+    box.className = 'notranslate'; box.setAttribute('translate', 'no');
+    box.style.cssText = 'position:fixed;left:6px;right:6px;bottom:6px;max-height:40vh;overflow:auto;z-index:99;background:rgba(0,0,0,.85);color:#fff;font:12px/1.4 monospace;padding:8px;border-radius:8px;white-space:pre-wrap';
+    document.body.appendChild(box);
+    function show() {
+      var vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+      var ml = vs.filter(function (v) { return /^ml/i.test(v.lang); });
+      box.textContent = 'all voices: ' + vs.length + '  |  Malayalam: ' + ml.length + '  |  ' + new Date().toLocaleTimeString() + '\n' +
+        ml.map(function (v) { return (v.localService ? 'local  ' : 'online ') + v.name + ' [' + v.lang + '] score ' + vscore(v); }).join('\n');
+    }
+    show();
+    if (window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged', show);
+    setInterval(show, 2000);
+  });
+
   /* offline support */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () {
