@@ -12,9 +12,9 @@
 html,body{width:100%;overflow-x:hidden}
 body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
 .banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:
- radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
- repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
- linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+ ⁡radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ ⁡repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ ⁡linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
 .bismi{font-family:"Noto Naskh Arabic",serif;font-size:clamp(1.3rem,4.5vw,2rem);color:var(--gold);margin-bottom:6px}
 .banner h1{font-size:clamp(2rem,8vw,3.8rem);font-weight:700;line-height:1.3}
 .wrap{max-width:1100px;margin:0 auto;padding:18px 12px 40px}
@@ -267,3 +267,254 @@ body{top:0!important}
    <div class="compass-wrap">
     <div class="phone-marker" title="Phone direction"></div>
     <div id="compassDial" class="compass-container">
+     <div class="north-pointer"></div><div class="north-line"></div>
+     <span class="compass-mark mark-n">N</span><span class="compass-mark mark-e">E</span>
+     <span class="compass-mark mark-s">S</span><span class="compass-mark mark-w">W</span>
+     <div id="qiblaNeedle" class="qibla-needle"><div class="head"></div><div class="stem"></div><div class="kaaba"></div></div>
+    </div>
+   </div>
+   <div class="legend"><span><i style="background:#d9534f"></i>True North</span><span><i style="background:var(--gold)"></i>Qibla</span></div>
+   <div id="qiblaAngle" class="qibla-angle-text">--°</div>
+   <div id="compassStatus" class="compass-status">Tap Start Compass &middot; keep phone flat</div>
+   <button id="btnStartCompass" type="button" style="max-width:250px;font-size:.85rem;padding:8px 14px;margin-bottom:6px" onclick="enableLiveCompass(event)">🧭 Calibrate / Start Compass</button>
+   <button type="button" style="max-width:250px;font-size:.8rem;padding:6px 12px;background:#f0f4f2;color:var(--green);border:1px solid var(--green)" onclick="toggleCalibModal(true)">ℹ️ Compass Calibration Guide</button>
+  </div>
+ </div>
+
+ <section class="card desc">
+  <h2 style="color:var(--green2);font-size:1.25rem;margin-bottom:12px;text-align:center">സ്വാഗതം</h2>
+  <p>അർ-റഹ്‌മാനും അർ-റഹീമുമായ അല്ലാഹുവിന്റെ നാമത്തില്‍. സർവ്വ സ്തുതികളും ലോകങ്ങളുടെ റബ്ബായ അല്ലാഹുവിന്നാകുന്നു. അന്തിമ പ്രാവാചകൻ മുഹമ്മദ് നബി (ﷺ) യുടെ മേൽ അല്ലാഹുവിന്റെ സ്വലാത്തും സലാമും സദാ വർഷിക്കുമാറാകട്ടെ. ആമീൻ.</p>
+  <p>വിശുദ്ധ ഖുർആൻ പാരായണത്തിനും പഠനത്തിനും സഹായിക്കുന്ന ഒരു ഡിജിറ്റൽ സംരംഭമാണ് 'ഖുർആൻ സാരം'. ഖുർആനിക വചനങ്ങളുടെ സാരവും ചുരുക്കരൂപത്തിലുള്ള വിവരണവും എളുപ്പത്തിൽ വായിക്കാനും, കേട്ട് മനസ്സിലാക്കാനും, മറ്റുള്ളവരിലേക്ക് എത്തിക്കാനും ഈ സൈറ്റ് സഹായിക്കുന്നു. വിശുദ്ധ ഖുർആന്റെ പാരായണം ആവർത്തിച്ച് ആസ്വദിക്കാനും, അതിന്റെ മഹത്തായ ആശയങ്ങൾ ലളിതമായി മനസ്സിലാക്കാനും അനുയോജ്യമായ രീതിയിലാണ് ഇതിന്റെ ഉള്ളടക്കം ക്രമീകരിച്ചിരിക്കുന്നത്.</p>
+  <p>നിങ്ങളുടെ കുടുംബങ്ങൾക്കും സുഹൃത്തക്കൾക്കും ഈ സൈറ്റ് ഷെയർ ചെയ്ത് അവരെ കൂടി ഈ നന്മയിൽ പങ്കാളികളാക്കാൻ ശ്രദ്ദിക്കുമല്ലോ. അള്ളാഹു അവന്റെ റഹ്‌മത് നമ്മുടെ മേൽ ഇരു ലോകത്തും ചൊരിഞ്ഞു തരുമാറാകട്ടെ.</p>
+  <p class="dua">റഹ്‌മാനായ റബ്ബേ.. ഈ പരിശ്രമം ഒരു സത്കർമ്മമായി നീ സ്വീകരിക്കുമാറാകണേ.. ആമീൻ.</p>
+ </section>
+</main>
+
+<footer>© ഖുർആൻ സാരം</footer>
+
+<!-- Calibration Guide Modal Popup -->
+<div id="calibModal" class="calib-modal">
+ <div class="calib-modal-content">
+  <h4>🧭 Compass Calibration Guide</h4>
+  <ul>
+   <li><strong>Hold Phone Flat:</strong> Keep your mobile device completely flat parallel to the ground for optimal magnetic sensor readings.</li>
+   <li><strong>Figure-8 Motion:</strong> Wave your phone slowly in a horizontal "8" pattern 2-3 times in the air to calibrate the built-in sensor.</li>
+   <li><strong>Avoid Magnetic Cases:</strong> Remove phone cases containing magnets, metallic rings, or magnetic latches.</li>
+   <li><strong>Stay Away from Electronics:</strong> Move away from metal tables, laptops, or large electrical appliances.</li>
+  </ul>
+  <button class="close-modal-btn" onclick="toggleCalibModal(false)">Close / മനസ്സിലായി</button>
+ </div>
+</div>
+
+<script>
+const SURAH_URL = n => `https://onlinenanma.github.io/quran/${n}`;
+const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
+(function(){
+ const s=document.getElementById('surahSelect');
+ s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
+ SURAHS.forEach((n,i)=>{const k=String(i+1).padStart(3,'0');s.add(new Option(`${k} - ${n}`,k));});
+ s.addEventListener('change',openSurah);
+})();
+
+function openSurah(){
+ const v = document.getElementById('surahSelect').value, a = document.getElementById('openLink');
+ if (!v) { a.removeAttribute('href'); return; }
+ a.href = SURAH_URL(v);
+ a.click();
+}
+
+let currentQiblaBearing=0, deviceHeading=0, hasHeading=false, dialAngle=0, sinH=0, cosH=1, sensorOn=false;
+
+function toggleCalibModal(show) {
+ document.getElementById('calibModal').style.display = show ? 'flex' : 'none';
+}
+
+function calculateQibla(lat,lon){
+ const kl=21.4225*Math.PI/180,ko=39.8262*Math.PI/180,ul=lat*Math.PI/180,uo=lon*Math.PI/180,d=ko-uo;
+ const y=Math.sin(d),x=Math.cos(ul)*Math.tan(kl)-Math.sin(ul)*Math.cos(d);
+ return (Math.atan2(y,x)*180/Math.PI+360)%360;
+}
+
+function updateQiblaUI(lat,lon){
+ currentQiblaBearing=calculateQibla(lat,lon);
+ document.getElementById('qiblaAngle').innerText=`${currentQiblaBearing.toFixed(1)}°`;
+ renderCompass();
+}
+
+/* Tilt-Compensated Compass Math */
+function headingFrom(e) {
+ if (e.webkitCompassHeading != null) return e.webkitCompassHeading;
+ if (e.alpha == null) return null;
+ if (e.beta == null || e.gamma == null) return (360 - e.alpha) % 360;
+ const r = Math.PI / 180, a = e.alpha * r, b = e.beta * r, g = e.gamma * r;
+ const rA = -Math.cos(a) * Math.sin(g) - Math.sin(a) * Math.sin(b) * Math.cos(g);
+ const rB = -Math.sin(a) * Math.sin(g) + Math.cos(a) * Math.sin(b) * Math.cos(g);
+ return (Math.atan2(rA, rB) / r + 360) % 360;
+}
+
+function setHeading(h) {
+ const r = Math.PI / 180;
+ if (!hasHeading) { sinH = Math.sin(h * r); cosH = Math.cos(h * r); }
+ else { sinH = sinH * 0.75 + Math.sin(h * r) * 0.25; cosH = cosH * 0.75 + Math.cos(h * r) * 0.25; }
+ deviceHeading = (Math.atan2(sinH, cosH) / r + 360) % 360;
+ hasHeading = true; 
+ renderCompass();
+}
+
+function handleOrientation(e) {
+ const h = headingFrom(e); 
+ if (h == null || isNaN(h)) return;
+ const so = (screen.orientation && screen.orientation.angle) || 0;
+ setHeading((h + so) % 360);
+ const b = document.getElementById('btnStartCompass'); 
+ if (b) b.style.display = 'none';
+}
+
+function renderCompass(){
+ const n = document.getElementById('qiblaNeedle'), d = document.getElementById('compassDial');
+ if(!d||!n)return;
+ dialAngle += ((((-deviceHeading - dialAngle + 180) % 360) + 360) % 360) - 180;
+ d.style.transform=`rotate(${dialAngle}deg)`;
+ n.style.transform=`rotate(${currentQiblaBearing}deg)`;
+ if(hasHeading){
+  const diff=Math.abs(((currentQiblaBearing-deviceHeading+540)%360)-180), ok=diff<=5;
+  d.classList.toggle('aligned',ok);
+  document.getElementById('compassStatus').innerText=ok?"✓ ഖിബ്‌ല ദിശയിൽ (Facing Qibla)":"Turn until the gold arrow points to the top ▼";
+ }
+}
+
+async function startSensors(manual) {
+ const st = document.getElementById('compassStatus');
+ if (sensorOn) return;
+ try {
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+   if (!manual) return;
+   if (await DeviceOrientationEvent.requestPermission() !== 'granted') { st.innerText = "Permission Denied"; return; }
+   window.addEventListener('deviceorientation', handleOrientation, true);
+  } else if ('ondeviceorientationabsolute' in window) {
+   window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+  } else if ('ondeviceorientation' in window) {
+   window.addEventListener('deviceorientation', handleOrientation, true);
+  } else { 
+   st.innerText = "Sensors Not Supported"; 
+   return; 
+  }
+  sensorOn = true;
+ } catch (err) { console.error(err); }
+ setTimeout(() => { if (!hasHeading) st.innerText = "സെൻസർ ഡാറ്റ ലഭിക്കുന്നില്ല. പേജ് നേരിട്ട് തുറന്ന് നോക്കുക."; }, 2500);
+}
+
+function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }
+
+function showHijri(h){
+ try{ document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`; }catch(e){}
+}
+
+let locLocked = false;   // true once the visitor picks a city / uses GPS, so a late IP lookup cannot override it
+let ptGen = 0;           // ignore prayer-time answers that arrive late
+const LOC_KEY = 'qs-loc';
+function rememberLocation(lat, lon, name){ try{ localStorage.setItem(LOC_KEY, JSON.stringify({lat, lon, name})); }catch(e){} }
+
+async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
+ const disp=document.getElementById('prayerTimesDisplay'),sub=document.getElementById('locationSubtitle'),qsub=document.getElementById('qiblaSubtitle');
+ const my=++ptGen;
+ updateQiblaUI(lat,lon);
+ const t=new Date(), ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
+ const key=`qs-pt:${lat.toFixed(2)},${lon.toFixed(2)}:${ds}`;
+ const label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
+ const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};
+ const draw=c=>{
+  sub.innerText=label; qsub.innerText=label;
+  let h='';
+  for(const [k,v] of Object.entries(names)) if(c.tm[k]) h+=`<div class="prayer-time-card"><div class="prayer-name">${v}</div><div class="prayer-time">${c.tm[k]}</div></div>`;
+  disp.innerHTML=h;
+  if(c.h) showHijri(c.h);
+ };
+
+ /* today's times for this place are kept on the device: no repeat download (saves mobile data) */
+ try{ const c=JSON.parse(localStorage.getItem(key)); if(c&&c.tm){ draw(c); return; } }catch(e){}
+
+ disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
+ try{
+  const res=await fetch(`https://api.aladhan.com/v1/timings/${ds}?latitude=${lat}&longitude=${lon}&method=2`);
+  const data=await res.json();
+  if(my!==ptGen) return;
+  if(data&&data.code===200){
+   const c={tm:data.data.timings,h:data.data.date.hijri};
+   try{
+    for(let i=localStorage.length-1;i>=0;i--){ const k=localStorage.key(i); if(k&&k.startsWith('qs-pt:')&&!k.endsWith(':'+ds)) localStorage.removeItem(k); }
+    localStorage.setItem(key,JSON.stringify(c));
+   }catch(e){}
+   draw(c);
+  }else disp.innerHTML=`<p class="loading-message">സമയങ്ങൾ ലഭ്യമായില്ല.</p>`;
+ }catch(err){
+  if(my!==ptGen) return;
+  disp.innerHTML=`<p class="loading-message">ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.</p>`;
+  document.getElementById('hijriDateDisplay').innerText=`🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്`;
+ }
+}
+
+async function initWidgets(){
+ startSensors(false);
+
+ /* the last city / GPS place the visitor chose is used again: no IP lookup needed */
+ try{
+  const saved=JSON.parse(localStorage.getItem(LOC_KEY));
+  if(saved&&isFinite(saved.lat)&&isFinite(saved.lon)){
+   locLocked=true; matchDropdownOption(saved.lat,saved.lon);
+   fetchAndDisplayPrayerTimes(saved.lat,saved.lon,saved.name||"");
+   return;
+  }
+ }catch(e){}
+
+ /* otherwise find the place from the IP address (HTTPS services only) */
+ const sources=[
+  ['https://ipapi.co/json/', d=>d&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country_name}`}:null],
+  ['https://ipwho.is/',       d=>d&&d.success&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country}`}:null]
+ ];
+ for(const [url,pick] of sources){
+  try{
+   const r=await fetch(url), p=pick(await r.json());
+   if(p){ if(!locLocked){ matchDropdownOption(p.lat,p.lon); fetchAndDisplayPrayerTimes(p.lat,p.lon,p.place); } return; }
+  }catch(e){}
+ }
+ if(locLocked) return;
+ document.getElementById('citySelect').value="9.9312,76.2673";   // default: Kochi
+ onCityDropdownChange(true);
+}
+
+function requestGPSPermission(){
+ if(navigator.geolocation)navigator.geolocation.getCurrentPosition(
+  p=>{const la=p.coords.latitude,lo=p.coords.longitude;locLocked=true;matchDropdownOption(la,lo);rememberLocation(la,lo,"GPS Location");fetchAndDisplayPrayerTimes(la,lo,"GPS Location");},
+  ()=>alert("Location access denied or unavailable."));
+}
+
+/* select the nearest listed city (within ~0.4°), or clear the box if none is close */
+function matchDropdownOption(lat,lon){
+ const s=document.getElementById('citySelect');
+ let best=null,bd=0.4;
+ for(const o of s.options){
+  if(!o.value)continue;
+  const [a,b]=o.value.split(',').map(Number), d=Math.max(Math.abs(a-lat),Math.abs(b-lon));
+  if(d<bd){bd=d;best=o;}
+ }
+ s.value=best?best.value:"";
+}
+
+function onCityDropdownChange(auto){
+ const s=document.getElementById('citySelect');
+ if(!s.value)return;
+ const [la,lo]=s.value.split(',').map(parseFloat), name=s.options[s.selectedIndex].text;
+ if(auto!==true){ locLocked=true; rememberLocation(la,lo,name); }
+ fetchAndDisplayPrayerTimes(la,lo,name);
+}
+
+/* compass help window: close by tapping outside it or with Esc */
+document.getElementById('calibModal').addEventListener('click',e=>{ if(e.target.id==='calibModal') toggleCalibModal(false); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') toggleCalibModal(false); });
+</script>
+
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+
+</body>
+</html>
