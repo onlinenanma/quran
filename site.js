@@ -200,23 +200,50 @@
     };
     setTimeout(function () { next(0); }, 100);
   }
+  /* Edge on Android lists NO voices until its speech engine is started (e.g. by Read Aloud).
+     When the list is empty, wake the engine with a silent utterance (inside the user's tap) and wait briefly. */
+  var primed = false;
+  function ensureVoices(code, cb) {
+    var ss = window.speechSynthesis;
+    if (!ss || ss.getVoices().length) return cb();          // voices are listed (or speech is unsupported): go on
+    var done = false, iv, t;
+    var finish = function () {
+      if (done) return; done = true; clearInterval(iv); clearTimeout(t);
+      ss.removeEventListener('voiceschanged', finish); cb();
+    };
+    ss.addEventListener('voiceschanged', finish);
+    iv = setInterval(function () { if (ss.getVoices().length) finish(); }, 150);
+    t = setTimeout(finish, primed ? 600 : 2500);            // wait long only the first time on a page
+    if (!primed) {
+      primed = true;
+      try { var u = new SpeechSynthesisUtterance(' '); u.volume = 0; u.lang = code === 'ml' ? 'ml-IN' : code; ss.speak(u); } catch (e) {}
+    }
+  }
   onReady(function () {
     if (typeof window.speakMalayalam === 'function') {                 // chapter pages
       var origSpeak = window.speakMalayalam;
       window.speakMalayalam = function (text, my, done) {
         var el = (typeof activeKey !== 'undefined' && activeKey) ? document.getElementById('item-' + activeKey) : null;
-        var shown = el ? shownText(el) : '';
-        if (shown && mlFrac(shown) < 0.5)                              // page is translated: read what is on screen
-          speakIn(spokenCode(shown), shown.replace(NUM, ' '), my, done,
-                  typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
-        else origSpeak(text, my, done);                                // Malayalam: unchanged
+        var shown = el ? shownText(el) : '', translated = !!shown && mlFrac(shown) < 0.5;
+        var code = translated ? spokenCode(shown) : 'ml';
+        ensureVoices(code, function () {
+          if (my !== token) return;                                    // stopped while waiting
+          if (translated)                                              // page is translated: read what is on screen
+            speakIn(code, shown.replace(NUM, ' '), my, done,
+                    typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
+          else origSpeak(text, my, done);                              // Malayalam: the page's own code
+        });
       };
     }
     if (typeof window.speakPreface === 'function') {                   // preface pages that still use the original speech code
       var origPref = window.speakPreface;
       window.speakPreface = function (text, my) {
-        if (mlFrac(text) < 0.5) speakIn(spokenCode(text), text.replace(NUM, ' '), my, function () { stopSpeech(); }, 'ml', '');
-        else origPref(text, my);
+        var translated = mlFrac(text) < 0.5, code = translated ? spokenCode(text) : 'ml';
+        ensureVoices(code, function () {
+          if (my !== token) return;
+          if (translated) speakIn(code, text.replace(NUM, ' '), my, function () { stopSpeech(); }, 'ml', '');
+          else origPref(text, my);
+        });
       };
     }
   });
