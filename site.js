@@ -200,25 +200,8 @@
     };
     setTimeout(function () { next(0); }, 100);
   }
-  /* Edge on Android lists NO voices until its speech engine is started (e.g. by Read Aloud).
-     When the list is empty, wake the engine with a silent utterance (inside the user's tap) and wait briefly. */
-  var primed = false;
-  function ensureVoices(code, cb) {
-    var ss = window.speechSynthesis;
-    if (!ss || ss.getVoices().length) return cb();          // voices are listed (or speech is unsupported): go on
-    var done = false, iv, t;
-    var finish = function () {
-      if (done) return; done = true; clearInterval(iv); clearTimeout(t);
-      ss.removeEventListener('voiceschanged', finish); cb();
-    };
-    ss.addEventListener('voiceschanged', finish);
-    iv = setInterval(function () { if (ss.getVoices().length) finish(); }, 150);
-    t = setTimeout(finish, primed ? 600 : 2500);            // wait long only the first time on a page
-    if (!primed) {
-      primed = true;
-      try { var u = new SpeechSynthesisUtterance(' '); u.volume = 0; u.lang = code === 'ml' ? 'ml-IN' : code; ss.speak(u); } catch (e) {}
-    }
-  }
+  /* (Waking Edge Android's speech engine with a silent utterance did not make its voices appear, so there is no waiting.) */
+  function ensureVoices(code, cb) { cb(); }
   onReady(function () {
     if (typeof window.speakMalayalam === 'function') {                 // chapter pages
       var origSpeak = window.speakMalayalam;
