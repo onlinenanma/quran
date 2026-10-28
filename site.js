@@ -372,47 +372,6 @@
     setInterval(show, 2000);
   });
 
-  /* ===== Bismillah: "play from the beginning" starts with the Bismillah recitation =====
-     Not added for surah 1 (there it is verse 1) or surah 9 (it has none), nor when the page does not start at verse 1.
-     The audio is the reciter's file 001001.mp3, the same recitation of Bismillah as verse 1 of Al-Fatiha. */
-  function bismillahEl() {
-    var norm = function (t) { return t.replace(/[\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u0640]/g, '').replace(/\u0671/g, '\u0627').replace(/\s+/g, ' ').trim(); };
-    var target = norm('\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064e\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650');
-    var els = document.querySelectorAll('h1,h2,h3,p,div,span');
-    for (var i = 0; i < els.length; i++) if (!els[i].children.length && norm(els[i].textContent) === target) return els[i];
-    return null;
-  }
-  function playBismillah(my, done) {
-    var rec = currentReciter(), url = rec.base.replace(/\/*$/, '/') + '001001.mp3';
-    if (typeof curKind !== 'undefined') curKind = 'ml';
-    if (typeof curLabel !== 'undefined') curLabel = '\u0d2c\u0d3f\u0d38\u0d4d\u0d2e\u0d3f';
-    statusEl.textContent = '\u0d2c\u0d3f\u0d38\u0d4d\u0d2e\u0d3f \u00b7 ' + rec.name;
-    Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(url) : url).then(function (u) {
-      if (my !== token) return;
-      var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio(), over = false;
-      var next = function () { if (over || my !== token) return; over = true; done(); };    // any problem: just carry on with verse 1
-      a.onended = next; a.onerror = next;
-      a.src = u; a.playbackRate = 1; currentAudio = a;
-      a.play().catch(next);
-    }).catch(function () { if (my === token) done(); });
-  }
-  onReady(function () {
-    if (typeof SURAH === 'undefined' || SURAH === 1 || SURAH === 9) return;
-    if (typeof window.playItem !== 'function' || typeof window.toggleContinuous !== 'function' ||
-        typeof fullQueue !== 'function' || typeof runQueue !== 'function' || typeof VERSES === 'undefined') return;
-    var bm = bismillahEl();
-    if (bm) { bm.id = 'item-bm-0'; bm.classList.add('item'); }          // so it is highlighted while it plays
-    var origPlay = window.playItem, origToggle = window.toggleContinuous;
-    window.playItem = function (kind, n, my, done) { return kind === 'bm' ? playBismillah(my, done) : origPlay(kind, n, my, done); };
-    window.toggleContinuous = function () {                            // the "play from the beginning" button
-      if (masterBtn.classList.contains('playing')) return origToggle();   // it is a stop
-      var q = fullQueue(), ar = document.getElementById('show-ar');
-      if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
-      q.unshift({ kind: 'bm', n: 0 });
-      runQueue(q, true);
-    };
-  });
-
   /* ===== options banner: hides while you scroll down, comes back when you scroll up or reach the top ===== */
   onReady(function () {
     var bar = document.querySelector('.controls'); if (!bar) return;
