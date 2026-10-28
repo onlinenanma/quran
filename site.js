@@ -3,7 +3,7 @@
    1) remembers the chosen language for the whole site
    2) loads Google Translate only when a language other than Malayalam is chosen
    3) natural voices + text to speech in the translated language
-   4) recitation audio: saves only Al-Ghamdi for offline use
+   4) recitation audio: saves only Al-Ghamdi for offline use; recorded Malayalam voice with browser fallback
    5) registers the offline service worker (/quran/sw.js) */
 (function () {
   var KEY = 'quran-lang', YEAR = 'max-age=31536000';
@@ -200,6 +200,55 @@
     };
     setTimeout(function () { next(0); }, 100);
   }
+  /* ===== recorded Malayalam voice (Azure Midhun / Sobhana MP3 files); browser speech is the fallback =====
+     The page plays /audio/<surah>/<surah><verse>-ml.mp3 (-tf.mp3 for the explanation) only when the file's
+     manifest entry matches the text on this page; otherwise, or on any error, it uses the browser's voice.
+     Played files are saved on the phone (at most REC_MAX) so they work offline. */
+  var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
+  function p3(n) { return String(n).padStart(3, '0'); }
+  function fnv(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); }
+  var recMan = null;
+  function recManifest() {
+    if (typeof SURAH === 'undefined') return Promise.resolve({});
+    if (!recMan) recMan = fetch(REC_BASE + p3(SURAH) + '/manifest.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+    return recMan;
+  }
+  function recSrc(url) {                                   // saved copy first; otherwise download it, save it, play it
+    if (!window.caches) return Promise.resolve(url);
+    var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
+    return caches.open(REC_CACHE).then(function (c) {
+      return c.match(url).then(function (hit) {
+        if (hit) return blobUrl(hit);
+        if (!navigator.onLine) return null;
+        return fetch(url).then(function (r) {
+          if (!r.ok) return null;
+          return c.put(url, r.clone()).then(function () {
+            c.keys().then(function (ks) { for (var i = 0; i < ks.length - REC_MAX; i++) c.delete(ks[i]); });
+            return blobUrl(r);
+          });
+        });
+      });
+    }).catch(function () { return null; });
+  }
+  function playRecorded(kind, n, text, my, done, fallback) {
+    recManifest().then(function (man) {
+      var key = p3(SURAH) + p3(n) + '-' + kind, e = man[key];
+      if (!e || e.h !== fnv(text)) return fallback();      // no recording, or the text was edited after recording
+      return recSrc(REC_BASE + p3(SURAH) + '/' + key + '.mp3').then(function (src) {
+        if (my !== token) return;
+        if (!src) return fallback();
+        var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
+        var failed = false, bad = function () { if (failed || my !== token) return; failed = true; fallback(); };
+        a.onended = function () { if (my === token) done(); };
+        a.onerror = bad;
+        a.src = src; a.playbackRate = 1; currentAudio = a;
+        statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
+        a.play().catch(bad);
+      });
+    }).catch(function () { if (my === token) fallback(); });
+  }
+  onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });   // fetch the manifest early
+
   /* (Waking Edge Android's speech engine with a silent utterance did not make its voices appear, so there is no waiting.) */
   function ensureVoices(code, cb) { cb(); }
   onReady(function () {
@@ -214,7 +263,11 @@
           if (translated)                                              // page is translated: read what is on screen
             speakIn(code, shown.replace(NUM, ' '), my, done,
                     typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
-          else origSpeak(text, my, done);                              // Malayalam: the page's own code
+          else {                                                       // Malayalam: recorded voice if there is one, else the page's own speech
+            var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
+            if (kn[0] === 'ml' || kn[0] === 'tf') playRecorded(kn[0], +kn[1], text, my, done, function () { origSpeak(text, my, done); });
+            else origSpeak(text, my, done);
+          }
         });
       };
     }
@@ -317,6 +370,27 @@
     show();
     if (window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged', show);
     setInterval(show, 2000);
+  });
+
+  /* ===== options banner: hides while you scroll down, comes back when you scroll up or reach the top ===== */
+  onReady(function () {
+    var bar = document.querySelector('.controls'); if (!bar) return;
+    var css = document.createElement('style');
+    css.textContent = '.controls{transition:transform .25s ease}.controls.bar-hide{transform:translateY(-130%)}' +
+      '@media(prefers-reduced-motion:reduce){.controls{transition:none}}';
+    document.head.appendChild(css);
+    var last = Math.max(0, window.pageYOffset || 0), ticking = false;
+    function update() {
+      ticking = false;
+      var y = Math.max(0, window.pageYOffset || 0), d = y - last;
+      // stays visible while the options panel is open or something is playing (stop button / status line)
+      var busy = bar.classList.contains('open') || document.querySelector('.main-btn.playing, .play-btn.playing');
+      if (busy || y < 80) { bar.classList.remove('bar-hide'); last = y; return; }
+      if (Math.abs(d) < 6) return;                          // ignore tiny movements
+      last = y;
+      if (d > 0 && y > 160) bar.classList.add('bar-hide'); else if (d < 0) bar.classList.remove('bar-hide');
+    }
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   });
 
   /* offline support */
