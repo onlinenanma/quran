@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. സൂറത്തുൽ അന്നിസാഅ് (161–176)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.banner .main-btn{padding:7px 20px}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status:empty{display:none}
+.verse,.item{min-width:0}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}
+.ai-box h3:first-child{margin-top:0}
+.ai-box>.main-btn{display:block;margin:0 auto}
+.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}
+.ai-out:empty{display:none}
+.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}
+.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}
+.ai-ask{display:flex;gap:6px;margin-top:8px}
+.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}
+.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.quiz-q p{margin:0 0 6px;font-size:var(--fs)}
+.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}
+.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
+.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
+.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/004"><span style="font-size: 1em;">📄</span>താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index"><span style="font-size: 1em;">📖</span>സൂറത്തുകൾ</a>
+ </div>
+ <h1>4. സൂറത്തുൽ അന്നിസാഅ് (161–176)</h1>
+</header>
+
+ <div>
+    <h1 style="text-align: center;">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1>
+</div>
+
+<div class="controls" id="controls">
+  <div class="banner">
+    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾</button></div>
+    <div class="banner-row"><button id="master" class="main-btn" onclick="toggleContinuous()">▶ തുടർച്ചയായി കേൾക്കാം</button></div>
+    <div id="status"></div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">വായിക്കേണ്ട ഭാഗങ്ങൾ:</span>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">കേൾക്കേണ്ട ഭാഗങ്ങൾ:</span>
+      <label class="opt"><input type="checkbox" id="opt-ar" checked> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="opt-ml" checked> സാരം</label>
+      <label class="opt"><input type="checkbox" id="opt-tf"> വിവരണം</label>
+    </div>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത് (പാരായണം):</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആയത്ത് ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+    <div class="ctl-row"><span class="ctl-title">സാരം ശബ്ദം:</span><select id="voice-ml" class="opt-sel" onchange="saveSettings()"></select></div>
+    <div class="ctl-row"><span class="ctl-title">വിവരണം ശബ്ദം:</span><select id="voice-tf" class="opt-sel" onchange="saveSettings()"></select></div>
+  </div>
+</div>
+
+<div id="verses"></div>
+
+<div class="ai-box" id="ai-box">
+  <h3>💡 ഈ പേജിലെ പാഠങ്ങൾ</h3>
+  <button class="main-btn" onclick="showSummary()">പാഠങ്ങൾ സംഗ്രഹിക്കുക</button>
+  <div class="ai-out" id="ai-summary"></div>
+  <h3>❓ ചോദ്യങ്ങൾ </h3>
+  <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 6px;">ഉത്തരങ്ങൾ കാണാൻ ചോദ്യങ്ങൾ തിരഞ്ഞെടുക്കൂ..</div>
+  <div class="q-list" id="q-list"></div>
+  <div class="q-list" id="q-list"></div>
+  <div class="ai-ask"><input id="ai-q" placeholder="നിങ്ങളുടെ സ്വന്തം ചോദ്യം..."><button class="main-btn" onclick="askCustom()">ചോദിക്കുക</button></div>
+  <div class="ai-out" id="ai-answer"></div>
+  <h3>📝 ക്വിസ്</h3>
+  <button class="main-btn" onclick="startQuiz()">ക്വിസ് തുടങ്ങാം</button>
+  <div id="quiz"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* ===== PAGE SETTINGS ===== */
+const SURAH = 4;
+const SURAH_NAME = "സൂറത്തുൽ അന്നിസാഅ്";
+
+/* ===== VERSES ===== */
+const VERSES = [
+  {
+    "n": 161,
+    "ar": "وَأَخْذِهِمُ ٱلرِّبَوٰا۟ وَقَدْ نُهُوا۟ عَنْهُ وَأَكْلِهِمْ أَمْوَٰلَ ٱلنَّاسِ بِٱلْبَٰطِلِ ۚ وَأَعْتَدْنَا لِلْكَٰفِرِينَ مِنْهُمْ عَذَابًا أَلِيمًۭا",
+    "ml": "പലിശ അവര്‍ക്ക് നിരോധിക്കപ്പെട്ടതായിട്ടും, അവരത് വാങ്ങിയതുകൊണ്ടും, ജനങ്ങളുടെ സ്വത്തുകള്‍ അവര്‍ അന്യായമായി തിന്നതുകൊണ്ടും കൂടിയാണ് (അത് നിഷിദ്ധമാക്കപ്പെട്ടത്‌.) അവരില്‍ നിന്നുള്ള സത്യനിഷേധികള്‍ക്ക് നാം വേദനയേറിയ ശിക്ഷ ഒരുക്കിവെച്ചിട്ടുണ്ട്‌.",
+    "tf": ""
+  },
+  {
+    "n": 162,
+    "ar": "لَّٰكِنِ ٱلرَّٰسِخُونَ فِى ٱلْعِلْمِ مِنْهُمْ وَٱلْمُؤْمِنُونَ يُؤْمِنُونَ بِمَآ أُنزِلَ إِلَيْكَ وَمَآ أُنزِلَ مِن قَبْلِكَ ۚ وَٱلْمُقِيمِينَ ٱلصَّلَوٰةَ ۚ وَٱلْمُؤْتُونَ ٱلزَّكَوٰةَ وَٱلْمُؤْمِنُونَ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ أُو۟لَٰٓئِكَ سَنُؤْتِيهِمْ أَجْرًا عَظِيمًا",
+    "ml": "എന്നാല്‍ അവരില്‍ നിന്ന് അടിയുറച്ച അറിവുള്ളവരും, സത്യവിശ്വാസികളുമായിട്ടുള്ളവര്‍ നിനക്ക് അവതരിപ്പിക്കപ്പെട്ടതിലും നിനക്ക് മുമ്പ് അവതരിപ്പിക്കപ്പെട്ടതിലും വിശ്വസിക്കുന്നു. പ്രാര്‍ത്ഥന മുറപോലെ നിര്‍വഹിക്കുന്നവരും, സകാത്ത് നല്‍കുന്നവരും, അല്ലാഹുവിലും അന്ത്യദിനത്തിലും വിശ്വസിക്കുന്നവരുമത്രെ അവര്‍. അങ്ങനെയുള്ളവര്‍ക്ക് നാം മഹത്തായ പ്രതിഫലം നല്‍കുന്നതാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 163,
+    "ar": "۞ إِنَّآ أَوْحَيْنَآ إِلَيْكَ كَمَآ أَوْحَيْنَآ إِلَىٰ نُوحٍۢ وَٱلنَّبِيِّۦنَ مِنۢ بَعْدِهِۦ ۚ وَأَوْحَيْنَآ إِلَىٰٓ إِبْرَٰهِيمَ وَإِسْمَٰعِيلَ وَإِسْحَٰقَ وَيَعْقُوبَ وَٱلْأَسْبَاطِ وَعِيسَىٰ وَأَيُّوبَ وَيُونُسَ وَهَٰرُونَ وَسُلَيْمَٰنَ ۚ وَءَاتَيْنَا دَاوُۥدَ زَبُورًۭا",
+    "ml": "(നബിയേ,) നൂഹിനും അദ്ദേഹത്തിന്‍റെ ശേഷമുള്ള പ്രവാചകന്‍മാര്‍ക്കും നാം സന്ദേശം നല്‍കിയത് പോലെ തന്നെ നിനക്കും നാം സന്ദേശം നല്‍കിയിരിക്കുന്നു. ഇബ്രാഹീം, ഇസ്മാഈല്‍, ഇഷാഖ്‌, യഅ്ഖൂബ്‌. യഅ്ഖൂബ് സന്തതികള്‍, ഈസാ, അയ്യൂബ്‌, യൂനുസ്‌, ഹാറൂന്‍, സുലൈമാന്‍ എന്നിവര്‍ക്കും നാം സന്ദേശം നല്‍കിയിരിക്കുന്നു. ദാവൂദിന് നാം സബൂര്‍ (സങ്കീര്‍ത്തനം) നല്‍കി.",
+    "tf": ""
+  },
+  {
+    "n": 164,
+    "ar": "وَرُسُلًۭا قَدْ قَصَصْنَٰهُمْ عَلَيْكَ مِن قَبْلُ وَرُسُلًۭا لَّمْ نَقْصُصْهُمْ عَلَيْكَ ۚ وَكَلَّمَ ٱللَّهُ مُوسَىٰ تَكْلِيمًۭا",
+    "ml": "നിനക്ക് നാം മുമ്പ് വിവരിച്ചുതന്നിട്ടുള്ള ദൂതന്‍മാരെയും, നിനക്ക് നാം വിവരിച്ചുതന്നിട്ടില്ലാത്ത ദൂതന്‍മാരെയും (നാം നിയോഗിക്കുകയുണ്ടായി.) മൂസായോട് അല്ലാഹു നേരിട്ട് സംസാരിക്കുകയും ചെയ്തു.",
+    "tf": ""
+  },
+  {
+    "n": 165,
+    "ar": "رُّسُلًۭا مُّبَشِّرِينَ وَمُنذِرِينَ لِئَلَّا يَكُونَ لِلنَّاسِ عَلَى ٱللَّهِ حُجَّةٌۢ بَعْدَ ٱلرُّسُلِ ۚ وَكَانَ ٱللَّهُ عَزِيزًا حَكِيمًۭا",
+    "ml": "സന്തോഷവാര്‍ത്ത അറിയിക്കുന്നവരും, താക്കീത് നല്‍കുന്നവരുമായ ദൂതന്‍മാരായിരുന്നു അവര്‍. ആ ദൂതന്‍മാര്‍ക്ക് ശേഷം ജനങ്ങള്‍ക്ക് അല്ലാഹുവിനെതിരില്‍ ഒരു ന്യായവും ഇല്ലാതിരിക്കാന്‍ വേണ്ടിയാണത്‌. അല്ലാഹു പ്രതാപിയും യുക്തിമാനുമാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 166,
+    "ar": "لَّٰكِنِ ٱللَّهُ يَشْهَدُ بِمَآ أَنزَلَ إِلَيْكَ ۖ أَنزَلَهُۥ بِعِلْمِهِۦ ۖ وَٱلْمَلَٰٓئِكَةُ يَشْهَدُونَ ۚ وَكَفَىٰ بِٱللَّهِ شَهِيدًا",
+    "ml": "എന്നാല്‍ അല്ലാഹു നിനക്ക് അവതരിപ്പിച്ചുതന്നതിന്‍റെ കാര്യത്തില്‍ അവന്‍ തന്നെ സാക്ഷ്യം വഹിക്കുന്നു. അവന്‍റെ അറിവിന്‍റെ അടിസ്ഥാനത്തില്‍ തന്നെയാണ് അവനത് അവതരിപ്പിച്ചിട്ടുള്ളത്‌. മലക്കുകളും (അതിന്‌) സാക്ഷ്യം വഹിക്കുന്നു. സാക്ഷിയായി അല്ലാഹു മതി.",
+    "tf": ""
+  },
+  {
+    "n": 167,
+    "ar": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ وَصَدُّوا۟ عَن سَبِيلِ ٱللَّهِ قَدْ ضَلُّوا۟ ضَلَٰلًۢا بَعِيدًا",
+    "ml": "അവിശ്വസിക്കുകയും, അല്ലാഹുവിന്‍റെ മാര്‍ഗത്തില്‍ നിന്ന് (ജനങ്ങളെ) തടയുകയും ചെയ്തവര്‍ തീര്‍ച്ചയായും ബഹുദൂരം പിഴച്ച് പോയിരിക്കുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 168,
+    "ar": "إِنَّ ٱلَّذِينَ كَفَرُوا۟ وَظَلَمُوا۟ لَمْ يَكُنِ ٱللَّهُ لِيَغْفِرَ لَهُمْ وَلَا لِيَهْدِيَهُمْ طَرِيقًا",
+    "ml": "അവിശ്വസിക്കുകയും, അന്യായം പ്രവര്‍ത്തിക്കുകയും ചെയ്തവരാരോ അവര്‍ക്ക് അല്ലാഹു ഒരിക്കലും പൊറുത്തുകൊടുക്കുന്നതല്ല.",
+    "tf": ""
+  },
+  {
+    "n": 169,
+    "ar": "إِلَّا طَرِيقَ جَهَنَّمَ خَٰلِدِينَ فِيهَآ أَبَدًۭا ۚ وَكَانَ ذَٰلِكَ عَلَى ٱللَّهِ يَسِيرًۭا",
+    "ml": "നരകത്തിന്‍റെ മാര്‍ഗത്തിലേക്കല്ലാതെ മറ്റൊരു മാര്‍ഗത്തിലേക്കും അവന്‍ അവരെ നയിക്കുന്നതുമല്ല. എന്നെന്നേക്കുമായി അവരതില്‍ സ്ഥിരവാസികളായിരിക്കും. അല്ലാഹുവിന് അത് എളുപ്പമുള്ള കാര്യമാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 170,
+    "ar": "يَٰٓأَيُّهَا ٱلنَّاسُ قَدْ جَآءَكُمُ ٱلرَّسُولُ بِٱلْحَقِّ مِن رَّبِّكُمْ فَـَٔامِنُوا۟ خَيْرًۭا لَّكُمْ ۚ وَإِن تَكْفُرُوا۟ فَإِنَّ لِلَّهِ مَا فِى ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَكَانَ ٱللَّهُ عَلِيمًا حَكِيمًۭا",
+    "ml": "ജനങ്ങളേ, നിങ്ങളുടെ രക്ഷിതാവിങ്കല്‍ നിന്നുള്ള സത്യവുമായി നിങ്ങളുടെ അടുക്കലിതാ റസൂല്‍ വന്നിരിക്കുന്നു. അതിനാല്‍ നിങ്ങളുടെ നന്‍മയ്ക്കായി നിങ്ങള്‍ വിശ്വസിക്കുക. നിങ്ങള്‍ നിഷേധിക്കുകയാണെങ്കിലോ, ആകാശങ്ങളിലും ഭൂമിയിലുമുള്ളതെല്ലാം അല്ലാഹുവിന്‍റെതാണ്‌. (എന്ന് നിങ്ങള്‍ ഓര്‍ത്തു കൊള്ളുക.) അല്ലാഹു എല്ലാം അറിയുന്നവനും യുക്തിമാനുമാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 171,
+    "ar": "يَٰٓأَهْلَ ٱلْكِتَٰبِ لَا تَغْلُوا۟ فِى دِينِكُمْ وَلَا تَقُولُوا۟ عَلَى ٱللَّهِ إِلَّا ٱلْحَقَّ ۚ إِنَّمَا ٱلْمَسِيحُ عِيسَى ٱبْنُ مَرْيَمَ رَسُولُ ٱللَّهِ وَكَلِمَتُهُۥٓ أَلْقَىٰهَآ إِلَىٰ مَرْيَمَ وَرُوحٌۭ مِّنْهُ ۖ فَـَٔامِنُوا۟ بِٱللَّهِ وَرُسُلِهِۦ ۖ وَلَا تَقُولُوا۟ ثَلَٰثَةٌ ۚ ٱنتَهُوا۟ خَيْرًۭا لَّكُمْ ۚ إِنَّمَا ٱللَّهُ إِلَٰهٌۭ وَٰحِدٌۭ ۖ سُبْحَٰنَهُۥٓ أَن يَكُونَ لَهُۥ وَلَدٌۭ ۘ لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۗ وَكَفَىٰ بِٱللَّهِ وَكِيلًۭا",
+    "ml": "വേദക്കാരേ, നിങ്ങള്‍ മതകാര്യത്തില്‍ അതിരുകവിയരുത്‌. അല്ലാഹുവിന്‍റെ പേരില്‍ വാസ്തവമല്ലാതെ നിങ്ങള്‍ പറയുകയും ചെയ്യരുത്‌. മര്‍യമിന്‍റെ മകനായ മസീഹ് ഈസാ അല്ലാഹുവിന്‍റെ ദൂതനും, മര്‍യമിലേക്ക് അവന്‍ ഇട്ടുകൊടുത്ത അവന്‍റെ വചനവും, അവങ്കല്‍ നിന്നുള്ള ഒരു ആത്മാവും മാത്രമാകുന്നു. അത് കൊണ്ട് നിങ്ങള്‍ അല്ലാഹുവിലും അവന്‍റെ ദൂതന്‍മാരിലും വിശ്വസിക്കുക. ത്രിത്വം എന്ന വാക്ക് നിങ്ങള്‍ പറയരുത്‌. നിങ്ങളുടെ നന്‍മയ്ക്കായി നിങ്ങള്‍ (ഇതില്‍ നിന്ന്‌) വിരമിക്കുക. അല്ലാഹു ഏക ആരാധ്യന്‍ മാത്രമാകുന്നു. തനിക്ക് ഒരു സന്താനമുണ്ടായിരിക്കുക എന്നതില്‍ നിന്ന് അവനെത്രയോ പരിശുദ്ധനത്രെ. ആകാശങ്ങളിലുള്ളതും ഭൂമിയിലുള്ളതുമെല്ലാം അവന്‍റെതാകുന്നു. കൈകാര്യകര്‍ത്താവായി അല്ലാഹു തന്നെ മതി.",
+    "tf": ""
+  },
+  {
+    "n": 172,
+    "ar": "لَّن يَسْتَنكِفَ ٱلْمَسِيحُ أَن يَكُونَ عَبْدًۭا لِّلَّهِ وَلَا ٱلْمَلَٰٓئِكَةُ ٱلْمُقَرَّبُونَ ۚ وَمَن يَسْتَنكِفْ عَنْ عِبَادَتِهِۦ وَيَسْتَكْبِرْ فَسَيَحْشُرُهُمْ إِلَيْهِ جَمِيعًۭا",
+    "ml": "അല്ലാഹുവിന്‍റെ അടിമയായിരിക്കുന്നതില്‍ മസീഹ് ഒരിക്കലും വൈമനസ്യം കാണിക്കുന്നതല്ല. (അല്ലാഹുവിന്‍റെ) സാമീപ്യം സിദ്ധിച്ച മലക്കുകളും (വൈമനസ്യം കാണിക്കുന്നതല്ല.) അവനെ (അല്ലാഹുവെ) ആരാധിക്കുന്നതില്‍ ആര്‍ വൈമനസ്യം കാണിക്കുകയും, അഹംഭാവം നടിക്കുകയും ചെയ്യുന്നുവോ അവരെ മുഴുവനും അവന്‍ തന്‍റെ അടുക്കലേക്ക് ഒരുമിച്ചുകൂട്ടുന്നതാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 173,
+    "ar": "فَأَمَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ فَيُوَفِّيهِمْ أُجُورَهُمْ وَيَزِيدُهُم مِّن فَضْلِهِۦ ۖ وَأَمَّا ٱلَّذِينَ ٱسْتَنكَفُوا۟ وَٱسْتَكْبَرُوا۟ فَيُعَذِّبُهُمْ عَذَابًا أَلِيمًۭا وَلَا يَجِدُونَ لَهُم مِّن دُونِ ٱللَّهِ وَلِيًّۭا وَلَا نَصِيرًۭا",
+    "ml": "എന്നാല്‍ വിശ്വസിക്കുകയും, സല്‍കര്‍മ്മങ്ങള്‍ പ്രവര്‍ത്തിക്കുകയും ചെയ്തത് ആരോ അവരുടെതായ പ്രതിഫലം അവര്‍ക്കവന്‍ നിറവേറ്റികൊടുക്കുകയും, അവന്‍റെ അനുഗ്രഹത്തില്‍ നിന്ന് കൂടുതലായി അവര്‍ക്ക് നല്‍കുകയും ചെയ്യുന്നതാണ്‌. എന്നാല്‍, വൈമനസ്യം കാണിക്കുകയും, അഹങ്കരിക്കുകയും ചെയ്തവരാരോ അവര്‍ക്കവന്‍ വേദനയേറിയ ശിക്ഷ നല്‍കുന്നതാണ്‌. അല്ലാഹുവെ കൂടാതെ തങ്ങള്‍ക്ക് ഒരു ഉറ്റമിത്രത്തെയോ സഹായിയെയോ അവര്‍ കണ്ടെത്തുകയുമില്ല.",
+    "tf": ""
+  },
+  {
+    "n": 174,
+    "ar": "يَٰٓأَيُّهَا ٱلنَّاسُ قَدْ جَآءَكُم بُرْهَٰنٌۭ مِّن رَّبِّكُمْ وَأَنزَلْنَآ إِلَيْكُمْ نُورًۭا مُّبِينًۭا",
+    "ml": "മനുഷ്യരേ, നിങ്ങള്‍ക്കിതാ നിങ്ങളുടെ രക്ഷിതാവിങ്കല്‍ നിന്നുള്ള ന്യായപ്രമാണം വന്നുകിട്ടിയിരിക്കുന്നു. വ്യക്തമായ ഒരു പ്രകാശം നാമിതാ നിങ്ങള്‍ക്ക് ഇറക്കിത്തന്നിരിക്കുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 175,
+    "ar": "فَأَمَّا ٱلَّذِينَ ءَامَنُوا۟ بِٱللَّهِ وَٱعْتَصَمُوا۟ بِهِۦ فَسَيُدْخِلُهُمْ فِى رَحْمَةٍۢ مِّنْهُ وَفَضْلٍۢ وَيَهْدِيهِمْ إِلَيْهِ صِرَٰطًۭا مُّسْتَقِيمًۭا",
+    "ml": "അതുകൊണ്ട് ആര്‍ അല്ലാഹുവില്‍ വിശ്വസിക്കുകയും, അവനെ മുറുകെപിടിക്കുകയും ചെയ്തുവോ, അവരെ തന്‍റെ കാരുണ്യത്തിലും അനുഗ്രഹത്തിലും അവന്‍ പ്രവേശിപ്പിക്കുന്നതാണ്‌. അവങ്കലേക്ക് അവരെ നേര്‍വഴിയിലൂടെ അവന്‍ നയിക്കുന്നതുമാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 176,
+    "ar": "يَسْتَفْتُونَكَ قُلِ ٱللَّهُ يُفْتِيكُمْ فِى ٱلْكَلَٰلَةِ ۚ إِنِ ٱمْرُؤٌا۟ هَلَكَ لَيْسَ لَهُۥ وَلَدٌۭ وَلَهُۥٓ أُخْتٌۭ فَلَهَا نِصْفُ مَا تَرَكَ ۚ وَهُوَ يَرِثُهَآ إِن لَّمْ يَكُن لَّهَا وَلَدٌۭ ۚ فَإِن كَانَتَا ٱثْنَتَيْنِ فَلَهُمَا ٱلثُّلُثَانِ مِمَّا تَرَكَ ۚ وَإِن كَانُوٓا۟ إِخْوَةًۭ رِّجَالًۭا وَنِسَآءًۭ فَلِلذَّكَرِ مِثْلُ حَظِّ ٱلْأُنثَيَيْنِ ۗ يُبَيِّنُ ٱللَّهُ لَكُمْ أَن تَضِلُّوا۟ ۗ وَٱللَّهُ بِكُلِّ شَىْءٍ عَلِيمٌۢ",
+    "ml": "(നബിയേ,) അവര്‍ നിന്നോട് മതവിധി അന്വേഷിക്കുന്നു. പറയുക: കലാലത്തിന്‍റെ പ്രശ്നത്തില്‍ അല്ലാഹു നിങ്ങള്‍ക്കിതാ മതവിധി പറഞ്ഞുതരുന്നു. അതായത് ഒരാള്‍ മരിച്ചു; അയാള്‍ക്ക് സന്താനമില്ല; ഒരു സഹോദരിയുണ്ട്‌. എങ്കില്‍ അയാള്‍ വിട്ടേച്ചു പോയതിന്‍റെ പകുതി അവള്‍ക്കുള്ളതാണ്‌. ഇനി (സഹോദരി മരിക്കുകയും) അവള്‍ക്ക് സന്താനമില്ലാതിരിക്കുകയുമാണെങ്കില്‍ സഹോദരന്‍ അവളുടെ (പൂര്‍ണ്ണ) അവകാശിയായിരിക്കും. ഇനി രണ്ട് സഹോദരികളാണുള്ളതെങ്കില്‍, അവന്‍ (സഹോദരന്‍) വിട്ടേച്ചുപോയ സ്വത്തിന്‍റെ മൂന്നില്‍ രണ്ടു ഭാഗം അവര്‍ക്കുള്ളതാണ്‌. ഇനി സഹോദരന്‍മാരും സഹോദരിമാരും കൂടിയാണുള്ളതെങ്കില്‍, ആണിന് രണ്ട് പെണ്ണിന്‍റെതിന് തുല്യമായ ഓഹരിയാണുള്ളത്‌. നിങ്ങള്‍ പിഴച്ച് പോകുമെന്ന് കരുതി അല്ലാഹു നിങ്ങള്‍ക്ക് കാര്യങ്ങള്‍ വിവരിച്ചുതരുന്നു. അല്ലാഹു ഏത് കാര്യത്തെപ്പറ്റിയും അറിവുള്ളവനാകുന്നു.",
+    "tf": ""
+  }
+];
+
+/* ===== LESSONS / QUESTIONS / QUIZ ===== */
+const AI_ENDPOINT = "";
+const LESSONS = "";
+const SUGGESTED = [];
+const QUIZ = [];
+
+/* ===== SAVED OPTIONS ===== */
+const SKEY = "quran-reader-settings";
+const CHECKS = ["show-ar", "show-ml", "show-tf", "opt-ar", "opt-ml", "opt-tf"];
+let fontSize = 18, reciterId = "ghamdy";
+function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+function saveSettings() {
+  const s = loadSettings();
+  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
+  CHECKS.forEach(id => s[id] = $(id).checked);
+  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+}
+function applySettings() {
+  const s = loadSettings();
+  if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }
+  CHECKS.forEach(id => { if (id in s) $(id).checked = s[id]; });
+  if (s.repeat) $("repeat").value = s.repeat;
+}
+
+/* ===== RECITERS ===== */
+const RECITERS = [
+  { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",        base: "https://everyayah.com/data/Ghamadi_40kbps" },
+  { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",       base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+  { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",        base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+  { id: "hudhaify", name: "അലി ഹുദൈഫി",            base: "https://everyayah.com/data/Hudhaify_64kbps" },
+  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്\u200cli", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+  { id: "alili",    name: "അസീസ് അലീലി",           base: "https://everyayah.com/data/aziz_alili_128kbps" }
+];
+const pad3 = x => String(x).padStart(3, "0");
+const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+const audioUrl = n => currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+function changeReciter(id) { reciterId = id; saveSettings(); }
+function initReciters() {
+  const sel = $("reciter");
+  sel.innerHTML = RECITERS.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+  const saved = loadSettings().reciterId;
+  reciterId = (RECITERS.find(r => r.id === saved) || RECITERS[0]).id;
+  sel.value = reciterId;
+}
+const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+
+/* ===== BUILD PAGE ===== */
+function buildPage() {
+  $("verses").innerHTML = VERSES.map(v => `
+    <div class="verse" id="verse-${v.n}">
+      <div class="vhead"><span>ആയത്ത് ${v.n}</span></div>
+      <div class="item it-ar" id="item-ar-${v.n}"><div class="row rtl">
+        <button class="play-btn" id="btn-ar-${v.n}" onclick="toggleItem('ar', ${v.n})">▶</button>
+        <p class="text ar" lang="ar" dir="rtl">${v.ar}</p></div></div>
+      ${v.ml ? `<div class="item it-ml" id="item-ml-${v.n}"><div class="row">
+        <button class="play-btn" id="btn-ml-${v.n}" onclick="toggleItem('ml', ${v.n})">▶</button>
+        <p class="text"><span class="tag">സാരം:</span>${v.ml}</p></div></div>` : ""}
+      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${v.n}"><div class="row">
+        <button class="play-btn" id="btn-tf-${v.n}" onclick="toggleItem('tf', ${v.n})">▶</button>
+        <p class="text"><span class="pl">${v.tf}</span></p></div></div>` : ""}
+    </div>`).join("");
+}
+function changeFont(d) {
+  fontSize = Math.min(40, Math.max(12, fontSize + d));
+  document.documentElement.style.setProperty("--fs", fontSize + "px");
+  $("fs-label").textContent = fontSize; saveSettings();
+}
+function setTafseerVisible(n, show) {
+  const b = $("item-tf-" + n), t = $("tgl-" + n);
+  if (!b) return; b.classList.toggle("hidden", !show); t.classList.toggle("open", show);
+}
+function toggleTafseer(n) {
+  const willShow = $("item-tf-" + n).classList.contains("hidden");
+  if (!willShow && activeKey === "tf-" + n) stopAll();
+  setTafseerVisible(n, willShow);
+}
+function applyDisplay() {
+  const on = id => $(id).checked;
+  document.body.classList.toggle("hide-ar", !on("show-ar"));
+  document.body.classList.toggle("hide-ml", !on("show-ml"));
+  document.body.classList.toggle("hide-tf", !on("show-tf"));
+  if (!on("show-tf") && activeKey && activeKey.startsWith("tf-") && !continuous) stopAll();
+  VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+}
+
+/* ===== PLAYBACK STATE ===== */
+const statusEl = $("status"), masterBtn = $("master");
+const MASTER_TEXT = "▶ തുടർച്ചയായി കേൾക്കാം", OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
+let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
+const utterances = [];
+
+let wakeLock = null, waking = false, nsVideo = null, nsTimer = null, nsCanvas = null;
+function startNoSleep() {
+  try {
+    if (nsVideo) { const q = nsVideo.play(); if (q && q.catch) q.catch(() => {}); return; }
+    if (!HTMLCanvasElement.prototype.captureStream) return;
+    nsCanvas = document.createElement("canvas"); nsCanvas.width = 16; nsCanvas.height = 16;
+    const ctx = nsCanvas.getContext("2d"); let t = 0;
+    const draw = () => { ctx.fillStyle = (t++ % 2) ? "#000000" : "#010101"; ctx.fillRect(0, 0, 16, 16); };
+    draw(); nsTimer = setInterval(draw, 500);
+    const v = document.createElement("video");
+    v.setAttribute("playsinline", ""); v.setAttribute("muted", ""); v.muted = true; v.loop = true;
+    v.style.cssText = "position:fixed;bottom:0;right:0;width:4px;height:4px;opacity:0.02;pointer-events:none;";
+    v.srcObject = nsCanvas.captureStream(5); document.body.appendChild(v);
+    const p = v.play(); if (p && p.catch) p.catch(() => {}); nsVideo = v;
+  } catch (e) {}
+}
+function stopNoSleep() {
+  try {
+    if (nsTimer) { clearInterval(nsTimer); nsTimer = null; }
+    if (nsVideo) { nsVideo.pause(); nsVideo.srcObject = null; nsVideo.remove(); nsVideo = null; }
+  } catch (e) {}
+}
+async function requestWake() {
+  if (waking || wakeLock) return;
+  waking = true;
+  try {
+    if ("wakeLock" in navigator) {
+      try {
+        wakeLock = await navigator.wakeLock.request("screen");
+        wakeLock.addEventListener("release", () => { wakeLock = null; if (document.visibilityState === "visible") setTimeout(requestWake, 300); });
+        stopNoSleep();
+      } catch (e) {}
+    }
+    if (!wakeLock) startNoSleep();
+  } finally { waking = false; }
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") requestWake(); });
+["pointerdown", "touchstart", "click", "keydown"].forEach(ev => document.addEventListener(ev, () => requestWake(), { passive: true }));
+setInterval(() => {
+  if (!wakeLock) requestWake();
+  if (nsVideo && nsVideo.paused) { const p = nsVideo.play(); if (p && p.catch) p.catch(() => {}); }
+}, 5000);
+
+function setMediaSession(label) {
+  if (!("mediaSession" in navigator)) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({ title: label, artist: currentReciter().name, album: SURAH_NAME });
+    navigator.mediaSession.setActionHandler("pause", () => stopAll());
+    navigator.mediaSession.setActionHandler("stop", () => stopAll());
+  } catch (e) {}
+}
+function mark(key) {
+  clearMark(); activeKey = key;
+  const btn = $("btn-" + key), item = $("item-" + key);
+  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+  if (item) { item.classList.add("reading"); if (continuous) item.scrollIntoView({ behavior: "smooth", block: "center" }); }
+}
+function clearMark() {
+  if (!activeKey) return;
+  const btn = $("btn-" + activeKey), item = $("item-" + activeKey);
+  if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+  if (item) item.classList.remove("reading");
+  activeKey = null;
+}
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  clearMark();
+  masterBtn.textContent = MASTER_TEXT; masterBtn.classList.remove("playing"); statusEl.textContent = "";
+}
+function fail(my, msg) { if (my !== token) return; stopAll(); statusEl.textContent = msg; }
+
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const r = currentReciter(), audio = new Audio();
+  audio.preload = "auto"; currentAudio = audio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
+  audio.src = audioUrl(n);
+  audio.play().catch(e => {
+    if (my !== token) return;
+    if (e && (e.name === "NotSupportedError" || e.name === "AbortError")) return;
+    fail(my, "Could not play audio. Tap the button again.");
+  });
+}
+
+const MALE_HINT = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i, FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;
+function mlVoices() {
+  const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith("ml"));
+}
+function populateVoices() {
+  const vs = mlVoices(), s = loadSettings();
+  const opts = '<option value="auto">യാന്ത്രികം (Auto)</option>' + vs.map(v => `<option value="${v.name}">${v.name}</option>`).join("");
+  [["voice-ml", s.voiceMl], ["voice-tf", s.voiceTf]].forEach(([id, val]) => {
+    $(id).innerHTML = opts; $(id).value = val || "auto"; if (!$(id).value) $(id).value = "auto";
+  });
+}
+function resolveVoice(kind) {
+  const vs = mlVoices(); if (!vs.length) return null;
+  const chosen = vs.find(v => v.name === $(kind === "tf" ? "voice-tf" : "voice-ml").value);
+  if (chosen) return chosen;
+  const base = vs.find(v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name)) || vs.find(v => !FEMALE_HINT.test(v.name)) || vs[0];
+  return kind === "tf" ? (vs.find(v => v !== base) || base) : base;
+}
+function voiceProfile(kind) {
+  const v = resolveVoice(kind); if (!v) return null;
+  const isMale = MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
+  let pitch = isMale ? 1 : 0.5, rate = 0.95;
+  if (kind === "tf") { rate = 0.85; if (resolveVoice("ml") === v) pitch = pitch > 0.9 ? 0.7 : 1; }
+  return { voice: v, pitch, rate };
+}
+function cleanForSpeech(t) {
+  return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ").replace(/[()\u2018\u2019\u201C\u201D"]/g, "").replace(/\s+/g, " ").trim();
+}
+function splitText(text, max = 150) {
+  const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = []; let cur = "";
+  for (let s of sentences) {
+    s = s.trim();
+    while (s.length > max) {
+      let cut = s.lastIndexOf(" ", max); if (cut <= 0) cut = max;
+      if (cur) { chunks.push(cur); cur = ""; }
+      chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
+    }
+    if (!s) continue;
+    if (cur && (cur + " " + s).length > max) { chunks.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;
+  }
+  if (cur) chunks.push(cur);
+  return chunks.filter(c => /[^\s.,:;!?।]/.test(c));
+}
+function playChunks(chunks, my, done, i = 0) {
+  if (my !== token) return;
+  if (i >= chunks.length) { done(); return; }
+  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
+  const audio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]));
+  currentAudio = audio;
+  audio.preservesPitch = false; audio.mozPreservesPitch = false; audio.webkitPreservesPitch = false;
+  audio.playbackRate = curKind === "tf" ? 0.78 : 0.92;
+  audio.onended = () => playChunks(chunks, my, done, i + 1);
+  audio.onerror = () => fail(my, "Voice is not available on this device or browser.");
+  audio.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+}
+function speakMalayalam(text, my, done) {
+  const chunks = splitText(cleanForSpeech(text));
+  if (!chunks.length) { done(); return; }
+  const found = voiceProfile(curKind);
+  if (!found) { statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice..."; playChunks(chunks, my, done); return; }
+  setTimeout(() => {
+    if (my !== token) return;
+    statusEl.textContent = curLabel + " · " + found.voice.name;
+    utterances.length = 0; let failed = false;
+    chunks.forEach((chunk, idx) => {
+      const u = new SpeechSynthesisUtterance(chunk);
+      u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;
+      u.onerror = e => {
+        if (my !== token || failed || e.error === "canceled" || e.error === "interrupted") return;
+        failed = true; window.speechSynthesis.cancel();
+        statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";
+        playChunks(chunks, my, done);
+      };
+      if (idx === chunks.length - 1) u.onend = () => { if (my === token && !failed) done(); };
+      utterances.push(u); window.speechSynthesis.speak(u);
+    });
+  }, 100);
+}
+
+function playItem(kind, n, my, done) {
+  requestWake();
+  curKind = kind === "tf" ? "tf" : "ml";
+  curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];
+  statusEl.textContent = curLabel; setMediaSession(curLabel);
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      statusEl.textContent = curLabel + " · " + currentReciter().name + (total > 1 ? " · ആവർത്തനം " + k + "/" + total : "");
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1); return;
+  }
+  speakMalayalam(VERSES[n - 1][kind], my, done);
+}
+function toggleItem(kind, n) {
+  const key = kind + "-" + n;
+  if (activeKey === key) { stopAll(); return; }
+  stopAll(); const my = token; mark(key);
+  playItem(kind, n, my, () => { if (my === token) stopAll(); });
+}
+function toggleContinuous() {
+  if (continuous) { stopAll(); return; }
+  stopAll(); requestWake();
+  const kinds = ["ar", "ml", "tf"].filter(k => $("opt-" + k).checked);
+  if (!kinds.length) { statusEl.textContent = "ആയത്ത്, സാരം, വിവരണം എന്നിവയിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)"; return; }
+  const queue = [];
+  VERSES.forEach(v => kinds.forEach(k => { if (k !== "ar" && !v[k]) return; queue.push({ kind: k, n: v.n }); }));
+  continuous = true; const my = token;
+  masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing"); setPanel(false);
+  const step = i => {
+    if (my !== token) return;
+    if (i >= queue.length) { stopAll(); statusEl.textContent = "പൂർത്തിയായി."; return; }
+    const { kind, n } = queue[i];
+    if (kind === "tf" && $("show-tf").checked) setTafseerVisible(n, true);
+    mark(kind + "-" + n);
+    playItem(kind, n, my, () => { if (my === token) step(i + 1); });
+  };
+  step(0);
+}
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle");
+function setPanel(open) {
+  controlsEl.classList.toggle("open", open); optBtn.classList.toggle("open", open);
+  optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");
+}
+function togglePanel(e) { e.stopPropagation(); setPanel(!controlsEl.classList.contains("open")); }
+document.addEventListener("pointerdown", e => { if (!controlsEl.contains(e.target)) setPanel(false); });
+
+const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";
+const pageText = () => VERSES.map(v => `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");
+const cleanJson = t => t.replace(/```json|```/g, "").trim();
+async function askAI(prompt) {
+  const res = await fetch(AI_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
+  if (!res.ok) throw new Error(res.status);
+  return (await res.json()).text;
+}
+function renderQuestions(list) {
+  $("q-list").innerHTML = "";
+  list.forEach(q => { const b = document.createElement("button"); b.className = "q-btn"; b.textContent = q; b.onclick = () => answerQuestion(q); $("q-list").appendChild(b); });
+}
+async function showSummary() {
+  const out = $("ai-summary");
+  if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }
+  out.textContent = "⏳ ...";
+  try {
+    out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());
+    const qs = JSON.parse(cleanJson(await askAI(AI_RULE + "Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));
+    if (Array.isArray(qs) && qs.length) renderQuestions(qs);
+  } catch (e) { out.textContent = LESSONS; }
+}
+async function answerQuestion(q) {
+  const out = $("ai-answer"), hit = SUGGESTED.find(x => x.q === q);
+  
+  let ansContainer = $("inline-answer-" + CSS.escape(q));
+  if (!ansContainer) {
+    const buttons = document.querySelectorAll(".q-btn");
+    let targetBtn = Array.from(buttons).find(b => b.textContent === q);
+    if (targetBtn) {
+      ansContainer = document.createElement("div");
+      ansContainer.id = "inline-answer-" + CSS.escape(q);
+      ansContainer.style.cssText = "margin: 6px 0 12px 0; padding: 10px 12px; background: var(--paper); border-left: 3px solid var(--gold); border-radius: 4px; font-size: var(--fs); line-height: 1.7;";
+      targetBtn.parentNode.insertBefore(ansContainer, targetBtn.nextSibling);
+    } else {
+      ansContainer = out;
+    }
+  }
+
+  ansContainer.innerHTML = "<strong>ഉത്തരം:</strong> ⏳ ചിന്തിക്കുന്നു...";
+  
+  if (!AI_ENDPOINT) {
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."}`;
+    return;
+  }
+  
+  try { 
+    const resText = await askAI(AI_RULE + "Question: " + q + "\n\n" + pageText());
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${resText}`;
+  }
+  catch (e) { 
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "ക്ഷമിക്കണം, ഉത്തരം ലഭ്യമായില്ല."}`; 
+  }
+}
+function askCustom() { const q = $("ai-q").value.trim(); if (q) answerQuestion(q); }
+async function startQuiz() {
+  let qs = QUIZ;
+  if (AI_ENDPOINT) {
+    $("quiz").textContent = "⏳ ...";
+    try {
+      const r = JSON.parse(cleanJson(await askAI(AI_RULE + 'Return ONLY a JSON array of 5 multiple-choice questions in Malayalam: [{"q":"","o":["","","",""],"c":0, "e":""}] where c is the index of the correct option.\n\n' + pageText())));
+      if (Array.isArray(r) && r.length) qs = r;
+    } catch (e) {}
+  }
+  renderQuiz(qs);
+}
+function renderQuiz(qs) {
+  let score = 0, answered = 0; const box = $("quiz"); box.innerHTML = "";
+  qs.forEach((q, qi) => {
+    const d = document.createElement("div"); d.className = "quiz-q"; d.innerHTML = `<p>${qi + 1}. ${q.q}</p>`;
+    q.o.forEach((t, oi) => {
+      const b = document.createElement("button"); b.className = "quiz-opt"; b.textContent = t;
+      b.onclick = () => {
+        if (d.dataset.done) return; d.dataset.done = 1; answered++;
+        d.querySelectorAll(".quiz-opt")[q.c].classList.add("right");
+        if (oi === q.c) score++; else b.classList.add("wrong");
+        if (q.e) { const e = document.createElement("div"); e.className = "quiz-exp"; e.textContent = q.e; d.appendChild(e); }
+        if (answered === qs.length) res.textContent = `🎉 സ്കോർ: ${score} / ${qs.length}`;
+      };
+      d.appendChild(b);
+    });
+    box.appendChild(d);
+  });
+  const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);
+}
+
+(function () {
+  ["voice-ml", "voice-tf", "opt-ar"].forEach(id => { const r = $(id) && $(id).closest(".ctl-row"); if (r) r.remove(); });
+  document.querySelectorAll(".ctl-title").forEach(t => { if (t.textContent.includes("വായിക്കേണ്ട")) t.textContent = "കാണിക്കുക:"; });
+  const m = $("master"); m.textContent = "▶ തുടക്കം മുതൽ കേൾക്കാം"; m.parentNode.style.flexWrap = "wrap";
+  m.parentNode.insertAdjacentHTML("afterbegin", '<label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>');
+  CHECKS.splice(0, CHECKS.length, "show-ar", "show-ml", "show-tf", "cont");
+})();
+
+const _build = buildPage;
+buildPage = function () {
+  _build();
+  VERSES.forEach(v => { const s = document.querySelector("#verse-" + v.n + " .vhead span"); if (s) s.textContent = "ആയത്ത് " + SURAH + ": " + pad3(v.n); });
+};
+
+function saveSettings() {
+  const s = loadSettings();
+  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
+  CHECKS.forEach(id => s[id] = $(id).checked);
+  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+}
+
+const vScore = v => (/natural|neural|enhanced|premium|online/i.test(v.name) ? 3 : 0) + (/google/i.test(v.name) ? 1 : 0) + (v.localService ? 0 : 1);
+function populateVoices() {}
+function resolveVoice(kind) {
+  const vs = mlVoices().sort((a, b) => vScore(b) - vScore(a)); if (!vs.length) return null;
+  return kind === "tf" ? (vs[1] || vs[0]) : vs[0];
+}
+
+function speakMalayalam(text, my, done) {
+  const chunks = splitText(cleanForSpeech(text));
+  if (!chunks.length) { done(); return; }
+  const found = voiceProfile(curKind);
+  if (!found) { statusEl.textContent = curLabel + " · online voice..."; playChunks(chunks, my, done); return; }
+  const next = i => {
+    if (my !== token) return;
+    if (i >= chunks.length) { done(); return; }
+    statusEl.textContent = curLabel + " · " + found.voice.name + " " + (i + 1) + "/" + chunks.length;
+    const u = new SpeechSynthesisUtterance(chunks[i]); utterances[0] = u;
+    u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;
+    let started = false, over = false;
+    const fallback = () => { if (over) return; over = true; clearTimeout(wd); window.speechSynthesis.cancel(); playChunks(chunks, my, done, i); };
+    const wd = setTimeout(() => { if (my === token && !started) fallback(); }, 5000);
+    u.onstart = () => { started = true; };
+    u.onend = () => { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
+    u.onerror = e => { if (my !== token || e.error === "canceled" || e.error === "interrupted") return; fallback(); };
+    window.speechSynthesis.speak(u);
+  };
+  setTimeout(() => next(0), 100);
+}
+
+let keep = null;
+function startKeep() {
+  try {
+    if (keep) { keep.play().catch(() => {}); return; }
+    const sr = 8000, n = sr, b = new DataView(new ArrayBuffer(44 + n));
+    const w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
+    w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+    b.setUint32(24, sr, true); b.setUint32(28, sr, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
+    for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
+    keep = new Audio(URL.createObjectURL(new Blob([b], { type: "audio/wav" }))); keep.loop = true; keep.play().catch(() => {});
+  } catch (e) {}
+}
+function stopKeep() { if (keep) keep.pause(); }
+
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  clearMark(); stopKeep();
+  masterBtn.textContent = "▶ തുടക്കം മുതൽ കേൾക്കാം"; masterBtn.classList.remove("playing"); statusEl.textContent = "";
+}
+function mark(key) {
+  clearMark(); activeKey = key;
+  const btn = $("btn-" + key), item = $("item-" + key);
+  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+  if (item) { item.classList.add("reading"); if (continuous) item.scrollIntoView({ behavior: "smooth", block: "start" }); }
+}
+
+async function cachedSrc(url) {
+  try {
+    if (!window.caches) return url;
+    const c = await caches.open("quran-audio-v1"); let r = await c.match(url);
+    if (!r) { r = await fetch(url, { mode: "cors" }); if (!r.ok) return url; await c.put(url, r.clone()); }
+    return URL.createObjectURL(await r.blob());
+  } catch (e) { return url; }
+}
+async function playArabic(n, my, done) {
+  if (my !== token) return;
+  const r = currentReciter(), audio = new Audio();
+  audio.preload = "auto"; currentAudio = audio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
+  const src = await cachedSrc(audioUrl(n)); if (my !== token) return;
+  audio.src = src;
+  audio.play().catch(e => {
+    if (my !== token) return;
+    if (e && (e.name === "NotSupportedError" || e.name === "AbortError")) return;
+    fail(my, "Could not play audio. Tap the button again.");
+  });
+}
+
+const ORDER = ["ar", "ml", "tf"];
+function fullQueue(startKind, startN) {
+  const on = ORDER.filter(k => $("show-" + k).checked), q = [];
+  VERSES.forEach(v => ORDER.forEach(k => {
+    if (k !== "ar" && !v[k]) return;
+    if (on.includes(k) || (k === startKind && v.n === startN)) q.push({ kind: k, n: v.n });
+  }));
+  return q;
+}
+function runQueue(queue, fromMaster) {
+  stopAll(); requestWake(); startKeep();
+  if (!queue.length) { stopKeep(); statusEl.textContent = "കാണിക്കുക എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)"; return; }
+  continuous = queue.length > 1; const my = token;
+  if (fromMaster) { masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing"); setPanel(false); }
+  const step = i => {
+    if (my !== token) return;
+    if (i >= queue.length) { stopAll(); statusEl.textContent = "പൂർത്തിയായി."; return; }
+    const { kind, n } = queue[i]; mark(kind + "-" + n);
+    playItem(kind, n, my, () => { if (my === token) step(i + 1); });
+  };
+  step(0);
+}
+function toggleItem(kind, n) {
+  if (activeKey === kind + "-" + n) { stopAll(); return; }
+  const q = fullQueue(kind, n), i = q.findIndex(x => x.kind === kind && x.n === n);
+  runQueue($("cont").checked ? q.slice(i) : [q[i]]);
+}
+function toggleContinuous() {
+  if (masterBtn.classList.contains("playing")) { stopAll(); return; }
+  runQueue(fullQueue(), true);
+}
+
+const sharedAudio = new Audio();
+const SILENT = (function () {
+  const n = 800, b = new DataView(new ArrayBuffer(44 + n)), w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
+  w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+  b.setUint32(24, 8000, true); b.setUint32(28, 8000, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
+  for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
+})();
+const _run = runQueue;
+runQueue = function (...a) { try { sharedAudio.src = SILENT; sharedAudio.play().catch(() => {}); } catch (e) {} return _run(...a); };
+function playChunks(chunks, my, done, i = 0) {
+  if (my !== token) return;
+  if (i >= chunks.length) { done(); return; }
+  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
+  const a = sharedAudio;
+  a.onended = () => playChunks(chunks, my, done, i + 1);
+  a.onerror = () => fail(my, "Online voice is blocked or offline. Check the internet, or use Edge / a phone with the Malayalam voice installed.");
+  a.src = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]);
+  a.playbackRate = curKind === "tf" ? 0.85 : 0.95; currentAudio = a;
+  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+}
+async function playArabic(n, my, done) {
+  if (my !== token) return;
+  const r = currentReciter(), audio = sharedAudio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
+  const src = await cachedSrc(audioUrl(n)); if (my !== token) return;
+  audio.playbackRate = 1; audio.src = src; currentAudio = audio;
+  audio.play().catch(e => {
+    if (my !== token || (e && (e.name === "NotSupportedError" || e.name === "AbortError"))) return;
+    fail(my, "Could not play audio. Tap the button again.");
+  });
+}
+/* ===== START ===== */
+document.querySelector(".ai-ask").style.display = AI_ENDPOINT ? "" : "none";
+$("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
+buildPage(); initReciters(); populateVoices(); applySettings(); applyDisplay();
+CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
+renderQuestions(SUGGESTED.map(x => x.q));
+requestWake();
+if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged = () => populateVoices(); }
+
+</script>
+ <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>
