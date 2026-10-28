@@ -16,6 +16,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || r.headers.has('range')) return;                       // audio streaming etc.
+  if (u.pathname.endsWith('.mp3')) return;                                         // audio files: the page saves these itself (size-limited)
   if (!(u.origin === location.origin || /(^|\.)fonts\.(googleapis|gstatic)\.com$/.test(u.host))) return;
   e.respondWith(
     fetch(r).then(res => {
