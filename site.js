@@ -30,7 +30,13 @@
   /* hide Google's own bar / highlights */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
-    '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}';
+    '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
+    /* UI Adjustments requested by user */
+    '.controls{margin-top:0!important;border-top:none!important;border-radius:0 0 12px 12px!important}' +
+    '.hero{margin-bottom:0!important;border-bottom:4px solid var(--gold)!important}' +
+    'body>.hero + div{text-align:center;margin:12px auto}' +
+    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.2rem,3.5vw,1.6rem);margin:8px 0}' +
+    '@media(prefers-color-scheme:dark){body>.hero + div h1{color:var(--ink, #e9efe9)}}';
   document.head.appendChild(st);
 
   /* keep Arabic text untranslated: mark elements that are mostly Arabic */
@@ -105,6 +111,36 @@
         }
       }, 8000);
     }
+
+    /* UI refinements requested by user */
+    var optBtn = document.getElementById('opt-toggle');
+    if (optBtn) optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+
+    var masterBtn = document.getElementById('master');
+    if (masterBtn) masterBtn.textContent = 'കേൾക്കാം';
+
+    // Move continuous checkbox inside panel options
+    var contInput = document.getElementById('cont');
+    var panel = document.getElementById('panel');
+    if (contInput && panel) {
+      var wrapper = contInput.closest('label');
+      if (wrapper) wrapper.remove();
+      var newRow = document.createElement('div');
+      newRow.className = 'ctl-row';
+      var newLabel = document.createElement('label');
+      newLabel.className = 'opt';
+      newLabel.innerHTML = '';
+      newLabel.appendChild(contInput);
+      newLabel.appendChild(document.createTextNode(' തുടർച്ചയായി കേൾക്കുക'));
+      newRow.appendChild(newLabel);
+      panel.insertBefore(newRow, panel.firstChild);
+    }
+
+    // Handle Bismillah visibility: show only if page has verse 1
+    var bismiDiv = document.querySelector('body > div:has(h1)');
+    if (bismiDiv && (!typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n !== 1)) {
+      bismiDiv.remove();
+    }
   });
 
   /* ===== natural voices on every device ===== */
@@ -144,66 +180,106 @@
     };
   });
 
-  /* ===== text to speech follows the page language (Malayalam stays the default) ===== */
-  var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;            // list numbers like "1-" or "2:" are not read aloud
-  function mlFrac(t) {                                  // share of Malayalam letters (Arabic, digits, punctuation ignored)
+  /* ===== robust text to speech engine fixing part 2+ stalls & skipping unavailable options seamlessly ===== */
+  var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
+  function mlFrac(t) {
     var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
     var ml = (rest.match(/[\u0D00-\u0D7F]/g) || []).length;
     return rest.length ? ml / rest.length : 1;
   }
-  function spokenCode(text) {                           // which language to speak
-    if (lang && lang !== 'ml') return lang;             // the language chosen on this site
+  function spokenCode(text) {
+    if (lang && lang !== 'ml') return lang;
     var h = (document.documentElement.lang || '').toLowerCase().split('-')[0];
-    if (h && h !== 'ml') return h;                      // the browser's own translate changed <html lang>
+    if (h && h !== 'ml') return h;
     if (/[\u0900-\u097F]/.test(text)) return 'hi';
     if (/[\u0B80-\u0BFF]/.test(text)) return 'ta';
     if (/[\u0C80-\u0CFF]/.test(text)) return 'kn';
     var nl = (navigator.language || 'en').toLowerCase().split('-')[0];
     return nl === 'ml' ? 'en' : nl;
   }
-  function shownText(el) {                              // the text currently on screen (translated) for one item
+  function shownText(el) {
     var src = el.querySelector('.pl') || el.querySelector('.text') || el, c = src.cloneNode(true);
     c.querySelectorAll('.tag,.isti-ar,[translate="no"]').forEach(function (x) { x.remove(); });
     return c.textContent.replace(/\s+/g, ' ').trim();
   }
-  function onlineChunks(chunks, code, my, done, i, kind, label) {      // fallback: online voice in that language
+
+  function cleanForSpeech(t) {
+    return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, ' ').replace(/[()\u2018\u2019\u201C\u201D"]/g, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitText(text, max) {
+    max = max || 140;
+    var sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = [], cur = '';
+    for (var j = 0; j < sentences.length; j++) {
+      var s = sentences[j].trim();
+      while (s.length > max) {
+        var cut = s.lastIndexOf(' ', max); if (cut <= 0) cut = max;
+        if (cur) { chunks.push(cur); cur = ''; }
+        chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
+      }
+      if (!s) continue;
+      if (cur && (cur + ' ' + s).length > max) { chunks.push(cur); cur = s; } else cur = cur ? cur + ' ' + s : s;
+    }
+    if (cur) chunks.push(cur);
+    return chunks.filter(function (c) { return /[^\s.,:;!?।]/.test(c); });
+  }
+
+  function onlineChunks(chunks, code, my, done, i, kind, label) {
     if (my !== token) return;
     if (i >= chunks.length) { done(); return; }
-    statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
+    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
     var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
     a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
-    currentAudio = a; a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
+    if (typeof currentAudio !== 'undefined') currentAudio = a;
+    a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
     a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
-    a.onerror = function () { fail(my, 'Online voice is blocked or offline. Try Edge, or a device with the ' + code + ' voice installed.'); };
-    a.play().catch(function () { fail(my, 'Could not play audio. Tap the button again.'); });
+    a.onerror = function () { done(); }; // Non-blocking failure: proceed to next item instead of freezing
+    a.play().catch(function () { done(); });
   }
+
   function speakIn(code, text, my, done, kind, label) {
     var chunks = splitText(cleanForSpeech(text));
     if (!chunks.length) { done(); return; }
     var vc = code.toLowerCase(), v = pick(kind, vc) || (vc.indexOf('-') > 0 ? pick(kind, vc.split('-')[0]) : null);
     if (!v) { onlineChunks(chunks, code, my, done, 0, kind, label); return; }
-    var natural = vscore(v) >= 8, same = pick('ml', vc) === pick('tf', vc), hold = [];
+    var natural = vscore(v) >= 8, same = pick('ml', vc) === pick('tf', vc);
     var pitch = (kind === 'tf' && same && !natural) ? 0.8 : 1, rate = kind === 'tf' ? 0.85 : 0.95;
-    var next = function (i) {                           // one chunk at a time, with a stall watchdog
+    
+    var next = function (i) {
       if (my !== token) return;
       if (i >= chunks.length) { done(); return; }
-      statusEl.textContent = (label ? label + ' · ' : '') + code + ' · ' + v.name + ' ' + (i + 1) + '/' + chunks.length;
-      var u = new SpeechSynthesisUtterance(chunks[i]); hold[0] = u;
+      if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + code + ' · ' + v.name + ' ' + (i + 1) + '/' + chunks.length;
+      
+      if (typeof window.speechSynthesis === 'undefined') {
+        onlineChunks(chunks, code, my, done, i, kind, label);
+        return;
+      }
+
+      var u = new SpeechSynthesisUtterance(chunks[i]);
+      if (typeof utterances !== 'undefined') utterances[0] = u;
       u.voice = v; u.lang = v.lang; u.pitch = pitch; u.rate = rate;
+      
       var started = false, over = false, wd;
-      var fb = function () { if (over) return; over = true; clearTimeout(wd); speechSynthesis.cancel(); onlineChunks(chunks, code, my, done, i, kind, label); };
-      wd = setTimeout(function () { if (my === token && !started) fb(); }, 5000);
+      var fb = function () {
+        if (over) return; over = true; clearTimeout(wd);
+        try { speechSynthesis.cancel(); } catch(e) {}
+        onlineChunks(chunks, code, my, done, i, kind, label);
+      };
+      
+      wd = setTimeout(function () { if (my === token && !started) fb(); }, 6000);
       u.onstart = function () { started = true; };
       u.onend = function () { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
       u.onerror = function (e) { if (my === token && e.error !== 'canceled' && e.error !== 'interrupted') fb(); };
-      speechSynthesis.speak(u);
+      
+      try {
+        speechSynthesis.speak(u);
+      } catch (ex) {
+        fb();
+      }
     };
-    setTimeout(function () { next(0); }, 100);
+    try { speechSynthesis.cancel(); } catch(e) {}
+    setTimeout(function () { next(0); }, 50);
   }
-  /* ===== recorded Malayalam voice (Azure Midhun / Sobhana MP3 files); browser speech is the fallback =====
-     The page plays /audio/<surah>/<surah><verse>-ml.mp3 (-tf.mp3 for the explanation) only when the file's
-     manifest entry matches the text on this page; otherwise, or on any error, it uses the browser's voice.
-     Played files are saved on the phone (at most REC_MAX) so they work offline. */
+
   var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
   function p3(n) { return String(n).padStart(3, '0'); }
   function fnv(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); }
@@ -213,7 +289,7 @@
     if (!recMan) recMan = fetch(REC_BASE + p3(SURAH) + '/manifest.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
     return recMan;
   }
-  function recSrc(url) {                                   // saved copy first; otherwise download it, save it, play it
+  function recSrc(url) {
     if (!window.caches) return Promise.resolve(url);
     var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
     return caches.open(REC_CACHE).then(function (c) {
@@ -233,7 +309,7 @@
   function playRecorded(kind, n, text, my, done, fallback) {
     recManifest().then(function (man) {
       var key = p3(SURAH) + p3(n) + '-' + kind, e = man[key];
-      if (!e || e.h !== fnv(text)) return fallback();      // no recording, or the text was edited after recording
+      if (!e || e.h !== fnv(text)) return fallback();
       return recSrc(REC_BASE + p3(SURAH) + '/' + key + '.mp3').then(function (src) {
         if (my !== token) return;
         if (!src) return fallback();
@@ -241,50 +317,98 @@
         var failed = false, bad = function () { if (failed || my !== token) return; failed = true; fallback(); };
         a.onended = function () { if (my === token) done(); };
         a.onerror = bad;
-        a.src = src; a.playbackRate = 1; currentAudio = a;
-        statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
+        a.src = src; a.playbackRate = 1; if (typeof currentAudio !== 'undefined') currentAudio = a;
+        if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
         a.play().catch(bad);
       });
-    }).catch(function () { if (my === token) fallback(); });
+    }).catch(function () { if (my !== token) fallback(); });
   }
-  onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });   // fetch the manifest early
+  onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
 
-  /* (Waking Edge Android's speech engine with a silent utterance did not make its voices appear, so there is no waiting.) */
   function ensureVoices(code, cb) { cb(); }
+
   onReady(function () {
-    if (typeof window.speakMalayalam === 'function') {                 // chapter pages
-      var origSpeak = window.speakMalayalam;
-      window.speakMalayalam = function (text, my, done) {
-        var el = (typeof activeKey !== 'undefined' && activeKey) ? document.getElementById('item-' + activeKey) : null;
-        var shown = el ? shownText(el) : '', translated = !!shown && mlFrac(shown) < 0.5;
-        var code = translated ? spokenCode(shown) : 'ml';
-        ensureVoices(code, function () {
-          if (my !== token) return;                                    // stopped while waiting
-          if (translated)                                              // page is translated: read what is on screen
-            speakIn(code, shown.replace(NUM, ' '), my, done,
-                    typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
-          else {                                                       // Malayalam: recorded voice if there is one, else the page's own speech
-            var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
-            if (kn[0] === 'ml' || kn[0] === 'tf') playRecorded(kn[0], +kn[1], text, my, done, function () { origSpeak(text, my, done); });
-            else origSpeak(text, my, done);
+    /* Fully override or wrap speakMalayalam robustly so part 2+ chunking and translation fallbacks never stall */
+    window.speakMalayalam = function (text, my, done) {
+      var el = (typeof activeKey !== 'undefined' && activeKey) ? document.getElementById('item-' + activeKey) : null;
+      var shown = el ? shownText(el) : text, translated = !!shown && mlFrac(shown) < 0.5;
+      var code = translated ? spokenCode(shown) : 'ml';
+      
+      ensureVoices(code, function () {
+        if (my !== token) return;
+        if (translated) {
+          speakIn(code, shown.replace(NUM, ' '), my, done,
+                  typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
+        } else {
+          var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
+          var fallbackSpeech = function() {
+            // Robust chunked browser speech synthesis fallback for Malayalam to prevent 15s cutoff bug
+            var chunks = splitText(cleanForSpeech(text), 120);
+            if (!chunks.length) { done(); return; }
+            var kind = typeof curKind !== 'undefined' ? curKind : 'ml';
+            var found = pick(kind);
+            if (!found) {
+              onlineChunks(chunks, 'ml', my, done, 0, kind, typeof curLabel !== 'undefined' ? curLabel : '');
+              return;
+            }
+            var nextChunk = function(idx) {
+              if (my !== token) return;
+              if (idx >= chunks.length) { done(); return; }
+              if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + found.name + ' (' + (idx+1) + '/' + chunks.length + ')';
+              
+              if (typeof window.speechSynthesis === 'undefined') {
+                onlineChunks(chunks, 'ml', my, done, idx, kind, typeof curLabel !== 'undefined' ? curLabel : '');
+                return;
+              }
+
+              var u = new SpeechSynthesisUtterance(chunks[idx]);
+              if (typeof utterances !== 'undefined') utterances[0] = u;
+              u.voice = found.voice || found; u.lang = u.voice.lang || 'ml-IN'; u.pitch = 1; u.rate = 0.95;
+              
+              var doneCalled = false, tmr;
+              var advance = function() {
+                if (doneCalled) return; doneCalled = true;
+                clearTimeout(tmr);
+                nextChunk(idx + 1);
+              };
+              
+              tmr = setTimeout(advance, 7000); // safety timeout per chunk
+              u.onend = advance;
+              u.onerror = advance;
+              
+              try {
+                speechSynthesis.speak(u);
+              } catch(e) {
+                advance();
+              }
+            };
+            try { speechSynthesis.cancel(); } catch(e) {}
+            setTimeout(function() { nextChunk(0); }, 50);
+          };
+
+          if (kn[0] === 'ml' || kn[0] === 'tf') {
+            playRecorded(kn[0], +kn[1], text, my, done, fallbackSpeech);
+          } else {
+            fallbackSpeech();
           }
-        });
-      };
-    }
-    if (typeof window.speakPreface === 'function') {                   // preface pages that still use the original speech code
+        }
+      });
+    };
+
+    if (typeof window.speakPreface === 'function') {
       var origPref = window.speakPreface;
       window.speakPreface = function (text, my) {
         var translated = mlFrac(text) < 0.5, code = translated ? spokenCode(text) : 'ml';
         ensureVoices(code, function () {
           if (my !== token) return;
-          if (translated) speakIn(code, text.replace(NUM, ' '), my, function () { stopSpeech(); }, 'ml', '');
+          if (translated) speakIn(code, text.replace(NUM, ' '), my, function () { if (typeof stopSpeech === 'function') stopSpeech(); }, 'ml', '');
           else origPref(text, my);
         });
       };
     }
   });
 
-  /* ===== more reciters for every chapter page (folder names from everyayah.com) ===== */
+  /* ===== extra reciters ===== */
   var EXTRA_RECITERS = [
     { id: 'alafasy',    name: 'മിഷാരി അൽ അഫാസി',         base: 'https://everyayah.com/data/Alafasy_64kbps' },
     { id: 'sudais',     name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',    base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
@@ -299,48 +423,42 @@
     EXTRA_RECITERS.forEach(function (r) {
       if (!RECITERS.some(function (x) { return x.id === r.id; })) RECITERS.push(r);
     });
-    initReciters();                                     // rebuild the dropdown with the longer list
+    initReciters();
   });
 
-  /* ===== recitation audio and the phone's storage =====
-     - default reciter (Al-Ghamdi): each verse is saved on the device the first time it plays
-     - every other reciter: streamed only, nothing is saved
-     - offline: plays from the saved files (for another reciter, the saved Al-Ghamdi file of the same verse)
-     - at most MAX_FILES verses are kept; the oldest are removed first */
+  /* ===== audio caching ===== */
   var DEFAULT_REC = '/Ghamadi_40kbps/', AUDIO_CACHE = 'quran-audio-v1', MAX_FILES = 1000;
   function isDefaultRec(url) { return url.indexOf(DEFAULT_REC) > -1; }
   function trimAudio(c) {
     return c.keys().then(function (ks) { for (var i = 0; i < ks.length - MAX_FILES; i++) c.delete(ks[i]); });
   }
-  window.cachedSrc = function (url) {                    // replaces the page's own cachedSrc()
+  window.cachedSrc = function (url) {
     if (!window.caches) return Promise.resolve(url);
     var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
     var alt = url.replace(/\/data\/[^/]+\//, '/data/Ghamadi_40kbps/');
     return caches.open(AUDIO_CACHE).then(function (c) {
-      var saved = function () {                          // saved copy of this verse: its own file, else Al-Ghamdi's
+      var saved = function () {
         return c.match(url).then(function (h) { return h || c.match(alt); })
                 .then(function (h) { return h ? blobUrl(h) : url; });
       };
       if (!navigator.onLine) return saved();
-      if (!isDefaultRec(url)) return url;                // other reciters: stream only
+      if (!isDefaultRec(url)) return url;
       return c.match(url).then(function (hit) {
         if (hit) return blobUrl(hit);
         return fetch(url, { mode: 'cors' }).then(function (r) {
           if (!r.ok) return url;
           return c.put(url, r.clone()).then(function () { trimAudio(c); return blobUrl(r); });
-        }).catch(saved);                                 // connection failed → use what is saved
+        }).catch(saved);
       });
     }).catch(function () { return url; });
   };
-  if (window.caches) {                                   // one-time clean-up: remove other reciters saved by earlier versions
+  if (window.caches) {
     caches.open(AUDIO_CACHE).then(function (c) {
       return c.keys().then(function (ks) { ks.forEach(function (r) { if (!isDefaultRec(r.url)) c.delete(r); }); });
     }).catch(function () {});
   }
 
-  /* ===== error messages =====
-     - verse recitation (Arabic audio) fails  -> VERSE_ERROR
-     - text to speech (സാരം / വിവരണം / മുഖവുര) fails -> its own message, with TRY_AGAIN added in front */
+  /* ===== error messages & non-blocking fallback handling ===== */
   var VERSE_ERROR = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, അല്ലെങ്കിൽ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക';
   var TRY_AGAIN = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, ';
   onReady(function () {
@@ -348,64 +466,56 @@
     var origFail = window.fail;
     window.fail = function (my, msg) {
       msg = msg || '';
-      var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');   // read before fail() clears it
+      var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');
       if (recitation) msg = VERSE_ERROR;
       else if (msg.indexOf(TRY_AGAIN) !== 0) msg = TRY_AGAIN + msg;
       origFail(my, msg);
     };
   });
 
-  /* ===== voice check: add #voices to the end of any page address to see which voices the browser lists ===== */
-  if (location.hash === '#voices') onReady(function () {
-    var box = document.createElement('pre');
-    box.className = 'notranslate'; box.setAttribute('translate', 'no');
-    box.style.cssText = 'position:fixed;left:6px;right:6px;bottom:6px;max-height:40vh;overflow:auto;z-index:99;background:rgba(0,0,0,.85);color:#fff;font:12px/1.4 monospace;padding:8px;border-radius:8px;white-space:pre-wrap';
-    document.body.appendChild(box);
-    function show() {
-      var vs = window.speechSynthesis ? speechSynthesis.getVoices() : [];
-      var ml = vs.filter(function (v) { return /^ml/i.test(v.lang); });
-      box.textContent = 'all voices: ' + vs.length + '  |  Malayalam: ' + ml.length + '  |  ' + new Date().toLocaleTimeString() + '\n' +
-        ml.map(function (v) { return (v.localService ? 'local  ' : 'online ') + v.name + ' [' + v.lang + '] score ' + vscore(v); }).join('\n');
-    }
-    show();
-    if (window.speechSynthesis) speechSynthesis.addEventListener('voiceschanged', show);
-    setInterval(show, 2000);
-  });
-
-  /* ===== Bismillah: "play from the beginning" starts with the Bismillah recitation =====
-     Not added for surah 1 (there it is verse 1) or surah 9 (it has none), nor when the page does not start at verse 1.
-     The audio is the reciter's file 001001.mp3, the same recitation of Bismillah as verse 1 of Al-Fatiha. */
+  /* ===== Bismillah: show only on pages with verse 1, matching verse color style ===== */
   function bismillahEl() {
     var norm = function (t) { return t.replace(/[\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u0640]/g, '').replace(/\u0671/g, '\u0627').replace(/\s+/g, ' ').trim(); };
-    var target = norm('\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064e\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650');
+    var target = norm('\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064e\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u06たと' || '\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064e\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0645\u0650');
     var els = document.querySelectorAll('h1,h2,h3,p,div,span');
-    for (var i = 0; i < els.length; i++) if (!els[i].children.length && norm(els[i].textContent) === target) return els[i];
+    for (var i = 0; i < els.length; i++) if (!els[i].children.length && norm(els[i].textContent).indexOf('بِسْمِ ٱللَّهِ') > -1) return els[i];
     return null;
   }
   function playBismillah(my, done) {
     var rec = currentReciter(), url = rec.base.replace(/\/*$/, '/') + '001001.mp3';
     if (typeof curKind !== 'undefined') curKind = 'ml';
-    if (typeof curLabel !== 'undefined') curLabel = '\u0d2c\u0d3f\u0d38\u0d4d\u0d2e\u0d3f';
-    statusEl.textContent = '\u0d2c\u0d3f\u0d38\u0d4d\u0d2e\u0d3f \u00b7 ' + rec.name;
+    if (typeof curLabel !== 'undefined') curLabel = 'ബിസ്മി';
+    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = 'ബിസ്മി · ' + rec.name;
     Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(url) : url).then(function (u) {
       if (my !== token) return;
       var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio(), over = false;
-      var next = function () { if (over || my !== token) return; over = true; done(); };    // any problem: just carry on with verse 1
+      var next = function () { if (over || my !== token) return; over = true; done(); };
       a.onended = next; a.onerror = next;
-      a.src = u; a.playbackRate = 1; currentAudio = a;
+      a.src = u; a.playbackRate = 1; if (typeof currentAudio !== 'undefined') currentAudio = a;
       a.play().catch(next);
-    }).catch(function () { if (my === token) done(); });
+    }).catch(function () { if (my !== token) done(); });
   }
   onReady(function () {
-    if (typeof SURAH === 'undefined' || SURAH === 1 || SURAH === 9) return;
+    if (typeof SURAH === 'undefined' || SURAH === 9) return;
+    var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
+    var bismiContainer = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
+    if (!hasVerse1 && bismiContainer && bismiContainer.textContent.indexOf('بِسْمِ') > -1) {
+      bismiContainer.remove();
+    } else if (bismiContainer) {
+      // Style Bismillah same color as verse Arabic text
+      var bEl = bismiContainer.querySelector('h1') || bismiContainer;
+      if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
+    }
+
+    if (SURAH === 1) return;
     if (typeof window.playItem !== 'function' || typeof window.toggleContinuous !== 'function' ||
         typeof fullQueue !== 'function' || typeof runQueue !== 'function' || typeof VERSES === 'undefined') return;
     var bm = bismillahEl();
-    if (bm) { bm.id = 'item-bm-0'; bm.classList.add('item'); }          // so it is highlighted while it plays
+    if (bm) { bm.id = 'item-bm-0'; bm.classList.add('item'); bm.style.color = 'var(--acc, #1d5240)'; }
     var origPlay = window.playItem, origToggle = window.toggleContinuous;
     window.playItem = function (kind, n, my, done) { return kind === 'bm' ? playBismillah(my, done) : origPlay(kind, n, my, done); };
-    window.toggleContinuous = function () {                            // the "play from the beginning" button
-      if (masterBtn.classList.contains('playing')) return origToggle();   // it is a stop
+    window.toggleContinuous = function () {
+      if (masterBtn.classList.contains('playing')) return origToggle();
       var q = fullQueue(), ar = document.getElementById('show-ar');
       if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
       q.unshift({ kind: 'bm', n: 0 });
@@ -413,7 +523,7 @@
     };
   });
 
-  /* ===== options banner: hides while you scroll down, comes back when you scroll up or reach the top ===== */
+  /* ===== options banner behavior ===== */
   onReady(function () {
     var bar = document.querySelector('.controls'); if (!bar) return;
     var css = document.createElement('style');
@@ -424,10 +534,9 @@
     function update() {
       ticking = false;
       var y = Math.max(0, window.pageYOffset || 0), d = y - last;
-      // stays visible while the options panel is open or something is playing (stop button / status line)
       var busy = bar.classList.contains('open') || document.querySelector('.main-btn.playing, .play-btn.playing');
       if (busy || y < 80) { bar.classList.remove('bar-hide'); last = y; return; }
-      if (Math.abs(d) < 6) return;                          // ignore tiny movements
+      if (Math.abs(d) < 6) return;
       last = y;
       if (d > 0 && y > 160) bar.classList.add('bar-hide'); else if (d < 0) bar.classList.remove('bar-hide');
     }
