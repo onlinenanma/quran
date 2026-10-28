@@ -531,24 +531,64 @@ function speakMalayalam(text, my, done) {
   const chunks = splitText(cleanForSpeech(text));
   if (!chunks.length) { done(); return; }
   const found = voiceProfile(curKind);
-  if (!found) { statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice..."; playChunks(chunks, my, done); return; }
-  setTimeout(() => {
+  
+  let i = 0;
+  const speakNextChunk = () => {
     if (my !== token) return;
-    statusEl.textContent = curLabel + " · " + found.voice.name;
-    utterances.length = 0; let failed = false;
-    chunks.forEach((chunk, idx) => {
-      const u = new SpeechSynthesisUtterance(chunk);
-      u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;
-      u.onerror = e => {
-        if (my !== token || failed || e.error === "canceled" || e.error === "interrupted") return;
-        failed = true; window.speechSynthesis.cancel();
-        statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";
-        playChunks(chunks, my, done);
-      };
-      if (idx === chunks.length - 1) u.onend = () => { if (my === token && !failed) done(); };
-      utterances.push(u); window.speechSynthesis.speak(u);
-    });
-  }, 100);
+    if (i >= chunks.length) {
+      done();
+      return;
+    }
+    
+    const chunkText = chunks[i++];
+    statusEl.textContent = curLabel + " · " + (found ? found.voice.name : "online voice") + " (" + i + "/" + chunks.length + ")";
+    
+    // Fallback to Google TTS audio endpoint if browser speech synthesis fails or locks up
+    if (!found) {
+      const audio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunkText));
+      currentAudio = audio;
+      audio.playbackRate = curKind === "tf" ? 0.85 : 0.95;
+      audio.onended = () => speakNextChunk();
+      audio.onerror = () => fail(my, "Voice playback failed.");
+      audio.play().catch(() => fail(my, "Could not play audio."));
+      return;
+    }
+
+    const u = new SpeechSynthesisUtterance(chunkText);
+    utterances[0] = u;
+    u.voice = found.voice; 
+    u.lang = found.voice.lang; 
+    u.pitch = found.pitch; 
+    u.rate = found.rate;
+
+    let finished = false;
+    const safetyTimeout = setTimeout(() => {
+      if (!finished && my === token) {
+        finished = true;
+        window.speechSynthesis.cancel();
+        speakNextChunk(); // Force-advance if browser drops the onend event
+      }
+    }, 8000); // Trigger safety advance if chunk takes longer than 8 seconds
+
+    u.onend = () => {
+      if (finished || my !== token) return;
+      finished = true;
+      clearTimeout(safetyTimeout);
+      speakNextChunk();
+    };
+
+    u.onerror = () => {
+      if (finished || my !== token) return;
+      finished = true;
+      clearTimeout(safetyTimeout);
+      speakNextChunk();
+    };
+
+    window.speechSynthesis.speak(u);
+  };
+
+  window.speechSynthesis.cancel(); // Clear any jammed queue state first
+  setTimeout(() => speakNextChunk(), 50);
 }
 
 function playItem(kind, n, my, done) {
