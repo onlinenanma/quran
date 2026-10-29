@@ -383,7 +383,7 @@
         if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
         a.play().catch(bad);
       });
-    }).catch(function () { if (my !== token) fallback(); });
+    }).catch(function () { if (my === token) fallback(); });
   }
   onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
 
