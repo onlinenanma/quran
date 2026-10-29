@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ml">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ഖുർആൻ ഹിഫ്ള് ലേണിംഗ്</title>
+  <style>
+    :root {
+      color-scheme: light;
+      box-sizing: border-box;
+      --primary: #1d5240;
+      --bg: #f9fbf9;
+      --card-bg: #ffffff;
+      --text: #222222;
+      --border: #e0e0e0;
+    }
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      width: 100%;
+      max-width: 600px;
+    }
+    h1 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+    p.subtitle {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 0;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .arabic-text {
+      font-family: "Amiri", serif;
+      font-size: 2rem;
+      direction: rtl;
+      margin: 16px 0;
+      color: #111;
+      line-height: 1.8;
+    }
+    .malayalam-text {
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 16px;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #143b2e;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    audio {
+      width: 100%;
+      margin-top: 12px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap">
+</head>
+<body>
+
+  <header>
+    <h1>ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h1>
+    <p class="subtitle">ആയത്തുകൾ കേട്ട് മനഃപാഠമാക്കാം</p>
+  </header>
+
+  <div class="card">
+    <div id="surah-info" style="font-weight: 600; color: var(--primary);">സൂറത്തുൽ ഫാതിഹ (1:1)</div>
+    <div class="arabic-text" id="arabic-verse">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+    <div class="malayalam-text" id="ml-translation">പരമകാരുണികനും കരുണാനിധിയുമായ അല്ലാഹുവിന്റെ നാമത്തിൽ.</div>
+    
+    <!-- ഓഡിയോ പ്ലെയർ -->
+    <audio id="audio-player" controls>
+      <source src="https://everyayah.com/data/Alafasy_64kbps/001001.mp3" type="audio/mpeg">
+      നിങ്ങളുടെ ബ്രൗസർ ഓഡിയോ ടാഗിനെ പിന്തുണയ്ക്കുന്നില്ല.
+    </audio>
+
+    <div class="controls">
+      <button onclick="prevVerse()">മുൻപത്തെ</button>
+      <button onclick="togglePlay()">കേൾക്കാം</button>
+      <button onclick="nextVerse()">അടുത്തത്</button>
+    </div>
+  </div>
+
+  <script>
+    // ലളിതമായ ഡാറ്റ മാതൃക (ഉദാഹരണത്തിന് കുറച്ച് ആയത്തുകൾ)
+    const verses = [
+      {
+        info: "സൂറത്തുൽ ഫാതിഹ (1:1)",
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+        malayalam: "പരമകാരുണികനും കരുണാനിധിയുമായ അല്ലാഹുവിന്റെ നാമത്തിൽ.",
+        audio: "https://everyayah.com/data/Alafasy_64kbps/001001.mp3"
+      },
+      {
+        info: "സൂറത്തുൽ ഫാതിഹ (1:2)",
+        arabic: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+        malayalam: "സർവ്വലോക പരിപാലകനായ അല്ലാഹുവിനാകുന്നു സ്തുതി.",
+        audio: "https://everyayah.com/data/Alafasy_64kbps/001002.mp3"
+      },
+      {
+        info: "സൂറത്തുൽ ഫാതിഹ (1:3)",
+        arabic: "الرَّحْمَٰنِ الرَّحِيمِ",
+        malayalam: "പരമകാരുണികനും കരുണാനിധിയും.",
+        audio: "https://everyayah.com/data/Alafasy_64kbps/001003.mp3"
+      }
+    ];
+
+    let currentIndex = 0;
+    const audioPlayer = document.getElementById('audio-player');
+    const surahInfo = document.getElementById('surah-info');
+    const arabicVerse = document.getElementById('arabic-verse');
+    const mlTranslation = document.getElementById('ml-translation');
+
+    function updateView() {
+      const v = verses[currentIndex];
+      surahInfo.textContent = v.info;
+      arabicVerse.textContent = v.arabic;
+      mlTranslation.textContent = v.malayalam;
+      audioPlayer.src = v.audio;
+      audioPlayer.load();
+    }
+
+    function nextVerse() {
+      currentIndex = (currentIndex + 1) % verses.length;
+      updateView();
+      audioPlayer.play();
+    }
+
+    function prevVerse() {
+      currentIndex = (currentIndex - 1 + verses.length) % verses.length;
+      updateView();
+      audioPlayer.play();
+    }
+
+    function togglePlay() {
+      if (audioPlayer.paused) {
+        audioPlayer.play();
+      } else {
+        audioPlayer.pause();
+      }
+    }
+  </script>
+
+</body>
+</html>
