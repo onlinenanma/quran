@@ -116,7 +116,6 @@
       panel.style.display = 'none';
       optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
 
-      // Replace button to remove old conflicting handlers
       var newOptBtn = optBtn.cloneNode(true);
       optBtn.parentNode.replaceChild(newOptBtn, optBtn);
       optBtn = newOptBtn;
@@ -193,6 +192,23 @@
       } else {
         panel.appendChild(newLabel);
       }
+    }
+
+    /* Global interception of playItem to enforce correct captions on every verse */
+    if (typeof window.playItem === 'function') {
+      var origPlayItem = window.playItem;
+      window.playItem = function (kind, n, my, done) {
+        var KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+        if (typeof curKind !== 'undefined') curKind = kind;
+        if (typeof curLabel !== 'undefined') {
+          curLabel = "ആയത്ത് " + n + " – " + (KIND_NAME[kind] || kind);
+        }
+        var sEl = document.getElementById('status');
+        if (sEl) {
+          sEl.textContent = "ആയത്ത് " + n + " – " + (KIND_NAME[kind] || kind);
+        }
+        return origPlayItem(kind, n, my, done);
+      };
     }
 
     /* Bismillah handling: only on pages starting with verse 1, matching verse color */
