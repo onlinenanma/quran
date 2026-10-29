@@ -27,15 +27,17 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights & stack audio description below buttons in a new line */
+  /* hide Google's own bar / highlights & ensure options panel is hidden by default */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    /* Controls container as a column so status text appears below buttons */
+    /* Controls container & panel default hidden state */
     '.controls{margin:0!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
     '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;margin:0!important;padding:0!important;width:auto!important}' +
+    /* Hide panel by default unless it has open class or display block */
+    '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
     /* Audio status description styling in a new line below */
-    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child){font-size:0.85rem;color:var(--acc, #1d5240);text-align:center;margin:2px 0 0 0!important;display:block!important;width:100%!important}' +
+    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child):not(#panel){font-size:0.85rem;color:var(--acc, #1d5240);text-align:center;margin:2px 0 0 0!important;display:block!important;width:100%!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:3px solid var(--gold)!important}' +
     'body>.hero + div{text-align:center;margin:4px auto}' +
     'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.1rem,3vw,1.4rem);margin:2px 0}' +
@@ -107,35 +109,45 @@
       document.head.appendChild(s);
     }
 
-    /* Bulletproof Option button text handler protecting against unwanted overwrites */
+    /* Robust Option panel toggle & label state handler */
     var optBtn = document.getElementById('opt-toggle');
     var panel = document.getElementById('panel');
-    if (optBtn) {
-      var enforceLabel = function () {
-        var isOpen = panel && (panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block');
-        var desired = isOpen ? 'ഓപ്ഷനുകൾ ▴' : 'ഓപ്ഷനുകൾ ▾';
-        if (optBtn.textContent !== desired) {
-          optBtn.textContent = desired;
-        }
+    if (optBtn && panel) {
+      // Ensure panel is hidden by default on load
+      panel.classList.remove('open');
+      if (panel.style.display === 'block') panel.style.display = 'none';
+      optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+
+      var updateState = function () {
+        var isOpen = panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block';
+        optBtn.textContent = isOpen ? 'ഓപ്ഷനുകൾ ▴' : 'ഓപ്ഷനുകൾ ▾';
       };
 
-      enforceLabel();
-      optBtn.addEventListener('click', function () {
-        setTimeout(enforceLabel, 20);
-        setTimeout(enforceLabel, 100);
-        setTimeout(enforceLabel, 300);
+      // Handle click on option toggle button to toggle panel cleanly
+      optBtn.addEventListener('click', function (e) {
+        setTimeout(function() {
+          var isOpen = panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block';
+          if (!isOpen && panel.style.display === 'none') {
+            panel.style.display = 'block';
+            panel.classList.add('open');
+          }
+          updateState();
+        }, 10);
       });
 
-      document.body.addEventListener('click', function (e) {
-        if (e.target === optBtn || (panel && panel.contains(e.target))) {
-          setTimeout(enforceLabel, 50);
+      // Close panel when clicking anywhere outside the controls/panel
+      document.addEventListener('click', function (e) {
+        var controls = document.querySelector('.controls');
+        if (controls && !controls.contains(e.target)) {
+          panel.classList.remove('open');
+          panel.style.display = 'none';
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
         }
-      }, true);
+      });
 
-      if (panel && window.MutationObserver) {
-        var observer = new MutationObserver(enforceLabel);
+      if (window.MutationObserver) {
+        var observer = new MutationObserver(updateState);
         observer.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
-        observer.observe(optBtn, { characterData: true, childList: true, subtree: true });
       }
     }
 
@@ -551,15 +563,13 @@
     var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
     var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
     
-    noBismi: {
-      if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
-        if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
-          bismiDiv.remove();
-        }
-      } else if (bismiDiv) {
-        var bEl = bismiDiv.querySelector('h1') || bismiDiv;
-        if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
+        bismiDiv.remove();
       }
+    } else if (bismiDiv) {
+      var bEl = bismiDiv.querySelector('h1') || bismiDiv;
+      if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
     }
 
     if (SURAH === 1 || SURAH === 9) return;
