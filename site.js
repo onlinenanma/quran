@@ -242,7 +242,7 @@
     };
   });
 
-  /* ===== text-to-speech engine with robust fallback handling ===== */
+  /* ===== text-to-speech engine with robust translated speech support ===== */
   var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
   function mlFrac(t) {
     var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
@@ -286,61 +286,56 @@
     return chunks.filter(function (c) { return /[^\s.,:;!?।]/.test(c); });
   }
 
-  function onlineChunks(chunks, code, my, done, i, kind, label) {
-    if (my !== token) return;
-    if (i >= chunks.length) { done(); return; }
-    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
-    var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
-    a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
-    if (typeof currentAudio !== 'undefined') currentAudio = a;
-    a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
-    a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
-    a.onerror = function () { done(); }; 
-    a.play().catch(function () { done(); });
-  }
-
+  /* Reliable SpeechSynthesis for translated pages */
   function speakIn(code, text, my, done, kind, label) {
     var chunks = splitText(cleanForSpeech(text));
     if (!chunks.length) { done(); return; }
-    var vc = code.toLowerCase(), v = pick(kind, vc) || (vc.indexOf('-') > 0 ? pick(kind, vc.split('-')[0]) : null);
-    if (!v) { onlineChunks(chunks, code, my, done, 0, kind, label); return; }
-    var natural = vscore(v) >= 8, same = pick('ml', vc) === pick('tf', vc);
-    var pitch = (kind === 'tf' && same && !natural) ? 0.8 : 1, rate = kind === 'tf' ? 0.85 : 0.95;
     
-    var next = function (i) {
+    if (typeof window.speechSynthesis === 'undefined') {
+      done();
+      return;
+    }
+
+    var vc = code.toLowerCase();
+    var voices = speechSynthesis.getVoices();
+    var v = voices.find(function(item) { return item.lang.toLowerCase().replace('_', '-').indexOf(vc) === 0; }) ||
+            voices.find(function(item) { return item.lang.toLowerCase().substring(0, 2) === vc.substring(0, 2); }) ||
+            voices[0];
+
+    var nextChunk = function (i) {
       if (my !== token) return;
       if (i >= chunks.length) { done(); return; }
-      if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + code + ' · ' + v.name + ' ' + (i + 1) + '/' + chunks.length;
-      
-      if (typeof window.speechSynthesis === 'undefined') {
-        onlineChunks(chunks, code, my, done, i, kind, label);
-        return;
+      if (typeof statusEl !== 'undefined' && statusEl) {
+        statusEl.textContent = (label ? label + ' · ' : '') + code + (v ? ' · ' + v.name : '') + ' (' + (i + 1) + '/' + chunks.length + ')';
       }
 
       var u = new SpeechSynthesisUtterance(chunks[i]);
-      if (typeof utterances !== 'undefined') utterances[0] = u;
-      u.voice = v; u.lang = v.lang; u.pitch = pitch; u.rate = rate;
-      
-      var started = false, over = false, wd;
-      var fb = function () {
-        if (over) return; over = true; clearTimeout(wd);
-        try { speechSynthesis.cancel(); } catch(e) {}
-        onlineChunks(chunks, code, my, done, i, kind, label);
+      if (v) u.voice = v;
+      u.lang = code;
+      u.rate = 0.95;
+
+      var finished = false, timer;
+      var advance = function () {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        nextChunk(i + 1);
       };
-      
-      wd = setTimeout(function () { if (my === token && !started) fb(); }, 6000);
-      u.onstart = function () { started = true; };
-      u.onend = function () { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
-      u.onerror = function (e) { if (my === token && e.error !== 'canceled' && e.error !== 'interrupted') fb(); };
-      
+
+      timer = setTimeout(advance, 8000);
+      u.onend = advance;
+      u.onerror = advance;
+
       try {
+        speechSynthesis.cancel();
         speechSynthesis.speak(u);
-      } catch (ex) {
-        fb();
+      } catch (e) {
+        advance();
       }
     };
+
     try { speechSynthesis.cancel(); } catch(e) {}
-    setTimeout(function () { next(0); }, 50);
+    setTimeout(function () { nextChunk(0); }, 50);
   }
 
   var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
@@ -419,7 +414,7 @@
             var kind = typeof curKind !== 'undefined' ? curKind : 'ml';
             var found = pick(kind);
             if (!found) {
-              onlineChunks(chunks, 'ml', my, done, 0, kind, typeof curLabel !== 'undefined' ? curLabel : '');
+              done();
               return;
             }
             var nextChunk = function(idx) {
@@ -428,7 +423,7 @@
               if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (found.name || 'Malayalam Voice') + ' (' + (idx+1) + '/' + chunks.length + ')';
               
               if (typeof window.speechSynthesis === 'undefined') {
-                onlineChunks(chunks, 'ml', my, done, idx, kind, typeof curLabel !== 'undefined' ? curLabel : '');
+                done();
                 return;
               }
 
