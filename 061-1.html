@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>61. സൂറത്തുൽ അസ്സ്വഫ്ഫ് (1–14)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.topnav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;width:100%;max-width:1000px;margin:0 auto 10px;padding:0 8px}
+.topnav .back{display:inline-flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;font-size:clamp(0.9rem,3.2vw,1.05rem);font-weight:500;white-space:nowrap}
+.topnav .back:hover,.topnav .back:focus{color:#fff;outline:none}
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px;width:100%}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:10px 14px 4px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:8px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel{font-family:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:3px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%!important;text-align:center!important;font-size:12px;color:var(--acc);margin:2px auto 0 auto!important;display:block!important;line-height:1.2}
+#status:empty{display:none}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/061"><span style="font-size: 1em;">📄</span>താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index"><span style="font-size: 1em;">📖</span>സൂറത്തുകൾ</a>
+ </div>
+ <h1>61. സൂറത്തുൽ അസ്സ്വഫ്ഫ് (1–14)</h1>
+</header>
+
+<div id="bismi-container"><h1 style="text-align: center; margin: 15px 0; color: var(--acc, #1d5240);">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1></div>
+
+<div class="controls" id="controls">
+  <div class="banner">
+    <div class="banner-row">
+      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button>
+    </div>
+    <div id="status"></div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">കാണിക്കുക:</span>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+      <label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>
+    </div>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത്:</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  </div>
+</div>
+
+<div id="verses"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SURAH = 61;
+const VERSES = [
+  {
+    "n": 1,
+    "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ سَبَّحَ لِلَّهِ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ ۖ وَهُوَ ٱلْعَزِيزُ ٱلْحَكِيمُ",
+    "ml": "ആകാശങ്ങളിലുള്ളതും ഭൂമിയിലുള്ളതും അല്ലാഹുവിന്‍റെ മഹത്വം പ്രകീര്‍ത്തിച്ചിരിക്കുന്നു. അവനാകുന്നു പ്രതാപിയും യുക്തിമാനും.",
+    "tf": ""
+  },
+  {
+    "n": 2,
+    "ar": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ لِمَ تَقُولُونَ مَا لَا تَفْعَلُونَ",
+    "ml": "സത്യവിശ്വാസികളേ, നിങ്ങള്‍ ചെയ്യാത്തതെന്തിന് നിങ്ങള്‍ പറയുന്നു?",
+    "tf": ""
+  },
+  {
+    "n": 3,
+    "ar": "كَبُرَ مَقْتًا عِندَ ٱللَّهِ أَن تَقُولُوا۟ مَا لَا تَفْعَلُونَ",
+    "ml": "നിങ്ങള്‍ ചെയ്യാത്തത് നിങ്ങള്‍ പറയുക എന്നുള്ളത് അല്ലാഹുവിങ്കല്‍ വലിയ ക്രോധത്തിന് കാരണമായിരിക്കുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 4,
+    "ar": "إِنَّ ٱللَّهَ يُحِبُّ ٱلَّذِينَ يُقَٰتِلُونَ فِى سَبِيلِهِۦ صَفًّۭا كَأَنَّهُم بُنْيَٰنٌۭ مَّرْصُوصٌۭ",
+    "ml": "(കല്ലുകള്‍) സുദൃഢമായി സംയോജിപ്പിച്ച ഒരു മതില്‍ പോലെ അണിചേര്‍ന്നുകൊണ്ട് തന്‍റെ മാര്‍ഗത്തില്‍ യുദ്ധം ചെയ്യുന്നവരെ തീര്‍ച്ചയായും അല്ലാഹു ഇഷ്ടപ്പെടുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 5,
+    "ar": "وَإِذْ قَالَ مُوسَىٰ لِقَوْمِهِۦ يَٰقَوْمِ لِمَ تُؤْذُونَنِى وَقَد تَّعْلَمُونَ أَنِّى رَسُولُ ٱللَّهِ إِلَيْكُمْ ۖ فَلَمَّا زَاغُوٓا۟ أَزَاغَ ٱللَّهُ قُلُوبَهُمْ ۚ وَٱللَّهُ لَا يَهْدِى ٱلْقَوْمَ ٱلْفَٰسِقِينَ",
+    "ml": "മൂസാ തന്‍റെ ജനതയോട് ഇപ്രകാരം പറഞ്ഞ സന്ദര്‍ഭം (ശ്രദ്ധേയമാകുന്നു:) എന്‍റെ ജനങ്ങളേ, നിങ്ങള്‍ എന്തിനാണ് എന്നെ ഉപദ്രവിക്കുന്നത്‌? ഞാന്‍ നിങ്ങളിലേക്കുള്ള അല്ലാഹുവിന്‍റെ ദൂതനാണെന്ന് നിങ്ങള്‍ക്കറിയാമല്ലോ. അങ്ങനെ അവര്‍ തെറ്റിയപ്പോള്‍ അല്ലാഹു അവരുടെ ഹൃദയങ്ങളെ തെറ്റിച്ചുകളഞ്ഞു. അല്ലാഹു ദുര്‍മാര്‍ഗികളായ ജനങ്ങളെ നേര്‍വഴിയിലാക്കുകയില്ല.",
+    "tf": ""
+  },
+  {
+    "n": 6,
+    "ar": "وَإِذْ قَالَ عِيسَى ٱبْنُ مَرْيَمَ يَٰبَنِىٓ إِسْرَٰٓءِيلَ إِنِّى رَسُولُ ٱللَّهِ إِلَيْكُم مُّصَدِّقًۭا لِّمَا بَيْنَ يَدَىَّ مِنَ ٱلتَّوْرَىٰةِ وَمُبَشِّرًۢا بِرَسُولٍۢ يَأْتِى مِنۢ بَعْدِى ٱسْمُهُۥٓ أَحْمَدُ ۖ فَلَمَّا جَآءَهُم بِٱلْبَيِّنَٰتِ قَالُوا۟ هَٰذَا سِحْرٌۭ مُّبِينٌۭ",
+    "ml": "മര്‍യമിന്‍റെ മകന്‍ ഈസാ പറഞ്ഞ സന്ദര്‍ഭവും (ശ്രദ്ധേയമാകുന്നു:) ഇസ്രായീല്‍ സന്തതികളേ, എനിക്കു മുമ്പുള്ള തൌറാത്തിനെ സത്യപ്പെടുത്തുന്നവനായിക്കൊണ്ടും, എനിക്ക് ശേഷം വരുന്ന അഹ്മദ് എന്നുപേരുള്ള ഒരു ദൂതനെപ്പറ്റി സന്തോഷവാര്‍ത്ത അറിയിക്കുന്നവനായിക്കൊണ്ടും നിങ്ങളിലേക്ക് അല്ലാഹുവിന്‍റെ ദൂതനായി നിയോഗിക്കപ്പെട്ടവനാകുന്നു ഞാന്‍. അങ്ങനെ അദ്ദേഹം വ്യക്തമായ തെളിവുകളും കൊണ്ട് അവരുടെ അടുത്ത് ചെന്നപ്പോള്‍ അവര്‍ പറഞ്ഞു: ഇത് വ്യക്തമായ ജാലവിദ്യയാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 7,
+    "ar": "وَمَنْ أَظْلَمُ مِمَّنِ ٱفْتَرَىٰ عَلَى ٱللَّهِ ٱلْكَذِبَ وَهُوَ يُدْعَىٰٓ إِلَى ٱلْإِسْلَٰمِ ۚ وَٱللَّهُ لَا يَهْدِى ٱلْقَوْمَ ٱلظَّٰلِمِينَ",
+    "ml": "താന്‍ ഇസ്ലാമിലേക്ക് ക്ഷണിക്കപ്പെടുമ്പോള്‍ അല്ലാഹുവിന്‍റെ പേരില്‍ കള്ളം കെട്ടിച്ചമച്ചവനേക്കാള്‍ വലിയ അക്രമി ആരുണ്ട്‌? അല്ലാഹു അക്രമികളായ ജനങ്ങളെ നേര്‍വഴിയിലാക്കുകയില്ല.",
+    "tf": ""
+  },
+  {
+    "n": 8,
+    "ar": "يُرِيدُونَ لِيُطْفِـُٔوا۟ نُورَ ٱللَّهِ بِأَفْوَٰهِهِمْ وَٱللَّهُ مُتِمُّ نُورِهِۦ وَلَوْ كَرِهَ ٱلْكَٰفِرُونَ",
+    "ml": "അവര്‍ അവരുടെ വായ്കൊണ്ട് അല്ലാഹുവിന്‍റെ പ്രകാശം കെടുത്തിക്കളയാനാണ് ഉദ്ദേശിക്കുന്നത്‌. സത്യനിഷേധികള്‍ക്ക് അനിഷ്ടകരമായാലും അല്ലാഹു അവന്‍റെ പ്രകാശം പൂര്‍ത്തിയാക്കുന്നവനാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 9,
+    "ar": "هُوَ ٱلَّذِىٓ أَرْسَلَ رَسُولَهُۥ بِٱلْهُدَىٰ وَدِينِ ٱلْحَقِّ لِيُظْهِرَهُۥ عَلَى ٱلدِّينِ كُلِّهِۦ وَلَوْ كَرِهَ ٱلْمُشْرِكُونَ",
+    "ml": "സന്‍മാര്‍ഗവും സത്യമതവും കൊണ്ട് -എല്ലാ മതങ്ങള്‍ക്കും മീതെ അതിനെ തെളിയിച്ചു കാണിക്കുവാന്‍ വേണ്ടി-തന്‍റെ ദൂതനെ നിയോഗിച്ചവനാകുന്നു അവന്‍. ബഹുദൈവാരാധകര്‍ക്ക് (അത്‌) അനിഷ്ടകരമായാലും ശരി.",
+    "tf": ""
+  },
+  {
+    "n": 10,
+    "ar": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ هَلْ أَدُلُّكُمْ عَلَىٰ تِجَٰرَةٍۢ تُنجِيكُم مِّنْ عَذَابٍ أَلِيمٍۢ",
+    "ml": "സത്യവിശ്വാസികളേ, വേദനാജനകമായ ശിക്ഷയില്‍ നിന്ന് നിങ്ങളെ രക്ഷിക്കുന്ന ഒരു കച്ചവടത്തെപ്പറ്റി ഞാന്‍ നിങ്ങള്‍ക്ക് അറിയിച്ച് തരട്ടെയോ?",
+    "tf": ""
+  },
+  {
+    "n": 11,
+    "ar": "تُؤْمِنُونَ بِٱللَّهِ وَرَسُولِهِۦ وَتُجَٰهِدُونَ فِى سَبِيلِ ٱللَّهِ بِأَمْوَٰلِكُمْ وَأَنفُسِكُمْ ۚ ذَٰلِكُمْ خَيْرٌۭ لَّكُمْ إِن كُنتُمْ تَعْلَمُونَ",
+    "ml": "നിങ്ങള്‍ അല്ലാഹുവിലും അവന്‍റെ ദൂതനിലും വിശ്വസിക്കണം.അല്ലാഹുവിന്‍റെ മാര്‍ഗത്തില്‍ നിങ്ങളുടെ സ്വത്തുക്കള്‍ കൊണ്ടും ശരീരങ്ങള്‍ കൊണ്ടും നിങ്ങള്‍ സമരം ചെയ്യുകയും വേണം. അതാണ് നിങ്ങള്‍ക്ക് ഗുണകരമായിട്ടുള്ളത്‌. നിങ്ങള്‍ അറിവുള്ളവരാണെങ്കില്‍.",
+    "tf": ""
+  },
+  {
+    "n": 12,
+    "ar": "يَغْفِرْ لَكُمْ ذُنُوبَكُمْ وَيُدْخِلْكُمْ جَنَّٰتٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ وَمَسَٰكِنَ طَيِّبَةًۭ فِى جَنَّٰتِ عَدْنٍۢ ۚ ذَٰلِكَ ٱلْفَوْزُ ٱلْعَظِيمُ",
+    "ml": "എങ്കില്‍ അവന്‍ നിങ്ങള്‍ക്ക് നിങ്ങളുടെ പാപങ്ങള്‍ പൊറുത്തുതരികയും താഴ്ഭാഗത്ത്കൂടി അരുവികള്‍ ഒഴുകുന്ന സ്വര്‍ഗത്തോപ്പുകളിലും, സ്ഥിരവാസത്തിനുള്ള സ്വര്‍ഗത്തോപ്പുകളിലെ വിശിഷ്ടമായ വസതികളിലും അവന്‍ നിങ്ങളെ പ്രവേശിപ്പിക്കുകയും ചെയ്യുന്നതാണ്‌. അതത്രെ മഹത്തായ ഭാഗ്യം.",
+    "tf": ""
+  },
+  {
+    "n": 13,
+    "ar": "وَأُخْرَىٰ تُحِبُّونَهَا ۖ نَصْرٌۭ مِّنَ ٱللَّهِ وَفَتْحٌۭ قَرِيبٌۭ ۗ وَبَشِّرِ ٱلْمُؤْمِنِينَ",
+    "ml": "നിങ്ങള്‍ ഇഷ്ടപ്പെടുന്ന മറ്റൊരു കാര്യവും (അവന്‍ നല്‍കുന്നതാണ്‌.) അതെ, അല്ലാഹുവിങ്കല്‍ നിന്നുള്ള സഹായവും ആസന്നമായ വിജയവും. (നബിയേ,) സത്യവിശ്വാസികള്‍ക്ക് നീ സന്തോഷവാര്‍ത്ത അറിയിക്കുക.",
+    "tf": ""
+  },
+  {
+    "n": 14,
+    "ar": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ كُونُوٓا۟ أَنصَارَ ٱللَّهِ كَمَا قَالَ عِيسَى ٱبْنُ مَرْيَمَ لِلْحَوَارِيِّۦنَ مَنْ أَنصَارِىٓ إِلَى ٱللَّهِ ۖ قَالَ ٱلْحَوَارِيُّونَ نَحْنُ أَنصَارُ ٱللَّهِ ۖ فَـَٔامَنَت طَّآئِفَةٌۭ مِّنۢ بَنِىٓ إِسْرَٰٓءِيلَ وَكَفَرَت طَّآئِفَةٌۭ ۖ فَأَيَّدْنَا ٱلَّذِينَ ءَامَنُوا۟ عَلَىٰ عَدُوِّهِمْ فَأَصْبَحُوا۟ ظَٰهِرِينَ",
+    "ml": "സത്യവിശ്വാസികളേ, നിങ്ങള്‍ അല്ലാഹുവിന്‍റെ സഹായികളായിരിക്കുക. മര്‍യമിന്‍റെ മകന്‍ ഈസാ അല്ലാഹുവിങ്കലേക്കുള്ള മാര്‍ഗത്തില്‍ എന്‍റെ സഹായികളായി ആരുണ്ട് എന്ന് ഹവാരികളോട് ചോദിച്ചതു പോലെ. ഹവാരികള്‍ പറഞ്ഞു: ഞങ്ങള്‍ അല്ലാഹുവിന്‍റെ സഹായികളാകുന്നു. അപ്പോള്‍ ഇസ്രായീല്‍ സന്തതികളില്‍ പെട്ട ഒരു വിഭാഗം വിശ്വസിക്കുകയും മറ്റൊരു വിഭാഗം അവിശ്വസിക്കുകയും ചെയ്തു. എന്നിട്ട് വിശ്വസിച്ചവര്‍ക്ക് അവരുടെ ശത്രുവിനെതിരില്‍ നാം പിന്‍ബലം നല്‍കുകയും അങ്ങനെ അവന്‍ മികവുറ്റവരായിത്തീരുകയും ചെയ്തു.",
+    "tf": ""
+  }
+];
+const SKEY = "quran-reader-settings";
+const CHECKS = ["show-ar", "show-ml", "show-tf", "cont"];
+let fontSize = 18, reciterId = "ghamdy";
+
+function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+function saveSettings() {
+  const s = loadSettings();
+  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
+  CHECKS.forEach(id => s[id] = $(id) ? $(id).checked : true);
+  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+}
+function applySettings() {
+  const s = loadSettings();
+  if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }
+  CHECKS.forEach(id => { if ($(id) && id in s) $(id).checked = s[id]; });
+  if (s.repeat) $("repeat").value = s.repeat;
+}
+
+const RECITERS = [
+  { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",        base: "https://everyayah.com/data/Ghamadi_40kbps" },
+  { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",       base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+  { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",        base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+  { id: "hudhaify", name: "അലി ഹുദൈഫി",            base: "https://everyayah.com/data/Hudhaify_64kbps" },
+  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്‌ലി", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+  { id: "alili",    name: "അസീസ് അലീലി",           base: "https://everyayah.com/data/aziz_alili_128kbps" }
+];
+
+const pad3 = x => String(x).padStart(3, "0");
+const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+const audioUrl = n => currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+
+function changeReciter(id) { reciterId = id; saveSettings(); }
+function initReciters() {
+  const sel = $("reciter");
+  if(!sel) return;
+  sel.innerHTML = RECITERS.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+  const saved = loadSettings().reciterId;
+  reciterId = (RECITERS.find(r => r.id === saved) || RECITERS[0]).id;
+  sel.value = reciterId;
+}
+
+const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+
+function buildPage() {
+  $("verses").innerHTML = VERSES.map(v => {
+    const vNum = v.n;
+    return `
+    <div class="verse" id="verse-${vNum}">
+      <div class="vhead"><span>ആയത്ത് ${SURAH}: ${pad3(vNum)}</span></div>
+      <div class="item it-ar" id="item-ar-${vNum}"><div class="row rtl">
+        <button class="play-btn" id="btn-ar-${vNum}" onclick="toggleItem('ar', ${vNum})">▶</button>
+        <p class="text ar" lang="ar" dir="rtl">${v.ar}</p></div></div>
+      ${v.ml ? `<div class="item it-ml" id="item-ml-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-ml-${vNum}" onclick="toggleItem('ml', ${vNum})">▶</button>
+        <p class="text"><span class="tag">സാരം:</span>${v.ml}</p></div></div>` : ""}
+      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${vNum}" onclick="toggleTafseer(${vNum})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-tf-${vNum}" onclick="toggleItem('tf', ${vNum})">▶</button>
+        <p class="text"><span class="pl">${v.tf}</span></p></div></div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function changeFont(d) {
+  fontSize = Math.min(40, Math.max(12, fontSize + d));
+  document.documentElement.style.setProperty("--fs", fontSize + "px");
+  $("fs-label").textContent = fontSize; saveSettings();
+}
+
+function setTafseerVisible(n, show) {
+  const b = $("item-tf-" + n), t = $("tgl-" + n);
+  if (!b) return; b.classList.toggle("hidden", !show); if (t) t.classList.toggle("open", show);
+}
+
+function toggleTafseer(n) {
+  const willShow = $("item-tf-" + n).classList.contains("hidden");
+  setTafseerVisible(n, willShow);
+}
+
+function applyDisplay() {
+  const on = id => $(id) ? $(id).checked : true;
+  document.body.classList.toggle("hide-ar", !on("show-ar"));
+  document.body.classList.toggle("hide-ml", !on("show-ml"));
+  document.body.classList.toggle("hide-tf", !on("show-tf"));
+  VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  saveSettings();
+}
+
+let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
+
+function mark(key) {
+  clearMark(); activeKey = key;
+  const btn = $("btn-" + key), item = $("item-" + key);
+  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+  if (item) { item.classList.add("reading"); item.scrollIntoView({ behavior: "smooth", block: "center" }); }
+}
+
+function clearMark() {
+  if (!activeKey) return;
+  const btn = $("btn-" + activeKey), item = $("item-" + activeKey);
+  if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+  if (item) item.classList.remove("reading");
+  activeKey = null;
+}
+
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  clearMark();
+  const masterBtn = $("master");
+  if (masterBtn) { masterBtn.textContent = "കേൾക്കാം"; masterBtn.classList.remove("playing"); }
+  if ($("status")) $("status").textContent = "";
+}
+
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const audio = new Audio();
+  audio.preload = "auto"; currentAudio = audio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => done();
+  const rawUrl = audioUrl(n);
+  if ($("status")) $("status").textContent = curLabel + " · " + currentReciter().name;
+  Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(rawUrl) : rawUrl).then(u => {
+    if (my !== token) return;
+    audio.src = u;
+    audio.play().catch(() => done());
+  }).catch(() => done());
+}
+
+function speakMalayalam(text, my, done) {
+  if (!text) { done(); return; }
+  if (!window.speechSynthesis) { done(); return; }
+  window.speechSynthesis.cancel();
+  if ($("status")) $("status").textContent = curLabel;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ml-IN"; u.rate = 0.9;
+  u.onend = () => { if (my === token) done(); };
+  u.onerror = () => { if (my === token) done(); };
+  window.speechSynthesis.speak(u);
+}
+
+function playItem(kind, n, my, done) {
+  curKind = kind;
+  curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];
+  if ($("status")) $("status").textContent = curLabel;
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1);
+  } else {
+    const vObj = VERSES.find(v => v.n === n) || VERSES[0];
+    if (vObj && vObj[kind]) {
+      speakMalayalam(vObj[kind], my, done);
+    } else {
+      done();
+    }
+  }
+}
+
+function toggleItem(kind, n) {
+  const key = kind + "-" + n;
+  if (activeKey === key) { stopAll(); return; }
+  stopAll();
+  const my = token;
+  mark(key);
+  playItem(kind, n, my, () => { if (my === token) stopAll(); });
+}
+
+function fullQueue() {
+  const kinds = ["ar", "ml", "tf"].filter(k => $("show-" + k) && $("show-" + k).checked);
+  const queue = [];
+  VERSES.forEach(v => kinds.forEach(k => { if (k !== "ar" && !v[k]) return; queue.push({ kind: k, n: v.n }); }));
+  return queue;
+}
+
+function runQueue(queue, startWithBm) {
+  const my = token;
+  const masterBtn = $("master");
+  masterBtn.textContent = "നിർത്തുക"; masterBtn.classList.add("playing");
+  
+  const step = i => {
+    if (my !== token) return;
+    if (i >= queue.length) { stopAll(); return; }
+    const item = queue[i];
+    mark(item.kind + "-" + item.n);
+    if (item.kind === 'bm') {
+      if (typeof playBismillah === 'function') {
+        playBismillah(my, () => { if (my === token) step(i + 1); });
+      } else {
+        step(i + 1);
+      }
+    } else {
+      playItem(item.kind, item.n, my, () => { if (my === token) step(i + 1); });
+    }
+  };
+  step(0);
+}
+
+function toggleContinuous() {
+  const masterBtn = $("master");
+  if (masterBtn && masterBtn.classList.contains('playing')) {
+    stopAll();
+    return;
+  }
+  stopAll();
+  continuous = true;
+  const q = fullQueue();
+  if (!q.length) { stopAll(); return; }
+  
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  const arChecked = $("show-ar") ? $("show-ar").checked : true;
+  if (hasVerse1 && SURAH !== 1 && SURAH !== 9 && arChecked && typeof playBismillah === 'function') {
+    runQueue([{ kind: 'bm', n: 0 }].concat(q), true);
+  } else {
+    runQueue(q, false);
+  }
+}
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle"), panelEl = $("panel");
+function togglePanel(e) {
+  e.stopPropagation();
+  const isOpen = panelEl.style.display === 'block' || panelEl.classList.contains('open');
+  if (isOpen) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    if (controlsEl) controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  } else {
+    panelEl.style.display = 'block';
+    panelEl.classList.add('open');
+    if (controlsEl) controlsEl.classList.add('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (controlsEl && !controlsEl.contains(e.target)) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bismiDiv = $("bismi-container");
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  if (bismiDiv) {
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      bismiDiv.remove();
+    }
+  }
+});
+
+buildPage(); initReciters(); applySettings(); applyDisplay();
+</script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>

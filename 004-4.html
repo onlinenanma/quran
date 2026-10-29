@@ -13,32 +13,33 @@
 html{scroll-padding-top:70px}
 body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
 body>*{max-width:1000px;margin-left:auto;margin-right:auto}
-body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;background:
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
 .hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.topnav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;width:100%;max-width:1000px;margin:0 auto 10px;padding:0 8px}
+.topnav .back{display:inline-flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;font-size:clamp(0.9rem,3.2vw,1.05rem);font-weight:500;white-space:nowrap}
+.topnav .back:hover,.topnav .back:focus{color:#fff;outline:none}
 .controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
-.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
-.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
-.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
+.banner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px;width:100%}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:10px 14px 4px;max-height:75vh;overflow-y:auto}
 .controls.open .panel{display:block}
-.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:8px}
 .ctl-title{font-size:13px;color:var(--muted);font-weight:600}
 .opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
 .opt input{width:16px;height:16px;accent-color:var(--green2)}
-.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
-.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-sel{font-family:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:3px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
 .opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
-.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
-.banner .main-btn{padding:7px 20px}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 .main-btn.playing{background:#d93025}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .fs-group{display:inline-flex;align-items:center;gap:4px}
 #fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
-#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status{width:100%!important;text-align:center!important;font-size:12px;color:var(--acc);margin:2px auto 0 auto!important;display:block!important;line-height:1.2}
 #status:empty{display:none}
-.verse,.item{min-width:0}
 .verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
 .vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
 .item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
@@ -50,7 +51,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
 .tag{font-size:12px;color:var(--muted);margin-right:4px}
 .pl{white-space:pre-line}
-.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic",serif}
 @media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
 .hidden{display:none}
 .tf-btn{display:block;margin:4px 0 6px 6px}
@@ -58,41 +59,6 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 body.hide-ar .it-ar{display:none}
 body.hide-ml .it-ml{display:none}
 body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
-.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}
-.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}
-.ai-box h3:first-child{margin-top:0}
-.ai-box>.main-btn{display:block;margin:0 auto}
-.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}
-.ai-out:empty{display:none}
-.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
-.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}
-.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}
-.ai-ask{display:flex;gap:6px;margin-top:8px}
-.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}
-.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
-.quiz-q p{margin:0 0 6px;font-size:var(--fs)}
-.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}
-.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
-.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
-.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
-
-.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
-.topnav .back{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  color: var(--gold);
-  text-decoration: none;
-  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
-  font-weight: 500;
-  white-space: nowrap;
-}
-.topnav .back:hover,
-.topnav .back:focus {
-  color: #fff;
-  text-decoration: none;
-  outline: none;
-}
 </style>
 </head>
 <body>
@@ -105,14 +71,14 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
  <h1>4. സൂറത്തുൽ അന്നിസാഅ് (61–80)</h1>
 </header>
 
- <div>
-    <h1 style="text-align: center;">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1>
-</div>
+<div id="bismi-container"><h1 style="text-align: center; margin: 15px 0; color: var(--acc, #1d5240);">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1></div>
 
 <div class="controls" id="controls">
   <div class="banner">
-    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾</button></div>
-    <div class="banner-row"><button id="master" class="main-btn" onclick="toggleContinuous()">▶ തുടർച്ചയായി കേൾക്കാം</button></div>
+    <div class="banner-row">
+      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button>
+    </div>
     <div id="status"></div>
   </div>
   <div class="panel" id="panel">
@@ -125,50 +91,23 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
       </span>
     </div>
     <div class="ctl-row">
-      <span class="ctl-title">വായിക്കേണ്ട ഭാഗങ്ങൾ:</span>
+      <span class="ctl-title">കാണിക്കുക:</span>
       <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
       <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
       <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+      <label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>
     </div>
-    <div class="ctl-row">
-      <span class="ctl-title">കേൾക്കേണ്ട ഭാഗങ്ങൾ:</span>
-      <label class="opt"><input type="checkbox" id="opt-ar" checked> ആയത്ത്</label>
-      <label class="opt"><input type="checkbox" id="opt-ml" checked> സാരം</label>
-      <label class="opt"><input type="checkbox" id="opt-tf"> വിവരണം</label>
-    </div>
-    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത് (പാരായണം):</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
-    <div class="ctl-row"><span class="ctl-title">ആയത്ത് ആവർത്തനം:</span>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത്:</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആവർത്തനം:</span>
       <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-    <div class="ctl-row"><span class="ctl-title">സാരം ശബ്ദം:</span><select id="voice-ml" class="opt-sel" onchange="saveSettings()"></select></div>
-    <div class="ctl-row"><span class="ctl-title">വിവരണം ശബ്ദം:</span><select id="voice-tf" class="opt-sel" onchange="saveSettings()"></select></div>
   </div>
 </div>
 
 <div id="verses"></div>
 
-<div class="ai-box" id="ai-box">
-  <h3>💡 ഈ പേജിലെ പാഠങ്ങൾ</h3>
-  <button class="main-btn" onclick="showSummary()">പാഠങ്ങൾ സംഗ്രഹിക്കുക</button>
-  <div class="ai-out" id="ai-summary"></div>
-  <h3>❓ ചോദ്യങ്ങൾ </h3>
-  <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 6px;">ഉത്തരങ്ങൾ കാണാൻ ചോദ്യങ്ങൾ തിരഞ്ഞെടുക്കൂ..</div>
-  <div class="q-list" id="q-list"></div>
-  <div class="q-list" id="q-list"></div>
-  <div class="ai-ask"><input id="ai-q" placeholder="നിങ്ങളുടെ സ്വന്തം ചോദ്യം..."><button class="main-btn" onclick="askCustom()">ചോദിക്കുക</button></div>
-  <div class="ai-out" id="ai-answer"></div>
-  <h3>📝 ക്വിസ്</h3>
-  <button class="main-btn" onclick="startQuiz()">ക്വിസ് തുടങ്ങാം</button>
-  <div id="quiz"></div>
-</div>
-
 <script>
 const $ = id => document.getElementById(id);
-
-/* ===== PAGE SETTINGS ===== */
 const SURAH = 4;
-const SURAH_NAME = "സൂറത്തുൽ അന്നിസാഅ്";
-
-/* ===== VERSES ===== */
 const VERSES = [
   {
     "n": 61,
@@ -291,156 +230,103 @@ const VERSES = [
     "tf": ""
   }
 ];
-
-/* ===== LESSONS / QUESTIONS / QUIZ ===== */
-const AI_ENDPOINT = "";
-const LESSONS = "";
-const SUGGESTED = [];
-const QUIZ = [];
-
-/* ===== SAVED OPTIONS ===== */
 const SKEY = "quran-reader-settings";
-const CHECKS = ["show-ar", "show-ml", "show-tf", "opt-ar", "opt-ml", "opt-tf"];
+const CHECKS = ["show-ar", "show-ml", "show-tf", "cont"];
 let fontSize = 18, reciterId = "ghamdy";
+
 function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
 function saveSettings() {
   const s = loadSettings();
   Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
-  CHECKS.forEach(id => s[id] = $(id).checked);
+  CHECKS.forEach(id => s[id] = $(id) ? $(id).checked : true);
   try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
 }
 function applySettings() {
   const s = loadSettings();
   if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }
-  CHECKS.forEach(id => { if (id in s) $(id).checked = s[id]; });
+  CHECKS.forEach(id => { if ($(id) && id in s) $(id).checked = s[id]; });
   if (s.repeat) $("repeat").value = s.repeat;
 }
 
-/* ===== RECITERS ===== */
 const RECITERS = [
   { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",        base: "https://everyayah.com/data/Ghamadi_40kbps" },
   { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",       base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
   { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",        base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
   { id: "hudhaify", name: "അലി ഹുദൈഫി",            base: "https://everyayah.com/data/Hudhaify_64kbps" },
-  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്\u200cli", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്‌ലി", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
   { id: "alili",    name: "അസീസ് അലീലി",           base: "https://everyayah.com/data/aziz_alili_128kbps" }
 ];
+
 const pad3 = x => String(x).padStart(3, "0");
 const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
 const audioUrl = n => currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+
 function changeReciter(id) { reciterId = id; saveSettings(); }
 function initReciters() {
   const sel = $("reciter");
+  if(!sel) return;
   sel.innerHTML = RECITERS.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
   const saved = loadSettings().reciterId;
   reciterId = (RECITERS.find(r => r.id === saved) || RECITERS[0]).id;
   sel.value = reciterId;
 }
+
 const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
 
-/* ===== BUILD PAGE ===== */
 function buildPage() {
-  $("verses").innerHTML = VERSES.map(v => `
-    <div class="verse" id="verse-${v.n}">
-      <div class="vhead"><span>ആയത്ത് ${v.n}</span></div>
-      <div class="item it-ar" id="item-ar-${v.n}"><div class="row rtl">
-        <button class="play-btn" id="btn-ar-${v.n}" onclick="toggleItem('ar', ${v.n})">▶</button>
+  $("verses").innerHTML = VERSES.map(v => {
+    const vNum = v.n;
+    return `
+    <div class="verse" id="verse-${vNum}">
+      <div class="vhead"><span>ആയത്ത് ${SURAH}: ${pad3(vNum)}</span></div>
+      <div class="item it-ar" id="item-ar-${vNum}"><div class="row rtl">
+        <button class="play-btn" id="btn-ar-${vNum}" onclick="toggleItem('ar', ${vNum})">▶</button>
         <p class="text ar" lang="ar" dir="rtl">${v.ar}</p></div></div>
-      ${v.ml ? `<div class="item it-ml" id="item-ml-${v.n}"><div class="row">
-        <button class="play-btn" id="btn-ml-${v.n}" onclick="toggleItem('ml', ${v.n})">▶</button>
+      ${v.ml ? `<div class="item it-ml" id="item-ml-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-ml-${vNum}" onclick="toggleItem('ml', ${vNum})">▶</button>
         <p class="text"><span class="tag">സാരം:</span>${v.ml}</p></div></div>` : ""}
-      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})">വിവരണം</button>
-        <div class="item it-tf hidden" id="item-tf-${v.n}"><div class="row">
-        <button class="play-btn" id="btn-tf-${v.n}" onclick="toggleItem('tf', ${v.n})">▶</button>
+      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${vNum}" onclick="toggleTafseer(${vNum})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-tf-${vNum}" onclick="toggleItem('tf', ${vNum})">▶</button>
         <p class="text"><span class="pl">${v.tf}</span></p></div></div>` : ""}
-    </div>`).join("");
+    </div>`;
+  }).join("");
 }
+
 function changeFont(d) {
   fontSize = Math.min(40, Math.max(12, fontSize + d));
   document.documentElement.style.setProperty("--fs", fontSize + "px");
   $("fs-label").textContent = fontSize; saveSettings();
 }
+
 function setTafseerVisible(n, show) {
   const b = $("item-tf-" + n), t = $("tgl-" + n);
-  if (!b) return; b.classList.toggle("hidden", !show); t.classList.toggle("open", show);
+  if (!b) return; b.classList.toggle("hidden", !show); if (t) t.classList.toggle("open", show);
 }
+
 function toggleTafseer(n) {
   const willShow = $("item-tf-" + n).classList.contains("hidden");
-  if (!willShow && activeKey === "tf-" + n) stopAll();
   setTafseerVisible(n, willShow);
 }
+
 function applyDisplay() {
-  const on = id => $(id).checked;
+  const on = id => $(id) ? $(id).checked : true;
   document.body.classList.toggle("hide-ar", !on("show-ar"));
   document.body.classList.toggle("hide-ml", !on("show-ml"));
   document.body.classList.toggle("hide-tf", !on("show-tf"));
-  if (!on("show-tf") && activeKey && activeKey.startsWith("tf-") && !continuous) stopAll();
   VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  saveSettings();
 }
 
-/* ===== PLAYBACK STATE ===== */
-const statusEl = $("status"), masterBtn = $("master");
-const MASTER_TEXT = "▶ തുടർച്ചയായി കേൾക്കാം", OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
 let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
-const utterances = [];
 
-let wakeLock = null, waking = false, nsVideo = null, nsTimer = null, nsCanvas = null;
-function startNoSleep() {
-  try {
-    if (nsVideo) { const q = nsVideo.play(); if (q && q.catch) q.catch(() => {}); return; }
-    if (!HTMLCanvasElement.prototype.captureStream) return;
-    nsCanvas = document.createElement("canvas"); nsCanvas.width = 16; nsCanvas.height = 16;
-    const ctx = nsCanvas.getContext("2d"); let t = 0;
-    const draw = () => { ctx.fillStyle = (t++ % 2) ? "#000000" : "#010101"; ctx.fillRect(0, 0, 16, 16); };
-    draw(); nsTimer = setInterval(draw, 500);
-    const v = document.createElement("video");
-    v.setAttribute("playsinline", ""); v.setAttribute("muted", ""); v.muted = true; v.loop = true;
-    v.style.cssText = "position:fixed;bottom:0;right:0;width:4px;height:4px;opacity:0.02;pointer-events:none;";
-    v.srcObject = nsCanvas.captureStream(5); document.body.appendChild(v);
-    const p = v.play(); if (p && p.catch) p.catch(() => {}); nsVideo = v;
-  } catch (e) {}
-}
-function stopNoSleep() {
-  try {
-    if (nsTimer) { clearInterval(nsTimer); nsTimer = null; }
-    if (nsVideo) { nsVideo.pause(); nsVideo.srcObject = null; nsVideo.remove(); nsVideo = null; }
-  } catch (e) {}
-}
-async function requestWake() {
-  if (waking || wakeLock) return;
-  waking = true;
-  try {
-    if ("wakeLock" in navigator) {
-      try {
-        wakeLock = await navigator.wakeLock.request("screen");
-        wakeLock.addEventListener("release", () => { wakeLock = null; if (document.visibilityState === "visible") setTimeout(requestWake, 300); });
-        stopNoSleep();
-      } catch (e) {}
-    }
-    if (!wakeLock) startNoSleep();
-  } finally { waking = false; }
-}
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") requestWake(); });
-["pointerdown", "touchstart", "click", "keydown"].forEach(ev => document.addEventListener(ev, () => requestWake(), { passive: true }));
-setInterval(() => {
-  if (!wakeLock) requestWake();
-  if (nsVideo && nsVideo.paused) { const p = nsVideo.play(); if (p && p.catch) p.catch(() => {}); }
-}, 5000);
-
-function setMediaSession(label) {
-  if (!("mediaSession" in navigator)) return;
-  try {
-    navigator.mediaSession.metadata = new MediaMetadata({ title: label, artist: currentReciter().name, album: SURAH_NAME });
-    navigator.mediaSession.setActionHandler("pause", () => stopAll());
-    navigator.mediaSession.setActionHandler("stop", () => stopAll());
-  } catch (e) {}
-}
 function mark(key) {
   clearMark(); activeKey = key;
   const btn = $("btn-" + key), item = $("item-" + key);
   if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
-  if (item) { item.classList.add("reading"); if (continuous) item.scrollIntoView({ behavior: "smooth", block: "center" }); }
+  if (item) { item.classList.add("reading"); item.scrollIntoView({ behavior: "smooth", block: "center" }); }
 }
+
 function clearMark() {
   if (!activeKey) return;
   const btn = $("btn-" + activeKey), item = $("item-" + activeKey);
@@ -448,421 +334,162 @@ function clearMark() {
   if (item) item.classList.remove("reading");
   activeKey = null;
 }
+
 function stopAll() {
   token++; continuous = false;
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   clearMark();
-  masterBtn.textContent = MASTER_TEXT; masterBtn.classList.remove("playing"); statusEl.textContent = "";
+  const masterBtn = $("master");
+  if (masterBtn) { masterBtn.textContent = "കേൾക്കാം"; masterBtn.classList.remove("playing"); }
+  if ($("status")) $("status").textContent = "";
 }
-function fail(my, msg) { if (my !== token) return; stopAll(); statusEl.textContent = msg; }
 
 function playArabic(n, my, done) {
   if (my !== token) return;
-  const r = currentReciter(), audio = new Audio();
+  const audio = new Audio();
   audio.preload = "auto"; currentAudio = audio;
   audio.onended = () => { if (my === token) done(); };
-  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
-  audio.src = audioUrl(n);
-  audio.play().catch(e => {
+  audio.onerror = () => done();
+  const rawUrl = audioUrl(n);
+  if ($("status")) $("status").textContent = curLabel + " · " + currentReciter().name;
+  Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(rawUrl) : rawUrl).then(u => {
     if (my !== token) return;
-    if (e && (e.name === "NotSupportedError" || e.name === "AbortError")) return;
-    fail(my, "Could not play audio. Tap the button again.");
-  });
+    audio.src = u;
+    audio.play().catch(() => done());
+  }).catch(() => done());
 }
 
-const MALE_HINT = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i, FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;
-function mlVoices() {
-  const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-  return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith("ml"));
-}
-function populateVoices() {
-  const vs = mlVoices(), s = loadSettings();
-  const opts = '<option value="auto">യാന്ത്രികം (Auto)</option>' + vs.map(v => `<option value="${v.name}">${v.name}</option>`).join("");
-  [["voice-ml", s.voiceMl], ["voice-tf", s.voiceTf]].forEach(([id, val]) => {
-    $(id).innerHTML = opts; $(id).value = val || "auto"; if (!$(id).value) $(id).value = "auto";
-  });
-}
-function resolveVoice(kind) {
-  const vs = mlVoices(); if (!vs.length) return null;
-  const chosen = vs.find(v => v.name === $(kind === "tf" ? "voice-tf" : "voice-ml").value);
-  if (chosen) return chosen;
-  const base = vs.find(v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name)) || vs.find(v => !FEMALE_HINT.test(v.name)) || vs[0];
-  return kind === "tf" ? (vs.find(v => v !== base) || base) : base;
-}
-function voiceProfile(kind) {
-  const v = resolveVoice(kind); if (!v) return null;
-  const isMale = MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
-  let pitch = isMale ? 1 : 0.5, rate = 0.95;
-  if (kind === "tf") { rate = 0.85; if (resolveVoice("ml") === v) pitch = pitch > 0.9 ? 0.7 : 1; }
-  return { voice: v, pitch, rate };
-}
-function cleanForSpeech(t) {
-  return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ").replace(/[()\u2018\u2019\u201C\u201D"]/g, "").replace(/\s+/g, " ").trim();
-}
-function splitText(text, max = 150) {
-  const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = []; let cur = "";
-  for (let s of sentences) {
-    s = s.trim();
-    while (s.length > max) {
-      let cut = s.lastIndexOf(" ", max); if (cut <= 0) cut = max;
-      if (cur) { chunks.push(cur); cur = ""; }
-      chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
-    }
-    if (!s) continue;
-    if (cur && (cur + " " + s).length > max) { chunks.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;
-  }
-  if (cur) chunks.push(cur);
-  return chunks.filter(c => /[^\s.,:;!?।]/.test(c));
-}
-function playChunks(chunks, my, done, i = 0) {
-  if (my !== token) return;
-  if (i >= chunks.length) { done(); return; }
-  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
-  const audio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]));
-  currentAudio = audio;
-  audio.preservesPitch = false; audio.mozPreservesPitch = false; audio.webkitPreservesPitch = false;
-  audio.playbackRate = curKind === "tf" ? 0.78 : 0.92;
-  audio.onended = () => playChunks(chunks, my, done, i + 1);
-  audio.onerror = () => fail(my, "Voice is not available on this device or browser.");
-  audio.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
-}
 function speakMalayalam(text, my, done) {
-  const chunks = splitText(cleanForSpeech(text));
-  if (!chunks.length) { done(); return; }
-  const found = voiceProfile(curKind);
-  if (!found) { statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice..."; playChunks(chunks, my, done); return; }
-  setTimeout(() => {
-    if (my !== token) return;
-    statusEl.textContent = curLabel + " · " + found.voice.name;
-    utterances.length = 0; let failed = false;
-    chunks.forEach((chunk, idx) => {
-      const u = new SpeechSynthesisUtterance(chunk);
-      u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;
-      u.onerror = e => {
-        if (my !== token || failed || e.error === "canceled" || e.error === "interrupted") return;
-        failed = true; window.speechSynthesis.cancel();
-        statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";
-        playChunks(chunks, my, done);
-      };
-      if (idx === chunks.length - 1) u.onend = () => { if (my === token && !failed) done(); };
-      utterances.push(u); window.speechSynthesis.speak(u);
-    });
-  }, 100);
+  if (!text) { done(); return; }
+  if (!window.speechSynthesis) { done(); return; }
+  window.speechSynthesis.cancel();
+  if ($("status")) $("status").textContent = curLabel;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ml-IN"; u.rate = 0.9;
+  u.onend = () => { if (my === token) done(); };
+  u.onerror = () => { if (my === token) done(); };
+  window.speechSynthesis.speak(u);
 }
 
 function playItem(kind, n, my, done) {
-  requestWake();
-  curKind = kind === "tf" ? "tf" : "ml";
+  curKind = kind;
   curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];
-  statusEl.textContent = curLabel; setMediaSession(curLabel);
+  if ($("status")) $("status").textContent = curLabel;
   if (kind === "ar") {
     const total = +$("repeat").value || 1;
     const loop = k => {
       if (my !== token) return;
-      statusEl.textContent = curLabel + " · " + currentReciter().name + (total > 1 ? " · ആവർത്തനം " + k + "/" + total : "");
       playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
     };
-    loop(1); return;
+    loop(1);
+  } else {
+    const vObj = VERSES.find(v => v.n === n) || VERSES[0];
+    if (vObj && vObj[kind]) {
+      speakMalayalam(vObj[kind], my, done);
+    } else {
+      done();
+    }
   }
-  speakMalayalam(VERSES[n - 1][kind], my, done);
 }
+
 function toggleItem(kind, n) {
   const key = kind + "-" + n;
   if (activeKey === key) { stopAll(); return; }
-  stopAll(); const my = token; mark(key);
+  stopAll();
+  const my = token;
+  mark(key);
   playItem(kind, n, my, () => { if (my === token) stopAll(); });
 }
-function toggleContinuous() {
-  if (continuous) { stopAll(); return; }
-  stopAll(); requestWake();
-  const kinds = ["ar", "ml", "tf"].filter(k => $("opt-" + k).checked);
-  if (!kinds.length) { statusEl.textContent = "ആയത്ത്, സാരം, വിവരണം എന്നിവയിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)"; return; }
+
+function fullQueue() {
+  const kinds = ["ar", "ml", "tf"].filter(k => $("show-" + k) && $("show-" + k).checked);
   const queue = [];
   VERSES.forEach(v => kinds.forEach(k => { if (k !== "ar" && !v[k]) return; queue.push({ kind: k, n: v.n }); }));
-  continuous = true; const my = token;
-  masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing"); setPanel(false);
+  return queue;
+}
+
+function runQueue(queue, startWithBm) {
+  const my = token;
+  const masterBtn = $("master");
+  masterBtn.textContent = "നിർത്തുക"; masterBtn.classList.add("playing");
+  
   const step = i => {
     if (my !== token) return;
-    if (i >= queue.length) { stopAll(); statusEl.textContent = "പൂർത്തിയായി."; return; }
-    const { kind, n } = queue[i];
-    if (kind === "tf" && $("show-tf").checked) setTafseerVisible(n, true);
-    mark(kind + "-" + n);
-    playItem(kind, n, my, () => { if (my === token) step(i + 1); });
+    if (i >= queue.length) { stopAll(); return; }
+    const item = queue[i];
+    mark(item.kind + "-" + item.n);
+    if (item.kind === 'bm') {
+      if (typeof playBismillah === 'function') {
+        playBismillah(my, () => { if (my === token) step(i + 1); });
+      } else {
+        step(i + 1);
+      }
+    } else {
+      playItem(item.kind, item.n, my, () => { if (my === token) step(i + 1); });
+    }
   };
   step(0);
 }
 
-const controlsEl = $("controls"), optBtn = $("opt-toggle");
-function setPanel(open) {
-  controlsEl.classList.toggle("open", open); optBtn.classList.toggle("open", open);
-  optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");
-}
-function togglePanel(e) { e.stopPropagation(); setPanel(!controlsEl.classList.contains("open")); }
-document.addEventListener("pointerdown", e => { if (!controlsEl.contains(e.target)) setPanel(false); });
-
-const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";
-const pageText = () => VERSES.map(v => `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");
-const cleanJson = t => t.replace(/```json|```/g, "").trim();
-async function askAI(prompt) {
-  const res = await fetch(AI_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
-  if (!res.ok) throw new Error(res.status);
-  return (await res.json()).text;
-}
-function renderQuestions(list) {
-  $("q-list").innerHTML = "";
-  list.forEach(q => { const b = document.createElement("button"); b.className = "q-btn"; b.textContent = q; b.onclick = () => answerQuestion(q); $("q-list").appendChild(b); });
-}
-async function showSummary() {
-  const out = $("ai-summary");
-  if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }
-  out.textContent = "⏳ ...";
-  try {
-    out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());
-    const qs = JSON.parse(cleanJson(await askAI(AI_RULE + "Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));
-    if (Array.isArray(qs) && qs.length) renderQuestions(qs);
-  } catch (e) { out.textContent = LESSONS; }
-}
-async function answerQuestion(q) {
-  const out = $("ai-answer"), hit = SUGGESTED.find(x => x.q === q);
-  
-  let ansContainer = $("inline-answer-" + CSS.escape(q));
-  if (!ansContainer) {
-    const buttons = document.querySelectorAll(".q-btn");
-    let targetBtn = Array.from(buttons).find(b => b.textContent === q);
-    if (targetBtn) {
-      ansContainer = document.createElement("div");
-      ansContainer.id = "inline-answer-" + CSS.escape(q);
-      ansContainer.style.cssText = "margin: 6px 0 12px 0; padding: 10px 12px; background: var(--paper); border-left: 3px solid var(--gold); border-radius: 4px; font-size: var(--fs); line-height: 1.7;";
-      targetBtn.parentNode.insertBefore(ansContainer, targetBtn.nextSibling);
-    } else {
-      ansContainer = out;
-    }
-  }
-
-  ansContainer.innerHTML = "<strong>ഉത്തരം:</strong> ⏳ ചിന്തിക്കുന്നു...";
-  
-  if (!AI_ENDPOINT) {
-    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."}`;
+function toggleContinuous() {
+  const masterBtn = $("master");
+  if (masterBtn && masterBtn.classList.contains('playing')) {
+    stopAll();
     return;
   }
+  stopAll();
+  continuous = true;
+  const q = fullQueue();
+  if (!q.length) { stopAll(); return; }
   
-  try { 
-    const resText = await askAI(AI_RULE + "Question: " + q + "\n\n" + pageText());
-    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${resText}`;
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  const arChecked = $("show-ar") ? $("show-ar").checked : true;
+  if (hasVerse1 && SURAH !== 1 && SURAH !== 9 && arChecked && typeof playBismillah === 'function') {
+    runQueue([{ kind: 'bm', n: 0 }].concat(q), true);
+  } else {
+    runQueue(q, false);
   }
-  catch (e) { 
-    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "ക്ഷമിക്കണം, ഉത്തരം ലഭ്യമായില്ല."}`; 
+}
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle"), panelEl = $("panel");
+function togglePanel(e) {
+  e.stopPropagation();
+  const isOpen = panelEl.style.display === 'block' || panelEl.classList.contains('open');
+  if (isOpen) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    if (controlsEl) controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  } else {
+    panelEl.style.display = 'block';
+    panelEl.classList.add('open');
+    if (controlsEl) controlsEl.classList.add('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
   }
 }
-function askCustom() { const q = $("ai-q").value.trim(); if (q) answerQuestion(q); }
-async function startQuiz() {
-  let qs = QUIZ;
-  if (AI_ENDPOINT) {
-    $("quiz").textContent = "⏳ ...";
-    try {
-      const r = JSON.parse(cleanJson(await askAI(AI_RULE + 'Return ONLY a JSON array of 5 multiple-choice questions in Malayalam: [{"q":"","o":["","","",""],"c":0, "e":""}] where c is the index of the correct option.\n\n' + pageText())));
-      if (Array.isArray(r) && r.length) qs = r;
-    } catch (e) {}
+
+document.addEventListener('click', function(e) {
+  if (controlsEl && !controlsEl.contains(e.target)) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
   }
-  renderQuiz(qs);
-}
-function renderQuiz(qs) {
-  let score = 0, answered = 0; const box = $("quiz"); box.innerHTML = "";
-  qs.forEach((q, qi) => {
-    const d = document.createElement("div"); d.className = "quiz-q"; d.innerHTML = `<p>${qi + 1}. ${q.q}</p>`;
-    q.o.forEach((t, oi) => {
-      const b = document.createElement("button"); b.className = "quiz-opt"; b.textContent = t;
-      b.onclick = () => {
-        if (d.dataset.done) return; d.dataset.done = 1; answered++;
-        d.querySelectorAll(".quiz-opt")[q.c].classList.add("right");
-        if (oi === q.c) score++; else b.classList.add("wrong");
-        if (q.e) { const e = document.createElement("div"); e.className = "quiz-exp"; e.textContent = q.e; d.appendChild(e); }
-        if (answered === qs.length) res.textContent = `🎉 സ്കോർ: ${score} / ${qs.length}`;
-      };
-      d.appendChild(b);
-    });
-    box.appendChild(d);
-  });
-  const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);
-}
+});
 
-(function () {
-  ["voice-ml", "voice-tf", "opt-ar"].forEach(id => { const r = $(id) && $(id).closest(".ctl-row"); if (r) r.remove(); });
-  document.querySelectorAll(".ctl-title").forEach(t => { if (t.textContent.includes("വായിക്കേണ്ട")) t.textContent = "കാണിക്കുക:"; });
-  const m = $("master"); m.textContent = "▶ തുടക്കം മുതൽ കേൾക്കാം"; m.parentNode.style.flexWrap = "wrap";
-  m.parentNode.insertAdjacentHTML("afterbegin", '<label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>');
-  CHECKS.splice(0, CHECKS.length, "show-ar", "show-ml", "show-tf", "cont");
-})();
+document.addEventListener("DOMContentLoaded", () => {
+  const bismiDiv = $("bismi-container");
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  if (bismiDiv) {
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      bismiDiv.remove();
+    }
+  }
+});
 
-const _build = buildPage;
-buildPage = function () {
-  _build();
-  VERSES.forEach(v => { const s = document.querySelector("#verse-" + v.n + " .vhead span"); if (s) s.textContent = "ആയത്ത് " + SURAH + ": " + pad3(v.n); });
-};
-
-function saveSettings() {
-  const s = loadSettings();
-  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
-  CHECKS.forEach(id => s[id] = $(id).checked);
-  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
-}
-
-const vScore = v => (/natural|neural|enhanced|premium|online/i.test(v.name) ? 3 : 0) + (/google/i.test(v.name) ? 1 : 0) + (v.localService ? 0 : 1);
-function populateVoices() {}
-function resolveVoice(kind) {
-  const vs = mlVoices().sort((a, b) => vScore(b) - vScore(a)); if (!vs.length) return null;
-  return kind === "tf" ? (vs[1] || vs[0]) : vs[0];
-}
-
-function speakMalayalam(text, my, done) {
-  const chunks = splitText(cleanForSpeech(text));
-  if (!chunks.length) { done(); return; }
-  const found = voiceProfile(curKind);
-  if (!found) { statusEl.textContent = curLabel + " · online voice..."; playChunks(chunks, my, done); return; }
-  const next = i => {
-    if (my !== token) return;
-    if (i >= chunks.length) { done(); return; }
-    statusEl.textContent = curLabel + " · " + found.voice.name + " " + (i + 1) + "/" + chunks.length;
-    const u = new SpeechSynthesisUtterance(chunks[i]); utterances[0] = u;
-    u.voice = found.voice; u.lang = found.voice.lang; u.pitch = found.pitch; u.rate = found.rate;
-    let started = false, over = false;
-    const fallback = () => { if (over) return; over = true; clearTimeout(wd); window.speechSynthesis.cancel(); playChunks(chunks, my, done, i); };
-    const wd = setTimeout(() => { if (my === token && !started) fallback(); }, 5000);
-    u.onstart = () => { started = true; };
-    u.onend = () => { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
-    u.onerror = e => { if (my !== token || e.error === "canceled" || e.error === "interrupted") return; fallback(); };
-    window.speechSynthesis.speak(u);
-  };
-  setTimeout(() => next(0), 100);
-}
-
-let keep = null;
-function startKeep() {
-  try {
-    if (keep) { keep.play().catch(() => {}); return; }
-    const sr = 8000, n = sr, b = new DataView(new ArrayBuffer(44 + n));
-    const w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
-    w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
-    b.setUint32(24, sr, true); b.setUint32(28, sr, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
-    for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
-    keep = new Audio(URL.createObjectURL(new Blob([b], { type: "audio/wav" }))); keep.loop = true; keep.play().catch(() => {});
-  } catch (e) {}
-}
-function stopKeep() { if (keep) keep.pause(); }
-
-function stopAll() {
-  token++; continuous = false;
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  clearMark(); stopKeep();
-  masterBtn.textContent = "▶ തുടക്കം മുതൽ കേൾക്കാം"; masterBtn.classList.remove("playing"); statusEl.textContent = "";
-}
-function mark(key) {
-  clearMark(); activeKey = key;
-  const btn = $("btn-" + key), item = $("item-" + key);
-  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
-  if (item) { item.classList.add("reading"); if (continuous) item.scrollIntoView({ behavior: "smooth", block: "start" }); }
-}
-
-async function cachedSrc(url) {
-  try {
-    if (!window.caches) return url;
-    const c = await caches.open("quran-audio-v1"); let r = await c.match(url);
-    if (!r) { r = await fetch(url, { mode: "cors" }); if (!r.ok) return url; await c.put(url, r.clone()); }
-    return URL.createObjectURL(await r.blob());
-  } catch (e) { return url; }
-}
-async function playArabic(n, my, done) {
-  if (my !== token) return;
-  const r = currentReciter(), audio = new Audio();
-  audio.preload = "auto"; currentAudio = audio;
-  audio.onended = () => { if (my === token) done(); };
-  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
-  const src = await cachedSrc(audioUrl(n)); if (my !== token) return;
-  audio.src = src;
-  audio.play().catch(e => {
-    if (my !== token) return;
-    if (e && (e.name === "NotSupportedError" || e.name === "AbortError")) return;
-    fail(my, "Could not play audio. Tap the button again.");
-  });
-}
-
-const ORDER = ["ar", "ml", "tf"];
-function fullQueue(startKind, startN) {
-  const on = ORDER.filter(k => $("show-" + k).checked), q = [];
-  VERSES.forEach(v => ORDER.forEach(k => {
-    if (k !== "ar" && !v[k]) return;
-    if (on.includes(k) || (k === startKind && v.n === startN)) q.push({ kind: k, n: v.n });
-  }));
-  return q;
-}
-function runQueue(queue, fromMaster) {
-  stopAll(); requestWake(); startKeep();
-  if (!queue.length) { stopKeep(); statusEl.textContent = "കാണിക്കുക എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)"; return; }
-  continuous = queue.length > 1; const my = token;
-  if (fromMaster) { masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing"); setPanel(false); }
-  const step = i => {
-    if (my !== token) return;
-    if (i >= queue.length) { stopAll(); statusEl.textContent = "പൂർത്തിയായി."; return; }
-    const { kind, n } = queue[i]; mark(kind + "-" + n);
-    playItem(kind, n, my, () => { if (my === token) step(i + 1); });
-  };
-  step(0);
-}
-function toggleItem(kind, n) {
-  if (activeKey === kind + "-" + n) { stopAll(); return; }
-  const q = fullQueue(kind, n), i = q.findIndex(x => x.kind === kind && x.n === n);
-  runQueue($("cont").checked ? q.slice(i) : [q[i]]);
-}
-function toggleContinuous() {
-  if (masterBtn.classList.contains("playing")) { stopAll(); return; }
-  runQueue(fullQueue(), true);
-}
-
-const sharedAudio = new Audio();
-const SILENT = (function () {
-  const n = 800, b = new DataView(new ArrayBuffer(44 + n)), w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
-  w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
-  b.setUint32(24, 8000, true); b.setUint32(28, 8000, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
-  for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
-  return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
-})();
-const _run = runQueue;
-runQueue = function (...a) { try { sharedAudio.src = SILENT; sharedAudio.play().catch(() => {}); } catch (e) {} return _run(...a); };
-function playChunks(chunks, my, done, i = 0) {
-  if (my !== token) return;
-  if (i >= chunks.length) { done(); return; }
-  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
-  const a = sharedAudio;
-  a.onended = () => playChunks(chunks, my, done, i + 1);
-  a.onerror = () => fail(my, "Online voice is blocked or offline. Check the internet, or use Edge / a phone with the Malayalam voice installed.");
-  a.src = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ml&q=" + encodeURIComponent(chunks[i]);
-  a.playbackRate = curKind === "tf" ? 0.85 : 0.95; currentAudio = a;
-  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
-}
-async function playArabic(n, my, done) {
-  if (my !== token) return;
-  const r = currentReciter(), audio = sharedAudio;
-  audio.onended = () => { if (my === token) done(); };
-  audio.onerror = () => fail(my, r.name + " – ആയത്ത് " + n + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് / ലിങ്ക് പരിശോധിക്കുക.");
-  const src = await cachedSrc(audioUrl(n)); if (my !== token) return;
-  audio.playbackRate = 1; audio.src = src; currentAudio = audio;
-  audio.play().catch(e => {
-    if (my !== token || (e && (e.name === "NotSupportedError" || e.name === "AbortError"))) return;
-    fail(my, "Could not play audio. Tap the button again.");
-  });
-}
-/* ===== START ===== */
-document.querySelector(".ai-ask").style.display = AI_ENDPOINT ? "" : "none";
-$("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
-buildPage(); initReciters(); populateVoices(); applySettings(); applyDisplay();
-CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
-renderQuestions(SUGGESTED.map(x => x.q));
-requestWake();
-if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged = () => populateVoices(); }
-
+buildPage(); initReciters(); applySettings(); applyDisplay();
 </script>
- <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
 </body>
 </html>

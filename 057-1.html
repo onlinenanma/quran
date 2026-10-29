@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>57. സൂറത്തുൽ അൽ ഹദീദ് (1–29)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.topnav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;width:100%;max-width:1000px;margin:0 auto 10px;padding:0 8px}
+.topnav .back{display:inline-flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;font-size:clamp(0.9rem,3.2vw,1.05rem);font-weight:500;white-space:nowrap}
+.topnav .back:hover,.topnav .back:focus{color:#fff;outline:none}
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px;width:100%}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:10px 14px 4px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:8px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel{font-family:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:3px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%!important;text-align:center!important;font-size:12px;color:var(--acc);margin:2px auto 0 auto!important;display:block!important;line-height:1.2}
+#status:empty{display:none}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/057"><span style="font-size: 1em;">📄</span>താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index"><span style="font-size: 1em;">📖</span>സൂറത്തുകൾ</a>
+ </div>
+ <h1>57. സൂറത്തുൽ അൽ ഹദീദ് (1–29)</h1>
+</header>
+
+<div id="bismi-container"><h1 style="text-align: center; margin: 15px 0; color: var(--acc, #1d5240);">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1></div>
+
+<div class="controls" id="controls">
+  <div class="banner">
+    <div class="banner-row">
+      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button>
+    </div>
+    <div id="status"></div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">കാണിക്കുക:</span>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+      <label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>
+    </div>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത്:</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  </div>
+</div>
+
+<div id="verses"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SURAH = 57;
+const VERSES = [
+  {
+    "n": 1,
+    "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ سَبَّحَ لِلَّهِ مَا فِى ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۖ وَهُوَ ٱلْعَزِيزُ ٱلْحَكِيمُ",
+    "ml": "ആകാശങ്ങളിലും ഭൂമിയിലുമുള്ളതെല്ലാം അല്ലാഹുവിന് പ്രകീര്‍ത്തനം ചെയ്തിരിക്കുന്നു. അവന്‍ പ്രതാപിയും യുക്തിമാനുമത്രെ.",
+    "tf": ""
+  },
+  {
+    "n": 2,
+    "ar": "لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۖ يُحْىِۦ وَيُمِيتُ ۖ وَهُوَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌ",
+    "ml": "അവന്നാകുന്നു ആകാശങ്ങളുടെയും ഭൂമിയുടെയും ആധിപത്യം. അവന്‍ ജീവിപ്പിക്കുകയും മരിപ്പിക്കുകയും ചെയ്യുന്നു. അവന്‍ സര്‍വ്വകാര്യത്തിനും കഴിവുള്ളവനുമാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 3,
+    "ar": "هُوَ ٱلْأَوَّلُ وَٱلْءَاخِرُ وَٱلظَّٰهِرُ وَٱلْبَاطِنُ ۖ وَهُوَ بِكُلِّ شَىْءٍ عَلِيمٌ",
+    "ml": "അവന്‍ ആദിയും അന്തിമനും പ്രത്യക്ഷമായവനും പരോക്ഷമായവനുമാണ്‌. അവന്‍ സര്‍വ്വകാര്യങ്ങളെക്കുറിച്ചും അറിവുള്ളവനുമാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 4,
+    "ar": "هُوَ ٱلَّذِى خَلَقَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ فِى سِتَّةِ أَيَّامٍۢ ثُمَّ ٱسْتَوَىٰ عَلَى ٱلْعَرْشِ ۚ يَعْلَمُ مَا يَلِجُ فِى ٱلْأَرْضِ وَمَا يَخْرُجُ مِنْهَا وَمَا يَنزِلُ مِنَ ٱلسَّمَآءِ وَمَا يَعْرُجُ فِيهَا ۖ وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ ۚ وَٱللَّهُ بِمَا تَعْمَلُونَ بَصِيرٌۭ",
+    "ml": "ആകാശങ്ങളും ഭൂമിയും ആറുദിവസങ്ങളിലായി സൃഷ്ടിച്ചവനാണ് അവന്‍. പിന്നീട് അവന്‍ സിംഹാസനസ്ഥനായി. ഭൂമിയില്‍ പ്രവേശിക്കുന്നതും അതില്‍ നിന്ന് പുറത്തു വരുന്നതും, ആകാശത്ത് നിന്ന് ഇറങ്ങുന്നതും അതിലേക്ക് കയറിച്ചെല്ലുന്നതും അവന്‍ അറിഞ്ഞ് കൊണ്ടിരിക്കുന്നു. നിങ്ങള്‍ എവിടെയായിരുന്നാലും അവന്‍ നിങ്ങളുടെ കൂടെയുണ്ട് താനും. അല്ലാഹു നിങ്ങള്‍ പ്രവര്‍ത്തിക്കുന്നതിനെപ്പറ്റി കണ്ടറിയുന്നവനാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 5,
+    "ar": "لَّهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ وَإِلَى ٱللَّهِ تُرْجَعُ ٱلْأُمُورُ",
+    "ml": "അവന്നാണ് ആകാശങ്ങളുടെയും ഭൂമിയുടെയും ആധിപത്യം. അല്ലാഹുവിങ്കലേക്ക് തന്നെ കാര്യങ്ങള്‍ മടക്കപ്പെടുകയും ചെയ്യുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 6,
+    "ar": "يُولِجُ ٱلَّيْلَ فِى ٱلنَّهَارِ وَيُولِجُ ٱلنَّهَارَ فِى ٱلَّيْلِ ۚ وَهُوَ عَلِيمٌۢ بِذَاتِ ٱلصُّدُورِ",
+    "ml": "അവന്‍ രാത്രിയെ പകലില്‍ പ്രവേശിപ്പിക്കുന്നു. അവന്‍ പകലിനെ രാത്രിയില്‍ പ്രവേശിപ്പിക്കുകയും ചെയ്യുന്നു. അവന്‍ ഹൃദയങ്ങളിലുള്ളവയെപ്പറ്റി അറിയുന്നവനുമാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 7,
+    "ar": "ءَامِنُوا۟ بِٱللَّهِ وَرَسُولِهِۦ وَأَنفِقُوا۟ مِمَّا جَعَلَكُم مُّسْتَخْلَفِينَ فِيهِ ۖ فَٱلَّذِينَ ءَامَنُوا۟ مِنكُمْ وَأَنفَقُوا۟ لَهُمْ أَجْرٌۭ كَبِيرٌۭ",
+    "ml": "നിങ്ങള്‍ അല്ലാഹുവിലും അവന്‍റെ ദൂതനിലും വിശ്വസിക്കുകയും, അവന്‍ നിങ്ങളെ ഏതൊരു സ്വത്തില്‍ പിന്തുടര്‍ച്ച നല്‍കപ്പെട്ടവരാക്കിയിരിക്കുന്നോ അതില്‍ നിന്നു ചെലവഴിക്കുകയും ചെയ്യുക. അങ്ങനെ നിങ്ങളുടെ കൂട്ടത്തില്‍ നിന്ന് വിശ്വസിക്കുകയും ചെലവഴിക്കുകയും ചെയ്തവരാരോ അവര്‍ക്ക് വലിയ പ്രതിഫലമുണ്ടായിരിക്കുന്നതാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 8,
+    "ar": "وَمَا لَكُمْ لَا تُؤْمِنُونَ بِٱللَّهِ ۙ وَٱلرَّسُولُ يَدْعُوكُمْ لِتُؤْمِنُوا۟ بِرَبِّكُمْ وَقَدْ أَخَذَ مِيثَٰقَكُمْ إِن كُنتُم مُّؤْمِنِينَ",
+    "ml": "അല്ലാഹുവില്‍ വിശ്വസിക്കാതിരിക്കാന്‍ നിങ്ങള്‍ക്കെന്താണ് ന്യായം? ഈ ദൂതനാകട്ടെ നിങ്ങളുടെ രക്ഷിതാവില്‍ വിശ്വസിക്കാന്‍ വേണ്ടി നിങ്ങളെ ക്ഷണിച്ചു കൊണ്ടിരിക്കുകയുമാണ്‌. അല്ലാഹു നിങ്ങളുടെ ഉറപ്പ് വാങ്ങിയിട്ടുമുണ്ട്‌. നിങ്ങള്‍ വിശ്വസിക്കുന്നവരാണെങ്കില്‍!",
+    "tf": ""
+  },
+  {
+    "n": 9,
+    "ar": "هُوَ ٱلَّذِى يُنَزِّلُ عَلَىٰ عَبْدِهِۦٓ ءَايَٰتٍۭ بَيِّنَٰتٍۢ لِّيُخْرِجَكُم مِّنَ ٱلظُّلُمَٰتِ إِلَى ٱلنُّورِ ۚ وَإِنَّ ٱللَّهَ بِكُمْ لَرَءُوفٌۭ رَّحِيمٌۭ",
+    "ml": "നിങ്ങളെ ഇരുട്ടില്‍ നിന്ന് പ്രകാശത്തിലേക്ക് കൊണ്ടുവരാന്‍ വേണ്ടി തന്‍റെ ദാസന്‍റെ മേല്‍ വ്യക്തമായ ദൃഷ്ടാന്തങ്ങള്‍ ഇറക്കികൊടുക്കുന്നവനാണ് അവന്‍. തീര്‍ച്ചയായും അല്ലാഹു നിങ്ങളോട് വളരെയധികം ദയാലുവും കാരുണ്യവാനും തന്നെയാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 10,
+    "ar": "وَمَا لَكُمْ أَلَّا تُنفِقُوا۟ فِى سَبِيلِ ٱللَّهِ وَلِلَّهِ مِيرَٰثُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ ۚ لَا يَسْتَوِى مِنكُم مَّنْ أَنفَقَ مِن قَبْلِ ٱلْفَتْحِ وَقَٰتَلَ ۚ أُو۟لَٰٓئِكَ أَعْظَمُ دَرَجَةًۭ مِّنَ ٱلَّذِينَ أَنفَقُوا۟ مِنۢ بَعْدُ وَقَٰتَلُوا۟ ۚ وَكُلًّۭا وَعَدَ ٱللَّهُ ٱلْحُسْنَىٰ ۚ وَٱللَّهُ بِمَا تَعْمَلُونَ خَبِيرٌۭ",
+    "ml": "ആകാശങ്ങളുടെയും ഭൂമിയുടെയും അനന്തരാവകാശം അല്ലാഹുവിനുള്ളതായിരിക്കെ അല്ലാഹുവിന്‍റെ മാര്‍ഗത്തില്‍ ചെലവഴിക്കാതിരിക്കാന്‍ നിങ്ങള്‍ക്കെന്താണ് ന്യായം? നിങ്ങളുടെ കൂട്ടത്തില്‍ നിന്നു (മക്കാ) വിജയത്തിനു മുമ്പുള്ള കാലത്ത് ചെലവഴിക്കുകയും യുദ്ധത്തില്‍ പങ്കെടുക്കുകയും ചെയ്തവരും (അല്ലാത്തവരും) സമമാകുകയില്ല. അക്കൂട്ടര്‍ പിന്നീടു ചെലവഴിക്കുകയും യുദ്ധത്തില്‍ പങ്കുവഹിക്കുകയും ചെയ്തവരെക്കാള്‍ മഹത്തായ പദവിയുള്ളവരാകുന്നു. എല്ലാവര്‍ക്കും ഏറ്റവും നല്ല പ്രതിഫലം അല്ലാഹു വാഗ്ദാനം ചെയ്തിരിക്കുന്നു. നിങ്ങള്‍ പ്രവര്‍ത്തിക്കുന്നതിനെപ്പറ്റി സൂക്ഷ്മജ്ഞാനമുള്ളവനാണ് അല്ലാഹു.",
+    "tf": ""
+  },
+  {
+    "n": 11,
+    "ar": "مَّن ذَا ٱلَّذِى يُقْرِضُ ٱللَّهَ قَرْضًا حَسَنًۭا فَيُضَٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجْرٌۭ كَرِيمٌۭ",
+    "ml": "ആരുണ്ട് അല്ലാഹുവിന് ഒരു നല്ല കടം കൊടുക്കുവാന്‍? എങ്കില്‍ അവനത് അയാള്‍ക്ക് വേണ്ടി ഇരട്ടിപ്പിക്കുന്നതാണ്‌. അയാള്‍ക്കാണ് മാന്യമായ പ്രതിഫലമുള്ളത്‌.",
+    "tf": ""
+  },
+  {
+    "n": 12,
+    "ar": "يَوْمَ تَرَى ٱلْمُؤْمِنِينَ وَٱلْمُؤْمِنَٰتِ يَسْعَىٰ نُورُهُم بَيْنَ أَيْدِيهِمْ وَبِأَيْمَٰنِهِم بُشْرَىٰكُمُ ٱلْيَوْمَ جَنَّٰتٌۭ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَا ۚ ذَٰلِكَ هُوَ ٱلْفَوْزُ ٱلْعَظِيمُ",
+    "ml": "സത്യവിശ്വാസികളെയും സത്യവിശ്വാസിനികളെയും, അവരുടെ പ്രകാശം അവരുടെ മുന്‍ഭാഗങ്ങളിലൂടെയും വലതുഭാഗങ്ങളിലൂടെയും സഞ്ചരിക്കുന്ന നിലയില്‍ നീ കാണുന്ന ദിവസം! (അന്നവരോട് പറയപ്പെടും:) ഇന്നു നിങ്ങള്‍ക്കുള്ള സന്തോഷവാര്‍ത്ത ചില സ്വര്‍ഗത്തോപ്പുകളെ പറ്റിയാകുന്നു. അവയുടെ താഴ്ഭാഗത്തു കൂടി അരുവികള്‍ ഒഴുകികൊണ്ടിരിക്കും. നിങ്ങള്‍ അതില്‍ നിത്യവാസികളായിരിക്കും. അത് മഹത്തായ ഭാഗ്യം തന്നെയാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 13,
+    "ar": "يَوْمَ يَقُولُ ٱلْمُنَٰفِقُونَ وَٱلْمُنَٰفِقَٰتُ لِلَّذِينَ ءَامَنُوا۟ ٱنظُرُونَا نَقْتَبِسْ مِن نُّورِكُمْ قِيلَ ٱرْجِعُوا۟ وَرَآءَكُمْ فَٱلْتَمِسُوا۟ نُورًۭا فَضُرِبَ بَيْنَهُم بِسُورٍۢ لَّهُۥ بَابٌۢ بَاطِنُهُۥ فِيهِ ٱلرَّحْمَةُ وَظَٰهِرُهُۥ مِن قِبَلِهِ ٱلْعَذَابُ",
+    "ml": "കപടവിശ്വാസികളും കപടവിശ്വാസിനികളും സത്യവിശ്വാസികളോട് (ഇങ്ങനെ) പറയുന്ന ദിവസം: നിങ്ങള്‍ ഞങ്ങളെ നോക്കണേ! നിങ്ങളുടെ പ്രകാശത്തില്‍ നിന്ന് ഞങ്ങള്‍ പകര്‍ത്തി എടുക്കട്ടെ. (അപ്പോള്‍ അവരോട്‌) പറയപ്പെടും: നിങ്ങള്‍ നിങ്ങളുടെ പിന്‍ഭാഗത്തേക്കു തന്നെ മടങ്ങിപ്പോകുക. എന്നിട്ട് പ്രകാശം അന്വേഷിച്ചു കൊള്ളുക! അപ്പോള്‍ അവര്‍ക്കിടയില്‍ ഒരു മതില്‍ കൊണ്ട് മറയുണ്ടാക്കപ്പെടുന്നതാണ്‌. അതിന് ഒരു വാതിലുണ്ടായിരിക്കും. അതിന്‍റെ ഉള്‍ഭാഗത്താണ് കാരുണ്യമുള്ളത്‌. അതിന്‍റെ പുറഭാഗത്താകട്ടെ ശിക്ഷയും.",
+    "tf": ""
+  },
+  {
+    "n": 14,
+    "ar": "يُنَادُونَهُمْ أَلَمْ نَكُن مَّعَكُمْ ۖ قَالُوا۟ بَلَىٰ وَلَٰكِنَّكُمْ فَتَنتُمْ أَنفُسَكُمْ وَتَرَبَّصْتُمْ وَٱرْتَبْتُمْ وَغَرَّتْكُمُ ٱلْأَمَانِىُّ حَتَّىٰ جَآءَ أَمْرُ ٱللَّهِ وَغَرَّكُم بِٱللَّهِ ٱلْغَرُورُ",
+    "ml": "അവരെ (സത്യവിശ്വാസികളെ) വിളിച്ച് അവര്‍ (കപടന്‍മാര്‍) പറയും: ഞങ്ങള്‍ നിങ്ങളോടൊപ്പമായിരുന്നില്ലേ? അവര്‍ (സത്യവിശ്വാസികള്‍) പറയും: അതെ; പക്ഷെ, നിങ്ങള്‍ നിങ്ങളെ തന്നെ കുഴപ്പത്തിലാക്കുകയും (മറ്റുള്ളവര്‍ക്ക് നാശം വരുന്നത്‌) പാര്‍ത്തുകൊണ്ടിരിക്കുകയും (മതത്തില്‍) സംശയിക്കുകയും അല്ലാഹുവിന്‍റെ ആജ്ഞ വന്നെത്തുന്നത് വരെ വ്യാമോഹങ്ങള്‍ നിങ്ങളെ വഞ്ചിക്കുകയും ചെയ്തു. അല്ലാഹുവിന്‍റെ കാര്യത്തില്‍ പരമവഞ്ചകനായ പിശാച് നിങ്ങളെ വഞ്ചിച്ചു കളഞ്ഞു.",
+    "tf": ""
+  },
+  {
+    "n": 15,
+    "ar": "فَٱلْيَوْمَ لَا يُؤْخَذُ مِنكُمْ فِدْيَةٌۭ وَلَا مِنَ ٱلَّذِينَ كَفَرُوا۟ ۚ مَأْوَىٰكُمُ ٱلنَّارُ ۖ هِىَ مَوْلَىٰكُمْ ۖ وَبِئْسَ ٱلْمَصِيرُ",
+    "ml": "അതുകൊണ്ട് ഇന്ന് നിങ്ങളുടെ പക്കല്‍ നിന്നോ സത്യനിഷേധികളുടെ പക്കല്‍ നിന്നോ യാതൊരു പ്രായശ്ചിത്തവും സ്വീകരിക്കപ്പെടുന്നതല്ല. നിങ്ങളുടെ വാസസ്ഥലം നരകമാകുന്നു. അതത്രെ നിങ്ങളുടെ ബന്ധു തിരിച്ചുചെല്ലാനുള്ള ആ സ്ഥലം വളരെ ചീത്ത തന്നെ.",
+    "tf": ""
+  },
+  {
+    "n": 16,
+    "ar": "۞ أَلَمْ يَأْنِ لِلَّذِينَ ءَامَنُوٓا۟ أَن تَخْشَعَ قُلُوبُهُمْ لِذِكْرِ ٱللَّهِ وَمَا نَزَلَ مِنَ ٱلْحَقِّ وَلَا يَكُونُوا۟ كَٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ مِن قَبْلُ فَطَالَ عَلَيْهِمُ ٱلْأَمَدُ فَقَسَتْ قُلُوبُهُمْ ۖ وَكَثِيرٌۭ مِّنْهُمْ فَٰسِقُونَ",
+    "ml": "വിശ്വാസികള്‍ക്ക് അവരുടെ ഹൃദയങ്ങള്‍ അല്ലാഹുവിനെ പറ്റിയുള്ള സ്മരണയിലേക്കും, അവതരിച്ചു കിട്ടിയ സത്യത്തിലേക്കും കീഴൊതുങ്ങുവാനും തങ്ങള്‍ക്ക് മുമ്പ് വേദഗ്രന്ഥം നല്‍കപ്പെട്ടവരെപ്പോലെ ആകാതിരിക്കുവാനും സമയമായില്ലേ? അങ്ങനെ ആ വേദക്കാര്‍ക്ക് കാലം ദീര്‍ഘിച്ച് പോകുകയും തന്‍മൂലം അവരുടെ ഹൃദയങ്ങള്‍ കടുത്തുപോകുകയും ചെയ്തു. അവരില്‍ അധികമാളുകളും ദുര്‍മാര്‍ഗികളാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 17,
+    "ar": "ٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ يُحْىِ ٱلْأَرْضَ بَعْدَ مَوْتِهَا ۚ قَدْ بَيَّنَّا لَكُمُ ٱلْءَايَٰتِ لَعَلَّكُمْ تَعْقِلُونَ",
+    "ml": "നിങ്ങള്‍ അറിഞ്ഞു കൊള്ളുക: തീര്‍ച്ചയായും അല്ലാഹു ഭൂമിയെ അത് നിര്‍ജീവമായതിനു ശേഷം സജീവമാക്കുന്നു. തീര്‍ച്ചയായും നാം നിങ്ങള്‍ക്ക് ദൃഷ്ടാന്തങ്ങള്‍ വിവരിച്ചുതന്നിരിക്കുന്നു. നിങ്ങള്‍ ചിന്തിക്കുവാന്‍ വേണ്ടി.",
+    "tf": ""
+  },
+  {
+    "n": 18,
+    "ar": "إِنَّ ٱلْمُصَّدِّقِينَ وَٱلْمُصَّدِّقَٰتِ وَأَقْرَضُوا۟ ٱللَّهَ قَرْضًا حَسَنًۭا يُضَٰعَفُ لَهُمْ وَلَهُمْ أَجْرٌۭ كَرِيمٌۭ",
+    "ml": "തീര്‍ച്ചയായും ധര്‍മ്മിഷ്ഠരായ പുരുഷന്‍മാരും സ്ത്രീകളും അല്ലാഹുവിന് നല്ല കടം കൊടുത്തവരും ആരോ അവര്‍ക്കത് ഇരട്ടിയായി നല്‍കപ്പെടുന്നതാണ്‌. അവര്‍ക്കത്രെ മാന്യമായ പ്രതിഫലമുള്ളത്‌.",
+    "tf": ""
+  },
+  {
+    "n": 19,
+    "ar": "وَٱلَّذِينَ ءَامَنُوا۟ بِٱللَّهِ وَرُسُلِهِۦٓ أُو۟لَٰٓئِكَ هُمُ ٱلصِّدِّيقُونَ ۖ وَٱلشُّهَدَآءُ عِندَ رَبِّهِمْ لَهُمْ أَجْرُهُمْ وَنُورُهُمْ ۖ وَٱلَّذِينَ كَفَرُوا۟ وَكَذَّبُوا۟ بِـَٔايَٰتِنَآ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلْجَحِيمِ",
+    "ml": "എന്നാല്‍ അല്ലാഹുവിലും അവന്‍റെ ദൂതന്‍മാരിലും വിശ്വസിച്ചവരാരോ അവര്‍ തന്നെയാണ് തങ്ങളുടെ രക്ഷിതാവിങ്കല്‍ സത്യസന്ധന്‍മാരും സത്യസാക്ഷികളും. അവര്‍ക്ക് അവരുടെ പ്രതിഫലവും അവരുടെ പ്രകാശവുമുണ്ടായിരിക്കും. സത്യനിഷേധം കൈക്കൊള്ളുകയും നമ്മുടെ ദൃഷ്ടാന്തങ്ങളെ നിഷേധിച്ചു തള്ളുകയും ചെയ്തവരാരോ അവര്‍ തന്നെയാണ് നരകക്കാര്‍.",
+    "tf": ""
+  },
+  {
+    "n": 20,
+    "ar": "ٱعْلَمُوٓا۟ أَنَّمَا ٱلْحَيَوٰةُ ٱلدُّنْيَا لَعِبٌۭ وَلَهْوٌۭ وَزِينَةٌۭ وَتَفَاخُرٌۢ بَيْنَكُمْ وَتَكَاثُرٌۭ فِى ٱلْأَمْوَٰلِ وَٱلْأَوْلَٰدِ ۖ كَمَثَلِ غَيْثٍ أَعْجَبَ ٱلْكُفَّارَ نَبَاتُهُۥ ثُمَّ يَهِيجُ فَتَرَىٰهُ مُصْفَرًّۭا ثُمَّ يَكُونُ حُطَٰمًۭا ۖ وَفِى ٱلْءَاخِرَةِ عَذَابٌۭ شَدِيدٌۭ وَمَغْفِرَةٌۭ مِّنَ ٱللَّهِ وَرِضْوَٰنٌۭ ۚ وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَٰعُ ٱلْغُرُورِ",
+    "ml": "നിങ്ങള്‍ അറിയുക: ഇഹലോകജീവിതമെന്നാല്‍ കളിയും വിനോദവും അലങ്കാരവും നിങ്ങള്‍ പരസ്പരം ദുരഭിമാനം നടിക്കലും സ്വത്തുകളിലും സന്താനങ്ങളിലും പെരുപ്പം കാണിക്കലും മാത്രമാണ്‌- ഒരു മഴ പോലെ. അതു മൂലമുണ്ടായ ചെടികള്‍ കര്‍ഷകരെ ആശ്ചര്യപ്പെടുത്തി. പിന്നീടതിന് ഉണക്കം ബാധിക്കുന്നു. അപ്പോള്‍ അത് മഞ്ഞനിറം പൂണ്ടതായി നിനക്ക് കാണാം. പിന്നീടതു തുരുമ്പായിപ്പോകുന്നു. എന്നാല്‍ പരലോകത്ത് (ദുര്‍വൃത്തര്‍ക്ക്‌) കഠിനമായ ശിക്ഷയും (സദ്‌വൃത്തര്‍ക്ക്‌) അല്ലാഹുവിങ്കല്‍ നിന്നുള്ള പാപമോചനവും പ്രീതിയും ഉണ്ട്‌. ഐഹികജീവിതം വഞ്ചനയുടെ വിഭവമല്ലാതെ മറ്റൊന്നുമല്ല.",
+    "tf": ""
+  },
+  {
+    "n": 21,
+    "ar": "سَابِقُوٓا۟ إِلَىٰ مَغْفِرَةٍۢ مِّن رَّبِّكُمْ وَجَنَّةٍ عَرْضُهَا كَعَرْضِ ٱلسَّمَآءِ وَٱلْأَرْضِ أُعِدَّتْ لِلَّذِينَ ءَامَنُوا۟ بِٱللَّهِ وَرُسُلِهِۦ ۚ ذَٰلِكَ فَضْلُ ٱللَّهِ يُؤْتِيهِ مَن يَشَآءُ ۚ وَٱللَّهُ ذُو ٱلْفَضْلِ ٱلْعَظِيمِ",
+    "ml": "നിങ്ങളുടെ രക്ഷിതാവിങ്കല്‍ നിന്നുള്ള പാപമോചനത്തിലേക്കും സ്വര്‍ഗത്തിലേക്കും നിങ്ങള്‍ മുങ്കടന്നു വരുവിന്‍. അതിന്‍റെ വിസ്താരം ആകാശത്തിന്‍റെയും ഭൂമിയുടെയും വിസ്താരം പോലെയാണ്‌. അല്ലാഹുവിലും അവന്‍റെ ദൂതന്‍മാരിലും വിശ്വസിച്ചവര്‍ക്കു വേണ്ടി അത് സജ്ജീകരിക്കപ്പെട്ടിരിക്കുന്നു. അത് അല്ലാഹുവിന്‍റെ അനുഗ്രഹമത്രെ. അവന്‍ ഉദ്ദേശിക്കുന്നവര്‍ക്ക് അതവന്‍ നല്‍കുന്നു. അല്ലാഹു മഹത്തായ അനുഗ്രഹമുള്ളവനാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 22,
+    "ar": "مَآ أَصَابَ مِن مُّصِيبَةٍۢ فِى ٱلْأَرْضِ وَلَا فِىٓ أَنفُسِكُمْ إِلَّا فِى كِتَٰبٍۢ مِّن قَبْلِ أَن نَّبْرَأَهَآ ۚ إِنَّ ذَٰلِكَ عَلَى ٱللَّهِ يَسِيرٌۭ",
+    "ml": "ഭൂമിയിലോ നിങ്ങളുടെ ദേഹങ്ങളില്‍ തന്നെയോ യാതൊരു ആപത്തും ബാധിക്കുകയുണ്ടായിട്ടില്ല; അതിനെ നാം ഉണ്ടാക്കുന്നതിന് മുമ്പ് തന്നെ ഒരു രേഖയില്‍ ഉള്‍പെട്ടുകഴിഞ്ഞതായിട്ടല്ലാതെ. തീര്‍ച്ചയായും അത് അല്ലാഹുവെ സംബന്ധിച്ചേടത്തോളം എളുപ്പമുള്ളതാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 23,
+    "ar": "لِّكَيْلَا تَأْسَوْا۟ عَلَىٰ مَا فَاتَكُمْ وَلَا تَفْرَحُوا۟ بِمَآ ءَاتَىٰكُمْ ۗ وَٱللَّهُ لَا يُحِبُّ كُلَّ مُخْتَالٍۢ فَخُورٍ",
+    "ml": "(ഇങ്ങനെ നാം ചെയ്തത്‌,) നിങ്ങള്‍ക്കു നഷ്ടപ്പെട്ടതിന്‍റെ പേരില്‍ നിങ്ങള്‍ ദുഃഖിക്കാതിരിക്കുവാനും, നിങ്ങള്‍ക്ക് അവന്‍ നല്‍കിയതിന്‍റെ പേരില്‍ നിങ്ങള്‍ ആഹ്ലാദിക്കാതിരിക്കുവാനും വേണ്ടിയാണ്‌. അല്ലാഹു യാതൊരു അഹങ്കാരിയെയും ദുരഭിമാനിയെയും ഇഷ്ടപ്പെടുകയില്ല.",
+    "tf": ""
+  },
+  {
+    "n": 24,
+    "ar": "ٱلَّذِينَ يَبْخَلُونَ وَيَأْمُرُونَ ٱلنَّاسَ بِٱلْبُخْلِ ۗ وَمَن يَتَوَلَّ فَإِنَّ ٱللَّهَ هُوَ ٱلْغَنِىُّ ٱلْحَمِيدُ",
+    "ml": "അതായത് പിശുക്ക് കാണിക്കുകയും, പിശുക്ക് കാണിക്കാന്‍ ജനങ്ങളോട് കല്‍പിക്കുകയും ചെയ്യുന്നവരെ. വല്ലവനും പിന്‍തിരിഞ്ഞ് പോകുകയാണെങ്കില്‍ തീര്‍ച്ചയായും അല്ലാഹു പരാശ്രയമുക്തനും സ്തുത്യര്‍ഹനുമത്രെ.",
+    "tf": ""
+  },
+  {
+    "n": 25,
+    "ar": "لَقَدْ أَرْسَلْنَا رُسُلَنَا بِٱلْبَيِّنَٰتِ وَأَنزَلْنَا مَعَهُمُ ٱلْكِتَٰبَ وَٱلْمِيزَانَ لِيَقُومَ ٱلنَّاسُ بِٱلْقِسْطِ ۖ وَأَنزَلْنَا ٱلْحَدِيدَ فِيهِ بَأْسٌۭ شَدِيدٌۭ وَمَنَٰفِعُ لِلنَّاسِ وَلِيَعْلَمَ ٱللَّهُ مَن يَنصُرُهُۥ وَرُسُلَهُۥ بِٱلْغَيْبِ ۚ إِنَّ ٱللَّهَ قَوِىٌّ عَزِيزٌۭ",
+    "ml": "തീര്‍ച്ചയായും നാം നമ്മുടെ ദൂതന്‍മാരെ വ്യക്തമായ ദൃഷ്ടാന്തങ്ങളും കൊണ്ട് അയക്കുകയുണ്ടായി. ജനങ്ങള്‍ നീതിപൂര്‍വ്വം നിലകൊള്ളുവാന്‍ വേണ്ടി അവരോടൊപ്പം വേദഗ്രന്ഥവും തുലാസും ഇറക്കികൊടുക്കുകയും ചെയ്തു. ഇരുമ്പും നാം ഇറക്കി കൊടുത്തു. അതില്‍ കഠിനമായ ആയോധന ശക്തിയും ജനങ്ങള്‍ക്ക് ഉപകാരങ്ങളുമുണ്ട്‌. അല്ലാഹുവിനെയും അവന്‍റെ ദൂതന്‍മാരെയും അദൃശ്യമായ നിലയില്‍ സഹായിക്കുന്നവരെ അവന്ന് അറിയാന്‍ വേണ്ടിയുമാണ് ഇതെല്ലാം. തീര്‍ച്ചയായും അല്ലാഹു ശക്തനും പ്രതാപിയുമാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 26,
+    "ar": "وَلَقَدْ أَرْسَلْنَا نُوحًۭا وَإِبْرَٰهِيمَ وَجَعَلْنَا فِى ذُرِّيَّتِهِمَا ٱلنُّبُوَّةَ وَٱلْكِتَٰبَ ۖ فَمِنْهُم مُّهْتَدٍۢ ۖ وَكَثِيرٌۭ مِّنْهُمْ فَٰسِقُونَ",
+    "ml": "തീര്‍ച്ചയായും നാം നൂഹിനെയും ഇബ്രാഹീമിനെയും (ദൂതന്‍മാരായി) നിയോഗിച്ചു. അവര്‍ ഇരുവരുടെയും സന്തതികളില്‍ പ്രവാചകത്വവും വേദഗ്രന്ഥവും നാം ഏര്‍പെടുത്തുകയും ചെയ്തു. അങ്ങനെ അവരുടെ കൂട്ടത്തില്‍ സന്‍മാര്‍ഗം പ്രാപിച്ചവരുണ്ട്‌. അവരില്‍ അധികപേരും ദുര്‍മാര്‍ഗികളാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 27,
+    "ar": "ثُمَّ قَفَّيْنَا عَلَىٰٓ ءَاثَٰرِهِم بِرُسُلِنَا وَقَفَّيْنَا بِعِيسَى ٱبْنِ مَرْيَمَ وَءَاتَيْنَٰهُ ٱلْإِنجِيلَ وَجَعَلْنَا فِى قُلُوبِ ٱلَّذِينَ ٱتَّبَعُوهُ رَأْفَةًۭ وَرَحْمَةًۭ وَرَهْبَانِيَّةً ٱبْتَدَعُوهَا مَا كَتَبْنَٰهَا عَلَيْهِمْ إِلَّا ٱبْتِغَآءَ رِضْوَٰنِ ٱللَّهِ فَمَا رَعَوْهَا حَقَّ رِعَايَتِهَا ۖ فَـَٔاتَيْنَا ٱلَّذِينَ ءَامَنُوا۟ مِنْهُمْ أَجْرَهُمْ ۖ وَكَثِيرٌۭ مِّنْهُمْ فَٰسِقُونَ",
+    "ml": "പിന്നീട് അവരുടെ പിന്നിലായി നാം നമ്മുടെ ദൂതന്‍മാരെ തുടര്‍ന്നയച്ചു. മര്‍യമിന്‍റെ മകന്‍ ഈസായെയും നാം തുടര്‍ന്നയച്ചു. അദ്ദേഹത്തിന് നാം ഇന്‍ജീല്‍ നല്‍കുകയും ചെയ്തു. അദ്ദേഹത്തെ പിന്‍പറ്റിയവരുടെ ഹൃദയങ്ങളില്‍ നാം കൃപയും കരുണയും ഉണ്ടാക്കി. സന്യാസജീവിതത്തെ അവര്‍ സ്വയം പുതുതായി നിര്‍മിച്ചു. അല്ലാഹുവിന്‍റെ പ്രീതി തേടേണ്ടതിന് (വേണ്ടി അവരതു ചെയ്തു) എന്നല്ലാതെ, നാം അവര്‍ക്കത് നിയമമാക്കിയിട്ടുണ്ടായിരുന്നില്ല. എന്നിട്ട് അവരത് പാലിക്കേണ്ട മുറപ്രകാരം പാലിച്ചതുമില്ല. അപ്പോള്‍ അവരുടെ കൂട്ടത്തില്‍ നിന്ന് വിശ്വസിച്ചവര്‍ക്ക് അവരുടെ പ്രതിഫലം നാം നല്‍കി. അവരില്‍ അധികപേരും ദുര്‍മാര്‍ഗികളാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 28,
+    "ar": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱتَّقُوا۟ ٱللَّهَ وَءَامِنُوا۟ بِرَسُولِهِۦ يُؤْتِكُمْ كِفْلَيْنِ مِن رَّحْمَتِهِۦ وَيَجْعَل لَّكُمْ نُورًۭا تَمْشُونَ بِهِۦ وَيَغْفِرْ لَكُمْ ۚ وَٱللَّهُ غَفُورٌۭ رَّحِيمٌۭ",
+    "ml": "സത്യവിശ്വാസികളേ, നിങ്ങള്‍ അല്ലാഹുവെ സൂക്ഷിക്കുകയും അവന്‍റെ ദൂതനില്‍ വിശ്വസിക്കുകയും ചെയ്യുക. എന്നാല്‍ അവന്‍റെ കാരുണ്യത്തില്‍ നിന്നു രണ്ട് ഓഹരി അവന്‍ നിങ്ങള്‍ക്കു നല്‍കുന്നതാണ്‌. ഒരു പ്രകാശം അവന്‍ നിങ്ങള്‍ക്ക് ഏര്‍പെടുത്തിത്തരികയും ചെയ്യും. അതുകൊണ്ട് നിങ്ങള്‍ക്ക് (ശരിയായ പാതയിലൂടെ) നടന്നു പോകാം. നിങ്ങള്‍ക്കവന്‍ പൊറുത്തുതരികയും ചെയ്യും. അല്ലാഹു വളരെയധികം പൊറുക്കുന്നവനും കരുണാനിധിയുമാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 29,
+    "ar": "لِّئَلَّا يَعْلَمَ أَهْلُ ٱلْكِتَٰبِ أَلَّا يَقْدِرُونَ عَلَىٰ شَىْءٍۢ مِّن فَضْلِ ٱللَّهِ ۙ وَأَنَّ ٱلْفَضْلَ بِيَدِ ٱللَّهِ يُؤْتِيهِ مَن يَشَآءُ ۚ وَٱللَّهُ ذُو ٱلْفَضْلِ ٱلْعَظِيمِ",
+    "ml": "അല്ലാഹുവിന്‍റെ അനുഗ്രഹത്തില്‍ നിന്ന് യാതൊന്നും അധീനപ്പെടുത്തുവാന്‍ തങ്ങള്‍ക്ക് കഴിവില്ലെന്നും തീര്‍ച്ചയായും അനുഗ്രഹം അല്ലാഹുവിന്‍റെ കയ്യിലാണെന്നും അത് അവന്‍ ഉദ്ദേശിക്കുന്നവര്‍ക്ക് അവന്‍ നല്‍കുമെന്നും വേദക്കാര്‍ അറിയാന്‍ വേണ്ടിയാണ് ഇത്‌. അല്ലാഹു മഹത്തായ അനുഗ്രഹമുള്ളവനാകുന്നു.",
+    "tf": ""
+  }
+];
+const SKEY = "quran-reader-settings";
+const CHECKS = ["show-ar", "show-ml", "show-tf", "cont"];
+let fontSize = 18, reciterId = "ghamdy";
+
+function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+function saveSettings() {
+  const s = loadSettings();
+  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
+  CHECKS.forEach(id => s[id] = $(id) ? $(id).checked : true);
+  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+}
+function applySettings() {
+  const s = loadSettings();
+  if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }
+  CHECKS.forEach(id => { if ($(id) && id in s) $(id).checked = s[id]; });
+  if (s.repeat) $("repeat").value = s.repeat;
+}
+
+const RECITERS = [
+  { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",        base: "https://everyayah.com/data/Ghamadi_40kbps" },
+  { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",       base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+  { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",        base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+  { id: "hudhaify", name: "അലി ഹുദൈഫി",            base: "https://everyayah.com/data/Hudhaify_64kbps" },
+  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്‌ലി", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+  { id: "alili",    name: "അസീസ് അലീലി",           base: "https://everyayah.com/data/aziz_alili_128kbps" }
+];
+
+const pad3 = x => String(x).padStart(3, "0");
+const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+const audioUrl = n => currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+
+function changeReciter(id) { reciterId = id; saveSettings(); }
+function initReciters() {
+  const sel = $("reciter");
+  if(!sel) return;
+  sel.innerHTML = RECITERS.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+  const saved = loadSettings().reciterId;
+  reciterId = (RECITERS.find(r => r.id === saved) || RECITERS[0]).id;
+  sel.value = reciterId;
+}
+
+const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+
+function buildPage() {
+  $("verses").innerHTML = VERSES.map(v => {
+    const vNum = v.n;
+    return `
+    <div class="verse" id="verse-${vNum}">
+      <div class="vhead"><span>ആയത്ത് ${SURAH}: ${pad3(vNum)}</span></div>
+      <div class="item it-ar" id="item-ar-${vNum}"><div class="row rtl">
+        <button class="play-btn" id="btn-ar-${vNum}" onclick="toggleItem('ar', ${vNum})">▶</button>
+        <p class="text ar" lang="ar" dir="rtl">${v.ar}</p></div></div>
+      ${v.ml ? `<div class="item it-ml" id="item-ml-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-ml-${vNum}" onclick="toggleItem('ml', ${vNum})">▶</button>
+        <p class="text"><span class="tag">സാരം:</span>${v.ml}</p></div></div>` : ""}
+      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${vNum}" onclick="toggleTafseer(${vNum})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-tf-${vNum}" onclick="toggleItem('tf', ${vNum})">▶</button>
+        <p class="text"><span class="pl">${v.tf}</span></p></div></div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function changeFont(d) {
+  fontSize = Math.min(40, Math.max(12, fontSize + d));
+  document.documentElement.style.setProperty("--fs", fontSize + "px");
+  $("fs-label").textContent = fontSize; saveSettings();
+}
+
+function setTafseerVisible(n, show) {
+  const b = $("item-tf-" + n), t = $("tgl-" + n);
+  if (!b) return; b.classList.toggle("hidden", !show); if (t) t.classList.toggle("open", show);
+}
+
+function toggleTafseer(n) {
+  const willShow = $("item-tf-" + n).classList.contains("hidden");
+  setTafseerVisible(n, willShow);
+}
+
+function applyDisplay() {
+  const on = id => $(id) ? $(id).checked : true;
+  document.body.classList.toggle("hide-ar", !on("show-ar"));
+  document.body.classList.toggle("hide-ml", !on("show-ml"));
+  document.body.classList.toggle("hide-tf", !on("show-tf"));
+  VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  saveSettings();
+}
+
+let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
+
+function mark(key) {
+  clearMark(); activeKey = key;
+  const btn = $("btn-" + key), item = $("item-" + key);
+  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+  if (item) { item.classList.add("reading"); item.scrollIntoView({ behavior: "smooth", block: "center" }); }
+}
+
+function clearMark() {
+  if (!activeKey) return;
+  const btn = $("btn-" + activeKey), item = $("item-" + activeKey);
+  if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+  if (item) item.classList.remove("reading");
+  activeKey = null;
+}
+
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  clearMark();
+  const masterBtn = $("master");
+  if (masterBtn) { masterBtn.textContent = "കേൾക്കാം"; masterBtn.classList.remove("playing"); }
+  if ($("status")) $("status").textContent = "";
+}
+
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const audio = new Audio();
+  audio.preload = "auto"; currentAudio = audio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => done();
+  const rawUrl = audioUrl(n);
+  if ($("status")) $("status").textContent = curLabel + " · " + currentReciter().name;
+  Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(rawUrl) : rawUrl).then(u => {
+    if (my !== token) return;
+    audio.src = u;
+    audio.play().catch(() => done());
+  }).catch(() => done());
+}
+
+function speakMalayalam(text, my, done) {
+  if (!text) { done(); return; }
+  if (!window.speechSynthesis) { done(); return; }
+  window.speechSynthesis.cancel();
+  if ($("status")) $("status").textContent = curLabel;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ml-IN"; u.rate = 0.9;
+  u.onend = () => { if (my === token) done(); };
+  u.onerror = () => { if (my === token) done(); };
+  window.speechSynthesis.speak(u);
+}
+
+function playItem(kind, n, my, done) {
+  curKind = kind;
+  curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];
+  if ($("status")) $("status").textContent = curLabel;
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1);
+  } else {
+    const vObj = VERSES.find(v => v.n === n) || VERSES[0];
+    if (vObj && vObj[kind]) {
+      speakMalayalam(vObj[kind], my, done);
+    } else {
+      done();
+    }
+  }
+}
+
+function toggleItem(kind, n) {
+  const key = kind + "-" + n;
+  if (activeKey === key) { stopAll(); return; }
+  stopAll();
+  const my = token;
+  mark(key);
+  playItem(kind, n, my, () => { if (my === token) stopAll(); });
+}
+
+function fullQueue() {
+  const kinds = ["ar", "ml", "tf"].filter(k => $("show-" + k) && $("show-" + k).checked);
+  const queue = [];
+  VERSES.forEach(v => kinds.forEach(k => { if (k !== "ar" && !v[k]) return; queue.push({ kind: k, n: v.n }); }));
+  return queue;
+}
+
+function runQueue(queue, startWithBm) {
+  const my = token;
+  const masterBtn = $("master");
+  masterBtn.textContent = "നിർത്തുക"; masterBtn.classList.add("playing");
+  
+  const step = i => {
+    if (my !== token) return;
+    if (i >= queue.length) { stopAll(); return; }
+    const item = queue[i];
+    mark(item.kind + "-" + item.n);
+    if (item.kind === 'bm') {
+      if (typeof playBismillah === 'function') {
+        playBismillah(my, () => { if (my === token) step(i + 1); });
+      } else {
+        step(i + 1);
+      }
+    } else {
+      playItem(item.kind, item.n, my, () => { if (my === token) step(i + 1); });
+    }
+  };
+  step(0);
+}
+
+function toggleContinuous() {
+  const masterBtn = $("master");
+  if (masterBtn && masterBtn.classList.contains('playing')) {
+    stopAll();
+    return;
+  }
+  stopAll();
+  continuous = true;
+  const q = fullQueue();
+  if (!q.length) { stopAll(); return; }
+  
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  const arChecked = $("show-ar") ? $("show-ar").checked : true;
+  if (hasVerse1 && SURAH !== 1 && SURAH !== 9 && arChecked && typeof playBismillah === 'function') {
+    runQueue([{ kind: 'bm', n: 0 }].concat(q), true);
+  } else {
+    runQueue(q, false);
+  }
+}
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle"), panelEl = $("panel");
+function togglePanel(e) {
+  e.stopPropagation();
+  const isOpen = panelEl.style.display === 'block' || panelEl.classList.contains('open');
+  if (isOpen) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    if (controlsEl) controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  } else {
+    panelEl.style.display = 'block';
+    panelEl.classList.add('open');
+    if (controlsEl) controlsEl.classList.add('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (controlsEl && !controlsEl.contains(e.target)) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bismiDiv = $("bismi-container");
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  if (bismiDiv) {
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      bismiDiv.remove();
+    }
+  }
+});
+
+buildPage(); initReciters(); applySettings(); applyDisplay();
+</script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>

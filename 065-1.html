@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>65. സൂറത്തുൽ അത്വലാഖ് (1–12)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.topnav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;width:100%;max-width:1000px;margin:0 auto 10px;padding:0 8px}
+.topnav .back{display:inline-flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;font-size:clamp(0.9rem,3.2vw,1.05rem);font-weight:500;white-space:nowrap}
+.topnav .back:hover,.topnav .back:focus{color:#fff;outline:none}
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px;width:100%}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:10px 14px 4px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:8px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel{font-family:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:3px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%!important;text-align:center!important;font-size:12px;color:var(--acc);margin:2px auto 0 auto!important;display:block!important;line-height:1.2}
+#status:empty{display:none}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/065"><span style="font-size: 1em;">📄</span>താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index"><span style="font-size: 1em;">📖</span>സൂറത്തുകൾ</a>
+ </div>
+ <h1>65. സൂറത്തുൽ അത്വലാഖ് (1–12)</h1>
+</header>
+
+<div id="bismi-container"><h1 style="text-align: center; margin: 15px 0; color: var(--acc, #1d5240);">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1></div>
+
+<div class="controls" id="controls">
+  <div class="banner">
+    <div class="banner-row">
+      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button>
+    </div>
+    <div id="status"></div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">കാണിക്കുക:</span>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+      <label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>
+    </div>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത്:</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  </div>
+</div>
+
+<div id="verses"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SURAH = 65;
+const VERSES = [
+  {
+    "n": 1,
+    "ar": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ يَٰٓأَيُّهَا ٱلنَّبِىُّ إِذَا طَلَّقْتُمُ ٱلنِّسَآءَ فَطَلِّقُوهُنَّ لِعِدَّتِهِنَّ وَأَحْصُوا۟ ٱلْعِدَّةَ ۖ وَٱتَّقُوا۟ ٱللَّهَ رَبَّكُمْ ۖ لَا تُخْرِجُوهُنَّ مِنۢ بُيُوتِهِنَّ وَلَا يَخْرُجْنَ إِلَّآ أَن يَأْتِينَ بِفَٰحِشَةٍۢ مُّبَيِّنَةٍۢ ۚ وَتِلْكَ حُدُودُ ٱللَّهِ ۚ وَمَن يَتَعَدَّ حُدُودَ ٱللَّهِ فَقَدْ ظَلَمَ نَفْسَهُۥ ۚ لَا تَدْرِى لَعَلَّ ٱللَّهَ يُحْدِثُ بَعْدَ ذَٰلِكَ أَمْرًۭا",
+    "ml": "നബിയേ, നിങ്ങള്‍ (വിശ്വാസികള്‍) സ്ത്രീകളെ വിവാഹമോചനം ചെയ്യുകയാണെങ്കില്‍ അവരെ നിങ്ങള്‍ അവരുടെ ഇദ്ദഃ കാലത്തിന് (കണക്കാക്കി) വിവാഹമോചനം ചെയ്യുകയും ഇദ്ദഃ കാലം നിങ്ങള്‍ എണ്ണികണക്കാക്കുകയും ചെയ്യുക. നിങ്ങളുടെ രക്ഷിതാവായ അല്ലാഹുവെ നിങ്ങള്‍ സൂക്ഷിക്കുകയും ചെയ്യുക. അവരുടെ വീടുകളില്‍ നിന്ന് അവരെ നിങ്ങള്‍ പുറത്താക്കരുത്‌. അവര്‍ പുറത്തു പോകുകയും ചെയ്യരുത്‌. പ്രത്യക്ഷമായ വല്ല നീചവൃത്തിയും അവര്‍ ചെയ്യുകയാണെങ്കിലല്ലാതെ. അവ അല്ലാഹുവിന്‍റെ നിയമപരിധികളാകാകുന്നു. അല്ലാഹുവിന്‍റെ നിയമപരിധികളെ വല്ലവനും അതിലംഘിക്കുന്ന പക്ഷം, അവന്‍ അവനോട് തന്നെ അന്യായം ചെയ്തിരിക്കുന്നു. അതിന് ശേഷം അല്ലാഹു പുതുതായി വല്ലകാര്യവും കൊണ്ടു വന്നേക്കുമോ എന്ന് നിനക്ക് അറിയില്ല.",
+    "tf": ""
+  },
+  {
+    "n": 2,
+    "ar": "فَإِذَا بَلَغْنَ أَجَلَهُنَّ فَأَمْسِكُوهُنَّ بِمَعْرُوفٍ أَوْ فَارِقُوهُنَّ بِمَعْرُوفٍۢ وَأَشْهِدُوا۟ ذَوَىْ عَدْلٍۢ مِّنكُمْ وَأَقِيمُوا۟ ٱلشَّهَٰدَةَ لِلَّهِ ۚ ذَٰلِكُمْ يُوعَظُ بِهِۦ مَن كَانَ يُؤْمِنُ بِٱللَّهِ وَٱلْيَوْمِ ٱلْءَاخِرِ ۚ وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مَخْرَجًۭا",
+    "ml": "അങ്ങനെ അവര്‍ (വിവാഹമുക്തകള്‍) അവരുടെ അവധിയില്‍ എത്തുമ്പോള്‍ നിങ്ങള്‍ ന്യായമായ നിലയില്‍ അവരെ പിടിച്ച് നിര്‍ത്തുകയോ, ന്യായമായ നിലയില്‍ അവരുമായി വേര്‍പിരിയുകയോ ചെയ്യുക. നിങ്ങളില്‍ നിന്നുള്ള രണ്ടു നീതിമാന്‍മാരെ നിങ്ങള്‍ സാക്ഷി നിര്‍ത്തുകയും അല്ലാഹുവിന് വേണ്ടി സാക്ഷ്യം നേരാംവണ്ണം നിലനിര്‍ത്തുകയും ചെയ്യുക. അല്ലാഹുവിലും അന്ത്യദിനത്തിലും വിശ്വസിച്ചു കൊണ്ടിരിക്കുന്നവര്‍ക്ക് ഉപദേശം നല്‍കപ്പെടുന്നതത്രെ അത്‌. അല്ലാഹുവെ വല്ലവനും സൂക്ഷിക്കുന്ന പക്ഷം അല്ലാഹു അവന്നൊരു പോംവഴി ഉണ്ടാക്കികൊടുക്കുകയും,",
+    "tf": ""
+  },
+  {
+    "n": 3,
+    "ar": "وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ ۚ وَمَن يَتَوَكَّلْ عَلَى ٱللَّهِ فَهُوَ حَسْبُهُۥٓ ۚ إِنَّ ٱللَّهَ بَٰلِغُ أَمْرِهِۦ ۚ قَدْ جَعَلَ ٱللَّهُ لِكُلِّ شَىْءٍۢ قَدْرًۭا",
+    "ml": "അവന്‍ കണക്കാക്കാത്ത വിധത്തില്‍ അവന്ന് ഉപജീവനം നല്‍കുകയും ചെയ്യുന്നതാണ്‌. വല്ലവനും അല്ലാഹുവില്‍ ഭരമേല്‍പിക്കുന്ന പക്ഷം അവന്ന് അല്ലാഹു തന്നെ മതിയാകുന്നതാണ്‌. തീര്‍ച്ചയായും അല്ലാഹു തന്‍റെ കാര്യം പ്രാപിക്കുന്നവനാകുന്നു. ഓരോ കാര്യത്തിനും അല്ലാഹു ഒരു ക്രമം ഏര്‍പെടുത്തിയിട്ടുണ്ട്‌.",
+    "tf": ""
+  },
+  {
+    "n": 4,
+    "ar": "وَٱلَّٰٓـِٔى يَئِسْنَ مِنَ ٱلْمَحِيضِ مِن نِّسَآئِكُمْ إِنِ ٱرْتَبْتُمْ فَعِدَّتُهُنَّ ثَلَٰثَةُ أَشْهُرٍۢ وَٱلَّٰٓـِٔى لَمْ يَحِضْنَ ۚ وَأُو۟لَٰتُ ٱلْأَحْمَالِ أَجَلُهُنَّ أَن يَضَعْنَ حَمْلَهُنَّ ۚ وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مِنْ أَمْرِهِۦ يُسْرًۭا",
+    "ml": "നിങ്ങളുടെ സ്ത്രീകളില്‍ നിന്നും ആര്‍ത്തവത്തെ സംബന്ധിച്ച് നിരാശപ്പെട്ടിട്ടുള്ളവരെ സംബന്ധിച്ചിടത്തോളം നിങ്ങള്‍ അവരുടെ ഇദ്ദഃ യുടെ കാര്യത്തില്‍ സംശയത്തിലാണെങ്കില്‍ അത് മൂന്ന് മാസമാകുന്നു. ആര്‍ത്തവമുണ്ടായിട്ടില്ലാത്തവരുടേതും അങ്ങനെ തന്നെ. ഗര്‍ഭവതികളായ സ്ത്രീകളാകട്ടെ അവരുടെ അവധി അവര്‍ തങ്ങളുടെ ഗര്‍ഭം പ്രസവിക്കലാകുന്നു. വല്ലവനും അല്ലാഹുവെ സൂക്ഷിക്കുന്ന പക്ഷം അവന്ന് അവന്‍റെ കാര്യത്തില്‍ അല്ലാഹു എളുപ്പമുണ്ടാക്കി കൊടുക്കുന്നതാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 5,
+    "ar": "ذَٰلِكَ أَمْرُ ٱللَّهِ أَنزَلَهُۥٓ إِلَيْكُمْ ۚ وَمَن يَتَّقِ ٱللَّهَ يُكَفِّرْ عَنْهُ سَيِّـَٔاتِهِۦ وَيُعْظِمْ لَهُۥٓ أَجْرًا",
+    "ml": "അത് അല്ലാഹുവിന്‍റെ കല്‍പനയാകുന്നു. അവനത് നിങ്ങള്‍ക്ക് അവതരിപ്പിച്ചു തന്നിരിക്കുന്നു. വല്ലവനും അല്ലാഹുവെ സൂക്ഷിക്കുന്ന പക്ഷം അവന്‍റെ തിന്‍മകളെ അവന്‍ മായ്ച്ചുകളയുകയും അവന്നുള്ള പ്രതിഫലം അവന്‍ വലുതാക്കി കൊടുക്കുകയും ചെയ്യുന്നതാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 6,
+    "ar": "أَسْكِنُوهُنَّ مِنْ حَيْثُ سَكَنتُم مِّن وُجْدِكُمْ وَلَا تُضَآرُّوهُنَّ لِتُضَيِّقُوا۟ عَلَيْهِنَّ ۚ وَإِن كُنَّ أُو۟لَٰتِ حَمْلٍۢ فَأَنفِقُوا۟ عَلَيْهِنَّ حَتَّىٰ يَضَعْنَ حَمْلَهُنَّ ۚ فَإِنْ أَرْضَعْنَ لَكُمْ فَـَٔاتُوهُنَّ أُجُورَهُنَّ ۖ وَأْتَمِرُوا۟ بَيْنَكُم بِمَعْرُوفٍۢ ۖ وَإِن تَعَاسَرْتُمْ فَسَتُرْضِعُ لَهُۥٓ أُخْرَىٰ",
+    "ml": "നിങ്ങളുടെ കഴിവില്‍ പെട്ട, നിങ്ങള്‍ താമസിക്കുന്ന സ്ഥലത്ത് നിങ്ങള്‍ അവരെ താമസിപ്പിക്കണം. അവര്‍ക്കു ഞെരുക്കമുണ്ടാക്കാന്‍ വേണ്ടി നിങ്ങള്‍ അവരെ ദ്രോഹിക്കരുത്‌. അവര്‍ ഗര്‍ഭിണികളാണെങ്കില്‍ അവര്‍ പ്രസവിക്കുന്നത് വരെ നിങ്ങള്‍ അവര്‍ക്കു ചെലവുകൊടുക്കുകയും ചെയ്യുക. ഇനി അവര്‍ നിങ്ങള്‍ക്കു വേണ്ടി (കുഞ്ഞിന്‌) മുലകൊടുക്കുന്ന പക്ഷം അവര്‍ക്കു നിങ്ങള്‍ അവരുടെ പ്രതിഫലം കൊടുക്കുക. നിങ്ങള്‍ തമ്മില്‍ മര്യാദപ്രകാരം കൂടിയാലോചിക്കുകയും ചെയ്യുക. ഇനി നിങ്ങള്‍ ഇരു വിഭാഗത്തിനും ഞെരുക്കമാവുകയാണെങ്കില്‍ അയാള്‍ക്കു വേണ്ടി മറ്റൊരു സ്ത്രീ മുലകൊടുത്തു കൊള്ളട്ടെ.",
+    "tf": ""
+  },
+  {
+    "n": 7,
+    "ar": "لِيُنفِقْ ذُو سَعَةٍۢ مِّن سَعَتِهِۦ ۖ وَمَن قُدِرَ عَلَيْهِ رِزْقُهُۥ فَلْيُنفِقْ مِمَّآ ءَاتَىٰهُ ٱللَّهُ ۚ لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا مَآ ءَاتَىٰهَا ۚ سَيَجْعَلُ ٱللَّهُ بَعْدَ عُسْرٍۢ يُسْرًۭا",
+    "ml": "കഴിവുള്ളവന്‍ തന്‍റെ കഴിവില്‍ നിന്ന് ചെലവിനു കൊടുക്കട്ടെ. വല്ലവന്നും തന്‍റെ ഉപജീവനം ഇടുങ്ങിയതായാല്‍ അല്ലാഹു അവന്നു കൊടുത്തതില്‍ നിന്ന് അവന്‍ ചെലവിന് കൊടുക്കട്ടെ. ഒരാളോടും അല്ലാഹു അയാള്‍ക്ക് കൊടുത്തതല്ലാതെ (നല്‍കാന്‍) നിര്‍ബന്ധിക്കുകയില്ല. അല്ലാഹു ഞെരുക്കത്തിനു ശേഷം സൌകര്യം ഏര്‍പെടുത്തികൊടുക്കുന്നതാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 8,
+    "ar": "وَكَأَيِّن مِّن قَرْيَةٍ عَتَتْ عَنْ أَمْرِ رَبِّهَا وَرُسُلِهِۦ فَحَاسَبْنَٰهَا حِسَابًۭا شَدِيدًۭا وَعَذَّبْنَٰهَا عَذَابًۭا نُّكْرًۭا",
+    "ml": "എത്രയെത്ര രാജ്യക്കാര്‍ അവരുടെ രക്ഷിതാവിന്‍റെയും അവന്‍റെ ദൂതന്‍മാരുടെയും കല്‍പന വിട്ട് ധിക്കാരം പ്രവര്‍ത്തിച്ചിട്ടുണ്ട്‌. അതിനാല്‍ നാം അവരോട് കര്‍ക്കശമായ നിലയില്‍ കണക്കു ചോദിക്കുകയും അവരെ നാം ഹീനമായ വിധത്തില്‍ ശിക്ഷിക്കുകയും ചെയ്തു.",
+    "tf": ""
+  },
+  {
+    "n": 9,
+    "ar": "فَذَاقَتْ وَبَالَ أَمْرِهَا وَكَانَ عَٰقِبَةُ أَمْرِهَا خُسْرًا",
+    "ml": "അങ്ങനെ അവര്‍ അവരുടെ നിലപാടിന്‍റെ ദുഷ്ഫലം ആസ്വദിച്ചു. അവരുടെ നിലപാടിന്‍റെ പര്യവസാനം നഷ്ടം തന്നെയായിരുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 10,
+    "ar": "أَعَدَّ ٱللَّهُ لَهُمْ عَذَابًۭا شَدِيدًۭا ۖ فَٱتَّقُوا۟ ٱللَّهَ يَٰٓأُو۟لِى ٱلْأَلْبَٰبِ ٱلَّذِينَ ءَامَنُوا۟ ۚ قَدْ أَنزَلَ ٱللَّهُ إِلَيْكُمْ ذِكْرًۭا",
+    "ml": "അല്ലാഹു അവര്‍ക്കു കഠിനമായ ശിക്ഷ ഒരുക്കിവെച്ചിരിക്കുന്നു. അതിനാല്‍ സത്യവിശ്വാസികളായ ബുദ്ധിമാന്‍മാരേ, നിങ്ങള്‍ അല്ലാഹുവെ സൂക്ഷിക്കുക. തീര്‍ച്ചയായും അല്ലാഹു നിങ്ങള്‍ക്ക് ഒരു ഉല്‍ബോധകനെ",
+    "tf": ""
+  },
+  {
+    "n": 11,
+    "ar": "رَّسُولًۭا يَتْلُوا۟ عَلَيْكُمْ ءَايَٰتِ ٱللَّهِ مُبَيِّنَٰتٍۢ لِّيُخْرِجَ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ مِنَ ٱلظُّلُمَٰتِ إِلَى ٱلنُّورِ ۚ وَمَن يُؤْمِنۢ بِٱللَّهِ وَيَعْمَلْ صَٰلِحًۭا يُدْخِلْهُ جَنَّٰتٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدًۭا ۖ قَدْ أَحْسَنَ ٱللَّهُ لَهُۥ رِزْقًا",
+    "ml": "അഥവാ അല്ലാഹുവിന്‍റെ വ്യക്തമായ ദൃഷ്ടാന്തങ്ങള്‍ നിങ്ങള്‍ക്ക് ഓതികേള്‍പിച്ചു തരുന്ന ഒരു ദൂതനെ നിങ്ങളുടെ അടുത്തേക്കിറക്കിത്തന്നിരിക്കുന്നു; വിശ്വസിക്കുകയും സല്‍കര്‍മ്മങ്ങള്‍ പ്രവര്‍ത്തിക്കുകയും ചെയ്തവരെ അന്ധകാരങ്ങളില്‍ നിന്ന് പ്രകാശത്തിലേക്ക് ആനയിക്കുവാന്‍ വേണ്ടി. വല്ലവനും അല്ലാഹുവില്‍ വിശ്വസിക്കുകയും സല്‍കര്‍മ്മം പ്രവര്‍ത്തിക്കുകയും ചെയ്യുന്ന പക്ഷം താഴ്ഭാഗത്തു കൂടി അരുവികള്‍ ഒഴുകുന്ന സ്വര്‍ഗത്തോപ്പുകളില്‍ അവനെ പ്രവേശിപ്പിക്കുന്നതാണ്‌. അവര്‍ അതില്‍ നിത്യവാസികളായിരിക്കും. അങ്ങനെയുള്ളവന്ന് അല്ലാഹു ഉപജീവനം മെച്ചപ്പെടുത്തിയിരിക്കുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 12,
+    "ar": "ٱللَّهُ ٱلَّذِى خَلَقَ سَبْعَ سَمَٰوَٰتٍۢ وَمِنَ ٱلْأَرْضِ مِثْلَهُنَّ يَتَنَزَّلُ ٱلْأَمْرُ بَيْنَهُنَّ لِتَعْلَمُوٓا۟ أَنَّ ٱللَّهَ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌۭ وَأَنَّ ٱللَّهَ قَدْ أَحَاطَ بِكُلِّ شَىْءٍ عِلْمًۢا",
+    "ml": "അല്ലാഹുവാകുന്നു ഏഴ് ആകാശങ്ങളും ഭൂമിയില്‍ നിന്ന് അവയ്ക്ക് തുല്യമായതും സൃഷ്ടിച്ചവന്‍. അവയ്ക്കിടയില്‍ (അവന്‍റെ) കല്‍പന ഇറങ്ങുന്നു. അല്ലാഹു ഏത് കാര്യത്തിനും കഴിവുള്ളവനാകുന്നു എന്നും ഏതു വസ്തുവെയും ചൂഴ്ന്ന് അറിയുന്നവനായിരിക്കുന്നു എന്നും നിങ്ങള്‍ മനസ്സിലാക്കുവാന്‍ വേണ്ടി.",
+    "tf": ""
+  }
+];
+const SKEY = "quran-reader-settings";
+const CHECKS = ["show-ar", "show-ml", "show-tf", "cont"];
+let fontSize = 18, reciterId = "ghamdy";
+
+function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+function saveSettings() {
+  const s = loadSettings();
+  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
+  CHECKS.forEach(id => s[id] = $(id) ? $(id).checked : true);
+  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+}
+function applySettings() {
+  const s = loadSettings();
+  if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }
+  CHECKS.forEach(id => { if ($(id) && id in s) $(id).checked = s[id]; });
+  if (s.repeat) $("repeat").value = s.repeat;
+}
+
+const RECITERS = [
+  { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",        base: "https://everyayah.com/data/Ghamadi_40kbps" },
+  { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",       base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+  { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",        base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+  { id: "hudhaify", name: "അലി ഹുദൈഫി",            base: "https://everyayah.com/data/Hudhaify_64kbps" },
+  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്‌ലി", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+  { id: "alili",    name: "അസീസ് അലീലി",           base: "https://everyayah.com/data/aziz_alili_128kbps" }
+];
+
+const pad3 = x => String(x).padStart(3, "0");
+const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+const audioUrl = n => currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+
+function changeReciter(id) { reciterId = id; saveSettings(); }
+function initReciters() {
+  const sel = $("reciter");
+  if(!sel) return;
+  sel.innerHTML = RECITERS.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+  const saved = loadSettings().reciterId;
+  reciterId = (RECITERS.find(r => r.id === saved) || RECITERS[0]).id;
+  sel.value = reciterId;
+}
+
+const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+
+function buildPage() {
+  $("verses").innerHTML = VERSES.map(v => {
+    const vNum = v.n;
+    return `
+    <div class="verse" id="verse-${vNum}">
+      <div class="vhead"><span>ആയത്ത് ${SURAH}: ${pad3(vNum)}</span></div>
+      <div class="item it-ar" id="item-ar-${vNum}"><div class="row rtl">
+        <button class="play-btn" id="btn-ar-${vNum}" onclick="toggleItem('ar', ${vNum})">▶</button>
+        <p class="text ar" lang="ar" dir="rtl">${v.ar}</p></div></div>
+      ${v.ml ? `<div class="item it-ml" id="item-ml-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-ml-${vNum}" onclick="toggleItem('ml', ${vNum})">▶</button>
+        <p class="text"><span class="tag">സാരം:</span>${v.ml}</p></div></div>` : ""}
+      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${vNum}" onclick="toggleTafseer(${vNum})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-tf-${vNum}" onclick="toggleItem('tf', ${vNum})">▶</button>
+        <p class="text"><span class="pl">${v.tf}</span></p></div></div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function changeFont(d) {
+  fontSize = Math.min(40, Math.max(12, fontSize + d));
+  document.documentElement.style.setProperty("--fs", fontSize + "px");
+  $("fs-label").textContent = fontSize; saveSettings();
+}
+
+function setTafseerVisible(n, show) {
+  const b = $("item-tf-" + n), t = $("tgl-" + n);
+  if (!b) return; b.classList.toggle("hidden", !show); if (t) t.classList.toggle("open", show);
+}
+
+function toggleTafseer(n) {
+  const willShow = $("item-tf-" + n).classList.contains("hidden");
+  setTafseerVisible(n, willShow);
+}
+
+function applyDisplay() {
+  const on = id => $(id) ? $(id).checked : true;
+  document.body.classList.toggle("hide-ar", !on("show-ar"));
+  document.body.classList.toggle("hide-ml", !on("show-ml"));
+  document.body.classList.toggle("hide-tf", !on("show-tf"));
+  VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  saveSettings();
+}
+
+let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
+
+function mark(key) {
+  clearMark(); activeKey = key;
+  const btn = $("btn-" + key), item = $("item-" + key);
+  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+  if (item) { item.classList.add("reading"); item.scrollIntoView({ behavior: "smooth", block: "center" }); }
+}
+
+function clearMark() {
+  if (!activeKey) return;
+  const btn = $("btn-" + activeKey), item = $("item-" + activeKey);
+  if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+  if (item) item.classList.remove("reading");
+  activeKey = null;
+}
+
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  clearMark();
+  const masterBtn = $("master");
+  if (masterBtn) { masterBtn.textContent = "കേൾക്കാം"; masterBtn.classList.remove("playing"); }
+  if ($("status")) $("status").textContent = "";
+}
+
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const audio = new Audio();
+  audio.preload = "auto"; currentAudio = audio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => done();
+  const rawUrl = audioUrl(n);
+  if ($("status")) $("status").textContent = curLabel + " · " + currentReciter().name;
+  Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(rawUrl) : rawUrl).then(u => {
+    if (my !== token) return;
+    audio.src = u;
+    audio.play().catch(() => done());
+  }).catch(() => done());
+}
+
+function speakMalayalam(text, my, done) {
+  if (!text) { done(); return; }
+  if (!window.speechSynthesis) { done(); return; }
+  window.speechSynthesis.cancel();
+  if ($("status")) $("status").textContent = curLabel;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ml-IN"; u.rate = 0.9;
+  u.onend = () => { if (my === token) done(); };
+  u.onerror = () => { if (my === token) done(); };
+  window.speechSynthesis.speak(u);
+}
+
+function playItem(kind, n, my, done) {
+  curKind = kind;
+  curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];
+  if ($("status")) $("status").textContent = curLabel;
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1);
+  } else {
+    const vObj = VERSES.find(v => v.n === n) || VERSES[0];
+    if (vObj && vObj[kind]) {
+      speakMalayalam(vObj[kind], my, done);
+    } else {
+      done();
+    }
+  }
+}
+
+function toggleItem(kind, n) {
+  const key = kind + "-" + n;
+  if (activeKey === key) { stopAll(); return; }
+  stopAll();
+  const my = token;
+  mark(key);
+  playItem(kind, n, my, () => { if (my === token) stopAll(); });
+}
+
+function fullQueue() {
+  const kinds = ["ar", "ml", "tf"].filter(k => $("show-" + k) && $("show-" + k).checked);
+  const queue = [];
+  VERSES.forEach(v => kinds.forEach(k => { if (k !== "ar" && !v[k]) return; queue.push({ kind: k, n: v.n }); }));
+  return queue;
+}
+
+function runQueue(queue, startWithBm) {
+  const my = token;
+  const masterBtn = $("master");
+  masterBtn.textContent = "നിർത്തുക"; masterBtn.classList.add("playing");
+  
+  const step = i => {
+    if (my !== token) return;
+    if (i >= queue.length) { stopAll(); return; }
+    const item = queue[i];
+    mark(item.kind + "-" + item.n);
+    if (item.kind === 'bm') {
+      if (typeof playBismillah === 'function') {
+        playBismillah(my, () => { if (my === token) step(i + 1); });
+      } else {
+        step(i + 1);
+      }
+    } else {
+      playItem(item.kind, item.n, my, () => { if (my === token) step(i + 1); });
+    }
+  };
+  step(0);
+}
+
+function toggleContinuous() {
+  const masterBtn = $("master");
+  if (masterBtn && masterBtn.classList.contains('playing')) {
+    stopAll();
+    return;
+  }
+  stopAll();
+  continuous = true;
+  const q = fullQueue();
+  if (!q.length) { stopAll(); return; }
+  
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  const arChecked = $("show-ar") ? $("show-ar").checked : true;
+  if (hasVerse1 && SURAH !== 1 && SURAH !== 9 && arChecked && typeof playBismillah === 'function') {
+    runQueue([{ kind: 'bm', n: 0 }].concat(q), true);
+  } else {
+    runQueue(q, false);
+  }
+}
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle"), panelEl = $("panel");
+function togglePanel(e) {
+  e.stopPropagation();
+  const isOpen = panelEl.style.display === 'block' || panelEl.classList.contains('open');
+  if (isOpen) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    if (controlsEl) controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  } else {
+    panelEl.style.display = 'block';
+    panelEl.classList.add('open');
+    if (controlsEl) controlsEl.classList.add('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (controlsEl && !controlsEl.contains(e.target)) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bismiDiv = $("bismi-container");
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  if (bismiDiv) {
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      bismiDiv.remove();
+    }
+  }
+});
+
+buildPage(); initReciters(); applySettings(); applyDisplay();
+</script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>
