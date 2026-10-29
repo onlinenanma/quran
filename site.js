@@ -27,16 +27,16 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights & center align controls banner */
+  /* hide Google's own bar / highlights & compact center aligned banner with zero extra space */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    /* Center aligned tight controls bar */
-    '.controls{margin-top:0!important;border-top:none!important;border-radius:0 0 12px 12px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;padding:8px 12px!important;gap:12px!important}' +
-    '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;margin:0!important;width:auto!important}' +
-    'body>.hero{margin-bottom:0!important;border-bottom:4px solid var(--gold)!important}' +
-    'body>.hero + div{text-align:center;margin:8px auto}' +
-    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.2rem,3.5vw,1.6rem);margin:4px 0}' +
+    /* Ultra-compact center aligned controls bar */
+    '.controls{margin:0!important;padding:4px 8px!important;border:none!important;border-radius:0 0 8px 8px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;min-height:auto!important}' +
+    '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;margin:0!important;padding:0!important;width:auto!important}' +
+    'body>.hero{margin-bottom:0!important;border-bottom:3px solid var(--gold)!important}' +
+    'body>.hero + div{text-align:center;margin:4px auto}' +
+    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.1rem,3vw,1.4rem);margin:2px 0}' +
     '@media(prefers-color-scheme:dark){body>.hero + div h1{color:var(--ink, #e9efe9)}}';
   document.head.appendChild(st);
 
@@ -105,22 +105,30 @@
       document.head.appendChild(s);
     }
 
-    /* Option button text toggle update */
+    /* Robust Option button text toggle update using MutationObserver */
     var optBtn = document.getElementById('opt-toggle');
+    var panel = document.getElementById('panel');
     if (optBtn) {
       optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-      var updateOptText = function() {
-        setTimeout(function () {
-          var panelEl = document.getElementById('panel');
-          var isOpen = optBtn.classList.contains('open') || (panelEl && (panelEl.classList.contains('open') || panelEl.style.display === 'block'));
-          if (isOpen) {
-            optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
-          } else {
-            optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-          }
-        }, 10);
+      
+      var updateArrow = function () {
+        var isOpen = panel && (panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block');
+        if (isOpen) {
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+        } else {
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        }
       };
-      optBtn.addEventListener('click', updateOptText, true);
+
+      optBtn.addEventListener('click', function () {
+        setTimeout(updateArrow, 50);
+        setTimeout(updateArrow, 200);
+      });
+
+      if (panel && window.MutationObserver) {
+        var observer = new MutationObserver(updateArrow);
+        observer.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
+      }
     }
 
     /* 'കേൾക്കാം' master toggle button with Stop feature */
@@ -143,8 +151,7 @@
 
     /* Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel */
     var contInput = document.getElementById('cont');
-    var panel = document.getElementById('panel');
-    if (contInput) {
+    if (contInput && panel) {
       var wrapper = contInput.closest('label');
       if (wrapper) wrapper.remove();
       var newLabel = document.createElement('label');
@@ -153,15 +160,13 @@
       newLabel.appendChild(document.createTextNode(' തുടർച്ചയായി കേൾക്കുക'));
 
       var vivaranamLabel = null;
-      if (panel) {
-        var labels = panel.querySelectorAll('label');
-        labels.forEach(function(l) {
-          if (l.textContent.indexOf('വിവരണം') > -1) vivaranamLabel = l;
-        });
-      }
+      var labels = panel.querySelectorAll('label');
+      labels.forEach(function(l) {
+        if (l.textContent.indexOf('വിവരണം') > -1) vivaranamLabel = l;
+      });
       if (vivaranamLabel && vivaranamLabel.parentNode) {
         vivaranamLabel.parentNode.insertBefore(newLabel, vivaranamLabel.nextSibling);
-      } else if (panel) {
+      } else {
         panel.appendChild(newLabel);
       }
     }
@@ -547,7 +552,7 @@
     window.toggleContinuous = function () {
       var masterBtn = document.getElementById('master');
       if (masterBtn && masterBtn.classList.contains('playing')) return origToggle();
-      var q = fullQueue(), ar = document.getElementById('show-ar');
+      var q = fullQuery ? fullQuery() : (typeof fullQueue === 'function' ? fullQueue() : []), ar = document.getElementById('show-ar');
       if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
       q.unshift({ kind: 'bm', n: 0 });
       runQueue(q, true);
