@@ -34,7 +34,7 @@
     '.controls{margin:0!important;padding:4px 8px 6px 8px!important;border:none!important;border-radius:0 0 8px 8px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important;min-height:auto!important}' +
     '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;margin:0!important;padding:0!important;width:auto!important}' +
     '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
-    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child):not(#panel){font-size:0.8rem;color:var(--acc, #1d5240);text-align:center;margin:1px 0 0 0!important;display:block!important;width:100%!important}' +
+    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child):not(#panel){font-size:0.8rem;color:var(--acc, #1d5240);text-align:center!important;margin:2px auto 0 auto!important;display:block!important;width:100%!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:2px solid var(--gold)!important;padding-bottom:8px!important}' +
     'body>.hero + div{text-align:center;margin:2px auto}' +
     'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1rem,2.5vw,1.3rem);margin:1px 0}' +
@@ -106,43 +106,53 @@
       document.head.appendChild(s);
     }
 
-    /* Enforce Option panel label to 'ഓപ്ഷനുകൾ' */
+    /* Robust Option panel toggle & label state handler */
     var optBtn = document.getElementById('opt-toggle');
     var panel = document.getElementById('panel');
+    var controls = document.querySelector('.controls');
+    
     if (optBtn && panel) {
       panel.classList.remove('open');
-      if (panel.style.display === 'block') panel.style.display = 'none';
+      panel.style.display = 'none';
       optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
 
-      var updateState = function () {
-        var isOpen = panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block';
-        optBtn.textContent = isOpen ? 'ഓപ്ഷനുകൾ ▴' : 'ഓപ്ഷനുകൾ ▾';
-      };
+      // Replace button to remove old conflicting handlers
+      var newOptBtn = optBtn.cloneNode(true);
+      optBtn.parentNode.replaceChild(newOptBtn, optBtn);
+      optBtn = newOptBtn;
 
       optBtn.addEventListener('click', function (e) {
-        setTimeout(function() {
-          var isOpen = panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block';
-          if (!isOpen && panel.style.display === 'none') {
-            panel.style.display = 'block';
-            panel.classList.add('open');
-          }
-          updateState();
-        }, 10);
-      });
-
-      document.addEventListener('click', function (e) {
-        var controls = document.querySelector('.controls');
-        if (controls && !controls.contains(e.target)) {
-          panel.classList.remove('open');
+        e.preventDefault();
+        e.stopPropagation();
+        var isOpen = panel.style.display === 'block' || panel.classList.contains('open');
+        if (isOpen) {
           panel.style.display = 'none';
+          panel.classList.remove('open');
+          if (controls) controls.classList.remove('open');
           optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        } else {
+          panel.style.display = 'block';
+          panel.classList.add('open');
+          if (controls) controls.classList.add('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
         }
       });
 
-      if (window.MutationObserver) {
-        var observer = new MutationObserver(updateState);
-        observer.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
-      }
+      document.addEventListener('click', function (e) {
+        if (controls && !controls.contains(e.target)) {
+          panel.style.display = 'none';
+          panel.classList.remove('open');
+          controls.classList.remove('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        }
+      });
+    }
+
+    /* Status text alignment centered below buttons */
+    var banner = document.querySelector('.banner');
+    var statusEl = document.getElementById('status');
+    if (statusEl && banner) {
+      banner.appendChild(statusEl);
     }
 
     /* 'കേൾക്കാം' master toggle button with stop capability */
