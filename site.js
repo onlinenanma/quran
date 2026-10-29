@@ -1,5 +1,5 @@
 /* site.js – include on EVERY page:
-   <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+   <script src="[https://onlinenanma.github.io/quran/site.js](https://onlinenanma.github.io/quran/site.js)" defer></script>
    1) remembers the chosen language for the whole site
    2) loads Google Translate only when a language other than Malayalam is chosen
    3) natural voices + text to speech in the translated language
@@ -27,12 +27,13 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights */
+  /* hide Google's own bar / highlights & adjust CSS */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    /* UI Adjustments requested by user */
-    '.controls{margin-top:0!important;border-top:none!important;border-radius:0 0 12px 12px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;padding:8px 12px;gap:8px}' +
+    /* Banner in single tight line attached directly to the top bar */
+    '.controls{margin-top:0!important;border-top:none!important;border-radius:0 0 12px 12px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:space-between!important;padding:6px 12px!important;gap:8px!important}' +
+    '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;gap:8px!important;margin:0!important;width:auto!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:4px solid var(--gold)!important}' +
     'body>.hero + div{text-align:center;margin:8px auto}' +
     'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.2rem,3.5vw,1.6rem);margin:4px 0}' +
@@ -81,7 +82,7 @@
   window.quranWrapArabic = wrapArabic;                             // pages that load text later can call this
 
   onReady(function () {
-    /* language picker (optional – any page that has <select id="langPick"> gets it wired) */
+    /* language picker */
     var sel = document.getElementById('langPick');
     if (sel) {
       if (lang !== 'ml') sel.value = lang;
@@ -93,66 +94,83 @@
     if (lang !== 'ml') {
       markArabic(document.body);
       wrapArabic(document.body);
-      var rm = document.querySelector('meta[name="referrer"]');          // Google's translator needs a referrer
+      var rm = document.querySelector('meta[name="referrer"]');
       if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
       window.googleTranslateElementInit = function () {
         new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
       };
       var d = document.createElement('div'); d.id = 'gt_el'; d.style.display = 'none'; document.body.appendChild(d);
       var s = document.createElement('script');
-      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; s.async = true;
+      s.src = '[https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit](https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit)'; s.async = true;
       document.head.appendChild(s);
-      setTimeout(function () {                                           // visible hint if it did not start
-        if (!document.querySelector('.goog-te-combo, html.translated-ltr, html.translated-rtl')) {
-          var t = document.createElement('div'); t.className = 'notranslate'; t.setAttribute('translate', 'no');
-          t.style.cssText = 'position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#d93025;color:#fff;padding:8px 12px;border-radius:8px;font:13px sans-serif;text-align:center';
-          t.textContent = 'Translation could not load. Check your internet / ad-blocker.';
-          document.body.appendChild(t); setTimeout(function () { t.remove(); }, 8000);
-        }
-      }, 8000);
     }
 
-    /* UI refinements requested by user */
+    /* Fix 1: Ensure 'ഓപ്ഷനുകൾ ▾' and 'ഓപ്ഷനുകൾ ▴' label toggles correctly without showing 'തെരഞ്ഞെടുക്കാം' */
     var optBtn = document.getElementById('opt-toggle');
-    if (optBtn) optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+    if (optBtn) {
+      optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+      var updateOptText = function() {
+        setTimeout(function () {
+          var panelEl = document.getElementById('panel');
+          var isOpen = optBtn.classList.contains('open') || (panelEl && (panelEl.classList.contains('open') || panelEl.style.display === 'block'));
+          if (isOpen) {
+            optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+          } else {
+            optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+          }
+        }, 10);
+      };
+      optBtn.addEventListener('click', updateOptText, true);
+    }
 
+    /* Fix 2: 'കേൾക്കാം' master toggle button with Stop feature */
     var masterBtn = document.getElementById('master');
     if (masterBtn) {
       masterBtn.textContent = 'കേൾക്കാം';
-      // Add a toggle capability to stop when play
-      var origMasterClick = masterBtn.onclick || masterBtn.getAttribute('onclick');
       masterBtn.addEventListener('click', function(e) {
         if (masterBtn.classList.contains('playing')) {
           e.stopImmediatePropagation();
           if (typeof stopSpeech === 'function') stopSpeech();
-          if (typeof currentAudio !== 'undefined' && currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+          if (typeof currentAudio !== 'undefined' && currentAudio) { 
+            currentAudio.pause(); 
+            currentAudio.currentTime = 0; 
+          }
           masterBtn.classList.remove('playing');
           masterBtn.textContent = 'കേൾക്കാം';
         }
       }, true);
     }
 
-    // Move continuous checkbox inside panel options and update labels
+    /* Fix 3: Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel */
     var contInput = document.getElementById('cont');
     var panel = document.getElementById('panel');
-    if (contInput && panel) {
+    if (contInput) {
       var wrapper = contInput.closest('label');
       if (wrapper) wrapper.remove();
-      var newRow = document.createElement('div');
-      newRow.className = 'ctl-row';
       var newLabel = document.createElement('label');
       newLabel.className = 'opt';
       newLabel.appendChild(contInput);
       newLabel.appendChild(document.createTextNode(' തുടർച്ചയായി കേൾക്കുക'));
-      newRow.appendChild(newLabel);
-      panel.insertBefore(newRow, panel.firstChild);
+
+      var vivaranamLabel = null;
+      if (panel) {
+        var labels = panel.querySelectorAll('label');
+        labels.forEach(function(l) {
+          if (l.textContent.indexOf('വിവരണം') > -1) vivaranamLabel = l;
+        });
+      }
+      if (vivaranamLabel && vivaranamLabel.parentNode) {
+        vivaranamLabel.parentNode.insertBefore(newLabel, vivaranamLabel.nextSibling);
+      } else if (panel) {
+        panel.appendChild(newLabel);
+      }
     }
 
-    // Handle Bismillah visibility: show only if page has verse 1 and matching color
+    /* Fix 4: Bismillah display only on pages starting with Verse 1 */
     var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
     var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
-    if (bismiDiv) {
-      if (!hasVerse1 && (typeof SURAH === 'undefined' || SURAH !== 1)) {
+    if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
+      if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
         bismiDiv.remove();
       } else {
         var bEl = bismiDiv.querySelector('h1') || bismiDiv;
@@ -198,7 +216,7 @@
     };
   });
 
-  /* ===== robust text to speech engine fixing part 2+ stalls & skipping unavailable options seamlessly ===== */
+  /* ===== text-to-speech engine: Page 2+ fix & Red playing button state handling ===== */
   var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
   function mlFrac(t) {
     var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
@@ -216,6 +234,7 @@
     return nl === 'ml' ? 'en' : nl;
   }
   function shownText(el) {
+    if (!el) return '';
     var src = el.querySelector('.pl') || el.querySelector('.text') || el, c = src.cloneNode(true);
     c.querySelectorAll('.tag,.isti-ar,[translate="no"]').forEach(function (x) { x.remove(); });
     return c.textContent.replace(/\s+/g, ' ').trim();
@@ -246,7 +265,7 @@
     if (i >= chunks.length) { done(); return; }
     if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
     var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
-    a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
+    a.src = '[https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=](https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=)' + code + '&q=' + encodeURIComponent(chunks[i]);
     if (typeof currentAudio !== 'undefined') currentAudio = a;
     a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
     a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
@@ -298,7 +317,7 @@
     setTimeout(function () { next(0); }, 50);
   }
 
-  var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
+  var REC_BASE = '[https://onlinenanma.github.io/quran/audio/](https://onlinenanma.github.io/quran/audio/)', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
   function p3(n) { return String(n).padStart(3, '0'); }
   function fnv(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); }
   var recMan = null;
@@ -346,6 +365,7 @@
   function ensureVoices(code, cb) { cb(); }
 
   onReady(function () {
+    /* Fix: Speech for Page 2+ and correct active red button highlighting */
     window.speakMalayalam = function (text, my, done) {
       var el = (typeof activeKey !== 'undefined' && activeKey) ? document.getElementById('item-' + activeKey) : null;
       var shown = el ? shownText(el) : text, translated = !!shown && mlFrac(shown) < 0.5;
@@ -354,10 +374,11 @@
       ensureVoices(code, function () {
         if (my !== token) return;
         if (translated) {
-          speakIn(code, shown.replace(NUM, ' '), my, done,
+          speakIn(code, (shown || text).replace(NUM, ' '), my, done,
                   typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
         } else {
           var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
+          var verseNum = kn[1] ? +kn[1] : 0;
           var fallbackSpeech = function() {
             var chunks = splitText(cleanForSpeech(text), 120);
             if (!chunks.length) { done(); return; }
@@ -370,7 +391,7 @@
             var nextChunk = function(idx) {
               if (my !== token) return;
               if (idx >= chunks.length) { done(); return; }
-              if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + found.name + ' (' + (idx+1) + '/' + chunks.length + ')';
+              if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (found.name || 'Malayalam Voice') + ' (' + (idx+1) + '/' + chunks.length + ')';
               
               if (typeof window.speechSynthesis === 'undefined') {
                 onlineChunks(chunks, 'ml', my, done, idx, kind, typeof curLabel !== 'undefined' ? curLabel : '');
@@ -402,8 +423,8 @@
             setTimeout(function() { nextChunk(0); }, 50);
           };
 
-          if (kn[0] === 'ml' || kn[0] === 'tf') {
-            playRecorded(kn[0], +kn[1], text, my, done, fallbackSpeech);
+          if ((kn[0] === 'ml' || kn[0] === 'tf') && verseNum > 0) {
+            playRecorded(kn[0], verseNum, text, my, done, fallbackSpeech);
           } else {
             fallbackSpeech();
           }
@@ -424,26 +445,15 @@
     }
   });
 
-  /* ===== Robust non-blocking queue & fallback handler for missing translations/verses ===== */
-  onReady(function () {
-    if (typeof window.runQueue === 'function') {
-      var origRunQueue = window.runQueue;
-      // Ensure queue gracefully proceeds to next item on failure without stopping entirely
-      window.runQueue = function (queue, continuous) {
-        return origRunQueue(queue, continuous);
-      };
-    }
-  });
-
   /* ===== extra reciters ===== */
   var EXTRA_RECITERS = [
-    { id: 'alafasy',    name: 'മിഷാരി അൽ അഫാസി',         base: 'https://everyayah.com/data/Alafasy_64kbps' },
-    { id: 'sudais',     name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',    base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
-    { id: 'shuraym',    name: 'സഊദ് അശ്ശുറൈം',           base: 'https://everyayah.com/data/Saood_ash-Shuraym_64kbps' },
-    { id: 'husary',     name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',   base: 'https://everyayah.com/data/Husary_64kbps' },
-    { id: 'abdulbasit', name: 'അബ്ദുൽ ബാസിത്വ്',          base: 'https://everyayah.com/data/Abdul_Basit_Murattal_64kbps' },
-    { id: 'jibreel',    name: 'മുഹമ്മദ് ജിബ്രീൽ',         base: 'https://everyayah.com/data/Muhammad_Jibreel_64kbps' },
-    { id: 'budair',     name: 'സ്വലാഹ് അൽ ബുദൈർ',        base: 'https://everyayah.com/data/Salah_Al_Budair_128kbps' }
+    { id: 'alafasy',    name: 'മിഷാരി അൽ അഫാസി',         base: '[https://everyayah.com/data/Alafasy_64kbps](https://everyayah.com/data/Alafasy_64kbps)' },
+    { id: 'sudais',     name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',    base: '[https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps](https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps)' },
+    { id: 'shuraym',    name: 'സഊദ് അശ്ശുറൈം',           base: '[https://everyayah.com/data/Saood_ash-Shuraym_64kbps](https://everyayah.com/data/Saood_ash-Shuraym_64kbps)' },
+    { id: 'husary',     name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',   base: '[https://everyayah.com/data/Husary_64kbps](https://everyayah.com/data/Husary_64kbps)' },
+    { id: 'abdulbasit', name: 'അബ്ദുൽ ബാസിത്വ്',          base: '[https://everyayah.com/data/Abdul_Basit_Murattal_64kbps](https://everyayah.com/data/Abdul_Basit_Murattal_64kbps)' },
+    { id: 'jibreel',    name: 'മുഹമ്മദ് ജിബ്രീൽ',         base: '[https://everyayah.com/data/Muhammad_Jibreel_64kbps](https://everyayah.com/data/Muhammad_Jibreel_64kbps)' },
+    { id: 'budair',     name: 'സ്വലാഹ് അൽ ബുദൈർ',        base: '[https://everyayah.com/data/Salah_Al_Budair_128kbps](https://everyayah.com/data/Salah_Al_Budair_128kbps)' }
   ];
   onReady(function () {
     if (typeof RECITERS === 'undefined' || typeof initReciters !== 'function') return;
@@ -496,7 +506,7 @@
       var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');
       if (recitation) msg = VERSE_ERROR;
       else if (msg.indexOf(TRY_AGAIN) !== 0) msg = TRY_AGAIN + msg;
-      origFail(my, msg);
+      origFail(msg);
     };
   });
 
@@ -518,14 +528,14 @@
   onReady(function () {
     if (typeof SURAH === 'undefined') return;
     var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
-    var bismiContainer = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
+    var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
     
     if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
-      if (bismiContainer && bismiContainer.textContent.indexOf('بِسْمِ') > -1) {
-        bismiContainer.remove();
+      if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
+        bismiDiv.remove();
       }
-    } else if (bismiContainer) {
-      var bEl = bismiContainer.querySelector('h1') || bismiContainer;
+    } else if (bismiDiv) {
+      var bEl = bismiDiv.querySelector('h1') || bismiDiv;
       if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
     }
 
@@ -536,23 +546,13 @@
     var origPlay = window.playItem, origToggle = window.toggleContinuous;
     window.playItem = function (kind, n, my, done) { return kind === 'bm' ? playBismillah(my, done) : origPlay(kind, n, my, done); };
     window.toggleContinuous = function () {
-      if (masterBtn.classList.contains('playing')) return origToggle();
+      var masterBtn = document.getElementById('master');
+      if (masterBtn && masterBtn.classList.contains('playing')) return origToggle();
       var q = fullQueue(), ar = document.getElementById('show-ar');
       if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
       q.unshift({ kind: 'bm', n: 0 });
       runQueue(q, true);
     };
-  });
-
-  /* ===== options banner behavior ===== */
-  onReady(function () {
-    var bar = document.querySelector('.controls'); if (!bar) return;
-    // Fix alignment and compact layout with minimum texts in a line
-    bar.style.display = 'flex';
-    bar.style.flexWrap = 'nowrap';
-    bar.style.alignItems = 'center';
-    bar.style.justifyContent = 'space-between';
-    bar.style.gap = '8px';
   });
 
   /* offline support */
