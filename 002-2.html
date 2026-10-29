@@ -358,10 +358,6 @@ function playArabic(n, my, done) {
 
 function speakMalayalam(text, my, done) {
   if (!text) { done(); return; }
-  if (typeof window.speakMalayalam === 'function') {
-    window.speakMalayalam(text, my, done);
-    return;
-  }
   if (!window.speechSynthesis) { done(); return; }
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
