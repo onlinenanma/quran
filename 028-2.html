@@ -22,23 +22,24 @@ body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14
 .topnav .back{display:inline-flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;font-size:clamp(0.9rem,3.2vw,1.05rem);font-weight:500;white-space:nowrap}
 .topnav .back:hover,.topnav .back:focus{color:#fff;outline:none}
 .controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
-.banner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px}
-.banner-row{display:flex;justify-content:center;align-items:center;gap:8px;width:100%}
-.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:10px 14px 4px;max-height:75vh;overflow-y:auto}
+.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
 .controls.open .panel{display:block}
-.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:8px}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
 .ctl-title{font-size:13px;color:var(--muted);font-weight:600}
 .opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
 .opt input{width:16px;height:16px;accent-color:var(--green2)}
-.opt-sel{font-family:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
-.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:3px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-sel{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
 .opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
-.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.banner .main-btn{padding:7px 20px}
 .main-btn.playing{background:#d93025}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .fs-group{display:inline-flex;align-items:center;gap:4px}
 #fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
-#status{width:100%!important;text-align:center!important;font-size:12px;color:var(--acc);margin:2px auto 0 auto!important;display:block!important;line-height:1.2}
+#status{width:100%!important;text-align:center!important;font-size:13px;color:var(--acc);margin:4px auto 0 auto!important;display:block!important;line-height:1.3}
 #status:empty{display:none}
 .verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
 .vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
@@ -75,10 +76,8 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 
 <div class="controls" id="controls">
   <div class="banner">
-    <div class="banner-row">
-      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button>
-      <button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button>
-    </div>
+    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button></div>
+    <div class="banner-row"><button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button></div>
     <div id="status"></div>
   </div>
   <div class="panel" id="panel">
