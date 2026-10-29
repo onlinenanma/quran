@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ml">
 <head>
@@ -23,24 +22,23 @@ body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14
 .topnav .back{display:inline-flex;align-items:center;gap:6px;color:var(--gold);text-decoration:none;font-size:clamp(0.9rem,3.2vw,1.05rem);font-weight:500;white-space:nowrap}
 .topnav .back:hover,.topnav .back:focus{color:#fff;outline:none}
 .controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
-.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
-.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
-.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
+.banner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px;width:100%}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:10px 14px 4px;max-height:75vh;overflow-y:auto}
 .controls.open .panel{display:block}
-.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:8px}
 .ctl-title{font-size:13px;color:var(--muted);font-weight:600}
 .opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
 .opt input{width:16px;height:16px;accent-color:var(--green2)}
-.opt-sel{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
-.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-sel{font-family:inherit;font-size:14px;padding:4px 6px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:3px 12px;font-size:13px;cursor:pointer;white-space:nowrap}
 .opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
-.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
-.banner .main-btn{padding:7px 20px}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:5px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
 .main-btn.playing{background:#d93025}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .fs-group{display:inline-flex;align-items:center;gap:4px}
 #fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
-#status{width:100%!important;text-align:center!important;font-size:13px;color:var(--acc);margin:4px auto 0 auto!important;display:block!important;line-height:1.3}
+#status{width:100%!important;text-align:center!important;font-size:12px;color:var(--acc);margin:2px auto 0 auto!important;display:block!important;line-height:1.2}
 #status:empty{display:none}
 .verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
 .vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
@@ -77,8 +75,10 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
 
 <div class="controls" id="controls">
   <div class="banner">
-    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button></div>
-    <div class="banner-row"><button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button></div>
+    <div class="banner-row">
+      <button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button>
+    </div>
     <div id="status"></div>
   </div>
   <div class="panel" id="panel">
@@ -111,720 +111,385 @@ const SURAH = 2;
 const VERSES = [
   {
     "n": 21,
-    "ar": "يَٰٓأَيُّهَا ٱلنَّاسُ ٱعْبُدُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُمْ وَٱلَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ",
+    "ar": "يَٰٓأَيُّهَا ٱلنَّاسُ ٱعْبُدُوا۟ رَبَّكُمُ ٱلَّذِى خَلَقَكُمْ وَٱلَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ",
     "ml": "ജനങ്ങളേ, നിങ്ങളേയും നിങ്ങളുടെ മുന്‍ഗാമികളേയും സൃഷ്ടിച്ച നിങ്ങളുടെ നാഥനെ നിങ്ങള്‍ ആരാധിക്കുവിന്‍. നിങ്ങള്‍ ദോഷബാധയെ സൂക്ഷിച്ച് ജീവിക്കുവാന്‍ വേണ്ടിയത്രെ അത്‌.",
     "tf": ""
   },
   {
     "n": 22,
-    "ar": "ٱلَّذِى جَعَلَ لَكُمُ ٱلْأَرْضَ فِرَٰشًۭا وَٱلسَّمَآءَ بِنَآءًۭ وَأَنزَلَ مِنَ ٱلسَّمَآءِ مَآءًۭ فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًۭا لَّكُمْ ۖ فَلَا تَجْعَلُوا۟ لِلَّهِ أَندَادًۭا وَأَنتُمْ تَعْلَمُونَ",
+    "ar": "ٱلَّذِى جَعَلَ لَكُمُ ٱلْأَرْضَ فِرَٰشًۭا وَٱلسَّمَآءَ بِنَآءًۭ وَأَنزَلَ مِنَ ٱلسَّمَآءِ مَآءًۭ فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًۭا لَّكُمْ ۖ فَلَا تَجْعَلُوا۟ لِلَّهِ أَندَادًۭا وَأَنتُمْ تَعْلَمُونَ",
     "ml": "നിങ്ങള്‍ക്ക് വേണ്ടി ഭൂമിയെ മെത്തയും ആകാശത്തെ മേല്‍പുരയുമാക്കിത്തരികയും ആകാശത്ത് നിന്ന് വെള്ളം ചൊരിഞ്ഞുതന്നിട്ട് അത് മുഖേന നിങ്ങള്‍ക്ക് ഭക്ഷിക്കുവാനുള്ള കായ്കനികള്‍ ഉല്‍പാദിപ്പിച്ചു തരികയും ചെയ്ത (നാഥനെ). അതിനാല്‍ (ഇതെല്ലാം) അറിഞ്ഞ്കൊണ്ട് നിങ്ങള്‍ അല്ലാഹുവിന് സമന്‍മാരെ ഉണ്ടാക്കരുത്‌.",
     "tf": ""
   },
   {
     "n": 23,
-    "ar": "وَإِن كُنتُمْ فِى رَيْبٍۢ مِّمَّا نَزَّلْنَا عَلَىٰ عَبْدِنَا فَأْتُوا۟ بِسُورَةٍۢ مِّن مِّثْلِهِۦ وَٱدْعُوا۟ شُهَدَآءَكُم مِّن دُونِ ٱللَّهِ إِن كُنتُمْ صَٰدِقِينَ",
+    "ar": "وَإِن كُنتُمْ فِى رَيْبٍۢ مِّمَّا نَزَّلْنَا عَلَىٰ عَبْدِنَا فَأْتُوا۟ بِسُورَةٍۢ مِّن مِّثْلِهِۦ وَٱدْعُوا۟ شُهَدَآءَكُم مِّن دُونِ ٱللَّهِ إِن كُنتُمْ صَٰدِقِينَ",
     "ml": "നമ്മുടെ ദാസന് നാം അവതരിപ്പിച്ചുകൊടുത്തതിനെ (വിശുദ്ധ ഖുര്‍ആനെ) പറ്റി നിങ്ങള്‍ സംശയാലുക്കളാണെങ്കില്‍ അതിന്റേത്പോലുള്ള ഒരു അദ്ധ്യായമെങ്കിലും നിങ്ങള്‍ കൊണ്ടുവരിക. അല്ലാഹുവിന് പുറമെ നിങ്ങള്‍ക്കുള്ള സഹായികളേയും വിളിച്ചുകൊള്ളുക. നിങ്ങള്‍ സത്യവാന്‍മാരണെങ്കില്‍ (അതാണല്ലോ വേണ്ടത്‌).",
     "tf": ""
   },
   {
     "n": 24,
-    "ar": "فَإِن لَّمْ تَفْعَلُوا۟ وَلَن تَفْعَلُوا۟ فَٱتَّقُوا۟ ٱلنَّارَ ٱلَّتِى وَقُودُهَا ٱلنَّاسُ وَٱلْحِجَارَةُ ۖ أُعِدَّتْ لِلْكَٰفِرِينَ",
+    "ar": "فَإِن لَّمْ تَفْعَلُوا۟ وَلَن تَفْعَلُوا۟ فَٱتَّقُوا۟ ٱلنَّارَ ٱلَّتِى وَقُودُهَا ٱلنَّاسُ وَٱلْحِجَارَةُ ۖ أُعِدَّتْ لِلْكَٰفِرِينَ",
     "ml": "നിങ്ങള്‍ക്കത് ചെയ്യാന്‍ കഴിഞ്ഞില്ലെങ്കില്‍ നിങ്ങള്‍ക്കത് ഒരിക്കലും ചെയ്യാന്‍ കഴിയുകയുമില്ല മനുഷ്യരും കല്ലുകളും ഇന്ധനമായി കത്തിക്കപ്പെടുന്ന നരകാഗ്നിയെ നിങ്ങള്‍ കാത്തുസൂക്ഷിച്ചുകൊള്ളുക. സത്യനിഷേധികള്‍ക്കുവേണ്ടി ഒരുക്കിവെക്കപ്പെട്ടതാകുന്നു അത്‌.",
     "tf": ""
   },
   {
     "n": 25,
-    "ar": "وَبَشِّرِ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ أَنَّ لَهُمْ جَنَّٰتٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۖ كُلَّمَا رُزِقُوا۟ مِنْهَا مِن ثَمَرَةٍۢ رِّزْقًۭا ۙ قَالُوا۟ هَٰذَا ٱلَّذِى رُزِقْنَا مِن قَبْلُ ۖ وَأُتُوا۟ بِهِۦ مُتَشَٰبِهًۭا ۖ وَلَهُمْ فِيهَآ أَزْوَٰجٌۭ مُّطَهَّرَةٌۭ ۖ وَهُمْ فِيهَا خَٰلِدُونَ",
+    "ar": "وَبَشِّرِ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ أَنَّ لَهُمْ جَنَّٰتٍۢ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ ۖ كُلَّمَا رُزِقُوا۟ مِنْهَا مِن ثَمَرَةٍۢ رِّزْقًۭا ۙ قَالُوا۟ هَٰذَا ٱلَّذِى رُزِقْنَا مِن قَبْلُ ۖ وَأُتُوا۟ بِهِۦ مُتَشَٰبِهًۭا ۖ وَلَهُمْ فِيهَآ أَزْوَٰجٌۭ مُّطَهَّرَةٌۭ ۖ وَهُمْ فِيهَا خَٰلِدُونَ",
     "ml": "(നബിയേ,) വിശ്വസിക്കുകയും സല്‍കര്‍മ്മങ്ങള്‍ പ്രവര്‍ത്തിക്കുകയും ചെയ്തവര്‍ക്ക് താഴ്ഭാഗത്ത്കൂടി നദികള്‍ ഒഴുകുന്ന സ്വര്‍ഗത്തോപ്പുകള്‍ ലഭിക്കുവാനുണ്ടെന്ന് സന്തോഷവാര്‍ത്ത അറിയിക്കുക. അതിലെ ഓരോ വിഭവവും ഭക്ഷിക്കുവാനായി നല്‍കപ്പെടുമ്പോള്‍, ഇതിന് മുമ്പ് ഞങ്ങള്‍ക്ക് നല്‍കപ്പെട്ടത് തന്നെയാണല്ലോ ഇതും എന്നായിരിക്കും അവര്‍ പറയുക. (വാസ്തവത്തില്‍) പരസ്പര സാദൃശ്യമുള്ള നിലയില്‍ അതവര്‍ക്ക് നല്‍കപ്പെടുകയാണുണ്ടായത്‌.പരിശുദ്ധരായ ഇണകളും അവര്‍ക്കവിടെ ഉണ്ടായിരിക്കും. അവര്‍ അവിടെ നിത്യവാസികളായിരിക്കുകയും ചെയ്യും.",
     "tf": ""
   },
   {
     "n": 26,
-    "ar": "۞ إِنَّ ٱللَّهَ لَا يَسْتَحْىِۦٓ أَن يَضْرِبَ مَثَلًۭا مَّا بَعُوضَةًۭ فَمَا فَوْقَهَا ۚ فَأَمَّا ٱلَّذِينَ ءَامَنُوا۟ فَيَعْلَمُونَ أَنَّهُ ٱلْحَقُّ مِن رَّبِّهِمْ ۖ وَأَمَّا ٱلَّذِينَ كَفَرُوا۟ فَيَقُولُونَ مَاذَآ أَرَادَ ٱللَّهُ بِهَٰذَا مَثَلًۭا ۘ يُضِلُّ بِهِۦ كَثِيرًۭا وَيَهْدِى بِهِۦ كَثِيرًۭا ۚ وَمَا يُضِلُّ بِهِۦٓ إِلَّا ٱلْفَٰسِقِينَ",
+    "ar": "۞ إِنَّ ٱللَّهَ لَا يَسْتَحْىِۦٓ أَن يَضْرِبَ مَثَلًۭا مَّا بَعُوضَةًۭ فَمَا فَوْقَهَا ۚ فَأَمَّا ٱلَّذِينَ ءَامَنُوا۟ فَيَعْلَمُونَ أَنَّهُ ٱلْحَقُّ مِن رَّبِّهِمْ ۖ وَأَمَّا ٱلَّذِينَ كَفَرُوا۟ فَيَقُولُونَ مَاذَآ أَرَادَ ٱللَّهُ بِهَٰذَا مَثَلًۭا ۘ يُضِلُّ بِهِۦ كَثِيرًۭا وَيَهْدِى بِهِۦ كَثِيرًۭا ۚ وَمَا يُضِلُّ بِهِۦٓ إِلَّا ٱلْفَٰسِقِينَ",
     "ml": "ഏതൊരു വസ്തുവേയും ഉപമയാക്കുന്നതില്‍ അല്ലാഹു ലജ്ജിക്കുകയില്ല; തീര്‍ച്ച. അതൊരു കൊതുകോ അതിലുപരി നിസ്സാരമോ ആകട്ടെ. എന്നാല്‍ വിശ്വാസികള്‍ക്ക് അത് തങ്ങളുടെ നാഥന്റെപക്കല്‍നിന്നുള്ള സത്യമാണെന്ന് ബോധ്യമാകുന്നതാണ്‌. സത്യനിഷേധികളാകട്ടെ ഈ ഉപമകൊണ്ട് അല്ലാഹു എന്താണ് ഉദ്ദേശിക്കുന്നത് എന്ന് ചോദിക്കുകയാണ് ചെയ്യുക. അങ്ങനെ ആ ഉപമ നിമിത്തം ധാരാളം ആളുകളെ അവന്‍ പിഴവിലാക്കുന്നു. ധാരാളം പേരെ നേര്‍വഴിയിലാക്കുകയും ചെയ്യുന്നു. അധര്‍മ്മകാരികളല്ലാത്ത ആരെയും അത് നിമിത്തം അവന്‍ പിഴപ്പിക്കുകയില്ല.",
     "tf": ""
   },
   {
     "n": 27,
-    "ar": "ٱلَّذِينَ يَنقُضُونَ عَهْدَ ٱللَّهِ مِنۢ بَعْدِ مِيثَٰقِهِۦ وَيَقْطَعُونَ مَآ أَمَرَ ٱللَّهُ بِهِۦٓ أَن يُوصَلَ وَيُفْسِدُونَ فِى ٱلْأَرْضِ ۚ أُو۟لَٰٓئِكَ هُمُ ٱلْخَٰسِرُونَ",
+    "ar": "ٱلَّذِينَ يَنقُضُونَ عَهْدَ ٱللَّهِ مِنۢ بَعْدِ مِيثَٰقِهِۦ وَيَقْطَعُونَ مَآ أَمَرَ ٱللَّهُ بِهِۦٓ أَن يُوصَلَ وَيُفْسِدُونَ فِى ٱلْأَرْضِ ۚ أُو۟لَٰٓئِكَ هُمُ ٱلْخَٰسِرُونَ",
     "ml": "അല്ലാഹുവിന്റെഉത്തരവ് അവന്‍ ശക്തിയുക്തം നല്‍കിയതിന് ശേഷം അതിന് വിപരീതം പ്രവര്‍ത്തിക്കുകയും അല്ലാഹു കൂട്ടിചേര്‍ക്കുവാന്‍ കല്‍പിച്ചതിനെ മുറിച്ച് വേര്‍പെടുത്തുകയും ഭൂമിയില്‍ കുഴപ്പമുണ്ടാക്കുകയും ചെയ്യുന്നവരത്രെ അവര്‍ (അധര്‍മ്മകാരികള്‍). അവര്‍ തന്നെയാകുന്നു നഷ്ടക്കാര്‍.",
     "tf": ""
   },
   {
     "n": 28,
-    "ar": "كَيْفَ تَكْفُرُونَ بِٱللَّهِ وَكُنتُمْ أَمْوَٰتًۭا فَأَحْيَٰكُمْ ۖ ثُمَّ يُمِيتُكُمْ ثُمَّ يُحْيِيكُمْ ثُمَّ إِلَيْهِ تُرْجَعُونَ",
+    "ar": "كَيْفَ تَكْفُرُونَ بِٱللَّهِ وَكُنتُمْ أَمْوَٰتًۭا فَأَحْيَٰكُمْ ۖ ثُمَّ يُمِيتُكُمْ ثُمَّ يُحْيِيكُمْ ثُمَّ إِلَيْهِ تُرْجَعُونَ",
     "ml": "നിങ്ങള്‍ക്കെങ്ങനെയാണ് അല്ലാഹുവിനെ നിഷേധിക്കാന്‍ കഴിയുക ? നിങ്ങള്‍ നിര്‍ജീവ വസ്തുക്കളായിരുന്ന അവസ്ഥയ്ക്ക് ശേഷം അവന്‍ നിങ്ങള്‍ക്ക് ജീവന്‍ നല്‍കി. പിന്നെ അവന്‍ നിങ്ങളെ മരിപ്പിക്കുകയും വീണ്ടും ജീവിപ്പിക്കുകയും ചെയ്യുന്നു. പിന്നീട് അവന്‍കലേക്ക് തന്നെ നിങ്ങള്‍ തിരിച്ചുവിളിക്കപ്പെടുകയും ചെയ്യും.",
     "tf": ""
   },
   {
     "n": 29,
-    "ar": "هُوَ ٱلَّذِى خَلَقَ لَكُم مَّا فِى ٱلْأَرْضِ جَمِيعًۭا ثُمَّ ٱسْتَوَىٰٓ إِلَى ٱلسَّمَآءِ فَسَوَّىٰهُنَّ سَبْعَ سَمَٰوَٰتٍۢ ۚ وَهُوَ بِكُلِّ شَىْءٍ عَلِيمٌۭ",
+    "ar": "هُوَ ٱلَّذِى خَلَقَ لَكُم مَّا فِى ٱلْأَرْضِ جَمِيعًۭا ثُمَّ ٱسْتَوَىٰٓ إِلَى ٱلسَّمَآءِ فَسَوَّىٰهُنَّ سَبْعَ سَمَٰوَٰتٍۢ ۚ وَهُوَ بِكُلِّ شَىْءٍ عَلِيمٌۭ",
     "ml": "അവനാണ് നിങ്ങള്‍ക്ക് വേണ്ടി ഭൂമിയിലുള്ളതെല്ലാം സൃഷ്ടിച്ചു തന്നത്‌. പുറമെ ഏഴ് ആകാശങ്ങളായി ക്രമീകരിച്ചുകൊണ്ട് ഉപരിലോകത്തെ സംവിധാനിച്ചവനും അവന്‍ തന്നെയാണ്‌. അവന്‍ എല്ലാ കാര്യത്തെപ്പറ്റിയും അറിവുള്ളവനാകുന്നു.",
     "tf": ""
   },
   {
     "n": 30,
-    "ar": "وَإِذْ قَالَ رَبُّكَ لِلْمَلَٰٓئِكَةِ إِنِّى جَاعِلٌۭ فِى ٱلْأَرْضِ خَلِيفَةًۭ ۖ قَالُوٓا۟ أَتَجْعَلُ فِيهَا مَن يُفْسِدُ فِيهَا وَيَسْفِكُ ٱلدِّمَآءَ وَنَحْنُ نُسَبِّحُ بِحَمْدِكَ وَنُقَدِّسُ لَكَ ۖ قَالَ إِنِّىٓ أَعْلَمُ مَا لَا تَعْلَمُونَ",
+    "ar": "وَإِذْ قَالَ رَبُّكَ لِلْمَلَٰٓئِكَةِ إِنِّى جَاعِلٌۭ فِى ٱلْأَرْضِ خَلِيفَةًۭ ۖ قَالُوٓا۟ أَتَجْعَلُ فِيهَا مَن يُفْسِدُ فِيهَا وَيَسْفِكُ ٱلدِّمَآءَ وَنَحْنُ نُسَبِّحُ بِحَمْدِكَ وَنُقَدِّسُ لَكَ ۖ قَالَ إِنِّىٓ أَعْلَمُ مَا لَا تَعْلَمُونَ",
     "ml": "ഞാനിതാ ഭൂമിയില്‍ ഒരു ഖലീഫയെ നിയോഗിക്കാന്‍ പോകുകയാണ് എന്ന് നിന്റെനാഥന്‍ മലക്കുകളോട് പറഞ്ഞ സന്ദര്‍ഭം (ശ്രദ്ധിക്കുക). അവര്‍ പറഞ്ഞു: അവിടെ കുഴപ്പമുണ്ടാക്കുകയും രക്തം ചിന്തുകയും ചെയ്യുന്നവരെയാണോ നീ നിയോഗിക്കുന്നത്‌? ഞങ്ങളാകട്ടെ നിന്റെമഹത്വത്തെ പ്രകീര്‍ത്തിക്കുകയും, നിന്റെപരിശുദ്ധിയെ വാഴ്ത്തുകയും ചെയ്യുന്നവരല്ലോ. അവന്‍ (അല്ലാഹു) പറഞ്ഞു: നിങ്ങള്‍ക്കറിഞ്ഞുകൂടാത്തത് എനിക്കറിയാം.",
     "tf": ""
   },
   {
     "n": 31,
-    "ar": "وَعَلَّمَ ءَادَمَ ٱلْأَسْمَآءَ كُلَّهَا ثُمَّ عَرَضَهُمْ عَلَى ٱلْمَلَٰٓئِكَةِ فَقَالَ أَنۢبِـُٔونِى بِأَسْمَآءِ هَٰٓؤُلَآءِ إِن كُنتُمْ صَٰدِقِينَ",
+    "ar": "وَعَلَّمَ ءَادَمَ ٱلْأَسْمَآءَ كُلَّهَا ثُمَّ عَرَضَهُمْ عَلَى ٱلْمَلَٰٓئِكَةِ فَقَالَ أَنۢبِـُٔونِى بِأَسْمَآءِ هَٰٓؤُلَآءِ إِن كُنتُمْ صَٰدِقِينَ",
     "ml": "അവന്‍ (അല്ലാഹു) ആദമിന് നാമങ്ങളെല്ലാം പഠിപ്പിച്ചു. പിന്നീട് ആ പേരിട്ടവയെ അവന്‍ മലക്കുകള്‍ക്ക് കാണിച്ചു. എന്നിട്ടവന്‍ ആജ്ഞാപിച്ചു: നിങ്ങള്‍ സത്യവാന്‍മാരാണെങ്കില്‍ ഇവയുടെ നാമങ്ങള്‍ എനിക്ക് പറഞ്ഞുതരൂ.",
     "tf": ""
   },
   {
     "n": 32,
-    "ar": "قَالُوا۟ سُبْحَٰنَكَ لَا عِلْمَ لَنَآ إِلَّا مَا عَلَّمْتَنَآ ۖ إِنَّكَ أَنتَ ٱلْعَلِيمُ ٱلْحَكِيمُ",
+    "ar": "قَالُوا۟ سُبْحَٰنَكَ لَا عِلْمَ لَنَآ إِلَّا مَا عَلَّمْتَنَآ ۖ إِنَّكَ أَنتَ ٱلْعَلِيمُ ٱلْحَكِيمُ",
     "ml": "അവര്‍ പറഞ്ഞു: നിനക്ക് സ്തോത്രം. നീ പഠിപ്പിച്ചുതന്നതല്ലാത്ത യാതൊരു അറിവും ഞങ്ങള്‍ക്കില്ല. നീ തന്നെയാണ് സര്‍വ്വജ്ഞനും അഗാധജ്ഞാനിയും.",
     "tf": ""
   },
   {
     "n": 33,
-    "ar": "قَالَ يَٰٓـَٔادَمُ أَنۢبِئْهُم بِأَسْمَآئِهِمْ ۖ فَلَمَّآ أَنۢبَأَهُم بِأَسْمَآئِهِمْ قَالَ أَلَمْ أَقُل لَّكُمْ إِنِّىٓ أَعْلَمُ غَيْبَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَأَعْلَمُ مَا تُبْدُونَ وَمَا كُنتُمْ تَكْتُمُونَ",
+    "ar": "قَالَ يَٰٓـَٔادَمُ أَنۢبِئْهُم بِأَسْمَآئِهِمْ ۖ فَلَمَّآ أَنۢبَأَهُم بِأَسْمَآئِهِمْ قَالَ أَلَمْ أَقُل لَّكُمْ إِنِّىٓ أَعْلَمُ غَيْبَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَأَعْلَمُ مَا تُبْدُونَ وَمَا كُنتُمْ تَكْتُمُونَ",
     "ml": "അനന്തരം അവന്‍ (അല്ലാഹു) പറഞ്ഞു: ആദമേ, ഇവര്‍ക്ക് അവയുടെ നാമങ്ങള്‍ പറഞ്ഞുകൊടുക്കൂ. അങ്ങനെ അവന്‍ (ആദം) അവര്‍ക്ക് ആ നാമങ്ങള്‍ പറഞ്ഞുകൊടുത്തപ്പോള്‍ അവന്‍ (അല്ലാഹു) പറഞ്ഞു: ആകാശ ഭൂമികളിലെ അദൃശ്യകാര്യങ്ങളും, നിങ്ങള്‍ വെളിപ്പെടുത്തുന്നതും, ഒളിച്ചുവെക്കുന്നതുമെല്ലാം എനിക്കറിയാമെന്ന് ഞാന്‍ നിങ്ങളോട് പറഞ്ഞിട്ടില്ലേ?",
     "tf": ""
   },
   {
     "n": 34,
-    "ar": "وَإِذْ قُلْنَا لِلْمَلَٰٓئِكَةِ ٱسْجُدُوا۟ لِءَادَمَ فَسَجَدُوٓا۟ إِلَّآ إِبْلِيسَ أَبَىٰ وَٱسْتَكْبَرَ وَكَانَ مِنَ ٱلْكَٰفِرِينَ",
+    "ar": "وَإِذْ قُلْنَا لِلْمَلَٰٓئِكَةِ ٱسْجُدُوا۟ لِءَادَمَ فَسَجَدُوٓا۟ إِلَّآ إِبْلِيسَ أَبَىٰ وَٱسْتَكْبَرَ وَكَانَ مِنَ ٱلْكَٰفِرِينَ",
     "ml": "ആദമിനെ നിങ്ങള്‍ പ്രണമിക്കുക എന്ന് നാം മലക്കുകളോട് പറഞ്ഞ സന്ദര്‍ഭം (ശ്രദ്ധിക്കുക) . അവര്‍ പ്രണമിച്ചു; ഇബ്ലീസ് ഒഴികെ. അവന്‍ വിസമ്മതം പ്രകടിപ്പിക്കുകയും അഹംഭാവം നടിക്കുകയും ചെയ്തു. അവന്‍ സത്യനിഷേധികളില്‍ പെട്ടവനായിരിക്കുന്നു.",
     "tf": ""
   },
   {
     "n": 35,
-    "ar": "وَقُلْنَا يَٰٓـَٔادَمُ ٱسْكُنْ أَنتَ وَزَوْجُكَ ٱلْجَنَّةَ وَكُلَا مِنْهَا رَغَدًا حَيْثُ شِئْتُمَا وَلَا تَقْرَبَا هَٰذِهِ ٱلشَّجَرَةَ فَتَكُونَا مِنَ ٱلظَّٰلِمِينَ",
+    "ar": "وَقُلْنَا يَٰٓـَٔادَمُ ٱسْكُنْ أَنتَ وَزَوْجُكَ ٱلْجَنَّةَ وَكُلَا مِنْهَا رَغَدًا حَيْثُ شِئْتُمَا وَلَا تَقْرَبَا هَٰذِهِ ٱلشَّجَرَةَ فَتَكُونَا مِنَ ٱلظَّٰلِمِينَ",
     "ml": "ആദമേ, നീയും നിന്റെഇണയും സ്വര്‍ഗത്തില്‍ താമസിക്കുകയും അതില്‍ നിങ്ങള്‍ ഇച്ഛിക്കുന്നിടത്തു നിന്ന് സുഭിക്ഷമായി ഇരുവരും ഭക്ഷിച്ചുകൊള്ളുകയും ചെയ്യുക. എന്നാല്‍ ഈ വൃക്ഷത്തെ നിങ്ങള്‍ സമീപിച്ചുപോകരുത്‌. എങ്കില്‍ നിങ്ങള്‍ ഇരുവരും അതിക്രമകാരികളായിത്തീരും എന്നു നാം ആജ്ഞാപിച്ചു.",
     "tf": ""
   },
   {
     "n": 36,
-    "ar": "فَأَزَلَّهُمَا ٱلشَّيْطَٰنُ عَنْهَا فَأَخْرَجَهُمَا مِمَّا كَانَا فِيهِ ۖ وَقُلْنَا ٱهْبِطُوا۟ بَعْضُكُمْ لِبَعْضٍ عَدُوٌّۭ ۖ وَلَكُمْ فِى ٱلْأَرْضِ مُسْتَقَرٌّۭ وَمَتَٰعٌ إِلَىٰ حِينٍۢ",
+    "ar": "فَأَزَلَّهُمَا ٱلشَّيْطَٰنُ عَنْهَا فَأَخْرَجَهُمَا مِمَّا كَانَا فِيهِ ۖ وَقُلْنَا ٱهْبِطُوا۟ بَعْضُكُمْ لِبَعْضٍ عَدُوٌّۭ ۖ وَلَكُمْ فِى ٱلْأَرْضِ مُسْتَقَرٌّۭ وَمَتَٰعٌ إِلَىٰ حِينٍۢ",
     "ml": "എന്നാല്‍ പിശാച് അവരെ അതില്‍ നിന്ന് വ്യതിചലിപ്പിച്ചു. അവര്‍ ഇരുവരും അനുഭവിച്ചിരുന്നതില്‍ (സൌഭാഗ്യം) നിന്ന് അവരെ പുറം തള്ളുകയും ചെയ്തു. നാം (അവരോട്‌) പറഞ്ഞു: നിങ്ങള്‍ ഇറങ്ങിപ്പോകൂ. നിങ്ങളില്‍ ചിലര്‍ ചിലര്‍ക്ക് ശത്രുക്കളാകുന്നു. നിങ്ങള്‍ക്ക് ഭൂമിയില്‍ ഒരു നിശ്ചിത കാലം വരേക്കും വാസസ്ഥലവും ജീവിതവിഭവങ്ങളുമുണ്ടായിരിക്കും.",
     "tf": ""
   },
   {
     "n": 37,
-    "ar": "فَتَلَقَّىٰٓ ءَادَمُ مِن رَّبِّهِۦ كَلِمَٰتٍۢ فَتَابَ عَلَيْهِ ۚ إِنَّهُۥ هُوَ ٱلتَّوَّابُ ٱلرَّحِيمُ",
+    "ar": "فَتَلَقَّىٰٓ ءَادَمُ مِن رَّبِّهِۦ كَلِمَٰتٍۢ فَتَابَ عَلَيْهِ ۚ إِنَّهُۥ هُوَ ٱلتَّوَّابُ ٱلرَّحِيمُ",
     "ml": "അനന്തരം ആദം തന്റെരക്ഷിതാവിങ്കല്‍ നിന്ന് ചില വചനങ്ങള്‍ സ്വീകരിച്ചു. (ആ വചനങ്ങള്‍ മുഖേന പശ്ചാത്തപിച്ച) ആദമിന് അല്ലാഹു പാപമോചനം നല്‍കി. അവന്‍ പശ്ചാത്താപം ഏറെ സ്വീകരിക്കുന്നവനും കരുണാനിധിയുമത്രെ.",
     "tf": ""
   },
   {
     "n": 38,
-    "ar": "قُلْنَا ٱهْبِطُوا۟ مِنْهَا جَمِيعًۭا ۖ فَإِمَّا يَأْتِيَنَّكُم مِّنِّى هُدًۭى فَمَن تَبِعَ هُدَاىَ فَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ",
+    "ar": "قُلْنَا ٱهْبِطُوا۟ مِنْهَا جَمِيعًۭا ۖ فَإِمَّا يَأْتِيَنَّكُم مِّنِّى هُدًۭى فَمَن تَبِعَ هُدَاىَ فَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ",
     "ml": "നാം പറഞ്ഞു: നിങ്ങളെല്ലാവരും അവിടെ നിന്ന് ഇറങ്ങിപ്പോകുക. എന്നിട്ട് എന്റെപക്കല്‍ നിന്നുള്ള മാര്‍ഗദര്‍ശനം നിങ്ങള്‍ക്ക് വന്നെത്തുമ്പോള്‍ എന്റെആ മാര്‍ഗദര്‍ശനം പിന്‍പറ്റുന്നവരാരോ അവര്‍ക്ക് ഭയപ്പെടേണ്ടതില്ല. അവര്‍ ദുഃഖിക്കേണ്ടിവരികയുമില്ല.",
     "tf": ""
   },
   {
     "n": 39,
-    "ar": "وَٱلَّذِينَ كَفَرُوا۟ وَكَذَّبُوا۟ بِـَٔايَٰتِنَآ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ",
+    "ar": "وَٱلَّذِينَ كَفَرُوا۟ وَكَذَّبُوا۟ بِـَٔايَٰتِنَآ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلنَّارِ ۖ هُمْ فِيهَا خَٰلِدُونَ",
     "ml": "അവിശ്വസിക്കുകയും നമ്മുടെ ദൃഷ്ടാന്തങ്ങള്‍ നിഷേധിച്ച് തള്ളുകയും ചെയ്തവരാരോ അവരായിരിക്കും നരകാവകാശികള്‍. അവരതില്‍ നിത്യവാസികളായിരിക്കും.",
     "tf": ""
   },
   {
     "n": 40,
-    "ar": "يَٰبَنِىٓ إِسْرَٰٓءِيلَ ٱذْكُرُوا۟ نِعْمَتِىَ ٱلَّتِىٓ أَنْعَمْتُ عَلَيْكُمْ وَأَوْفُوا۟ بِعَهْدِىٓ أُوفِ بِعَهْدِكُمْ وَإِيَّٰىَ فَٱرْهَبُونِ",
+    "ar": "يَٰبَنِىٓ إِسْرَٰٓءِيلَ ٱذْكُرُوا۟ نِعْمَتِىَ ٱلَّتِىٓ أَنْعَمْتُ عَلَيْكُمْ وَأَوْفُوا۟ بِعَهْدِىٓ أُوفِ بِعَهْدِكُمْ وَإِيَّٰىَ فَٱرْهَبُونِ",
     "ml": "ഇസ്രായീല്‍ സന്തതികളേ, ഞാന്‍ നിങ്ങള്‍ക്ക് ചെയ്തു തന്നിട്ടുള്ള അനുഗ്രഹം നിങ്ങള്‍ ഓര്‍മിക്കുകയും, എന്നോടുള്ള കരാര്‍ നിങ്ങള്‍ നിറവേറ്റുകയും ചെയ്യുവിന്‍. എങ്കില്‍ നിങ്ങളോടുള്ള കരാര്‍ ഞാനും നിറവേറ്റാം. എന്നെ മാത്രമേ നിങ്ങള്‍ ഭയപ്പെടാവൂ.",
     "tf": ""
-=======
-/* site.js – include on EVERY page:
-   <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
-   1) remembers the chosen language for the whole site
-   2) loads Google Translate only when a language other than Malayalam is chosen
-   3) natural voices + text to speech in the translated language
-   4) recitation audio: saves only Al-Ghamdi for offline use; recorded Malayalam voice with browser fallback
-   5) registers the offline service worker (/quran/sw.js) */
-(function () {
-  var KEY = 'quran-lang', YEAR = 'max-age=31536000';
-
-  function onReady(fn) {
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn();
->>>>>>> 36593b2ec181d6ffe7d07d66d9135718d79cd6fb
   }
-  function getPref() {
-    var p = null;
-    try { p = localStorage.getItem(KEY); } catch (e) {}
-    if (!p) { var m = document.cookie.match(/googtrans=\/[^/]*\/([A-Za-z-]+)/); if (m) p = m[1]; }
-    return p || 'ml';
-  }
-  function setCookie(l) {                         // Google reads this cookie to translate
-    var gone = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-    document.cookie = gone; document.cookie = gone + '; domain=' + location.hostname;
-    if (l !== 'ml') document.cookie = 'googtrans=/ml/' + l + '; path=/; ' + YEAR;
-  }
-  function savePref(l) { try { localStorage.setItem(KEY, l); } catch (e) {} setCookie(l); }
+];
+const SKEY = "quran-reader-settings";
+const CHECKS = ["show-ar", "show-ml", "show-tf", "cont"];
+let fontSize = 18, reciterId = "ghamdy";
 
-  var lang = getPref();
-  setCookie(lang);                                // keep cookie in step with the saved choice
+function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+function saveSettings() {
+  const s = loadSettings();
+  Object.assign(s, { fontSize, reciterId, repeat: $("repeat").value });
+  CHECKS.forEach(id => s[id] = $(id) ? $(id).checked : true);
+  try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+}
+function applySettings() {
+  const s = loadSettings();
+  if (s.fontSize) { fontSize = s.fontSize; document.documentElement.style.setProperty("--fs", fontSize + "px"); $("fs-label").textContent = fontSize; }
+  CHECKS.forEach(id => { if ($(id) && id in s) $(id).checked = s[id]; });
+  if (s.repeat) $("repeat").value = s.repeat;
+}
 
-  /* hide Google's own bar / highlights & ensure minimal centered layout */
-  var st = document.createElement('style');
-  st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
-    '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    '.controls{margin:0!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
-    '.banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
-    '.banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
-    '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
-    '#status,#audio-status,.status-text{width:100%!important;text-align:center!important;display:block!important;margin:4px auto 0 auto!important;float:none!important;clear:both!important;font-size:0.85rem!important;color:var(--acc, #1d5240)!important}' +
-    'body>.hero{margin-bottom:0!important;border-bottom:2px solid var(--gold)!important;padding-bottom:8px!important}' +
-    'body>.hero + div{text-align:center;margin:2px auto}' +
-    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1rem,2.5vw,1.3rem);margin:1px 0}' +
-    '@media(prefers-color-scheme:dark){body>.hero + div h1{color:var(--ink, #e9efe9)}}';
-  document.head.appendChild(st);
+const RECITERS = [
+  { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",        base: "https://everyayah.com/data/Ghamadi_40kbps" },
+  { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",       base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+  { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",        base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+  { id: "hudhaify", name: "അലി ഹുദൈഫി",            base: "https://everyayah.com/data/Hudhaify_64kbps" },
+  { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്‌ലി", base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+  { id: "alili",    name: "അസീസ് അലീലി",           base: "https://everyayah.com/data/aziz_alili_128kbps" }
+];
 
-  /* keep Arabic text untranslated: mark elements that are mostly Arabic */
-  function markArabic(root) {
-    var AR = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/g;
-    root.querySelectorAll('h1,h2,h3,p,span,div,a,li').forEach(function (e) {
-      if (e.children.length) return;                       // only elements with no child elements
-      var t = e.textContent, n = (t.match(AR) || []).length, len = t.replace(/\s/g, '').length;
-      if (n && len && n / len > 0.5) e.setAttribute('translate', 'no');
-    });
-  }
-  /* wrap every Arabic phrase inside normal text so Google leaves it alone */
-  function wrapArabic(root) {
-    var A = '[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]',
-        RE = new RegExp(A + '+(?:[ \\u00a0\\u200c\\u200d]+' + A + '+)*', 'g'),
-        skip = /^(SCRIPT|STYLE|TEXTAREA|INPUT|SELECT|OPTION|CODE|PRE)$/;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (n) {
-        var p = n.parentNode;
-        if (!p || skip.test(p.nodeName) || (p.closest && p.closest('[translate="no"],.notranslate'))) return NodeFilter.FILTER_REJECT;
-        RE.lastIndex = 0;
-        return RE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-      }
-    });
-    var nodes = [], n;
-    while ((n = walker.nextNode())) nodes.push(n);                 // collect first, then edit
-    nodes.forEach(function (node) {
-      var text = node.nodeValue, frag = document.createDocumentFragment(), last = 0, m;
-      RE.lastIndex = 0;
-      while ((m = RE.exec(text))) {
-        if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
-        var s = document.createElement('span');
-        s.setAttribute('translate', 'no'); s.className = 'notranslate';
-        s.style.fontFamily = '"Noto Naskh Arabic",serif';
-        s.textContent = m[0]; frag.appendChild(s);
-        last = m.index + m[0].length;
-      }
-      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
-      node.parentNode.replaceChild(frag, node);
-    });
-  }
-  window.quranWrapArabic = wrapArabic;                             // pages that load text later can call this
+const pad3 = x => String(x).padStart(3, "0");
+const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+const audioUrl = n => currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
 
-  onReady(function () {
-    /* language picker */
-    var sel = document.getElementById('langPick');
-    if (sel) {
-      if (lang !== 'ml') sel.value = lang;
-      sel.addEventListener('change', function () {
-        if (!sel.value) return;
-        savePref(sel.value); location.reload();
-      });
-    }
-    if (lang !== 'ml') {
-      markArabic(document.body);
-      wrapArabic(document.body);
-      var rm = document.querySelector('meta[name="referrer"]');
-      if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
-      window.googleTranslateElementInit = function () {
-        new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
-      };
-      var d = document.createElement('div'); d.id = 'gt_el'; d.style.display = 'none'; document.body.appendChild(d);
-      var s = document.createElement('script');
-      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; s.async = true;
-      document.head.appendChild(s);
-    }
+function changeReciter(id) { reciterId = id; saveSettings(); }
+function initReciters() {
+  const sel = $("reciter");
+  if(!sel) return;
+  sel.innerHTML = RECITERS.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+  const saved = loadSettings().reciterId;
+  reciterId = (RECITERS.find(r => r.id === saved) || RECITERS[0]).id;
+  sel.value = reciterId;
+}
 
-    /* Robust Option panel toggle & label state handler */
-    var optBtn = document.getElementById('opt-toggle');
-    var panel = document.getElementById('panel');
-    var controls = document.querySelector('.controls');
-    
-    if (optBtn && panel) {
-      panel.classList.remove('open');
-      panel.style.display = 'none';
-      optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-      optBtn.removeAttribute('onclick'); // prevent double handling conflict
+const KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
 
-      optBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var isOpen = panel.classList.contains('open') || panel.style.display === 'block';
-        if (isOpen) {
-          panel.classList.remove('open');
-          panel.style.display = 'none';
-          if (controls) controls.classList.remove('open');
-          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-        } else {
-          panel.classList.add('open');
-          panel.style.display = 'block';
-          if (controls) controls.classList.add('open');
-          optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
-        }
-      });
+function buildPage() {
+  $("verses").innerHTML = VERSES.map(v => {
+    const vNum = v.n;
+    return `
+    <div class="verse" id="verse-${vNum}">
+      <div class="vhead"><span>ആയത്ത് ${SURAH}: ${pad3(vNum)}</span></div>
+      <div class="item it-ar" id="item-ar-${vNum}"><div class="row rtl">
+        <button class="play-btn" id="btn-ar-${vNum}" onclick="toggleItem('ar', ${vNum})">▶</button>
+        <p class="text ar" lang="ar" dir="rtl">${v.ar}</p></div></div>
+      ${v.ml ? `<div class="item it-ml" id="item-ml-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-ml-${vNum}" onclick="toggleItem('ml', ${vNum})">▶</button>
+        <p class="text"><span class="tag">സാരം:</span>${v.ml}</p></div></div>` : ""}
+      ${v.tf ? `<button class="small-btn tf-btn" id="tgl-${vNum}" onclick="toggleTafseer(${vNum})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${vNum}"><div class="row">
+        <button class="play-btn" id="btn-tf-${vNum}" onclick="toggleItem('tf', ${vNum})">▶</button>
+        <p class="text"><span class="pl">${v.tf}</span></p></div></div>` : ""}
+    </div>`;
+  }).join("");
+}
 
-      document.addEventListener('click', function (e) {
-        if (controls && !controls.contains(e.target)) {
-          panel.classList.remove('open');
-          panel.style.display = 'none';
-          if (controls) controls.classList.remove('open');
-          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-        }
-      });
-    }
+function changeFont(d) {
+  fontSize = Math.min(40, Math.max(12, fontSize + d));
+  document.documentElement.style.setProperty("--fs", fontSize + "px");
+  $("fs-label").textContent = fontSize; saveSettings();
+}
 
-    /* Status text centering below buttons */
-    var banner = document.querySelector('.banner');
-    var statusEl = document.getElementById('status');
-    if (statusEl && banner) {
-      banner.appendChild(statusEl);
-    }
+function setTafseerVisible(n, show) {
+  const b = $("item-tf-" + n), t = $("tgl-" + n);
+  if (!b) return; b.classList.toggle("hidden", !show); if (t) t.classList.toggle("open", show);
+}
 
-    /* 'കേൾക്കാം' master toggle button with stop capability */
-    var masterBtn = document.getElementById('master');
-    if (masterBtn) {
-      masterBtn.textContent = 'കേൾക്കാം';
-      masterBtn.addEventListener('click', function(e) {
-        if (masterBtn.classList.contains('playing')) {
-          e.stopImmediatePropagation();
-          if (typeof stopSpeech === 'function') stopSpeech();
-          if (typeof currentAudio !== 'undefined' && currentAudio) { 
-            currentAudio.pause(); 
-            currentAudio.currentTime = 0; 
-          }
-          masterBtn.classList.remove('playing');
-          masterBtn.textContent = 'കേൾക്കാം';
-        }
-      }, true);
-    }
+function toggleTafseer(n) {
+  const willShow = $("item-tf-" + n).classList.contains("hidden");
+  setTafseerVisible(n, willShow);
+}
 
-    /* Move 'തുടർച്ചയായി കേൾക്കുക' checkbox inside panel next to 'വിവരണം' */
-    var contInput = document.getElementById('cont');
-    if (contInput && panel) {
-      var wrapper = contInput.closest('label');
-      if (wrapper) wrapper.remove();
-      var newLabel = document.createElement('label');
-      newLabel.className = 'opt';
-      newLabel.appendChild(contInput);
-      newLabel.appendChild(document.createTextNode(' തുടർച്ചയായി കേൾക്കുക'));
+function applyDisplay() {
+  const on = id => $(id) ? $(id).checked : true;
+  document.body.classList.toggle("hide-ar", !on("show-ar"));
+  document.body.classList.toggle("hide-ml", !on("show-ml"));
+  document.body.classList.toggle("hide-tf", !on("show-tf"));
+  VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  saveSettings();
+}
 
-      var vivaranamLabel = null;
-      var labels = panel.querySelectorAll('label');
-      labels.forEach(function(l) {
-        if (l.textContent.indexOf('വിവരണം') > -1) vivaranamLabel = l;
-      });
-      if (vivaranamLabel && vivaranamLabel.parentNode) {
-        vivaranamLabel.parentNode.insertBefore(newLabel, vivaranamLabel.nextSibling);
-      } else {
-        panel.appendChild(newLabel);
-      }
-    }
+let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
 
-    /* Bismillah handling: only on pages starting with verse 1, matching verse color */
-    var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
-    var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
-    if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
-      if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
-        bismiDiv.remove();
-      } else {
-        var bEl = bismiDiv.querySelector('h1') || bismiDiv;
-        if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
-      }
-    }
-  });
+function mark(key) {
+  clearMark(); activeKey = key;
+  const btn = $("btn-" + key), item = $("item-" + key);
+  if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+  if (item) { item.classList.add("reading"); item.scrollIntoView({ behavior: "smooth", block: "center" }); }
+}
 
-  /* ===== natural voices on every device ===== */
-  var MALE = /midhun|\bmale\b|ravi|prabhat|hemant|madhur|rishi/i, FEMALE = /female|sobhana|swara|lekha|heera|soumya|veena|neerja/i;
-  function isM(v) { return MALE.test(v.name) && !FEMALE.test(v.name); }
-  function vscore(v) {
-    var n = v.name || '', s = 0;
-    if (/natural|neural/i.test(n)) s += 10;            
-    if (/enhanced|premium|siri/i.test(n)) s += 8;      
-    if (/online/i.test(n)) s += 6;
-    if (/google/i.test(n)) s += 5;                     
-    if (v.localService === false) s += 2;
-    if (/compact|espeak|festival/i.test(n)) s -= 6;    
-    return s;
-  }
-  function byLang(l) {
-    return window.speechSynthesis ? speechSynthesis.getVoices().filter(function (v) {
-      return v.lang.toLowerCase().replace('_', '-').indexOf(l) === 0; }) : [];
-  }
-  function pick(kind, lang) {          
-    var vs = lang ? byLang(lang) : (typeof window.mlVoices === 'function' ? window.mlVoices() : byLang('ml'));
-    if (!vs.length) return null;
-    vs = vs.slice().sort(function (a, b) { return vscore(b) - vscore(a) || a.name.localeCompare(b.name); });
-    var best = vscore(vs[0]), pool = vs.filter(function (v) { return vscore(v) >= best - 2; });
-    var a = pool.filter(isM)[0] || pool[0];
-    if (kind !== 'tf') return a;
-    return pool.filter(function (v) { return v !== a && isM(v) !== isM(a); })[0] ||
-           vs.filter(function (v) { return v !== a; })[0] || a;
-  }
-  window.quranVoice = function (lang) { return pick('ml', lang); };
-  onReady(function () {
-    if (typeof window.resolveVoice === 'function') window.resolveVoice = function (kind) { return pick(kind); };
-    if (typeof window.voiceProfile === 'function') window.voiceProfile = function (kind) {
-      var v = pick(kind); if (!v) return null;
-      var natural = vscore(v) >= 8, same = pick('ml') === pick('tf');
-      return { voice: v, pitch: (kind === 'tf' && same && !natural) ? 0.8 : 1, rate: kind === 'tf' ? 0.85 : 0.95 };
-    };
-  });
+function clearMark() {
+  if (!activeKey) return;
+  const btn = $("btn-" + activeKey), item = $("item-" + activeKey);
+  if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+  if (item) item.classList.remove("reading");
+  activeKey = null;
+}
 
-  /* ===== text-to-speech engine with robust fallback handling ===== */
-  var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
-  function mlFrac(t) {
-    var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
-    var ml = (rest.match(/[\u0D00-\u0D7F]/g) || []).length;
-    return rest.length ? ml / rest.length : 1;
-  }
-  function spokenCode(text) {
-    if (lang && lang !== 'ml') return lang;
-    var h = (document.documentElement.lang || '').toLowerCase().split('-')[0];
-    if (h && h !== 'ml') return h;
-    if (/[\u0900-\u097F]/.test(text)) return 'hi';
-    if (/[\u0B80-\u0BFF]/.test(text)) return 'ta';
-    if (/[\u0C80-\u0CFF]/.test(text)) return 'kn';
-    var nl = (navigator.language || 'en').toLowerCase().split('-')[0];
-    return nl === 'ml' ? 'en' : nl;
-  }
-  function shownText(el) {
-    if (!el) return '';
-    var src = el.querySelector('.pl') || el.querySelector('.text') || el, c = src.cloneNode(true);
-    c.querySelectorAll('.tag,.isti-ar,[translate="no"]').forEach(function (x) { x.remove(); });
-    return c.textContent.replace(/\s+/g, ' ').trim();
-  }
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  clearMark();
+  const masterBtn = $("master");
+  if (masterBtn) { masterBtn.textContent = "കേൾക്കാം"; masterBtn.classList.remove("playing"); }
+  if ($("status")) $("status").textContent = "";
+}
 
-  function cleanForSpeech(t) {
-    return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, ' ').replace(/[()\u2018\u2019\u201C\u201D"]/g, '').replace(/\s+/g, ' ').trim();
-  }
-  function splitText(text, max) {
-    max = max || 140;
-    var sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = [], cur = '';
-    for (var j = 0; j < sentences.length; j++) {
-      var s = sentences[j].trim();
-      while (s.length > max) {
-        var cut = s.lastIndexOf(' ', max); if (cut <= 0) cut = max;
-        if (cur) { chunks.push(cur); cur = ''; }
-        chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
-      }
-      if (!s) continue;
-      if (cur && (cur + ' ' + s).length > max) { chunks.push(cur); cur = s; } else cur = cur ? cur + ' ' + s : s;
-    }
-    if (cur) chunks.push(cur);
-    return chunks.filter(function (c) { return /[^\s.,:;!?।]/.test(c); });
-  }
-
-  function onlineChunks(chunks, code, my, done, i, kind, label) {
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const audio = new Audio();
+  audio.preload = "auto"; currentAudio = audio;
+  audio.onended = () => { if (my === token) done(); };
+  audio.onerror = () => done();
+  const rawUrl = audioUrl(n);
+  if ($("status")) $("status").textContent = curLabel + " · " + currentReciter().name;
+  Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(rawUrl) : rawUrl).then(u => {
     if (my !== token) return;
-    if (i >= chunks.length) { done(); return; }
-    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
-    var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
-    a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
-    if (typeof currentAudio !== 'undefined') currentAudio = a;
-    a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
-    a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
-    a.onerror = function () { done(); }; 
-    a.play().catch(function () { done(); });
-  }
+    audio.src = u;
+    audio.play().catch(() => done());
+  }).catch(() => done());
+}
 
-  function speakIn(code, text, my, done, kind, label) {
-    var chunks = splitText(cleanForSpeech(text));
-    if (!chunks.length) { done(); return; }
-    var vc = code.toLowerCase(), v = pick(kind, vc) || (vc.indexOf('-') > 0 ? pick(kind, vc.split('-')[0]) : null);
-    if (!v) { onlineChunks(chunks, code, my, done, 0, kind, label); return; }
-    var natural = vscore(v) >= 8, same = pick('ml', vc) === pick('tf', vc);
-    var pitch = (kind === 'tf' && same && !natural) ? 0.8 : 1, rate = kind === 'tf' ? 0.85 : 0.95;
-    
-    var next = function (i) {
+function speakMalayalam(text, my, done) {
+  if (!text) { done(); return; }
+  if (!window.speechSynthesis) { done(); return; }
+  window.speechSynthesis.cancel();
+  if ($("status")) $("status").textContent = curLabel;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ml-IN"; u.rate = 0.9;
+  u.onend = () => { if (my === token) done(); };
+  u.onerror = () => { if (my === token) done(); };
+  window.speechSynthesis.speak(u);
+}
+
+function playItem(kind, n, my, done) {
+  curKind = kind;
+  curLabel = "ആയത്ത് " + n + " – " + KIND_NAME[kind];
+  if ($("status")) $("status").textContent = curLabel;
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
       if (my !== token) return;
-      if (i >= chunks.length) { done(); return; }
-      if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + code + ' · ' + v.name + ' ' + (i + 1) + '/' + chunks.length;
-      
-      if (typeof window.speechSynthesis === 'undefined') {
-        onlineChunks(chunks, code, my, done, i, kind, label);
-        return;
-      }
-
-      var u = new SpeechSynthesisUtterance(chunks[i]);
-      if (typeof utterances !== 'undefined') utterances[0] = u;
-      u.voice = v; u.lang = v.lang; u.pitch = pitch; u.rate = rate;
-      
-      var started = false, over = false, wd;
-      var fb = function () {
-        if (over) return; over = true; clearTimeout(wd);
-        try { speechSynthesis.cancel(); } catch(e) {}
-        onlineChunks(chunks, code, my, done, i, kind, label);
-      };
-      
-      wd = setTimeout(function () { if (my === token && !started) fb(); }, 6000);
-      u.onstart = function () { started = true; };
-      u.onend = function () { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
-      u.onerror = function (e) { if (my === token && e.error !== 'canceled' && e.error !== 'interrupted') fb(); };
-      
-      try {
-        speechSynthesis.speak(u);
-      } catch (ex) {
-        fb();
-      }
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
     };
-    try { speechSynthesis.cancel(); } catch(e) {}
-    setTimeout(function () { next(0); }, 50);
-  }
-
-  var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
-  function p3(n) { return String(n).padStart(3, '0'); }
-  function fnv(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); }
-  var recMan = null;
-  function recManifest() {
-    if (typeof SURAH === 'undefined') return Promise.resolve({});
-    if (!recMan) recMan = fetch(REC_BASE + p3(SURAH) + '/manifest.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
-    return recMan;
-  }
-  function recSrc(url) {
-    if (!window.caches) return Promise.resolve(url);
-    var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
-    return caches.open(REC_CACHE).then(function (c) {
-      return c.match(url).then(function (hit) {
-        if (hit) return blobUrl(hit);
-        if (!navigator.onLine) return null;
-        return fetch(url).then(function (r) {
-          if (!r.ok) return null;
-          return c.put(url, r.clone()).then(function () {
-            c.keys().then(function (ks) { for (var i = 0; i < ks.length - REC_MAX; i++) c.delete(ks[i]); });
-            return blobUrl(r);
-          });
-        });
-      });
-    }).catch(function () { return null; });
-  }
-  function playRecorded(kind, n, text, my, done, fallback) {
-    recManifest().then(function (man) {
-      var key = p3(SURAH) + p3(n) + '-' + kind, e = man[key];
-      if (!e || e.h !== fnv(text)) return fallback();
-      return recSrc(REC_BASE + p3(SURAH) + '/' + key + '.mp3').then(function (src) {
-        if (my !== token) return;
-        if (!src) return fallback();
-        var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
-        var failed = false, bad = function () { if (failed || my !== token) return; failed = true; fallback(); };
-        a.onended = function () { if (my === token) done(); };
-        a.onerror = bad;
-        a.src = src; a.playbackRate = 1; if (typeof currentAudio !== 'undefined') currentAudio = a;
-        if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
-        a.play().catch(bad);
-      });
-    }).catch(function () { if (my !== token) fallback(); });
-  }
-  onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
-
-  function ensureVoices(code, cb) { cb(); }
-
-  onReady(function () {
-    window.speakMalayalam = function (text, my, done) {
-      var el = null;
-      if (typeof activeKey !== 'undefined' && activeKey) {
-        el = document.getElementById('item-' + activeKey);
-        if (!el) {
-          var parts = activeKey.split('-');
-          if (parts.length >= 2) {
-            el = document.getElementById('item-' + parts[0] + '-' + parts[parts.length - 1]);
-          }
-        }
-      }
-      var shown = el ? shownText(el) : text, translated = !!shown && mlFrac(shown) < 0.5;
-      var code = translated ? spokenCode(shown) : 'ml';
-      
-      ensureVoices(code, function () {
-        if (my !== token) return;
-        if (translated) {
-          speakIn(code, (shown || text).replace(NUM, ' '), my, done,
-                  typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
-        } else {
-          var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
-          var verseNum = kn.length ? +kn[kn.length - 1] : 0;
-          var fallbackSpeech = function() {
-            var chunks = splitText(cleanForSpeech(text), 120);
-            if (!chunks.length) { done(); return; }
-            var kind = typeof curKind !== 'undefined' ? curKind : 'ml';
-            var found = pick(kind);
-            if (!found) {
-              onlineChunks(chunks, 'ml', my, done, 0, kind, typeof curLabel !== 'undefined' ? curLabel : '');
-              return;
-            }
-            var nextChunk = function(idx) {
-              if (my !== token) return;
-              if (idx >= chunks.length) { done(); return; }
-              if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (found.name || 'Malayalam Voice') + ' (' + (idx+1) + '/' + chunks.length + ')';
-              
-              if (typeof window.speechSynthesis === 'undefined') {
-                onlineChunks(chunks, 'ml', my, done, idx, kind, typeof curLabel !== 'undefined' ? curLabel : '');
-                return;
-              }
-
-              var u = new SpeechSynthesisUtterance(chunks[idx]);
-              if (typeof utterances !== 'undefined') utterances[0] = u;
-              u.voice = found.voice || found; u.lang = u.voice.lang || 'ml-IN'; u.pitch = 1; u.rate = 0.95;
-              
-              var doneCalled = false, tmr;
-              var advance = function() {
-                if (doneCalled) return; doneCalled = true;
-                clearTimeout(tmr);
-                nextChunk(idx + 1);
-              };
-              
-              tmr = setTimeout(advance, 7000); 
-              u.onend = advance;
-              u.onerror = advance;
-              
-              try {
-                speechSynthesis.speak(u);
-              } catch(e) {
-                advance();
-              }
-            };
-            try { speechSynthesis.cancel(); } catch(e) {}
-            setTimeout(function() { nextChunk(0); }, 50);
-          };
-
-          if ((kn[0] === 'ml' || kn[0] === 'tf') && verseNum > 0) {
-            playRecorded(kn[0], verseNum, text, my, done, fallbackSpeech);
-          } else {
-            fallbackSpeech();
-          }
-        }
-      });
-    };
-
-    if (typeof window.speakPreface === 'function') {
-      var origPref = window.speakPreface;
-      window.speakPreface = function (text, my) {
-        var translated = mlFrac(text) < 0.5, code = translated ? spokenCode(text) : 'ml';
-        ensureVoices(code, function () {
-          if (my !== token) return;
-          if (translated) speakIn(code, text.replace(NUM, ' '), my, function () { if (typeof stopSpeech === 'function') stopSpeech(); }, 'ml', '');
-          else origPref(text, my);
-        });
-      };
+    loop(1);
+  } else {
+    const vObj = VERSES.find(v => v.n === n) || VERSES[0];
+    if (vObj && vObj[kind]) {
+      speakMalayalam(vObj[kind], my, done);
+    } else {
+      done();
     }
-  });
-
-  /* ===== extra reciters ===== */
-  var EXTRA_RECITERS = [
-    { id: 'alafasy',    name: 'മിഷാരി അൽ അഫാസി',         base: 'https://everyayah.com/data/Alafasy_64kbps' },
-    { id: 'sudais',     name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',    base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
-    { id: 'shuraym',    name: 'സഊദ് അശ്ശുറൈം',           base: 'https://everyayah.com/data/Saood_ash-Shuraym_64kbps' },
-    { id: 'husary',     name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',   base: 'https://everyayah.com/data/Husary_64kbps' },
-    { id: 'abdulbasit', name: 'അബ്ദുൽ ബാസിത്വ്',          base: 'https://everyayah.com/data/Abdul_Basit_Murattal_64kbps' },
-    { id: 'jibreel',    name: 'മുഹമ്മദ് ജിബ്രീൽ',         base: 'https://everyayah.com/data/Muhammad_Jibreel_64kbps' },
-    { id: 'budair',     name: 'സ്വലാഹ് അൽ ബുദൈർ',        base: 'https://everyayah.com/data/Salah_Al_Budair_128kbps' }
-  ];
-  onReady(function () {
-    if (typeof RECITERS === 'undefined' || typeof initReciters !== 'function') return;
-    EXTRA_RECITERS.forEach(function (r) {
-      if (!RECITERS.some(function (x) { return x.id === r.id; })) RECITERS.push(r);
-    });
-    initReciters();
-  });
-
-  /* ===== audio caching ===== */
-  var DEFAULT_REC = '/Ghamadi_40kbps/', AUDIO_CACHE = 'quran-audio-v1', MAX_FILES = 1000;
-  function isDefaultRec(url) { return url.indexOf(DEFAULT_REC) > -1; }
-  function trimAudio(c) {
-    return c.keys().then(function (ks) { for (var i = 0; i < ks.length - MAX_FILES; i++) c.delete(ks[i]); });
   }
-  window.cachedSrc = function (url) {
-    if (!window.caches) return Promise.resolve(url);
-    var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
-    var alt = url.replace(/\/data\/[^/]+\//, '/data/Ghamadi_40kbps/');
-    return caches.open(AUDIO_CACHE).then(function (c) {
-      var saved = function () {
-        return c.match(url).then(function (h) { return h || c.match(alt); })
-                .then(function (h) { return h ? blobUrl(h) : url; });
-      };
-      if (!navigator.onLine) return saved();
-      if (!isDefaultRec(url)) return url;
-      return c.match(url).then(function (hit) {
-        if (hit) return blobUrl(hit);
-        return fetch(url, { mode: 'cors' }).then(function (r) {
-          if (!r.ok) return url;
-          return c.put(url, r.clone()).then(function () { trimAudio(c); return blobUrl(r); });
-        }).catch(saved);
-      });
-    }).catch(function () { return url; });
+}
+
+function toggleItem(kind, n) {
+  const key = kind + "-" + n;
+  if (activeKey === key) { stopAll(); return; }
+  stopAll();
+  const my = token;
+  mark(key);
+  playItem(kind, n, my, () => { if (my === token) stopAll(); });
+}
+
+function fullQueue() {
+  const kinds = ["ar", "ml", "tf"].filter(k => $("show-" + k) && $("show-" + k).checked);
+  const queue = [];
+  VERSES.forEach(v => kinds.forEach(k => { if (k !== "ar" && !v[k]) return; queue.push({ kind: k, n: v.n }); }));
+  return queue;
+}
+
+function runQueue(queue, startWithBm) {
+  const my = token;
+  const masterBtn = $("master");
+  masterBtn.textContent = "നിർത്തുക"; masterBtn.classList.add("playing");
+  
+  const step = i => {
+    if (my !== token) return;
+    if (i >= queue.length) { stopAll(); return; }
+    const item = queue[i];
+    mark(item.kind + "-" + item.n);
+    if (item.kind === 'bm') {
+      if (typeof playBismillah === 'function') {
+        playBismillah(my, () => { if (my === token) step(i + 1); });
+      } else {
+        step(i + 1);
+      }
+    } else {
+      playItem(item.kind, item.n, my, () => { if (my === token) step(i + 1); });
+    }
   };
-  if (window.caches) {
-    caches.open(AUDIO_CACHE).then(function (c) {
-      return c.keys().then(function (ks) { ks.forEach(function (r) { if (!isDefaultRec(r.url)) c.delete(r); }); });
-    }).catch(function () {});
-  }
+  step(0);
+}
 
-  /* ===== error messages & non-blocking fallback handling ===== */
-  var VERSE_ERROR = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, അല്ലെങ്കിൽ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക';
-  var TRY_AGAIN = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, ';
-  onReady(function () {
-    if (typeof window.fail !== 'function') return;
-    var origFail = window.fail;
-    window.fail = function (my, msg) {
-      msg = msg || '';
-      var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');
-      if (recitation) msg = VERSE_ERROR;
-      else if (msg.indexOf(TRY_AGAIN) !== 0) msg = TRY_AGAIN + msg;
-      origFail(msg);
-    };
-  });
-
-  /* ===== Bismillah: show only on pages with verse 1, matching verse color style ===== */
-  function playBismillah(my, done) {
-    var rec = currentReciter(), url = rec.base.replace(/\/*$/, '/') + '001001.mp3';
-    if (typeof curKind !== 'undefined') curKind = 'ml';
-    if (typeof curLabel !== 'undefined') curLabel = 'ബിസ്മി';
-    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = 'ബിസ്മി · ' + rec.name;
-    Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(url) : url).then(function (u) {
-      if (my !== token) return;
-      var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio(), over = false;
-      var next = function () { if (over || my !== token) return; over = true; done(); };
-      a.onended = next; a.onerror = next;
-      a.src = u; a.playbackRate = 1; if (typeof currentAudio !== 'undefined') currentAudio = a;
-      a.play().catch(next);
-    }).catch(function () { if (my !== token) done(); });
+function toggleContinuous() {
+  const masterBtn = $("master");
+  if (masterBtn && masterBtn.classList.contains('playing')) {
+    stopAll();
+    return;
   }
-  onReady(function () {
-    if (typeof SURAH === 'undefined') return;
-    var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
-    var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
-    
+  stopAll();
+  continuous = true;
+  const q = fullQueue();
+  if (!q.length) { stopAll(); return; }
+  
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  const arChecked = $("show-ar") ? $("show-ar").checked : true;
+  if (hasVerse1 && SURAH !== 1 && SURAH !== 9 && arChecked && typeof playBismillah === 'function') {
+    runQueue([{ kind: 'bm', n: 0 }].concat(q), true);
+  } else {
+    runQueue(q, false);
+  }
+}
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle"), panelEl = $("panel");
+function togglePanel(e) {
+  e.stopPropagation();
+  const isOpen = panelEl.style.display === 'block' || panelEl.classList.contains('open');
+  if (isOpen) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    if (controlsEl) controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  } else {
+    panelEl.style.display = 'block';
+    panelEl.classList.add('open');
+    if (controlsEl) controlsEl.classList.add('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (controlsEl && !controlsEl.contains(e.target)) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bismiDiv = $("bismi-container");
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  if (bismiDiv) {
     if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
-      if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
-        bismiDiv.remove();
-      }
-    } else if (bismiDiv) {
-      var bEl = bismiDiv.querySelector('h1') || bismiDiv;
-      if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
+      bismiDiv.remove();
     }
-
-    if (SURAH === 1 || SURAH === 9) return;
-    if (typeof window.playItem !== 'function' || typeof window.toggleContinuous !== 'function' ||
-        typeof fullQueue !== 'function' || typeof runQueue !== 'function' || typeof VERSES === 'undefined') return;
-    
-    var origPlay = window.playItem, origToggle = window.toggleContinuous;
-    window.playItem = function (kind, n, my, done) { return kind === 'bm' ? playBismillah(my, done) : origPlay(kind, n, my, done); };
-    window.toggleContinuous = function () {
-      var masterBtn = document.getElementById('master');
-      if (masterBtn && masterBtn.classList.contains('playing')) return origToggle();
-      var q = (typeof fullQueue === 'function' ? fullQueue() : []), ar = document.getElementById('show-ar');
-      if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
-      q.unshift({ kind: 'bm', n: 0 });
-      runQueue(q, true);
-    };
-  });
-
-  /* offline support */
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('/quran/sw.js', { scope: '/quran/' }).catch(function () {});
-    });
   }
-})();
+});
+
+buildPage(); initReciters(); applySettings(); applyDisplay();
+</script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>
