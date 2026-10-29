@@ -27,11 +27,10 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights & compact center aligned banner with zero extra space */
+  /* hide Google's own bar / highlights & ultra-compact center aligned controls bar */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    /* Ultra-compact center aligned controls bar */
     '.controls{margin:0!important;padding:4px 8px!important;border:none!important;border-radius:0 0 8px 8px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;min-height:auto!important}' +
     '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;margin:0!important;padding:0!important;width:auto!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:3px solid var(--gold)!important}' +
@@ -105,7 +104,7 @@
       document.head.appendChild(s);
     }
 
-    /* Robust Option button text toggle update using MutationObserver */
+    /* Option button text toggle update with MutationObserver */
     var optBtn = document.getElementById('opt-toggle');
     var panel = document.getElementById('panel');
     if (optBtn) {
@@ -131,7 +130,7 @@
       }
     }
 
-    /* 'കേൾക്കാം' master toggle button with Stop feature */
+    /* 'കേൾക്കാം' master toggle button with Stop feature & cleaning up any unintended labels */
     var masterBtn = document.getElementById('master');
     if (masterBtn) {
       masterBtn.textContent = 'കേൾക്കാം';
@@ -149,7 +148,7 @@
       }, true);
     }
 
-    /* Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel */
+    /* Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel and ensure no label clash */
     var contInput = document.getElementById('cont');
     if (contInput && panel) {
       var wrapper = contInput.closest('label');
@@ -221,7 +220,7 @@
     };
   });
 
-  /* ===== text-to-speech engine: Page 2+ fix & Red button state handling ===== */
+  /* ===== text-to-speech engine: Robust multi-part Page 2+ fix ===== */
   var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
   function mlFrac(t) {
     var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
@@ -370,8 +369,19 @@
   function ensureVoices(code, cb) { cb(); }
 
   onReady(function () {
+    /* Robust speakMalayalam supporting multi-part page 2+ DOM element retrieval */
     window.speakMalayalam = function (text, my, done) {
-      var el = (typeof activeKey !== 'undefined' && activeKey) ? document.getElementById('item-' + activeKey) : null;
+      var el = null;
+      if (typeof activeKey !== 'undefined' && activeKey) {
+        el = document.getElementById('item-' + activeKey);
+        if (!el) {
+          // Fallback search across elements if activeKey ID format varies on page 2+
+          var parts = activeKey.split('-');
+          if (parts.length >= 2) {
+            el = document.getElementById('item-' + parts[0] + '-' + parts[parts.length - 1]);
+          }
+        }
+      }
       var shown = el ? shownText(el) : text, translated = !!shown && mlFrac(shown) < 0.5;
       var code = translated ? spokenCode(shown) : 'ml';
       
@@ -382,7 +392,7 @@
                   typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
         } else {
           var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
-          var verseNum = kn[1] ? +kn[1] : 0;
+          var verseNum = kn.length ? +kn[kn.length - 1] : 0;
           var fallbackSpeech = function() {
             var chunks = splitText(cleanForSpeech(text), 120);
             if (!chunks.length) { done(); return; }
@@ -552,7 +562,7 @@
     window.toggleContinuous = function () {
       var masterBtn = document.getElementById('master');
       if (masterBtn && masterBtn.classList.contains('playing')) return origToggle();
-      var q = fullQuery ? fullQuery() : (typeof fullQueue === 'function' ? fullQueue() : []), ar = document.getElementById('show-ar');
+      var q = (typeof fullQueue === 'function' ? fullQueue() : []), ar = document.getElementById('show-ar');
       if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
       q.unshift({ kind: 'bm', n: 0 });
       runQueue(q, true);
