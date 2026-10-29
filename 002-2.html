@@ -39,7 +39,7 @@ body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14
 button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .fs-group{display:inline-flex;align-items:center;gap:4px}
 #fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
-#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status{width:100%!important;text-align:center!important;font-size:13px;color:var(--acc);margin:4px auto 0 auto!important;display:block!important;line-height:1.3}
 #status:empty{display:none}
 .verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
 .vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
@@ -72,12 +72,12 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
  <h1>2. സൂറത്തുൽ അൽ ബഖറഃ (21–40)</h1>
 </header>
 
-<div><h1 style="text-align: center; margin: 15px 0;">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1></div>
+<div id="bismi-container"><h1 style="text-align: center; margin: 15px 0; color: var(--acc, #1d5240);">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1></div>
 
 <div class="controls" id="controls">
   <div class="banner">
-    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾</button></div>
-    <div class="banner-row"><button id="master" class="main-btn" onclick="toggleContinuous()">▶ തുടർച്ചയായി കേൾക്കാം</button></div>
+    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">ഓപ്ഷനുകൾ ▾</button></div>
+    <div class="banner-row"><button id="master" class="main-btn" onclick="toggleContinuous()">കേൾക്കാം</button></div>
     <div id="status"></div>
   </div>
   <div class="panel" id="panel">
@@ -94,6 +94,7 @@ body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
       <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
       <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
       <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+      <label class="opt"><input type="checkbox" id="cont" checked> തുടർച്ചയായി കേൾക്കുക</label>
     </div>
     <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത്:</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
     <div class="ctl-row"><span class="ctl-title">ആവർത്തനം:</span>
@@ -229,7 +230,7 @@ const VERSES = [
   }
 ];
 const SKEY = "quran-reader-settings";
-const CHECKS = ["show-ar", "show-ml", "show-tf"];
+const CHECKS = ["show-ar", "show-ml", "show-tf", "cont"];
 let fontSize = 18, reciterId = "ghamdy";
 
 function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
@@ -313,6 +314,7 @@ function applyDisplay() {
   document.body.classList.toggle("hide-ml", !on("show-ml"));
   document.body.classList.toggle("hide-tf", !on("show-tf"));
   VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  saveSettings();
 }
 
 let token = 0, activeKey = null, currentAudio = null, continuous = false, curLabel = "", curKind = "ml";
@@ -338,7 +340,7 @@ function stopAll() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   clearMark();
   const masterBtn = $("master");
-  if (masterBtn) { masterBtn.textContent = "▶ തുടർച്ചയായി കേൾക്കാം"; masterBtn.classList.remove("playing"); }
+  if (masterBtn) { masterBtn.textContent = "കേൾക്കാം"; masterBtn.classList.remove("playing"); }
   if ($("status")) $("status").textContent = "";
 }
 
@@ -347,19 +349,21 @@ function playArabic(n, my, done) {
   const audio = new Audio();
   audio.preload = "auto"; currentAudio = audio;
   audio.onended = () => { if (my === token) done(); };
-  audio.onerror = () => stopAll();
+  audio.onerror = () => done();
   const rawUrl = audioUrl(n);
+  if ($("status")) $("status").textContent = curLabel + " · " + currentReciter().name;
   Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(rawUrl) : rawUrl).then(u => {
     if (my !== token) return;
     audio.src = u;
-    audio.play().catch(() => stopAll());
-  });
+    audio.play().catch(() => done());
+  }).catch(() => done());
 }
 
 function speakMalayalam(text, my, done) {
   if (!text) { done(); return; }
   if (!window.speechSynthesis) { done(); return; }
   window.speechSynthesis.cancel();
+  if ($("status")) $("status").textContent = curLabel;
   const u = new SpeechSynthesisUtterance(text);
   u.lang = "ml-IN"; u.rate = 0.9;
   u.onend = () => { if (my === token) done(); };
@@ -380,7 +384,11 @@ function playItem(kind, n, my, done) {
     loop(1);
   } else {
     const vObj = VERSES.find(v => v.n === n) || VERSES[0];
-    speakMalayalam(vObj[kind], my, done);
+    if (vObj && vObj[kind]) {
+      speakMalayalam(vObj[kind], my, done);
+    } else {
+      done();
+    }
   }
 }
 
@@ -403,7 +411,7 @@ function fullQueue() {
 function runQueue(queue, startWithBm) {
   const my = token;
   const masterBtn = $("master");
-  masterBtn.textContent = "■ നിർത്തുക"; masterBtn.classList.add("playing");
+  masterBtn.textContent = "നിർത്തുക"; masterBtn.classList.add("playing");
   
   const step = i => {
     if (my !== token) return;
@@ -425,22 +433,59 @@ function runQueue(queue, startWithBm) {
 
 function toggleContinuous() {
   const masterBtn = $("master");
-  if (continuous) { stopAll(); return; }
+  if (masterBtn && masterBtn.classList.contains('playing')) {
+    stopAll();
+    return;
+  }
   stopAll();
   continuous = true;
   const q = fullQueue();
-  runQueue(q, false);
-}
-
-const controlsEl = $("controls"), optBtn = $("opt-toggle");
-function setPanel(open) {
-  if (controlsEl && optBtn) {
-    controlsEl.classList.toggle("open", open);
-    optBtn.classList.toggle("open", open);
-    optBtn.textContent = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം" + (open ? " ▴" : " ▾");
+  if (!q.length) { stopAll(); return; }
+  
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  const arChecked = $("show-ar") ? $("show-ar").checked : true;
+  if (hasVerse1 && SURAH !== 1 && SURAH !== 9 && arChecked && typeof playBismillah === 'function') {
+    runQueue([{ kind: 'bm', n: 0 }].concat(q), true);
+  } else {
+    runQueue(q, false);
   }
 }
-function togglePanel(e) { e.stopPropagation(); setPanel(!controlsEl.classList.contains("open")); }
+
+const controlsEl = $("controls"), optBtn = $("opt-toggle"), panelEl = $("panel");
+function togglePanel(e) {
+  e.stopPropagation();
+  const isOpen = panelEl.style.display === 'block' || panelEl.classList.contains('open');
+  if (isOpen) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    if (controlsEl) controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  } else {
+    panelEl.style.display = 'block';
+    panelEl.classList.add('open');
+    if (controlsEl) controlsEl.classList.add('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (controlsEl && !controlsEl.contains(e.target)) {
+    panelEl.style.display = 'none';
+    panelEl.classList.remove('open');
+    controlsEl.classList.remove('open');
+    optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const bismiDiv = $("bismi-container");
+  const hasVerse1 = VERSES.length && VERSES[0].n === 1;
+  if (bismiDiv) {
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      bismiDiv.remove();
+    }
+  }
+});
 
 buildPage(); initReciters(); applySettings(); applyDisplay();
 </script>
