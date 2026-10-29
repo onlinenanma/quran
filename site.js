@@ -27,14 +27,15 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights & ensure minimal inline layout */
+  /* hide Google's own bar / highlights & ensure minimal centered layout */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    '.controls{margin:0!important;padding:4px 8px 6px 8px!important;border:none!important;border-radius:0 0 8px 8px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 3px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:2px!important;min-height:auto!important}' +
-    '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;margin:0!important;padding:0!important;width:auto!important}' +
+    '.controls{margin:0!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
+    '.banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
+    '.banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
     '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
-    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child):not(#panel){font-size:0.8rem;color:var(--acc, #1d5240);text-align:center!important;margin:2px auto 0 auto!important;display:block!important;width:100%!important}' +
+    '#status,#audio-status,.status-text{width:100%!important;text-align:center!important;display:block!important;margin:4px auto 0 auto!important;float:none!important;clear:both!important;font-size:0.85rem!important;color:var(--acc, #1d5240)!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:2px solid var(--gold)!important;padding-bottom:8px!important}' +
     'body>.hero + div{text-align:center;margin:2px auto}' +
     'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1rem,2.5vw,1.3rem);margin:1px 0}' +
@@ -115,23 +116,20 @@
       panel.classList.remove('open');
       panel.style.display = 'none';
       optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-
-      var newOptBtn = optBtn.cloneNode(true);
-      optBtn.parentNode.replaceChild(newOptBtn, optBtn);
-      optBtn = newOptBtn;
+      optBtn.removeAttribute('onclick'); // prevent double handling conflict
 
       optBtn.addEventListener('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
-        var isOpen = panel.style.display === 'block' || panel.classList.contains('open');
+        var isOpen = panel.classList.contains('open') || panel.style.display === 'block';
         if (isOpen) {
-          panel.style.display = 'none';
           panel.classList.remove('open');
+          panel.style.display = 'none';
           if (controls) controls.classList.remove('open');
           optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
         } else {
-          panel.style.display = 'block';
           panel.classList.add('open');
+          panel.style.display = 'block';
           if (controls) controls.classList.add('open');
           optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
         }
@@ -139,15 +137,15 @@
 
       document.addEventListener('click', function (e) {
         if (controls && !controls.contains(e.target)) {
-          panel.style.display = 'none';
           panel.classList.remove('open');
-          controls.classList.remove('open');
+          panel.style.display = 'none';
+          if (controls) controls.classList.remove('open');
           optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
         }
       });
     }
 
-    /* Status text alignment centered below buttons */
+    /* Status text centering below buttons */
     var banner = document.querySelector('.banner');
     var statusEl = document.getElementById('status');
     if (statusEl && banner) {
@@ -192,23 +190,6 @@
       } else {
         panel.appendChild(newLabel);
       }
-    }
-
-    /* Global interception of playItem to enforce correct captions on every verse */
-    if (typeof window.playItem === 'function') {
-      var origPlayItem = window.playItem;
-      window.playItem = function (kind, n, my, done) {
-        var KIND_NAME = { ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
-        if (typeof curKind !== 'undefined') curKind = kind;
-        if (typeof curLabel !== 'undefined') {
-          curLabel = "ആയത്ത് " + n + " – " + (KIND_NAME[kind] || kind);
-        }
-        var sEl = document.getElementById('status');
-        if (sEl) {
-          sEl.textContent = "ആയത്ത് " + n + " – " + (KIND_NAME[kind] || kind);
-        }
-        return origPlayItem(kind, n, my, done);
-      };
     }
 
     /* Bismillah handling: only on pages starting with verse 1, matching verse color */
