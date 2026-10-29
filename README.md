@@ -1,2 +1,2 @@
 # Quran Malayalam Saram
-Holy Quran with Malayalam Translation &amp; Short Explanation
+Holy Quran with Translation &amp; Short Explanation
