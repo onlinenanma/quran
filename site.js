@@ -27,12 +27,15 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights & ultra-compact center aligned controls bar */
+  /* hide Google's own bar / highlights & stack audio description below buttons in a new line */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    '.controls{margin:0!important;padding:4px 8px!important;border:none!important;border-radius:0 0 8px 8px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;min-height:auto!important}' +
+    /* Controls container as a column so status text appears below buttons */
+    '.controls{margin:0!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
     '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;margin:0!important;padding:0!important;width:auto!important}' +
+    /* Audio status description styling in a new line below */
+    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child){font-size:0.85rem;color:var(--acc, #1d5240);text-align:center;margin:2px 0 0 0!important;display:block!important;width:100%!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:3px solid var(--gold)!important}' +
     'body>.hero + div{text-align:center;margin:4px auto}' +
     'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.1rem,3vw,1.4rem);margin:2px 0}' +
@@ -548,13 +551,15 @@
     var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
     var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
     
-    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
-      if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
-        bismiDiv.remove();
+    noBismi: {
+      if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+        if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
+          bismiDiv.remove();
+        }
+      } else if (bismiDiv) {
+        var bEl = bismiDiv.querySelector('h1') || bismiDiv;
+        if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
       }
-    } else if (bismiDiv) {
-      var bEl = bismiDiv.querySelector('h1') || bismiDiv;
-      if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
     }
 
     if (SURAH === 1 || SURAH === 9) return;
