@@ -104,33 +104,39 @@
       document.head.appendChild(s);
     }
 
-    /* Option button text toggle update with MutationObserver */
+    /* Bulletproof Option button text handler protecting against unwanted overwrites */
     var optBtn = document.getElementById('opt-toggle');
     var panel = document.getElementById('panel');
     if (optBtn) {
-      optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
-      
-      var updateArrow = function () {
+      var enforceLabel = function () {
         var isOpen = panel && (panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block');
-        if (isOpen) {
-          optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
-        } else {
-          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        var desired = isOpen ? 'ഓപ്ഷനുകൾ ▴' : 'ഓപ്ഷനുകൾ ▾';
+        if (optBtn.textContent !== desired) {
+          optBtn.textContent = desired;
         }
       };
 
+      enforceLabel();
       optBtn.addEventListener('click', function () {
-        setTimeout(updateArrow, 50);
-        setTimeout(updateArrow, 200);
+        setTimeout(enforceLabel, 20);
+        setTimeout(enforceLabel, 100);
+        setTimeout(enforceLabel, 300);
       });
 
+      document.body.addEventListener('click', function (e) {
+        if (e.target === optBtn || (panel && panel.contains(e.target))) {
+          setTimeout(enforceLabel, 50);
+        }
+      }, true);
+
       if (panel && window.MutationObserver) {
-        var observer = new MutationObserver(updateArrow);
+        var observer = new MutationObserver(enforceLabel);
         observer.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
+        observer.observe(optBtn, { characterData: true, childList: true, subtree: true });
       }
     }
 
-    /* 'കേൾക്കാം' master toggle button with Stop feature & cleaning up any unintended labels */
+    /* 'കേൾക്കാം' master toggle button with Stop feature */
     var masterBtn = document.getElementById('master');
     if (masterBtn) {
       masterBtn.textContent = 'കേൾക്കാം';
@@ -148,7 +154,7 @@
       }, true);
     }
 
-    /* Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel and ensure no label clash */
+    /* Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel */
     var contInput = document.getElementById('cont');
     if (contInput && panel) {
       var wrapper = contInput.closest('label');
@@ -220,7 +226,7 @@
     };
   });
 
-  /* ===== text-to-speech engine: Robust multi-part Page 2+ fix ===== */
+  /* ===== text-to-speech engine: Page 2+ multi-part fix ===== */
   var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
   function mlFrac(t) {
     var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
@@ -369,13 +375,11 @@
   function ensureVoices(code, cb) { cb(); }
 
   onReady(function () {
-    /* Robust speakMalayalam supporting multi-part page 2+ DOM element retrieval */
     window.speakMalayalam = function (text, my, done) {
       var el = null;
       if (typeof activeKey !== 'undefined' && activeKey) {
         el = document.getElementById('item-' + activeKey);
         if (!el) {
-          // Fallback search across elements if activeKey ID format varies on page 2+
           var parts = activeKey.split('-');
           if (parts.length >= 2) {
             el = document.getElementById('item-' + parts[0] + '-' + parts[parts.length - 1]);
