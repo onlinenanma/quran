@@ -11,7 +11,25 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
 body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
-.banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:
+
+/* Top Navigation Bar & Left Quick Access Menu */
+.top-nav-bar{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+.menu-toggle-btn{background:rgba(0,0,0,0.3);color:var(--gold);border:1px solid var(--gold);padding:6px 14px;border-radius:20px;font-size:.85rem;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);display:flex;align-items:center;gap:6px}
+.menu-toggle-btn:hover{background:var(--green2);color:#fff}
+
+/* Off-Canvas Navigation Drawer */
+.nav-drawer{position:fixed;top:0;left:-280px;width:280px;height:100%;background:var(--green);color:#fff;z-index:1000;box-shadow:4px 0 15px rgba(0,0,0,0.3);transition:left 0.3s ease;padding:20px;display:flex;flex-direction:column}
+.nav-drawer.open{left:0}
+.nav-drawer-header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(212,175,55,0.3);padding-bottom:12px;margin-bottom:16px}
+.nav-drawer-header h3{color:var(--gold);font-size:1.1rem}
+.close-drawer-btn{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;width:auto;padding:0 8px}
+.nav-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.nav-links a{color:#e9efe9;text-decoration:none;font-weight:600;padding:10px 12px;border-radius:6px;display:block;background:rgba(255,255,255,0.05);transition:background .2s,color .2s}
+.nav-links a:hover{background:var(--gold);color:var(--green)}
+.drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999}
+.drawer-overlay.open{display:block}
+
+.banner{position:relative;text-align:center;color:#fff;padding:clamp(45px,9vw,60px) 18px clamp(40px,8vw,64px);background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
@@ -39,10 +57,10 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .hijri-banner{background:#f4f8f6;color:var(--green);padding:10px 14px;border-radius:8px;text-align:center;font-size:.9rem;font-weight:700;border:1px solid var(--gold);margin-bottom:16px}
 @media(prefers-color-scheme:dark){.hijri-banner{background:#17261f;color:var(--gold)}}
 
-/* Resource Cards Grid (Tafsir & Hadith) */
-.resource-grid{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
-@media(min-width:650px){.resource-grid{flex-direction:row}}
-.resource-card{flex:1;background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.06);transition:transform .2s ease}
+/* Resource Cards Grid (Tafsir, Hadith & Hifz) */
+.resource-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:16px}
+@media(min-width:650px){.resource-grid{grid-template-columns:repeat(3, 1fr)}}
+.resource-card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.06);transition:transform .2s ease;display:flex;flex-direction:column;justify-content:space-between}
 .resource-card:hover{transform:translateY(-2px)}
 .resource-card h3{color:var(--green);font-size:1.15rem;margin-bottom:6px}
 @media(prefers-color-scheme:dark){.resource-card h3{color:var(--gold)}}
@@ -107,49 +125,67 @@ body{top:0!important}
 </head>
 <body onload="initWidgets()">
 
+<!-- Quick Access Menu Drawer -->
+<div id="drawerOverlay" class="drawer-overlay" onclick="toggleNavDrawer(false)"></div>
+<div id="navDrawer" class="nav-drawer">
+ <div class="nav-drawer-header">
+  <h3>ഖുർആൻ സാരം</h3>
+  <button class="close-drawer-btn" onclick="toggleNavDrawer(false)">✕</button>
+ </div>
+ <ul class="nav-links">
+  <li><a href="https://onlinenanma.github.io/quran/">🏠 പ്രധാന പേജ് (Home)</a></li>
+  <li><a href="https://onlinenanma.github.io/quran/tafsir">📖 തഫ്സീറുകൾ (Tafsir)</a></li>
+  <li><a href="https://onlinenanma.github.io/quran/hadith">📜 ഹദീസുകൾ (Hadith)</a></li>
+  <li><a href="https://onlinenanma.github.io/quran/hifd">📌 ഹിഫ്ള് ട്രാക്കർ (Hifz Tracker)</a></li>
+ </ul>
+</div>
+
 <header class="banner">
- <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
-  <option value="">🌐 Language</option>
-  <option value="ml">മലയാളം</option>
-  <option value="en">English</option>
-  <option value="hi">हिन्दी</option>
-  <option value="ta">தமிழ்</option>
-  <option value="te">తెలుగు</option>
-  <option value="kn">ಕನ್ನಡ</option>
-  <option value="mr">मराठी</option>
-  <option value="gu">ગુજરાતી</option>
-  <option value="pa">ਪੰਜਾਬੀ</option>
-  <option value="bn">বাংলা</option>
-  <option value="ur">اردو</option>
-  <option value="ne">नेपाली</option>
-  <option value="si">සිංහල</option>
-  <option value="ar">العربية</option>
-  <option value="fa">فارسی</option>
-  <option value="tr">Türkçe</option>
-  <option value="id">Indonesia</option>
-  <option value="ms">Melayu</option>
-  <option value="th">ไทย</option>
-  <option value="vi">Tiếng Việt</option>
-  <option value="zh-CN">中文简体</option>
-  <option value="zh-TW">中文繁體</option>
-  <option value="ja">日本語</option>
-  <option value="ko">한국어</option>
-  <option value="fr">Français</option>
-  <option value="de">Deutsch</option>
-  <option value="es">Español</option>
-  <option value="pt">Português</option>
-  <option value="it">Italiano</option>
-  <option value="ru">Русский</option>
-  <option value="nl">Nederlands</option>
-  <option value="pl">Polski</option>
-  <option value="uk">Українська</option>
-  <option value="sv">Svenska</option>
-  <option value="el">Ελληνικά</option>
-  <option value="ro">Română</option>
-  <option value="sw">Kiswahili</option>
-  <option value="am">አማርኛ</option>
-  <option value="ha">Hausa</option>
-</select>
+ <div class="top-nav-bar">
+  <button type="button" class="menu-toggle-btn" onclick="toggleNavDrawer(true)">☰ പേജുകൾ / Menu</button>
+  <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
+   <option value="">🌐 Language</option>
+   <option value="ml">മലയാളം</option>
+   <option value="en">English</option>
+   <option value="hi">ഹിन्दी</option>
+   <option value="ta">தமிழ்</option>
+   <option value="te">తెలుగు</option>
+   <option value="kn">ಕನ್ನಡ</option>
+   <option value="mr">मराठी</option>
+   <option value="gu">ગુજરાતી</option>
+   <option value="pa">ਪੰਜਾਬੀ</option>
+   <option value="bn">বাংলা</option>
+   <option value="ur">اردو</option>
+   <option value="ne">नेपाली</option>
+   <option value="si">සිංහල</option>
+   <option value="ar">العربية</option>
+   <option value="fa">فارسی</option>
+   <option value="tr">Türkçe</option>
+   <option value="id">Indonesia</option>
+   <option value="ms">Melayu</option>
+   <option value="th">ไทย</option>
+   <option value="vi">Tiếng Việt</option>
+   <option value="zh-CN">中文简体</option>
+   <option value="zh-TW">中文繁體</option>
+   <option value="ja">日本語</option>
+   <option value="ko">한국어</option>
+   <option value="fr">Français</option>
+   <option value="de">Deutsch</option>
+   <option value="es">Español</option>
+   <option value="pt">Português</option>
+   <option value="it">Italiano</option>
+   <option value="ru">Русский</option>
+   <option value="nl">Nederlands</option>
+   <option value="pl">Polski</option>
+   <option value="uk">Українська</option>
+   <option value="sv">Svenska</option>
+   <option value="el">Ελληνικά</option>
+   <option value="ro">Română</option>
+   <option value="sw">Kiswahili</option>
+   <option value="am">አማርኛ</option>
+   <option value="ha">Hausa</option>
+  </select>
+ </div>
  <div class="bismi">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
  <h1>ഖുർആൻ സാരം</h1>
 </header>
@@ -163,7 +199,7 @@ body{top:0!important}
   </div>
  </section>
 
- <!-- Resource Cards Grid (Tafsir & Hadith) -->
+ <!-- Resource Cards Grid (Tafsir, Hadith & Hifz) -->
  <div class="resource-grid">
   <div class="resource-card">
    <h3>📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ</h3>
@@ -174,6 +210,11 @@ body{top:0!important}
    <h3>📜 പ്രവാചക ഹദീസുകൾ (Hadith)</h3>
    <p>പ്രമാണബദ്ധമായ പ്രവാചക വചനങ്ങളും ഹദീസ് ഗ്രന്ഥങ്ങളും പരിശോധിക്കുക.</p>
    <a href="https://onlinenanma.github.io/quran/hadith" target="_top" class="resource-btn">ഹദീസുകൾ വായിക്കാം</a>
+  </div>
+  <div class="resource-card">
+   <h3>📌 ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h3>
+   <p>ഖുർആൻ മനഃപാഠമാക്കാനും ദൈവദിന വര്ദ്, ആവർത്തനം എന്നിവ ട്രാക്ക് ചെയ്യാനും സഹായിക്കുന്ന ടൂൾ.</p>
+   <a href="https://onlinenanma.github.io/quran/hifd" target="_top" class="resource-btn">ഹിഫ്ള് ട്രാക്കർ തുറക്കുക</a>
   </div>
  </div>
 
@@ -307,8 +348,13 @@ body{top:0!important}
 </div>
 
 <script>
+function toggleNavDrawer(show) {
+ document.getElementById('navDrawer').classList.toggle('open', show);
+ document.getElementById('drawerOverlay').classList.toggle('open', show);
+}
+
 const SURAH_URL = n => `https://onlinenanma.github.io/quran/${n}`;
-const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
+const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തക്കാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
 (function(){
  const s=document.getElementById('surahSelect');
  s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
@@ -410,8 +456,8 @@ function showHijri(h){
  try{ document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`; }catch(e){}
 }
 
-let locLocked = false;   // true once the visitor picks a city / uses GPS, so a late IP lookup cannot override it
-let ptGen = 0;           // ignore prayer-time answers that arrive late
+let locLocked = false;
+let ptGen = 0;
 const LOC_KEY = 'qs-loc';
 function rememberLocation(lat, lon, name){ try{ localStorage.setItem(LOC_KEY, JSON.stringify({lat, lon, name})); }catch(e){} }
 
@@ -431,7 +477,6 @@ async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
   if(c.h) showHijri(c.h);
  };
 
- /* today's times for this place are kept on the device: no repeat download (saves mobile data) */
  try{ const c=JSON.parse(localStorage.getItem(key)); if(c&&c.tm){ draw(c); return; } }catch(e){}
 
  disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
@@ -457,7 +502,6 @@ async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
 async function initWidgets(){
  startSensors(false);
 
- /* the last city / GPS place the visitor chose is used again: no IP lookup needed */
  try{
   const saved=JSON.parse(localStorage.getItem(LOC_KEY));
   if(saved&&isFinite(saved.lat)&&isFinite(saved.lon)){
@@ -467,7 +511,6 @@ async function initWidgets(){
   }
  }catch(e){}
 
- /* otherwise find the place from the IP address (HTTPS services only) */
  const sources=[
   ['https://ipapi.co/json/', d=>d&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country_name}`}:null],
   ['https://ipwho.is/',       d=>d&&d.success&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country}`}:null]
@@ -479,7 +522,7 @@ async function initWidgets(){
   }catch(e){}
  }
  if(locLocked) return;
- document.getElementById('citySelect').value="9.9312,76.2673";   // default: Kochi
+ document.getElementById('citySelect').value="9.9312,76.2673";
  onCityDropdownChange(true);
 }
 
@@ -489,7 +532,6 @@ function requestGPSPermission(){
   ()=>alert("Location access denied or unavailable."));
 }
 
-/* select the nearest listed city (within ~0.4°), or clear the box if none is close */
 function matchDropdownOption(lat,lon){
  const s=document.getElementById('citySelect');
  let best=null,bd=0.4;
@@ -509,7 +551,6 @@ function onCityDropdownChange(auto){
  fetchAndDisplayPrayerTimes(la,lo,name);
 }
 
-/* compass help window: close by tapping outside it or with Esc */
 document.getElementById('calibModal').addEventListener('click',e=>{ if(e.target.id==='calibModal') toggleCalibModal(false); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') toggleCalibModal(false); });
 </script>
