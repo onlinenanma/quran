@@ -241,8 +241,8 @@
       <div class="form-group">
         <label>ഖാരിഅ് (Reciter)</label>
         <select id="reciterSelect">
-          <option value="Husary_Muallim_128kbps">Mahmoud Khalil Al-Husary (Muallim / Repeat)</option>
-          <option value="ar.minshawiteacher" selected>Muhammad Siddiq Al-Minshawi (Child Repetition / Teacher)</option>
+          <option value="Husary_Muallim_128kbps" selected>Mahmoud Khalil Al-Husary (Muallim / Repeat)</option>
+          <option value="Ayman_Sowaid_64kbps">Dr. Ayman Sowaid</option>
           <option value="Minshawy_Murattal_128kbps">Al Minshawy - Murattal</option>
           <option value="Minshawy_Mujawwad_192kbps">Al Minshawy - Mujawwad</option>
           <option value="Alafasy_128kbps">Mishary Rashid Alafasy</option>
@@ -388,21 +388,14 @@
     function getAudioUrl(surahNum, ayahNumInSurah, globalAyahNum) {
       const reciter = document.getElementById('reciterSelect').value;
       
-      // If it's Husary Muallim folder from everyayah.com directly
-      if (reciter === 'Husary_Muallim_128kbps') {
-        const sStr = String(surahNum).padStart(3, '0');
-        const aStr = String(ayahNumInSurah).padStart(3, '0');
-        return `https://everyayah.com/data/Husary_Muallim_128kbps/${sStr}${aStr}.mp3`;
-      }
-
-      // If it's Minshawi Teacher / custom folders on everyayah
-      if (reciter.includes('_128kbps') || reciter.includes('_192kbps')) {
+      // Direct CDN resolution for EveryAyah audio paths
+      if (reciter.includes('_128kbps') || reciter.includes('_192kbps') || reciter.includes('_64kbps')) {
         const sStr = String(surahNum).padStart(3, '0');
         const aStr = String(ayahNumInSurah).padStart(3, '0');
         return `https://everyayah.com/data/${reciter}/${sStr}${aStr}.mp3`;
       }
 
-      // Default Islamic Network API fallback for other reciters
+      // Default Islamic Network API fallback
       return `https://cdn.islamic.network/quran/audio/128/${reciter}/${globalAyahNum}.mp3`;
     }
 
@@ -451,8 +444,10 @@
 
       audio.src = getAudioUrl(surahId, verse.numberInSurah, verse.globalAyahNumber);
       audio.play().catch(() => {
-        // Fallback retry
-        audio.src = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${verse.globalAyahNumber}.mp3`;
+        // Fallback retry to EveryAyah Husary Muallim
+        const sStr = String(surahId).padStart(3, '0');
+        const aStr = String(verse.numberInSurah).padStart(3, '0');
+        audio.src = `https://everyayah.com/data/Husary_Muallim_128kbps/${sStr}${aStr}.mp3`;
         audio.play();
       });
 
