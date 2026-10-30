@@ -3,459 +3,639 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qur'an Hifz Tracker</title>
+  <title>Qur'an Hifz Tracker - ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-sidebar: #0d3322;
-      --card-bg: #133e2b;
-      --accent-green: #2ecc71;
-      --light-text: #e8f5e9;
-      --sub-text: #a3d9b1;
-      --border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f7f6;
-      color: #333;
-    }
-
-    .container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* Left Sidebar Menu */
-    .sidebar {
-      width: 300px;
-      background: var(--bg-sidebar);
-      color: var(--light-text);
-      padding: 20px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .nav-btn {
-      display: inline-block;
-      background: var(--accent-green);
-      color: #0d3322;
-      text-decoration: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      font-weight: bold;
-      text-align: center;
-      transition: background 0.2s;
-    }
-
-    .nav-btn:hover {
-      background: #27ae60;
-      color: white;
-    }
-
-    .sidebar h2 {
-      font-size: 20px;
-      margin: 5px 0 10px 0;
-      border-bottom: 2px solid var(--accent-green);
-      padding-bottom: 8px;
-      color: #ffffff;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      color: var(--sub-text);
-      font-weight: bold;
-    }
-
-    .form-group select, 
-    .form-group input {
-      width: 100%;
-      padding: 9px;
-      box-sizing: border-box;
-      border: 1px solid var(--border-color);
-      border-radius: 4px;
-      background: var(--card-bg);
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .form-group select option {
-      background: var(--bg-sidebar);
-      color: #fff;
-    }
-
-    .range-group {
-      display: flex;
-      gap: 10px;
-    }
-
-    .range-group .form-group {
-      flex: 1;
-    }
-
-    /* Main Content Area */
-    .main-content {
-      flex: 1;
-      padding: 30px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .main-content h1 {
-      color: var(--bg-sidebar);
-      margin-top: 0;
-      font-size: 22px;
-    }
-
-    /* Verses Display Box */
-    .verse-container {
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .verse-card {
-      border-bottom: 1px solid #eee;
-      padding: 12px 0;
-      transition: background 0.3s;
-    }
-
-    .verse-card.active-playing {
-      background-color: #e8f8f0;
-      border-left: 4px solid var(--accent-green);
-      padding-left: 10px;
-    }
-
-    .arabic-text {
-      font-family: 'Traditional Arabic', serif;
-      font-size: 24px;
-      direction: rtl;
-      text-align: right;
-      color: #111;
-      line-height: 1.8;
-      margin-bottom: 6px;
-    }
-
-    .malayalam-text {
-      font-size: 14px;
-      color: #555;
-    }
-
-    /* Audio Controller Bar */
-    .audio-controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: var(--bg-sidebar);
-      padding: 12px 20px;
-      border-radius: 8px;
-      color: white;
-    }
-
-    .play-btn {
-      background: var(--accent-green);
-      border: none;
-      color: #0d3322;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .play-btn:hover {
-      background: #27ae60;
-      color: #fff;
-    }
-
-    table { 
-      width: 100%; 
-      border-collapse: collapse; 
-      background: #fff; 
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    
-    th, td { 
-      border: 1px solid #ddd; 
-      padding: 12px 15px; 
-      text-align: left; 
-      font-size: 14px;
-    }
-    
-    th { 
-      background-color: var(--bg-sidebar); 
-      color: white; 
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
-      .sidebar {
-        width: 100%;
-      }
+    body { font-family: 'Inter', sans-serif; }
+    .font-quran { font-family: 'Amiri', serif; }
+    /* Dark Green Custom Theme Variables */
+    .bg-dark-emerald { background-color: #0d3322; }
+    .bg-dark-emerald-light { background-color: #133e2b; }
+    .border-dark-emerald { border-color: #1b5239; }
+    .active-verse {
+      border-color: #059669 !important;
+      background-color: #f0fdf4 !important;
+      box-shadow: 0 4px 14px rgba(13, 51, 34, 0.12);
     }
   </style>
 </head>
-<body>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
-  <div class="container">
-    <!-- Left-aligned Menu Bar -->
-    <div class="sidebar">
-      <a href="https://onlinenanma.github.io/quran/" class="nav-btn">← പ്രധാന പേജിലേക്ക് (Main Page)</a>
+  <!-- Main Layout Container -->
+  <div class="flex flex-col md:flex-row min-h-screen">
+    
+    <!-- Left-Aligned Control Panel Sidebar (Dark Green Theme) -->
+    <aside class="w-full md:w-80 bg-dark-emerald text-emerald-50 p-6 flex flex-col justify-between shadow-2xl z-20 shrink-0 border-r border-emerald-950">
+      <div>
+        
+        <!-- Top Navigation Link to Main Page -->
+        <a href="https://onlinenanma.github.io/quran/" target="_blank" rel="noopener noreferrer" 
+           class="mb-5 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 px-4 rounded-xl shadow transition-all text-xs flex items-center justify-center space-x-2 border border-emerald-400/30">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          <span>പ്രധാന താളിലേക്ക് (Main Page)</span>
+        </a>
+
+        <!-- App Header & Branding -->
+        <div class="flex items-center space-x-3 mb-6 border-b border-dark-emerald pb-4">
+          <div class="bg-dark-emerald-light p-2.5 rounded-xl text-emerald-300 border border-emerald-800/40">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-white">ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h1>
+            <p class="text-xs text-emerald-300 font-medium">Qur'an Hifz Tracker</p>
+          </div>
+        </div>
+
+        <!-- Sidebar Inputs & Controls -->
+        <div class="space-y-4">
+          <!-- Surah Selector Dropdown -->
+          <div>
+            <label class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              സൂറത്ത് السورة (Select Surah)
+            </label>
+            <select id="surahSelect" onchange="onSurahChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+              <!-- Dynamically populated with 114 surahs -->
+            </select>
+          </div>
+
+          <!-- Verse Range Picker -->
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+                ആദ്യം ആയത്ത് من آية
+              </label>
+              <input type="number" id="fromVerse" value="1" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+                അവസാന ആയത്ത് إلى آية
+              </label>
+              <input type="number" id="toVerse" value="7" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+            </div>
+          </div>
+
+          <!-- Repetition Counter Target (Default: 9) -->
+          <div>
+            <label class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              ആവർത്തനം التكرار (Repetition Target)
+            </label>
+            <div class="flex items-center space-x-2">
+              <button onclick="adjustRepetition(-1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-3 py-2 rounded-lg text-sm font-bold border border-dark-emerald text-emerald-200">-</button>
+              <input type="number" id="repetitionTarget" value="9" min="1" class="w-full text-center bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:outline-none">
+              <button onclick="adjustRepetition(1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-3 py-2 rounded-lg text-sm font-bold border border-dark-emerald text-emerald-200">+</button>
+            </div>
+          </div>
+
+          <!-- Reciter Audio Picker -->
+          <div>
+            <label class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              ഖാരിഅ് القارئ (Reciter)
+            </label>
+            <select id="reciterSelect" onchange="onReciterChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+              <option value="Husary_Muallim_128kbps" selected>Mahmoud Khalil Al-Husary (Muallim / Repeat)</option>
+              <option value="Ayman_Sowaid_64kbps">Dr. Ayman Sowaid</option>
+              <option value="ar.alafasy">Mishary Rashid Alafasy</option>
+              <option value="ar.abdurrahmaansudais">Abdur-Rahman As-Sudais</option>
+              <option value="ar.mahermuaiqly">Maher Al Muaiqly</option>
+              <option value="ar.minshawi">Mohamed Siddiq Al-Minshawi</option>
+            </select>
+          </div>
+
+          <!-- Daily Page Wird Selector -->
+          <div class="pt-3 border-t border-dark-emerald">
+            <label class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
+              ദൈനംദിന വര്ദ് الورد اليومي (Daily Page Range)
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <span class="text-[10px] text-emerald-300 block mb-0.5">പേജ് മുതൽ (From)</span>
+                <input type="number" id="fromPage" value="1" min="1" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2 focus:outline-none">
+              </div>
+              <div>
+                <span class="text-[10px] text-emerald-300 block mb-0.5">പേജ് വരെ (To)</span>
+                <input type="number" id="toPage" value="1" min="1" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2 focus:outline-none">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Log Session Action Button -->
+      <div class="mt-8 pt-4 border-t border-dark-emerald">
+        <button onclick="logCurrentSession()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold py-3 px-4 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center space-x-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+          </svg>
+          <span>ഇന്നത്തെ പുരോഗതി സേവ് ചെയ്യുക</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content Area -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-6xl flex flex-col justify-between">
       
-      <h2>ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h2>
-      
-      <div class="form-group">
-        <label>സൂറത്ത് (Surah)</label>
-        <select id="surahSelect" onchange="fetchAndRenderVerses()">
-          <!-- Populated dynamically -->
-        </select>
+      <div>
+        <!-- Main Top Header Bar -->
+        <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 class="text-xl md:text-2xl font-bold text-emerald-950">ഹിഫ്ള് ലേണിംഗ് & ഓഡിയോ പ്ലെയർ</h2>
+            <p class="text-xs md:text-sm text-slate-500 mt-0.5">അറബി പാഠം, മലയാളം അർത്ഥം, തക്രാർ & ആയത്ത് ഓഡിയോ പ്ലെയർ</p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold px-3 py-1.5 rounded-full" id="currentDateBadge">
+              --
+            </span>
+          </div>
+        </header>
+
+        <!-- Global Audio Controls Bar -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 w-full md:w-auto">
+              <button id="globalPlayBtn" onclick="toggleContinuousPlay()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-5 py-2.5 rounded-xl text-sm flex items-center justify-center space-x-2 transition-all shadow-sm w-full sm:w-auto">
+                <svg id="globalPlayIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span id="globalPlayText">മുഴുവൻ ആയത്തുകളും പ്ലേ ചെയ്യുക</span>
+              </button>
+              <button onclick="stopAudio()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border border-slate-200">
+                സ്റ്റോപ്പ്
+              </button>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-xs text-slate-600 w-full md:w-auto flex items-center justify-between space-x-3">
+              <span class="font-semibold text-emerald-900">നിലവിലെ ആയത്ത്:</span>
+              <span id="activeVerseIndicator" class="font-medium text-slate-700">പ്ലേ ചെയ്തിട്ടില്ല</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Verses Render List -->
+        <section class="mb-8">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-lg text-slate-800 flex items-center space-x-2">
+              <span>ആയത്തുകൾ (Selected Verses)</span>
+              <span id="verseCountBadge" class="text-xs bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full font-semibold">0</span>
+            </h3>
+            <span id="surahMetaHeader" class="text-xs text-slate-500 font-medium">--</span>
+          </div>
+
+          <div id="versesList" class="space-y-4">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center text-slate-400">
+              ആയത്തുകൾ ലോഡ് ചെയ്യുന്നു...
+            </div>
+          </div>
+        </section>
+
+        <!-- Weekly Progress & LocalStorage Table Section -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+          <div class="p-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+            <div>
+              <h3 class="font-bold text-slate-800 text-base">ആഴ്ചയിലെ പുരോഗതിയും കുറിപ്പുകളും (Weekly Log)</h3>
+              <p class="text-xs text-slate-500">നിങ്ങളുടെ പ്രതിദിന പാഠങ്ങളും ആവർത്തന റെക്കോർഡുകളും (Saved on your browser)</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="clearSavedLogs()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl text-xs font-medium transition-all">
+                ഹിസ്റ്ററി നീക്കം ചെയ്യുക
+              </button>
+              <button onclick="addNewTableRow()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm flex items-center space-x-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>പുതിയ വരി ചേർക്കുക</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse" id="logTable">
+              <thead>
+                <tr class="bg-slate-100/80 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
+                  <th class="p-3.5 font-semibold">തീയതി / ദിവസം (Date/Day)</th>
+                  <th class="p-3.5 font-semibold">സൂറത്ത് & ആയത്ത് (Portion)</th>
+                  <th class="p-3.5 font-semibold text-center">ആവർത്തനം (Reps)</th>
+                  <th class="p-3.5 font-semibold text-center">പൂർത്തിയായി</th>
+                  <th class="p-3.5 font-semibold">കുറിപ്പുകൾ (Notes)</th>
+                  <th class="p-3.5 font-semibold text-center">നടപടി</th>
+                </tr>
+              </thead>
+              <tbody id="logTableBody" class="divide-y divide-slate-200 text-xs sm:text-sm">
+                <!-- Loaded from localStorage -->
+              </tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
-      <div class="range-group">
-        <div class="form-group">
-          <label>ആദ്യം ആയത്ത് (From Verse)</label>
-          <input type="number" id="fromVerse" value="1" min="1" onchange="fetchAndRenderVerses()">
-        </div>
-        <div class="form-group">
-          <label>അവസാന ആയത്ത് (To Verse)</label>
-          <input type="number" id="toVerse" value="7" min="1" onchange="fetchAndRenderVerses()">
-        </div>
-      </div>
+      <!-- Bottom Navigation Footer Link -->
+      <footer class="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p>© Qur'an Hifz Tracker - All Rights Reserved</p>
+        
+        <!-- Bottom Navigation Link to Main Page -->
+        <a href="https://onlinenanma.github.io/quran/" target="_blank" rel="noopener noreferrer" 
+           class="inline-flex items-center space-x-2 bg-dark-emerald hover:bg-emerald-900 text-emerald-100 px-4 py-2 rounded-xl transition-all shadow-sm font-medium border border-emerald-800">
+          <span>പ്രധാന താളിലേക്ക് (Main Page)</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+      </footer>
 
-      <div class="form-group">
-        <label>ഖാരിഅ് (Reciter)</label>
-        <select id="reciterSelect">
-          <option value="Husary_Muallim_128kbps" selected>Mahmoud Khalil Al-Husary (Muallim / Repeat)</option>
-          <option value="Ayman_Sowaid_64kbps">Dr. Ayman Sowaid</option>
-          <option value="Minshawy_Murattal_128kbps">Al Minshawy - Murattal</option>
-          <option value="Minshawy_Mujawwad_192kbps">Al Minshawy - Mujawwad</option>
-          <option value="Alafasy_128kbps">Mishary Rashid Alafasy</option>
-          <option value="Abdul_Basit_Murattal_192kbps">AbdulBaset AbdulSamad</option>
-          <option value="Hudhaify_128kbps">Ali Al-Hudhaify</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>ആവർത്തനം (Repetition)</label>
-        <input type="number" id="repeatCount" value="9" min="1">
-      </div>
-
-      <div class="range-group">
-        <div class="form-group">
-          <label>പേജ് മുതൽ (From Page)</label>
-          <input type="number" id="fromPage" value="1" min="1">
-        </div>
-        <div class="form-group">
-          <label>പേജ് വരെ (To Page)</label>
-          <input type="number" id="toPage" value="1" min="1">
-        </div>
-      </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="main-content">
-      <h1 id="currentSurahTitle">ദൈനംദിന വര്ദ് & ആഴ്ച വിവരങ്ങൾ (Daily Wird & Week View)</h1>
-
-      <!-- Verse Viewer -->
-      <div class="verse-container" id="verseViewer">
-        <p>ആയത്തുകൾ ലോഡ് ചെയ്യുന്നു...</p>
-      </div>
-
-      <!-- Audio Controller -->
-      <div class="audio-controls">
-        <button class="play-btn" id="playAudioBtn" onclick="toggleAudioRange()">കേൾക്കുക (Play Range)</button>
-        <span id="audioStatus">തയ്യാറാണ് (Ready)</span>
-        <audio id="audioPlayer" style="display:none;"></audio>
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>ആഴ്ച (Week)</th>
-            <th>വിവരങ്ങൾ / ലക്ഷ്യം</th>
-            <th>ആഴ്ചയിലെ കുറിപ്പുകൾ (Week Notes)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ആഴ്ച 1</td>
-            <td>പ്രവർത്തനം പൂർത്തിയായി</td>
-            <td>കുഴപ്പമില്ലാതെ പഠിച്ചു തീർത്തു</td>
-          </tr>
-          <tr>
-            <td>ആഴ്ച 2</td>
-            <td>പുരോഗതിയിലാണ്</td>
-            <td>ആവർത്തനം കൂടുതൽ ആവശ്യമുണ്ട്</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <a href="https://onlinenanma.github.io/quran/" class="nav-btn" style="align-self: flex-start; margin-top: 10px;">← പ്രധാന പേജിലേക്ക് മടങ്ങുക (Back to Main Page)</a>
-    </div>
+    </main>
   </div>
 
+  <!-- Audio Player -->
+  <audio id="globalAudioPlayer" class="hidden"></audio>
+
   <script>
-    const surahList = [
-      { id: 1, name: "Al-Fatihah", mlName: "അൽ-ഫാത്തിഹ", verses: 7 },
-      { id: 2, name: "Al-Baqarah", mlName: "അൽ-ബഖറ", verses: 286 },
-      { id: 3, name: "Ali 'Imran", mlName: "ആലുഇംറാൻ", verses: 200 },
-      { id: 112, name: "Al-Ikhlas", mlName: "അൽ-ഇഖ്‌ലാസ്", verses: 4 },
-      { id: 113, name: "Al-Falaq", mlName: "അൽ-ഫലഖ്", verses: 5 },
-      { id: 114, name: "An-Nas", mlName: "അന്ന നാസ്", verses: 6 }
-    ];
+    let surahList = [];
+    let currentVerses = [];
+    let activeVerseIndex = -1;
+    let isContinuousPlaying = false;
+    const audioPlayer = document.getElementById('globalAudioPlayer');
 
-    let currentVerseIndex = 0;
-    let currentVersesData = [];
-    let isPlaying = false;
-    let currentRepeatRound = 1;
+    // Display Malayalam formatted current date
+    document.getElementById('currentDateBadge').innerText = new Date().toLocaleDateString('ml-IN', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
 
-    window.onload = function() {
-      const select = document.getElementById('surahSelect');
-      surahList.forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.id;
-        opt.textContent = `${s.id}. ${s.mlName} (${s.name})`;
-        select.appendChild(opt);
-      });
-      fetchAndRenderVerses();
+    window.onload = async function() {
+      await fetchSurahList();
+      validateAndFetchVerses();
+      loadSavedLogs();
     };
 
-    async function fetchAndRenderVerses() {
-      const surahId = document.getElementById('surahSelect').value || 1;
-      const from = parseInt(document.getElementById('fromVerse').value) || 1;
-      const to = parseInt(document.getElementById('toVerse').value) || 7;
+    // Fetch 114 Surahs from AlQuran Cloud API
+    async function fetchSurahList() {
+      try {
+        const res = await fetch('https://api.alquran.cloud/v1/surah');
+        const data = await res.json();
+        if (data.code === 200) {
+          surahList = data.data;
+          const select = document.getElementById('surahSelect');
+          select.innerHTML = '';
+          surahList.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.number;
+            opt.innerText = `${s.number}. ${s.englishName} (${s.name})`;
+            if (s.number === 1) opt.selected = true;
+            select.appendChild(opt);
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load Surah list:', err);
+      }
+    }
 
-      const surahObj = surahList.find(s => s.id == surahId) || surahList[0];
-      document.getElementById('currentSurahTitle').textContent = `സൂറത്ത് ${surahObj.mlName} (${surahObj.name})`;
+    function onSurahChange() {
+      const surahNum = parseInt(document.getElementById('surahSelect').value);
+      const surahData = surahList.find(s => s.number === surahNum);
+      if (surahData) {
+        document.getElementById('fromVerse').value = 1;
+        document.getElementById('toVerse').value = Math.min(10, surahData.numberOfAyahs);
+      }
+      validateAndFetchVerses();
+    }
 
-      const viewer = document.getElementById('verseViewer');
-      viewer.innerHTML = '<p>ആയത്തുകൾ ലോഡ് ചെയ്യുന്നു...</p>';
+    function onReciterChange() {
+      if (activeVerseIndex !== -1) {
+        playVerseAudio(activeVerseIndex);
+      }
+    }
+
+    function adjustRepetition(val) {
+      const input = document.getElementById('repetitionTarget');
+      let current = parseInt(input.value) || 1;
+      current = Math.max(1, current + val);
+      input.value = current;
+    }
+
+    async function validateAndFetchVerses() {
+      stopAudio();
+      const surahNum = document.getElementById('surahSelect').value || 1;
+      const surahData = surahList.find(s => s.number == surahNum);
+      const maxAyahs = surahData ? surahData.numberOfAyahs : 286;
+
+      let fromV = parseInt(document.getElementById('fromVerse').value) || 1;
+      let toV = parseInt(document.getElementById('toVerse').value) || 1;
+
+      if (fromV < 1) fromV = 1;
+      if (fromV > maxAyahs) fromV = maxAyahs;
+      if (toV < fromV) toV = fromV;
+      if (toV > maxAyahs) toV = maxAyahs;
+
+      document.getElementById('fromVerse').value = fromV;
+      document.getElementById('toVerse').value = toV;
+
+      const container = document.getElementById('versesList');
+      container.innerHTML = `
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center text-slate-500">
+          ആയത്തുകൾ ലോഡ് ചെയ്യുന്നു...
+        </div>`;
 
       try {
-        const arRes = await fetch(`https://api.alquran.cloud/v1/surah/${surahId}/ar.uthmani`);
-        const mlRes = await fetch(`https://api.alquran.cloud/v1/surah/${surahId}/ml.abdulhameed`);
-        
+        const [arRes, mlRes] = await Promise.all([
+          fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/quran-uthmani`),
+          fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/ml.abdulhameed`)
+        ]);
+
         const arData = await arRes.json();
         const mlData = await mlRes.json();
 
-        const arVerses = arData.data.ayahs.slice(from - 1, to);
-        const mlVerses = mlData.data.ayahs.slice(from - 1, to);
+        if (arData.code === 200 && mlData.code === 200) {
+          const allArAyahs = arData.data.ayahs;
+          const allMlAyahs = mlData.data.ayahs;
 
-        currentVersesData = arVerses.map((v, i) => ({
-          numberInSurah: v.numberInSurah,
-          arabic: v.text,
-          malayalam: mlVerses[i] ? mlVerses[i].text : '',
-          globalAyahNumber: v.number
-        }));
+          currentVerses = [];
+          for (let i = fromV - 1; i < toV; i++) {
+            currentVerses.push({
+              numberInSurah: allArAyahs[i].numberInSurah,
+              globalNumber: allArAyahs[i].number,
+              arabic: allArAyahs[i].text,
+              malayalam: allMlAyahs[i].text,
+              repetitionCount: 0
+            });
+          }
 
-        renderVerseList();
-      } catch (e) {
-        viewer.innerHTML = '<p style="color:red;">ഡാറ്റ ലോഡ് ചെയ്യുന്നതിൽ തടസ്സം നേരിട്ടു.</p>';
+          document.getElementById('verseCountBadge').innerText = currentVerses.length;
+          document.getElementById('surahMetaHeader').innerText = `${surahData ? surahData.englishName : ''} (ആയത്ത് ${fromV} മുതൽ ${toV} വരെ)`;
+
+          renderVerseCards();
+        }
+      } catch (err) {
+        console.error('Error fetching verses:', err);
+        container.innerHTML = `
+          <div class="bg-white p-6 rounded-2xl border border-rose-200 text-center text-rose-600">
+            വിവരങ്ങൾ ലഭ്യമല്ല. ഇൻ്റർനെറ്റ് ബന്ധം പരിശോധിക്കുക.
+          </div>`;
       }
     }
 
-    function renderVerseList() {
-      const viewer = document.getElementById('verseViewer');
-      viewer.innerHTML = '';
+    function renderVerseCards() {
+      const container = document.getElementById('versesList');
+      container.innerHTML = '';
+      const targetReps = parseInt(document.getElementById('repetitionTarget').value) || 9;
 
-      currentVersesData.forEach((verse, index) => {
+      currentVerses.forEach((verse, idx) => {
         const card = document.createElement('div');
-        card.className = `verse-card ${index === currentVerseIndex && isPlaying ? 'active-playing' : ''}`;
+        card.id = `verse-card-${idx}`;
+        card.className = 'bg-white p-5 md:p-6 rounded-2xl shadow-sm border border-slate-200 transition-all hover:border-emerald-300 relative';
+        
         card.innerHTML = `
-          <div class="arabic-text">${verse.arabic} (${verse.numberInSurah})</div>
-          <div class="malayalam-text">${verse.malayalam}</div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3 mb-4">
+            <div class="flex items-center space-x-2">
+              <span class="bg-dark-emerald text-emerald-100 font-bold text-xs px-2.5 py-1 rounded-lg">
+                ആയത്ത് ${verse.numberInSurah}
+              </span>
+              <span class="text-xs text-slate-400">ലക്ഷ്യം: ${targetReps} തക്രാർ</span>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <button onclick="playVerseAudio(${idx})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-all">
+                <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                </svg>
+                <span id="play-text-${idx}">കേൾക്കുക</span>
+              </button>
+
+              <button onclick="incrementCardRepetition(${idx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 flex items-center space-x-1">
+                <span>ആവർത്തനം:</span>
+                <span id="rep-count-${idx}" class="font-bold text-emerald-800">${verse.repetitionCount}</span>
+                <span>/ ${targetReps}</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="text-right font-quran text-2xl md:text-3xl text-emerald-950 leading-loose mb-4" dir="rtl">
+            ${verse.arabic}
+          </p>
+
+          <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            <p class="text-xs md:text-sm text-slate-700 leading-relaxed">
+              <strong class="text-emerald-900">അർത്ഥം:</strong> ${verse.malayalam}
+            </p>
+          </div>
         `;
-        viewer.appendChild(card);
+
+        container.appendChild(card);
       });
     }
 
-    function getAudioUrl(surahNum, ayahNumInSurah, globalAyahNum) {
+    function getAudioSourceUrl(surahNum, verseNumInSurah, globalVerseNum) {
       const reciter = document.getElementById('reciterSelect').value;
-      
-      // Direct CDN resolution for EveryAyah audio paths
-      if (reciter.includes('_128kbps') || reciter.includes('_192kbps') || reciter.includes('_64kbps')) {
+
+      // Handle direct EveryAyah CDN paths
+      if (reciter.includes('_128kbps') || reciter.includes('_64kbps') || reciter.includes('_192kbps')) {
         const sStr = String(surahNum).padStart(3, '0');
-        const aStr = String(ayahNumInSurah).padStart(3, '0');
+        const aStr = String(verseNumInSurah).padStart(3, '0');
         return `https://everyayah.com/data/${reciter}/${sStr}${aStr}.mp3`;
       }
 
-      // Default Islamic Network API fallback
-      return `https://cdn.islamic.network/quran/audio/128/${reciter}/${globalAyahNum}.mp3`;
+      // Default Islamic Network API format
+      return `https://cdn.islamic.network/quran/audio/128/${reciter}/${globalVerseNum}.mp3`;
     }
 
-    function toggleAudioRange() {
-      const btn = document.getElementById('playAudioBtn');
-      const audio = document.getElementById('audioPlayer');
+    function playVerseAudio(index) {
+      if (index < 0 || index >= currentVerses.length) return;
 
-      if (isPlaying) {
-        audio.pause();
-        isPlaying = false;
-        btn.textContent = 'കേൾക്കുക (Play Range)';
-        document.getElementById('audioStatus').textContent = 'പause ചെയ്തു';
+      if (activeVerseIndex !== -1 && activeVerseIndex !== index) {
+        resetCardUI(activeVerseIndex);
+      }
+
+      activeVerseIndex = index;
+      const verse = currentVerses[index];
+      const surahNum = document.getElementById('surahSelect').value || 1;
+
+      audioPlayer.src = getAudioSourceUrl(surahNum, verse.numberInSurah, verse.globalNumber);
+      audioPlayer.play().catch(() => {
+        // Fallback retry to EveryAyah Husary Muallim if audio fails
+        const sStr = String(surahNum).padStart(3, '0');
+        const aStr = String(verse.numberInSurah).padStart(3, '0');
+        audioPlayer.src = `https://everyayah.com/data/Husary_Muallim_128kbps/${sStr}${aStr}.mp3`;
+        audioPlayer.play();
+      });
+
+      const card = document.getElementById(`verse-card-${index}`);
+      if (card) card.classList.add('active-verse');
+
+      const playText = document.getElementById(`play-text-${index}`);
+      if (playText) playText.innerText = 'പ്ലേ ചെയ്യുന്നു...';
+
+      document.getElementById('activeVerseIndicator').innerText = `ആയത്ത് ${verse.numberInSurah}`;
+    }
+
+    function toggleContinuousPlay() {
+      if (isContinuousPlaying) {
+        stopAudio();
       } else {
-        isPlaying = true;
-        currentVerseIndex = 0;
-        currentRepeatRound = 1;
-        btn.textContent = 'നിർത്തുക (Stop)';
-        playCurrentVerse();
+        if (currentVerses.length === 0) return;
+        isContinuousPlaying = true;
+        document.getElementById('globalPlayText').innerText = 'നിർത്തുക (Pause)';
+        playVerseAudio(0);
       }
     }
 
-    function playCurrentVerse() {
-      const totalReps = parseInt(document.getElementById('repeatCount').value) || 9;
+    audioPlayer.onended = function() {
+      if (activeVerseIndex !== -1) {
+        currentVerses[activeVerseIndex].repetitionCount++;
+        const repCounter = document.getElementById(`rep-count-${activeVerseIndex}`);
+        if (repCounter) repCounter.innerText = currentVerses[activeVerseIndex].repetitionCount;
 
-      if (!isPlaying || currentVerseIndex >= currentVersesData.length) {
-        if (currentRepeatRound < totalReps) {
-          currentRepeatRound++;
-          currentVerseIndex = 0;
-          playCurrentVerse();
-          return;
-        }
-        isPlaying = false;
-        document.getElementById('playAudioBtn').textContent = 'കേൾക്കുക (Play Range)';
-        document.getElementById('audioStatus').textContent = 'പൂർത്തിയായി (Completed)';
-        renderVerseList();
+        resetCardUI(activeVerseIndex);
+      }
+
+      if (isContinuousPlaying && activeVerseIndex < currentVerses.length - 1) {
+        playVerseAudio(activeVerseIndex + 1);
+      } else {
+        stopAudio();
+      }
+    };
+
+    function stopAudio() {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      isContinuousPlaying = false;
+
+      if (activeVerseIndex !== -1) {
+        resetCardUI(activeVerseIndex);
+      }
+
+      activeVerseIndex = -1;
+      document.getElementById('globalPlayText').innerText = 'മുഴുവൻ ആയത്തുകളും പ്ലേ ചെയ്യുക';
+      document.getElementById('activeVerseIndicator').innerText = 'പ്ലേ ചെയ്തിട്ടില്ല';
+    }
+
+    function resetCardUI(index) {
+      const card = document.getElementById(`verse-card-${index}`);
+      if (card) card.classList.remove('active-verse');
+
+      const playText = document.getElementById(`play-text-${index}`);
+      if (playText) playText.innerText = 'കേൾക്കുക';
+    }
+
+    function incrementCardRepetition(index) {
+      currentVerses[index].repetitionCount++;
+      document.getElementById(`rep-count-${index}`).innerText = currentVerses[index].repetitionCount;
+    }
+
+    // LocalStorage Persistent Log Management
+    function getStoredLogs() {
+      return JSON.parse(localStorage.getItem('quran_hifz_logs') || '[]');
+    }
+
+    function saveStoredLogs(logs) {
+      localStorage.setItem('quran_hifz_logs', JSON.stringify(logs));
+      renderLogsTable();
+    }
+
+    function loadSavedLogs() {
+      renderLogsTable();
+    }
+
+    function renderLogsTable() {
+      const logs = getStoredLogs();
+      const tbody = document.getElementById('logTableBody');
+      tbody.innerHTML = '';
+
+      if (logs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="p-5 text-center text-slate-400">സേവ് ചെയ്ത വിവരങ്ങൾ ഇല്ല.</td>
+          </tr>`;
         return;
       }
 
-      renderVerseList();
-      const verse = currentVersesData[currentVerseIndex];
-      const surahId = document.getElementById('surahSelect').value || 1;
-      const audio = document.getElementById('audioPlayer');
-
-      document.getElementById('audioStatus').textContent = 
-        `ആയത്ത് ${verse.numberInSurah} (ആവർത്തനം ${currentRepeatRound}/${totalReps})`;
-
-      audio.src = getAudioUrl(surahId, verse.numberInSurah, verse.globalAyahNumber);
-      audio.play().catch(() => {
-        // Fallback retry to EveryAyah Husary Muallim
-        const sStr = String(surahId).padStart(3, '0');
-        const aStr = String(verse.numberInSurah).padStart(3, '0');
-        audio.src = `https://everyayah.com/data/Husary_Muallim_128kbps/${sStr}${aStr}.mp3`;
-        audio.play();
+      logs.forEach((log, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition-colors';
+        tr.innerHTML = `
+          <td class="p-3.5 font-medium text-slate-800">${log.date}</td>
+          <td class="p-3.5 text-slate-600">${log.portion}</td>
+          <td class="p-3.5 text-center font-bold text-emerald-800">${log.reps}</td>
+          <td class="p-3.5 text-center">
+            <input type="checkbox" ${log.completed ? 'checked' : ''} onchange="toggleLogStatus(${idx})" class="w-4 h-4 text-emerald-600 rounded border-slate-300 accent-emerald-700">
+          </td>
+          <td class="p-3.5 text-slate-600">${log.notes}</td>
+          <td class="p-3.5 text-center">
+            <button onclick="deleteLog(${idx})" class="text-rose-500 hover:text-rose-700 font-semibold text-xs">നീക്കം ചെയ്യുക</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
       });
+    }
 
-      audio.onended = function() {
-        currentVerseIndex++;
-        playCurrentVerse();
+    function logCurrentSession() {
+      const surahSelect = document.getElementById('surahSelect');
+      const surahName = surahSelect.options[surahSelect.selectedIndex].text;
+      const fromV = document.getElementById('fromVerse').value;
+      const toV = document.getElementById('toVerse').value;
+      const targetReps = document.getElementById('repetitionTarget').value;
+
+      const newEntry = {
+        date: new Date().toLocaleDateString('ml-IN', { month: 'short', day: 'numeric' }),
+        portion: `${surahName} (${fromV}-${toV})`,
+        reps: targetReps,
+        completed: true,
+        notes: 'ഹിഫ്ള് പൂര്ത്തിയാക്കി'
       };
+
+      const logs = getStoredLogs();
+      logs.unshift(newEntry);
+      saveStoredLogs(logs);
+      showToast('വിവരങ്ങൾ പേജിൽ സേവ് ചെയ്തു!');
+    }
+
+    function toggleLogStatus(index) {
+      const logs = getStoredLogs();
+      logs[index].completed = !logs[index].completed;
+      saveStoredLogs(logs);
+    }
+
+    function deleteLog(index) {
+      const logs = getStoredLogs();
+      logs.splice(index, 1);
+      saveStoredLogs(logs);
+    }
+
+    function clearSavedLogs() {
+      if (confirm('സേവ് ചെയ്ത എല്ലാ ഹിസ്റ്ററിയും നീക്കം ചെയ്യണമെന്നുറപ്പാണോ?')) {
+        localStorage.removeItem('quran_hifz_logs');
+        renderLogsTable();
+      }
+    }
+
+    function addNewTableRow() {
+      const logs = getStoredLogs();
+      logs.push({
+        date: 'ഇന്ന്',
+        portion: 'സൂറത്ത് ചേർക്കുക',
+        reps: 1,
+        completed: false,
+        notes: 'കുറിപ്പുകൾ...'
+      });
+      saveStoredLogs(logs);
+    }
+
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-5 right-5 bg-dark-emerald text-emerald-100 border border-emerald-700 px-5 py-3 rounded-xl shadow-2xl z-50 text-xs font-semibold flex items-center space-x-2 transition-all';
+      toast.innerHTML = `<span>✓</span><span>${msg}</span>`;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
     }
   </script>
+
 </body>
 </html>
