@@ -29,30 +29,32 @@
     <aside class="w-full md:w-80 bg-dark-emerald text-emerald-50 p-6 flex flex-col justify-between shadow-2xl z-20 shrink-0 border-r border-emerald-950">
       <div>
 
-        <!-- App Header & Branding -->
-        <div class="flex items-center space-x-3 mb-6 border-b border-dark-emerald pb-4 justify-between">
-          <div class="flex items-center space-x-3">
-            <div class="bg-dark-emerald-light p-2.5 rounded-xl text-emerald-300 border border-emerald-800/40">
-              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        <!-- App Header: Main Page button + language, title below on one line -->
+        <div class="mb-6 border-b border-dark-emerald pb-4">
+          <div class="flex items-center justify-between gap-3">
+            <a href="https://onlinenanma.github.io/quran" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-sm transition-all">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"></path>
               </svg>
-            </div>
-            <div>
-              <h1 id="brandTitle" class="font-bold text-lg leading-tight text-white">Qur'an Hifz Tracker</h1>
-              <p id="brandSub" class="text-xs text-emerald-300 font-medium">حفظ القرآن</p>
+              <span id="btnHome">പ്രധാനതാൾ</span>
+            </a>
+
+            <!-- Language Selector with Globe Icon -->
+            <div class="flex items-center space-x-1.5">
+              <span class="text-sm">🌐</span>
+              <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-lg p-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-400">
+                <option value="en" selected>English</option>
+                <option value="ar">العربية</option>
+                <option value="ml">മലയാളം</option>
+                <option value="ur">اردو</option>
+                <option value="bn">বাংলা</option>
+              </select>
             </div>
           </div>
 
-          <!-- Language Selector with Globe Icon -->
-          <div class="flex items-center space-x-1.5">
-            <span class="text-sm">🌐</span>
-            <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-lg p-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-400">
-              <option value="en" selected>English</option>
-              <option value="ar">العربية</option>
-              <option value="ml">മലയാളം</option>
-              <option value="ur">اردو</option>
-              <option value="bn">বাংলা</option>
-            </select>
+          <div class="mt-3 flex flex-wrap items-baseline gap-x-2">
+            <h1 id="brandTitle" class="font-bold text-lg leading-tight text-white">Qur'an Hifz Tracker</h1>
+            <p id="brandSub" class="text-xs text-emerald-300 font-medium">حفظ القرآن</p>
           </div>
         </div>
 
@@ -376,7 +378,8 @@
         btnVerseMode: "Verses",
         btnMushafMode: "Mus'haf Page",
         mushafFullRes: "Full Resolution",
-        mushafLoadFailed: "This page image could not be loaded. Please check your connection."
+        mushafLoadFailed: "This page image could not be loaded. Please check your connection.",
+        btnHome: "Main Page"
       },
       ar: {
         pageTitle: "متابع حفظ القرآن",
@@ -461,7 +464,8 @@
         btnVerseMode: "آيات",
         btnMushafMode: "صفحات المصحف",
         mushafFullRes: "الدقة الكاملة",
-        mushafLoadFailed: "تعذّر تحميل صورة الصفحة. تحقق من اتصالك بالإنترنت."
+        mushafLoadFailed: "تعذّر تحميل صورة الصفحة. تحقق من اتصالك بالإنترنت.",
+        btnHome: "الصفحة الرئيسية"
       },
       ml: {
         pageTitle: "ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ",
@@ -472,7 +476,7 @@
         lblToVerse: "അവസാന ആയത്ത്",
         lblRepetition: "ആവർത്തനം",
         lblReciter: "ഖാരിഅ്",
-        lblDailyWird: "ദൈനംദിന ലക്ഷ്യം",
+        lblDailyWird: "ദൈനംദിന വര്ദ്",
         lblFromPage: "പേജ് മുതൽ",
         lblToPage: "പേജ് വരെ",
         btnSaveProgress: "ഇന്നത്തെ പുരോഗതി സേവ് ചെയ്യുക",
@@ -546,7 +550,8 @@
         btnVerseMode: "ആയത്തുകൾ",
         btnMushafMode: "മുസ്ഹഫ് പേജ്",
         mushafFullRes: "പൂർണ്ണ റെസല്യൂഷൻ",
-        mushafLoadFailed: "പേജ് ചിത്രം ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക."
+        mushafLoadFailed: "പേജ് ചിത്രം ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക.",
+        btnHome: "പ്രധാനതാൾ"
       },
       ur: {
         pageTitle: "قرآن حفظ ٹریکر",
@@ -631,7 +636,8 @@
         btnVerseMode: "آیات",
         btnMushafMode: "مصحف صفحہ",
         mushafFullRes: "مکمل ریزولوشن",
-        mushafLoadFailed: "صفحے کی تصویر لوڈ نہیں ہو سکی۔ اپنا انٹرنیٹ کنکشن چیک کریں۔"
+        mushafLoadFailed: "صفحے کی تصویر لوڈ نہیں ہو سکی۔ اپنا انٹرنیٹ کنکشن چیک کریں۔",
+        btnHome: "مرکزی صفحہ"
       },
       bn: {
         pageTitle: "কুরআন হিফজ ট্র্যাকার",
@@ -716,7 +722,8 @@
         btnVerseMode: "আয়াত",
         btnMushafMode: "মুসহাফ পৃষ্ঠা",
         mushafFullRes: "পূর্ণ রেজোলিউশন",
-        mushafLoadFailed: "পৃষ্ঠার ছবি লোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।"
+        mushafLoadFailed: "পৃষ্ঠার ছবি লোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।",
+        btnHome: "মূল পাতা"
       }
     };
 
@@ -773,7 +780,7 @@
     // ids whose element id equals the translation key
     const LABEL_IDS = [
       'brandTitle', 'brandSub', 'lblSurah', 'lblFromVerse', 'lblToVerse', 'lblRepetition', 'lblReciter',
-      'lblDailyWird', 'lblFromPage', 'lblToPage', 'btnLoadPages', 'lblViewMode', 'btnVerseMode', 'btnMushafMode', 'mainHeaderTitle', 'mainHeaderDesc', 'lblActiveVerseTitle',
+      'lblDailyWird', 'lblFromPage', 'lblToPage', 'btnLoadPages', 'lblViewMode', 'btnVerseMode', 'btnMushafMode', 'btnHome', 'mainHeaderTitle', 'mainHeaderDesc', 'lblActiveVerseTitle',
       'lblSelectedVersesHeading', 'lblSessionTitle', 'lblSessionHint', 'btnResetCounters',
       'lblWeeklyLogTitle', 'lblWeeklyLogDesc', 'btnClearHistory',
       'thDate', 'thPortion', 'thReps', 'thCompleted', 'thNotes', 'thAction', 'footerCopy'
