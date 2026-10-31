@@ -39,7 +39,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .hijri-banner{background:#f4f8f6;color:var(--green);padding:10px 14px;border-radius:8px;text-align:center;font-size:.9rem;font-weight:700;border:1px solid var(--gold);margin-bottom:16px}
 @media(prefers-color-scheme:dark){.hijri-banner{background:#17261f;color:var(--gold)}}
 
-/* Resource Cards Grid (Tafsir & Hadith & Hifz) */
+/* Resource Cards Grid (Tafsir, Hadith & Hifz) */
 .resource-grid{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
 @media(min-width:650px){.resource-grid{flex-direction:row}}
 .resource-card{flex:1;background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.06);transition:transform .2s ease}
@@ -88,8 +88,11 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
 @media(min-width:500px){.row .btn{width:auto}}
 
-/* Top Left Menu Navigation Dropdown */
-.top-menu-dropdown{position:absolute;top:15px;left:15px;font-family:inherit;font-size:.85rem;background:var(--green2);color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 14px;cursor:pointer;white-space:nowrap;z-index:10}
+/* Top Header Bar Layout Container for Corner Buttons */
+.banner-top-bar{position:absolute;top:15px;left:15px;right:15px;display:flex;justify-content:space-between;align-items:center;z-index:10}
+
+/* Compact Top Left Menu Button Dropdown */
+.top-menu-dropdown{font-family:inherit;font-size:.85rem;background:var(--green2);color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 14px;width:auto;cursor:pointer;white-space:nowrap}
 .top-menu-dropdown option{color:#22302a;background:var(--paper)}
 
 /* Language Picker Box (Sized to fit text) */
@@ -112,56 +115,59 @@ body{top:0!important}
 <body onload="initWidgets()">
 
 <header class="banner">
- <select id="topMenuNav" class="top-menu-dropdown" onchange="if(this.value) window.location.href=this.value;" aria-label="Navigation Menu">
-  <option value="">📂 നാവിഗേഷൻ (Menu)</option>
-  <option value="https://onlinenanma.github.io/quran/">സൂറത്ത് (Surah)</option>
-  <option value="https://onlinenanma.github.io/quran/tafsir">തഫ്സീർ (Tafsir)</option>
-  <option value="https://onlinenanma.github.io/quran/hadith">ഹദീസ് (Hadith)</option>
-  <option value="https://onlinenanma.github.io/quran/hifd">ഹിഫ്ള് (Hifz)</option>
- </select>
+ <div class="banner-top-bar">
+  <select id="topMenuNav" class="top-menu-dropdown" onchange="if(this.value) window.location.href=this.value;" aria-label="Navigation Menu">
+   <option value="">📂 നാവിഗേഷൻ</option>
+   <option value="https://onlinenanma.github.io/quran/">സൂറത്ത് (Surah)</option>
+   <option value="https://onlinenanma.github.io/quran/tafsir">തഫ്സീർ (Tafsir)</option>
+   <option value="https://onlinenanma.github.io/quran/hadith">ഹദീസ് (Hadith)</option>
+   <option value="https://onlinenanma.github.io/quran/hifd">ഹിഫ്ള് (Hifz)</option>
+  </select>
 
- <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
-  <option value="">🌐 Language</option>
-  <option value="ml">മലയാളം</option>
-  <option value="en">English</option>
-  <option value="hi">हिन्दी</option>
-  <option value="ta">தமிழ்</option>
-  <option value="te">తెలుగు</option>
-  <option value="kn">ಕನ್ನಡ</option>
-  <option value="mr">मराठी</option>
-  <option value="gu">ગુજરાતી</option>
-  <option value="pa">ਪੰਜਾਬੀ</option>
-  <option value="bn">বাংলা</option>
-  <option value="ur">اردو</option>
-  <option value="ne">नेपाली</option>
-  <option value="si">සිංහල</option>
-  <option value="ar">العربية</option>
-  <option value="fa">فارسی</option>
-  <option value="tr">Türkçe</option>
-  <option value="id">Indonesia</option>
-  <option value="ms">Melayu</option>
-  <option value="th">ไทย</option>
-  <option value="vi">Tiếng Việt</option>
-  <option value="zh-CN">中文简体</option>
-  <option value="zh-TW">中文繁體</option>
-  <option value="ja">日本語</option>
-  <option value="ko">한국어</option>
-  <option value="fr">Français</option>
-  <option value="de">Deutsch</option>
-  <option value="es">Español</option>
-  <option value="pt">Português</option>
-  <option value="it">Italiano</option>
-  <option value="ru">Русский</option>
-  <option value="nl">Nederlands</option>
-  <option value="pl">Polski</option>
-  <option value="uk">Українська</option>
-  <option value="sv">Svenska</option>
-  <option value="el">Ελληνικά</option>
-  <option value="ro">Română</option>
-  <option value="sw">Kiswahili</option>
-  <option value="am">አማርኛ</option>
-  <option value="ha">Hausa</option>
-</select>
+  <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
+   <option value="">🌐 Language</option>
+   <option value="ml">മലയാളം</option>
+   <option value="en">English</option>
+   <option value="hi">हिन्दी</option>
+   <option value="ta">தமிழ்</option>
+   <option value="te">తెలుగు</option>
+   <option value="kn">ಕನ್ನಡ</option>
+   <option value="mr">मराठी</option>
+   <option value="gu">ગુજરાતી</option>
+   <option value="pa">ਪੰਜਾਬੀ</option>
+   <option value="bn">বাংলা</option>
+   <option value="ur">اردو</option>
+   <option value="ne">नेपाली</option>
+   <option value="si">සිංහල</option>
+   <option value="ar">العربية</option>
+   <option value="fa">فارسی</option>
+   <option value="tr">Türkçe</option>
+   <option value="id">Indonesia</option>
+   <option value="ms">Melayu</option>
+   <option value="th">ไทย</option>
+   <option value="vi">Tiếng Việt</option>
+   <option value="zh-CN">中文简体</option>
+   <option value="zh-TW">中文繁體</option>
+   <option value="ja">日本語</option>
+   <option value="ko">한국어</option>
+   <option value="fr">Français</option>
+   <option value="de">Deutsch</option>
+   <option value="es">Español</option>
+   <option value="pt">Português</option>
+   <option value="it">Italiano</option>
+   <option value="ru">Русский</option>
+   <option value="nl">Nederlands</option>
+   <option value="pl">Polski</option>
+   <option value="uk">Українська</option>
+   <option value="sv">Svenska</option>
+   <option value="el">Ελληνικά</option>
+   <option value="ro">Română</option>
+   <option value="sw">Kiswahili</option>
+   <option value="am">አማርኛ</option>
+   <option value="ha">Hausa</option>
+  </select>
+ </div>
+
  <div class="bismi">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
  <h1>ഖുർആൻ സാരം</h1>
 </header>
