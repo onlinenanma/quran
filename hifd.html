@@ -36,7 +36,7 @@
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"></path>
               </svg>
-              <span id="btnHome">പ്രധാനതാൾ</span>
+              <span id="btnHome">Main Page</span>
             </a>
 
             <!-- Language Selector with Globe Icon -->
@@ -1417,6 +1417,108 @@
       return `https://cdn.islamic.network/quran/audio/128/${reciter}/${globalVerseNum}.mp3`;
     }
 
+    // ------------------------------------------------------------------
+    // GENTLE ON AUDIO SERVERS (everyayah.com can block IPs that send too many requests)
+    //  1. every file is downloaded AT MOST ONCE: repetitions replay the loaded audio (no new request)
+    //  2. downloaded files are kept in the browser (Cache API) and reused on later visits / offline
+    //  3. requests to everyayah.com are spaced at least MIN_REQUEST_GAP_MS apart
+    //  4. after HTTP 429 / 403 / 503 the host is left alone for a while (Retry-After is honoured)
+    //  5. files that returned 404 are never requested again in the same visit
+    // Nothing is preloaded or bulk-downloaded: only the verse being practised is ever requested.
+    // ------------------------------------------------------------------
+    const AUDIO_CACHE_NAME = 'hifz-audio-v1';
+    const MAX_CACHED_FILES = 400;        // stored in the browser; oldest are removed beyond this
+    const MAX_MEMORY_FILES = 120;
+    let MIN_REQUEST_GAP_MS = 1000;
+    let lastEveryAyahSlot = 0;
+    let cachePuts = 0;
+    let pendingResume = null;            // clip waiting to start because the user paused meanwhile
+    const cooldowns = new Map();         // host -> timestamp until which we send nothing
+    const blockedHosts = new Set();      // hosts where fetch() is refused (CORS/offline): stream directly
+    const blobUrls = new Map();          // url -> blob: URL for this visit
+    const missingUrls = new Set();       // HTTP 404 this visit
+    const inflight = new Map();          // identical simultaneous requests share one download
+
+    const hostOf = url => { try { return new URL(url).hostname; } catch (e) { return url; } };
+    const isEveryAyahUrl = url => hostOf(url) === 'everyayah.com';
+
+    async function throttleRequest(url) {
+      if (!isEveryAyahUrl(url)) return;
+      const now = Date.now();
+      const slot = Math.max(now, lastEveryAyahSlot + MIN_REQUEST_GAP_MS);
+      lastEveryAyahSlot = slot;
+      if (slot > now) await new Promise(r => setTimeout(r, slot - now));
+    }
+
+    function rememberBlobUrl(url, blob) {
+      const typed = blob.type ? blob : new Blob([blob], { type: 'audio/mpeg' });
+      const objUrl = URL.createObjectURL(typed);
+      blobUrls.set(url, objUrl);
+      if (blobUrls.size > MAX_MEMORY_FILES) {
+        const [oldUrl, oldObj] = blobUrls.entries().next().value;
+        if (oldObj !== audioPlayer.src) { URL.revokeObjectURL(oldObj); blobUrls.delete(oldUrl); }
+      }
+      return objUrl;
+    }
+
+    async function trimAudioCache(cache) {
+      try {
+        const keys = await cache.keys();
+        for (let i = 0; i < keys.length - MAX_CACHED_FILES; i++) await cache.delete(keys[i]);
+      } catch (e) {}
+    }
+
+    // Returns { src } to play, or { failed: true }. Never rejects.
+    async function resolveAudioSource(url) {
+      if (blobUrls.has(url)) return { src: blobUrls.get(url) };
+      if (missingUrls.has(url)) return { failed: true };
+      if (inflight.has(url)) return inflight.get(url);
+
+      const job = (async () => {
+        const host = hostOf(url);
+
+        // 1) a copy saved earlier: no network at all
+        let cache = null;
+        if ('caches' in window) {
+          try {
+            cache = await caches.open(AUDIO_CACHE_NAME);
+            const hit = await cache.match(url);
+            if (hit) return { src: rememberBlobUrl(url, await hit.blob()) };
+          } catch (e) { cache = null; }
+        }
+
+        // 2) the network, politely
+        if (Date.now() < (cooldowns.get(host) || 0)) return { failed: true };
+        await throttleRequest(url);
+        if (blockedHosts.has(host)) return { src: url };     // can't read it via fetch: stream directly
+        try {
+          const res = await fetch(url, { mode: 'cors', credentials: 'omit' });
+          if (!res.ok) {
+            if (res.status === 404) missingUrls.add(url);
+            if (res.status === 429 || res.status === 403 || res.status === 503) {
+              const retryAfter = parseInt(res.headers && res.headers.get && res.headers.get('Retry-After')) || 60;
+              cooldowns.set(host, Date.now() + Math.min(retryAfter, 300) * 1000);
+            }
+            return { failed: true };
+          }
+          const copy = res.clone();
+          const blob = await res.blob();
+          if (cache) {
+            cache.put(url, copy)
+              .then(() => { if (++cachePuts % 25 === 0) trimAudioCache(cache); })
+              .catch(() => {});
+          }
+          return { src: rememberBlobUrl(url, blob) };
+        } catch (e) {
+          blockedHosts.add(host);                            // CORS or offline: ask the player to stream it
+          return { src: url };
+        }
+      })();
+
+      inflight.set(url, job);
+      try { return await job; } finally { inflight.delete(url); }
+    }
+
     // Plays ONE audio file from its beginning and waits until it finishes. Resolves with:
     //   'ended'   played completely            'failed'  error / never started / dropped mid-way
     //   'restart' caller asked to reload it    'aborted' cancelled (stop / newer run)
@@ -1444,11 +1546,21 @@
         audioPlayer.addEventListener('playing', onPlaying);
         audioPlayer.addEventListener('ended', onEnded);
         audioPlayer.addEventListener('error', onError);
-        audioPlayer.src = url;
-        audioPlayer.play().catch(err => {
-          if (err && err.name === 'AbortError') { if (!isPaused) settle('aborted'); }
-          else if (err && err.name === 'NotAllowedError') settle('blocked');
-          else settle('failed');
+        resolveAudioSource(url).then(res => {
+          if (settled) return;                               // stopped / restarted while waiting or downloading
+          if (res.failed) { settle('failed'); return; }
+          const start = () => {
+            if (settled) return;
+            // a repetition of the file that is already loaded: rewind instead of requesting it again
+            const sameFile = audioPlayer.src === res.src && audioPlayer.readyState >= 2 && !audioPlayer.error;
+            if (sameFile) audioPlayer.currentTime = 0; else audioPlayer.src = res.src;
+            audioPlayer.play().catch(err => {
+              if (err && err.name === 'AbortError') { if (!isPaused) settle('aborted'); }
+              else if (err && err.name === 'NotAllowedError') settle('blocked');
+              else settle('failed');
+            });
+          };
+          if (isPaused) pendingResume = start; else start();  // user paused while the file was being fetched
         });
       });
     }
@@ -1598,7 +1710,8 @@
       if (!isRunning) return;
       const t = T();
       if (isPaused) {
-        audioPlayer.play().catch(() => {});
+        if (pendingResume) { const go = pendingResume; pendingResume = null; go(); }
+        else audioPlayer.play().catch(() => {});
         isPaused = false;
         setText('pauseResumeBtn', t.resumeText);
         setText('activeVerseIndicator', lastIndicator);
@@ -1612,6 +1725,7 @@
 
     function stopAudio() {
       playToken++;                          // makes every pending await in a run bail out
+      pendingResume = null;
       if (cancelCurrentClip) cancelCurrentClip('aborted');
       audioPlayer.pause();
       try { audioPlayer.currentTime = 0; } catch (e) {}
