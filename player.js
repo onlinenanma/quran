@@ -1,0 +1,748 @@
+/* Shared Qur'an reader engine - loaded by every chapter page.
+   Each page only defines its own data (SURAH, VERSES, INTRO, LESSONS, SUGGESTED, QUIZ, AI_ENDPOINT).
+   Optional: set window.QURAN_AUDIO_BASE (before this file loads) if your audio/ folder is not next to the pages. */
+'use strict';
+  const $ = id => document.getElementById(id);
+  const introSpeech = () => [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ");
+  /* =====================================================
+     SAVED OPTIONS (same key on every chapter page)
+     ===================================================== */
+  const SKEY = "quran-reader-settings";
+  const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-cont", "opt-wake"];
+
+  function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
+  function saveSettings() {
+    const s = { fontSize, reciterId, repeat: $("repeat").value };
+    CHECKS.forEach(id => s[id] = $(id).checked);
+    try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
+  }
+  function applySettings() {
+    const s = loadSettings();
+    if (s.fontSize) {
+      fontSize = s.fontSize;
+      document.documentElement.style.setProperty("--fs", fontSize + "px");
+      $("fs-label").textContent = fontSize;
+    }
+    CHECKS.forEach(id => { if (id in s) $(id).checked = s[id]; });
+    if (s.repeat) $("repeat").value = s.repeat;
+  }
+
+  /* =====================================================
+     RECITERS (Arabic recitation audio, files named 001001.mp3 ...)
+     ===================================================== */
+  const RECITERS = [
+    { id: "ghamdy",   name: "സഅദ് അൽ ഗാമിദി",
+      base: "https://everyayah.com/data/Ghamadi_40kbps" },
+    { id: "ayyoub",   name: "മുഹമ്മദ് അയ്യൂബ്",
+      base: "https://everyayah.com/data/Muhammad_Ayyoub_64kbps" },
+    { id: "bafsar",   name: "അബ്ദുല്ല ബസ്ഫർ",
+      base: "https://everyayah.com/data/Abdullah_Basfar_64kbps" },
+    { id: "hudhaify", name: "അലി ഹുദൈഫി",
+      base: "https://everyayah.com/data/Hudhaify_64kbps" },
+    { id: "muaiqly",  name: "മാഹിർ അൽ മുഅയ്ഖ്\u200cലി",
+      base: "https://everyayah.com/data/Maher_AlMuaiqly_64kbps" },
+    { id: "alili",    name: "അസീസ് അലീലി",
+      base: "https://everyayah.com/data/aziz_alili_128kbps" }
+  ];
+
+  let reciterId = "ghamdy";
+  const currentReciter = () => RECITERS.find(r => r.id === reciterId) || RECITERS[0];
+  const reciterReady = r => !!r.base;
+  const pad3 = n => String(n).padStart(3, "0");
+  const ayahRef = n => SURAH + ": " + pad3(n);          // e.g. "1: 001"
+
+  function audioUrl(n) {
+    return currentReciter().base.replace(/\/*$/, "/") + pad3(SURAH) + pad3(n) + ".mp3";
+  }
+
+  function changeReciter(id) { reciterId = id; saveSettings(); }
+
+  function initReciters() {
+    const sel = $("reciter");
+    sel.innerHTML = RECITERS.map(r => {
+      const ok = reciterReady(r);
+      return `<option value="${r.id}" ${ok ? "" : "disabled"}>${r.name}${ok ? "" : " (ഓഡിയോ ചേർത്തിട്ടില്ല)"}</option>`;
+    }).join("");
+    const saved = loadSettings().reciterId;
+    const start = RECITERS.find(r => r.id === saved && reciterReady(r)) || RECITERS.find(reciterReady) || RECITERS[0];
+    reciterId = start.id;
+    sel.value = start.id;
+  }
+
+  const KIND_NAME = { in: "മുഖവുര", ar: "ആയത്ത്", ml: "സാരം", tf: "വിവരണം" };
+
+  /* =====================================================
+     BUILD THE PAGE
+     ===================================================== */
+  function introHtml() {
+    return `
+      <div class="verse" id="intro-wrap">
+        <div class="vhead"><span>മുഖവുര</span><button class="small-btn open" id="tgl-in" onclick="toggleIntro()">മുഖവുര മറയ്ക്കുക</button></div>
+        <div class="item" id="item-in-0">
+          <div class="row">
+            <button class="play-btn" id="btn-in-0" title="Play / Stop" onclick="toggleItem('in', 0)">▶</button>
+            <div class="text">
+              <div class="intro-title">${INTRO.title}</div>
+              <div class="intro-sub">${INTRO.sub}</div>
+              <p class="intro-body">${INTRO.body}</p>
+              <div class="isti">
+<div class="isti-ar" translate="no" lang="ar" dir="rtl">${INTRO.istiAr}</div>    
+                <div>${INTRO.istiMl}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function buildPage() {
+    const wrap = $("verses");
+    wrap.innerHTML = introHtml() + VERSES.map(v => `
+      <div class="verse" id="verse-${v.n}">
+        <div class="vhead"><span>ആയത്ത് ${ayahRef(v.n)}</span></div>
+
+        <div class="item it-ar" id="item-ar-${v.n}">
+          <div class="row rtl">
+            <button class="play-btn" id="btn-ar-${v.n}" title="Play / Stop" onclick="toggleItem('ar', ${v.n})">▶</button>
+            <p class="text ar" translate="no" lang="ar" dir="rtl">${v.ar}</p>
+          </div>
+        </div>
+
+        <div class="item it-ml" id="item-ml-${v.n}">
+          <div class="row">
+            <button class="play-btn" id="btn-ml-${v.n}" title="Play / Stop" onclick="toggleItem('ml', ${v.n})">▶</button>
+            <p class="text"><span class="tag">സാരം:</span>${v.ml}</p>
+          </div>
+        </div>
+
+        ${v.tf ? `
+        <button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})">വിവരണം</button>
+        <div class="item it-tf hidden" id="item-tf-${v.n}">
+          <div class="row">
+            <button class="play-btn" id="btn-tf-${v.n}" title="Play / Stop" onclick="toggleItem('tf', ${v.n})">▶</button>
+            <p class="text"><span class="pl">${v.tf}</span></p>
+          </div>
+        </div>` : ""}
+      </div>
+    `).join("");
+  }
+
+  /* =====================================================
+     FONT SIZE
+     ===================================================== */
+  let fontSize = 18;
+  function changeFont(delta) {
+    fontSize = Math.min(40, Math.max(12, fontSize + delta));
+    document.documentElement.style.setProperty("--fs", fontSize + "px");
+    $("fs-label").textContent = fontSize;
+    saveSettings();
+  }
+
+  /* =====================================================
+     SHOW / HIDE  (the "കാണിക്കുക" boxes decide what is shown AND what is played)
+     ===================================================== */
+  function setIntroVisible(show) {
+    $("item-in-0").classList.toggle("hidden", !show);
+    const btn = $("tgl-in");
+    btn.classList.toggle("open", show);
+    btn.textContent = show ? "മുഖവുര മറയ്ക്കുക" : "മുഖവുര കാണിക്കുക";
+  }
+
+  function toggleIntro() {
+    const willShow = $("item-in-0").classList.contains("hidden");
+    if (!willShow && activeKey === "in-0") stopAll();
+    setIntroVisible(willShow);
+  }
+
+  function setTafseerVisible(n, show) {
+    const block = $("item-tf-" + n);
+    const btn = $("tgl-" + n);
+    if (!block) return;
+    block.classList.toggle("hidden", !show);
+    btn.classList.toggle("open", show);
+  }
+
+  function toggleTafseer(n) {
+    const block = $("item-tf-" + n);
+    const willShow = block.classList.contains("hidden");
+    if (!willShow && activeKey === "tf-" + n) stopAll();
+    setTafseerVisible(n, willShow);
+  }
+
+  function applyDisplay() {
+    const on = id => $(id).checked;
+    document.body.classList.toggle("hide-in", !on("show-in"));
+    document.body.classList.toggle("hide-ar", !on("show-ar"));
+    document.body.classList.toggle("hide-ml", !on("show-ml"));
+    document.body.classList.toggle("hide-tf", !on("show-tf"));
+    if (activeKey && !on("show-" + activeKey.split("-")[0])) stopAll();   // what is playing was just hidden
+    VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+  }
+
+  /* =====================================================
+     PLAYBACK STATE
+     ===================================================== */
+  const statusEl = $("status");
+  const masterBtn = $("master");
+  const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
+  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
+  let token = 0;
+  let activeKey = null;
+  let currentAudio = null;
+  let continuous = false;
+  let curLabel = "";
+  let curKind = "ml";
+  const utterances = [];
+
+  /* ---------- Keep the screen on (option in the panel, default ON, only while playing) ----------
+     Wake Lock API (needs HTTPS) + a tiny muted video as backup for browsers without it. */
+  let wakeLock = null, waking = false;
+  let nsVideo = null, nsTimer = null, nsCanvas = null;
+
+  const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
+  const wantWake = () => wakeOn() && (continuous || !!activeKey);
+
+  function ensureWakeOption() {      // adds the checkbox to the options panel of every page automatically
+    if ($("opt-wake")) return;
+    const panel = $("panel"); if (!panel) return;
+    const row = document.createElement("div");
+    row.className = "ctl-row";
+    row.innerHTML = '<span class="ctl-title">\u0D38\u0D4D\u0D15\u0D4D\u0D30\u0D40\u0D7B:</span>' +
+      '<label class="opt"><input type="checkbox" id="opt-wake" checked> ' +
+      '\u0D2A\u0D4D\u0D32\u0D47 \u0D1A\u0D46\u0D2F\u0D4D\u0D2F\u0D41\u0D2E\u0D4D\u0D2A\u0D4B\u0D7E \u0D38\u0D4D\u0D15\u0D4D\u0D30\u0D40\u0D7B \u0D13\u0D2B\u0D4D \u0D06\u0D15\u0D30\u0D41\u0D24\u0D4D</label>';
+    panel.appendChild(row);
+  }
+
+
+  function startNoSleep() {
+    try {
+      if (nsVideo) { const q = nsVideo.play(); if (q && q.catch) q.catch(() => {}); return; }
+      if (!HTMLCanvasElement.prototype.captureStream) return;
+      nsCanvas = document.createElement("canvas");
+      nsCanvas.width = 16; nsCanvas.height = 16;
+      const ctx = nsCanvas.getContext("2d");
+      let t = 0;
+      const draw = () => { ctx.fillStyle = (t++ % 2) ? "#000000" : "#010101"; ctx.fillRect(0, 0, 16, 16); };
+      draw();
+      nsTimer = setInterval(draw, 500);
+      const v = document.createElement("video");
+      v.setAttribute("playsinline", "");
+      v.setAttribute("muted", "");
+      v.muted = true;
+      v.loop = true;
+      v.style.cssText = "position:fixed;bottom:0;right:0;width:8px;height:8px;opacity:0.05;pointer-events:none;";
+      v.srcObject = nsCanvas.captureStream(5);
+      v.addEventListener("pause", () => { if (nsVideo === v && document.visibilityState === "visible") v.play().catch(() => {}); });
+      document.body.appendChild(v);
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {});
+      nsVideo = v;
+    } catch (e) {}
+  }
+
+  function stopNoSleep() {
+    try {
+      if (nsTimer) { clearInterval(nsTimer); nsTimer = null; }
+      if (nsVideo) { const v = nsVideo; nsVideo = null; v.pause(); v.srcObject = null; v.remove(); }
+    } catch (e) {}
+  }
+
+  function releaseWake() {
+    stopNoSleep();
+    if (wakeLock) { const w = wakeLock; wakeLock = null; try { w.release().catch(() => {}); } catch (e) {} }
+  }
+  function updateWake() { if (wantWake()) requestWake(); else releaseWake(); }
+
+  async function requestWake() {
+    if (!wantWake() || waking || wakeLock) return;
+    waking = true;
+    try {
+      if ("wakeLock" in navigator) {
+        try {
+          const w = await navigator.wakeLock.request("screen");
+          wakeLock = w;
+          w.addEventListener("release", () => {
+            if (wakeLock === w) wakeLock = null;
+            if (document.visibilityState === "visible") setTimeout(requestWake, 300);
+          });
+          stopNoSleep();
+        } catch (e) {}
+      }
+      if (!wakeLock) startNoSleep();
+    } finally {
+      waking = false;
+    }
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") requestWake();
+  });
+  ["pointerdown", "touchstart", "click", "keydown"].forEach(ev =>
+    document.addEventListener(ev, () => requestWake(), { passive: true }));
+
+  setInterval(() => {
+    if (!wantWake()) return;
+    if (!wakeLock) requestWake();
+    if (nsVideo && nsVideo.paused) { const p = nsVideo.play(); if (p && p.catch) p.catch(() => {}); }
+  }, 5000);
+
+  /* ---------- Lock-screen info / controls ---------- */
+  function setMediaSession(label) {
+    if (!("mediaSession" in navigator)) return;
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: label, artist: currentReciter().name, album: "സൂറത്തുൽ ഫാതിഹ"
+      });
+      navigator.mediaSession.setActionHandler("pause", () => stopAll());
+      navigator.mediaSession.setActionHandler("stop", () => stopAll());
+    } catch (e) {}
+  }
+
+  function mark(key) {
+    clearMark();
+    activeKey = key;
+    const btn = $("btn-" + key);
+    const item = $("item-" + key);
+    if (btn) { btn.textContent = "■"; btn.classList.add("playing"); }
+    if (item) {
+      item.classList.add("reading");
+      if (continuous) item.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
+  function clearMark() {
+    if (!activeKey) return;
+    const btn = $("btn-" + activeKey);
+    const item = $("item-" + activeKey);
+    if (btn) { btn.textContent = "▶"; btn.classList.remove("playing"); }
+    if (item) item.classList.remove("reading");
+    activeKey = null;
+  }
+
+
+  function fail(my, msg) {
+    if (my !== token) return;
+    stopAll();
+    statusEl.textContent = msg;
+  }
+
+
+  /* =====================================================
+     MALAYALAM: text to speech
+     Best available Malayalam voices are chosen automatically:
+     one for the meaning (സാരം), a different one for the explanation (വിവരണം).
+     ===================================================== */
+  const MALE_HINT   = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i;
+  const FEMALE_HINT = /female|sobhana|swara|lekha|heera|soumya/i;
+
+  function cleanForSpeech(text) {
+    return text
+      .replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ")
+      .replace(/[()\u2018\u2019\u201C\u201D"]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function splitText(text, max = 120) {
+    const sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text];
+    const chunks = [];
+    let cur = "";
+    for (let s of sentences) {
+      s = s.trim();
+      while (s.length > max) {
+        let cut = s.lastIndexOf(" ", max);
+        if (cut <= 0) cut = max;
+        if (cur) { chunks.push(cur); cur = ""; }
+        chunks.push(s.slice(0, cut).trim());
+        s = s.slice(cut).trim();
+      }
+      if (!s) continue;
+      if (cur && (cur + " " + s).length > max) { chunks.push(cur); cur = s; }
+      else { cur = cur ? cur + " " + s : s; }
+    }
+    if (cur) chunks.push(cur);
+    return chunks.filter(c => /[^\s.,:;!?।]/.test(c));
+  }
+
+
+  /* Chunks are spoken ONE AT A TIME (the next is queued only when the previous ends).
+     Queuing a whole long explanation at once made the browser hang; a per-chunk
+     watchdog also skips a chunk if the engine stalls. */
+  function speakMalayalam(text, my, done) {
+    const langCode = curLang;
+    const chunks = splitText(cleanForSpeech(text));
+    if (!chunks.length) { done(); return; }
+
+    const found = voiceProfile(curKind);
+    if (!found) {
+      statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice...";
+      playChunks(chunks, langCode, my, done);
+      return;
+    }
+
+    setTimeout(() => {
+      if (my !== token) return;
+      statusEl.textContent = curLabel + " · " + found.voice.name;
+      let i = 0, failed = false;
+
+      const next = () => {
+        if (my !== token || failed) return;
+        if (i >= chunks.length) { done(); return; }
+        const idx = i++;
+        const u = new SpeechSynthesisUtterance(chunks[idx]);
+        u.voice = found.voice;
+        u.lang = found.voice.lang;
+        u.pitch = found.pitch;
+        u.rate = found.rate;
+        let settled = false;
+        const advance = () => { if (settled) return; settled = true; clearTimeout(guard); next(); };
+        const guard = setTimeout(() => {
+          if (my !== token || settled) return;
+          window.speechSynthesis.cancel();
+          advance();
+        }, 5000 + chunks[idx].length * 250);
+
+        u.onend = advance;
+        u.onerror = (e) => {
+          if (my !== token || settled || failed) return;
+          if (e.error === "canceled" || e.error === "interrupted") return;
+          settled = true; failed = true; clearTimeout(guard);
+          window.speechSynthesis.cancel();
+          statusEl.textContent = "Browser voice failed (" + e.error + "), trying online voice...";
+          playChunks(chunks, langCode, my, done, idx);
+        };
+        utterances[0] = u;                      // keep a reference so it is not garbage-collected
+        window.speechSynthesis.speak(u);
+      };
+      next();
+    }, 100);
+  }
+
+  /* =====================================================
+     PLAYLIST
+     Order: introduction, then for each verse: ayah, meaning, explanation.
+     Only parts ticked in "കാണിക്കുക" are included.
+     ===================================================== */
+  // `force` = the item the user tapped: it is always in the queue, even when its
+  // "show" box is unticked (intro / explanation are unticked by default), so playback continues from it.
+  function buildQueue(force) {
+    const on = id => $(id).checked;
+    const is = (k, n) => force && force.kind === k && force.n === n;
+    const q = [];
+    if (on("show-in") || is("in", 0)) q.push({ kind: "in", n: 0 });
+    VERSES.forEach(v => {
+      if (on("show-ar") || is("ar", v.n)) q.push({ kind: "ar", n: v.n });
+      if (on("show-ml") || is("ml", v.n)) q.push({ kind: "ml", n: v.n });
+      if ((on("show-tf") || is("tf", v.n)) && v.tf) q.push({ kind: "tf", n: v.n });
+    });
+    return q;
+  }
+
+  // Play queue[start...]; cont = true keeps going to the next items, false stops after the first
+  function runQueue(queue, start, cont) {
+    stopAll();
+    primeAudio();
+    setPanel(false);
+    continuous = cont;
+    const my = token;
+    if (cont) {
+      masterBtn.textContent = "■ നിർത്തുക";
+      masterBtn.classList.add("playing");
+    }
+    const step = i => {
+      if (my !== token) return;
+      if (i >= queue.length || (!cont && i > start)) {
+        stopAll();
+        if (cont) statusEl.textContent = "പൂർത്തിയായി.";
+        return;
+      }
+      const { kind, n } = queue[i];
+      if (kind === "tf") setTafseerVisible(n, true);
+      if (kind === "in") setIntroVisible(true);
+      mark(kind + "-" + n);
+      playItem(kind, n, my, () => { if (my === token) step(i + 1); });
+    };
+    step(start);
+  }
+
+  // Round button next to each item: play it (and carry on to the following items if "തുടർച്ചയായി" is ticked)
+  function toggleItem(kind, n) {
+    if (activeKey === kind + "-" + n) { stopAll(); return; }
+    if ($("opt-cont").checked) {
+      const q = buildQueue({ kind, n });
+      const idx = q.findIndex(x => x.kind === kind && x.n === n);
+      if (idx >= 0) { runQueue(q, idx, true); return; }
+    }
+    runQueue([{ kind, n }], 0, false);
+  }
+
+  // Main button: start from the beginning / stop
+  function toggleContinuous() {
+    if (continuous || activeKey) { stopAll(); return; }
+    const q = buildQueue();
+    if (!q.length) {
+      statusEl.textContent = "‘കാണിക്കുക’ എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)";
+      return;
+    }
+    runQueue(q, 0, true);
+  }
+
+  /* =====================================================
+     OPTIONS PANEL
+     ===================================================== */
+  const controlsEl = $("controls");
+  const optBtn = $("opt-toggle");
+
+  function setPanel(open) {
+    controlsEl.classList.toggle("open", open);
+    optBtn.classList.toggle("open", open);
+    optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");
+  }
+  function togglePanel(e) {
+    e.stopPropagation();
+    setPanel(!controlsEl.classList.contains("open"));
+  }
+  document.addEventListener("pointerdown", e => {
+    if (!controlsEl.contains(e.target)) setPanel(false);
+  });
+
+  /* =====================================================
+     LESSONS SUMMARY, QUESTIONS (AI) AND QUIZ
+     ===================================================== */
+  const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";
+  const pageText = () => VERSES.map(v => `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");
+  const cleanJson = t => t.replace(/```json|```/g, "").trim();
+
+  async function askAI(prompt) {
+    const res = await fetch(AI_ENDPOINT, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+    if (!res.ok) throw new Error(res.status);
+    return (await res.json()).text;
+  }
+
+  function renderQuestions(list) {
+    $("q-list").innerHTML = "";
+    list.forEach(q => {
+      const b = document.createElement("button");
+      b.className = "q-btn"; b.textContent = q;
+      b.onclick = () => answerQuestion(q);
+      $("q-list").appendChild(b);
+    });
+  }
+
+  async function showSummary() {
+    const out = $("ai-summary");
+    if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }
+    out.textContent = "⏳ ...";
+    try {
+      out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());
+      const qs = JSON.parse(cleanJson(await askAI(AI_RULE +
+        "Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));
+      if (Array.isArray(qs) && qs.length) renderQuestions(qs);
+    } catch (e) { out.textContent = LESSONS; }
+  }
+
+
+
+
+
+  async function startQuiz() {
+    let qs = QUIZ;
+    if (AI_ENDPOINT) {
+      $("quiz").textContent = "⏳ ...";
+      try {
+        const r = JSON.parse(cleanJson(await askAI(AI_RULE +
+          'Return ONLY a JSON array of 5 multiple-choice questions in Malayalam: [{"q":"","o":["","","",""],"c":0,"e":""}] where c is the index of the correct option.\n\n' + pageText())));
+        if (Array.isArray(r) && r.length) qs = r;
+      } catch (e) {}
+    }
+    renderQuiz(qs);
+  }
+
+  function renderQuiz(qs) {
+    let score = 0, answered = 0;
+    const box = $("quiz"); box.innerHTML = "";
+    qs.forEach((q, qi) => {
+      const d = document.createElement("div"); d.className = "quiz-q";
+      d.innerHTML = `<p>${qi + 1}. ${q.q}</p>`;
+      q.o.forEach((t, oi) => {
+        const b = document.createElement("button"); b.className = "quiz-opt"; b.textContent = t;
+        b.onclick = () => {
+          if (d.dataset.done) return;
+          d.dataset.done = 1; answered++;
+          d.querySelectorAll(".quiz-opt")[q.c].classList.add("right");
+          if (oi === q.c) score++; else b.classList.add("wrong");
+          if (q.e) { const e = document.createElement("div"); e.className = "quiz-exp"; e.textContent = q.e; d.appendChild(e); }
+          if (answered === qs.length) res.textContent = `🎉 സ്കോർ: ${score} / ${qs.length}`;
+        };
+        d.appendChild(b);
+      });
+      box.appendChild(d);
+    });
+    const res = document.createElement("div"); res.className = "ai-out"; box.appendChild(res);
+  }
+
+  /* ===== PATCH: shared audio + follow page translation ===== */
+const sharedAudio = new Audio();
+let curLang = "ml";
+
+function silentWavUrl() {
+  const n = 800, b = new DataView(new ArrayBuffer(44 + n)), w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
+  w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+  b.setUint32(24, 8000, true); b.setUint32(28, 8000, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
+  for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
+}
+const SILENT = silentWavUrl();
+// Unlocks the shared <audio> element during the user's tap so later verses can start on their own.
+function primeAudio() { try { sharedAudio.src = SILENT; sharedAudio.play().catch(() => {}); } catch (e) {} }
+function mlVoices() {   // voices for the language being spoken (name kept so the picker still works)
+  const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith(curLang));
+}
+function stopAll() {
+  token++; continuous = false;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  sharedAudio.onended = sharedAudio.onerror = null; sharedAudio.pause(); currentAudio = null;
+  clearMark();
+  masterBtn.textContent = MASTER_TEXT; masterBtn.classList.remove("playing"); statusEl.textContent = "";
+  releaseWake();
+}
+function playArabic(n, my, done) {
+  if (my !== token) return;
+  const a = sharedAudio, r = currentReciter();
+  a.onended = () => { if (my === token) done(); };
+  a.onerror = () => fail(my, r.name + " – ആയത്ത് " + ayahRef(n) + ": ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല.");
+  a.preservesPitch = true; a.playbackRate = 1; a.src = audioUrl(n); currentAudio = a;
+  a.play().catch(e => {
+    if (my !== token || (e && (e.name === "NotSupportedError" || e.name === "AbortError"))) return;
+    fail(my, "Could not play audio. Tap the button again.");
+  });
+}
+function playChunks(chunks, langCode, my, done, i = 0) {   // online fallback voice
+  if (my !== token) return;
+  if (i >= chunks.length) { done(); return; }
+  statusEl.textContent = curLabel + " · online voice " + (i + 1) + " / " + chunks.length;
+  const a = sharedAudio;
+  a.onended = () => playChunks(chunks, langCode, my, done, i + 1);
+  a.onerror = () => fail(my, "Online voice is blocked or offline. Try Edge, or Chrome on Android with the language's voice installed.");
+  a.preservesPitch = false; a.src = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + langCode + "&q=" + encodeURIComponent(chunks[i]);
+  a.playbackRate = curKind === "tf" ? 0.78 : 0.92; currentAudio = a;
+  a.play().catch(() => fail(my, "Could not play audio. Tap the button again."));
+}
+  /* ===== PATCH 2: detect translation per item ===== */
+/* ===== RECORDED MEANING AUDIO =====
+   Files: <AUDIO_BASE>/001/001001-ml.mp3 and <AUDIO_BASE>/001/manifest.json ({ "001001-ml": { "h": "hash" } }).
+   The hash is added as ?v=hash so a re-recorded file is fetched again. No file -> browser voice as before. */
+const AUDIO_BASE = (window.QURAN_AUDIO_BASE || "audio/").replace(/\/*$/, "/");
+const manifestCache = {};
+function meaningManifest() {
+  const key = pad3(SURAH);
+  if (!manifestCache[key]) {
+    manifestCache[key] = fetch(new URL(AUDIO_BASE + key + "/manifest.json", location.href))
+      .then(r => (r.ok ? r.json() : {}))      // no manifest -> no recorded audio for this surah
+      .catch(() => null);                     // network error -> unknown, still try the file
+  }
+  return manifestCache[key];
+}
+async function meaningFileUrl(n) {
+  const m = await meaningManifest();
+  const id = pad3(SURAH) + pad3(n) + "-ml";
+  if (m && !m[id]) return null;
+  const u = new URL(AUDIO_BASE + pad3(SURAH) + "/" + id + ".mp3", location.href);
+  if (m && m[id] && m[id].h) u.searchParams.set("v", m[id].h);
+  return u.href;
+}
+function playMeaningFile(n, my, done, fallback) {
+  meaningFileUrl(n).then(url => {
+    if (my !== token) return;
+    if (!url) { fallback(); return; }
+    const a = sharedAudio;
+    let used = false;
+    const fb = () => { if (used || my !== token) return; used = true; a.onended = a.onerror = null; fallback(); };
+    a.onended = () => { if (my === token && !used) { used = true; done(); } };
+    a.onerror = fb;
+    a.preservesPitch = true; a.playbackRate = 1; a.src = url; currentAudio = a;
+    statusEl.textContent = curLabel + " \u00B7 recorded audio";
+    a.play().catch(e => { if (my !== token || (e && e.name === "AbortError")) return; fb(); });
+  }).catch(() => { if (my === token) fallback(); });
+}
+
+function shownText(kind, n) {
+  const sel = kind === "in" ? "#item-in-0 .text" : "#item-" + kind + "-" + n + (kind === "tf" ? " .pl" : " .text");
+  const el = document.querySelector(sel); if (!el) return "";
+  const c = el.cloneNode(true); c.querySelectorAll(".tag,.isti-ar").forEach(x => x.remove());
+  return c.textContent.replace(/\s+/g, " ").trim();
+}
+function targetLang(text) {
+  const h = (document.documentElement.lang || "").toLowerCase().split("-")[0];
+  if (h && h !== "ml") return h;
+  const g = document.cookie.match(/googtrans=\/[^/]*\/([a-z-]+)/i); if (g) return g[1].toLowerCase().split("-")[0];
+  if (/[\u0900-\u097F]/.test(text)) return "hi";
+  if (/[\u0B80-\u0BFF]/.test(text)) return "ta";
+  if (/[\u0C80-\u0CFF]/.test(text)) return "kn";
+  const nl = (navigator.language || "en").toLowerCase().split("-")[0];
+  return nl === "ml" ? "en" : nl;
+}
+function playItem(kind, n, my, done) {
+  requestWake();
+  curKind = kind === "tf" ? "tf" : "ml";
+  curLabel = kind === "in" ? KIND_NAME.in : "ആയത്ത് " + ayahRef(n) + " – " + KIND_NAME[kind];
+  statusEl.textContent = curLabel; setMediaSession(curLabel);
+  if (kind === "ar") {
+    const total = +$("repeat").value || 1;
+    const loop = k => {
+      if (my !== token) return;
+      statusEl.textContent = curLabel + " · " + currentReciter().name + (total > 1 ? " · ആവർത്തനം " + k + "/" + total : "");
+      playArabic(n, my, () => (k < total ? loop(k + 1) : done()));
+    };
+    loop(1); return;
+  }
+  const shown = shownText(kind, n);
+  const mlChars = (shown.match(/[\u0D00-\u0D7F]/g) || []).length;
+  const translated = shown.length > 0 && mlChars / shown.length < 0.2;   // mostly not Malayalam any more
+  curLang = translated ? targetLang(shown) : "ml";
+  const original = kind === "in" ? introSpeech() : (kind === "ml" ? VERSES[n - 1].ml : VERSES[n - 1].tf);
+  if (kind === "ml" && !translated) {
+    playMeaningFile(n, my, done, () => speakMalayalam(original, my, done));
+    return;
+  }
+  speakMalayalam(translated ? shown : original, my, done);
+}
+  /* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
+const NATURAL = /natural|neural|enhanced|premium|online/i;
+const isFemale = v => FEMALE_HINT.test(v.name);
+const isMale = v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
+function rankedVoices() {
+  return mlVoices().sort((a, b) =>
+    (NATURAL.test(b.name) - NATURAL.test(a.name)) || ((!b.localService) - (!a.localService)) || a.name.localeCompare(b.name));
+}
+function resolveVoice(kind) {
+  const vs = rankedVoices(); if (!vs.length) return null;
+  const s = loadSettings(), saved = vs.find(v => v.name === (kind === "tf" ? s.voiceTf : s.voiceMl));
+  if (saved) return saved;                          // a voice you picked earlier still wins
+  const ml = vs.find(isMale) || vs[0];              // meaning: Midhun if present
+  if (kind !== "tf") return ml;
+  return vs.find(v => v !== ml && isFemale(v)) || vs.find(v => v !== ml) || ml;   // explanation: a different voice (Sobhana)
+}
+function voiceProfile(kind) {
+  const v = resolveVoice(kind); if (!v) return null;
+  const same = resolveVoice("ml") === resolveVoice("tf");
+  return { voice: v, pitch: kind === "tf" && same ? 0.75 : 1, rate: kind === "tf" ? 0.85 : 0.95 };
+}
+  /* =====================================================
+     START
+     ===================================================== */
+  buildPage();
+  initReciters();
+  ensureWakeOption();
+  applySettings();
+  applyDisplay();
+  CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
+  $("opt-wake").addEventListener("change", updateWake);
+  renderQuestions(SUGGESTED.map(x => x.q));
+  updateWake();
+
+  if (window.speechSynthesis) window.speechSynthesis.getVoices();   // Chrome loads voices asynchronously
