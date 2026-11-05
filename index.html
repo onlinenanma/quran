@@ -10,6 +10,7 @@
 @media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--dial:#1d2f27}}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;overflow-x:hidden}
+.pill select{width:100%}
 body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
 .banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
@@ -88,16 +89,19 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 .btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
 @media(min-width:500px){.row .btn{width:auto}}
 
-/* Top Header Bar Layout Container for Corner Buttons */
-.banner-top-bar{position:absolute;top:15px;left:15px;right:15px;display:flex;justify-content:space-between;align-items:center;z-index:10}
-
-/* Compact Top Left Menu Button Dropdown */
-.top-menu-dropdown{font-family:inherit;font-size:.85rem;background:var(--green2);color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 14px;width:auto;cursor:pointer;white-space:nowrap}
-.top-menu-dropdown option{color:#22302a;background:var(--paper)}
-
-/* Language Picker Box (Sized to fit text) */
-.langpick{font-family:inherit;font-size:.85rem;background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:6px 14px;width:auto;display:inline-block;cursor:pointer;white-space:nowrap}
-.langpick option{color:#22302a}
+/* Top bar: sits in normal flow, never overlaps the title */
+.banner{padding-top:0}
+.banner-top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 0 0;margin-bottom:clamp(10px,4vw,22px);position:relative;z-index:10}
+.pill{position:relative;display:inline-flex;align-items:center;gap:8px;height:42px;min-width:42px;padding:0 12px;border:1px solid var(--gold);border-radius:21px;background:rgba(0,0,0,.25);color:var(--gold);font-size:.88rem;font-weight:600;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pill:hover,.pill:focus-within{background:rgba(212,175,55,.18)}
+.pill .ico{font-size:1.25rem;line-height:1}
+.pill .lbl{display:none;white-space:nowrap}
+.pill .caret{display:none;font-size:.7rem;opacity:.8}
+@media(min-width:520px){.pill{padding:0 16px}.pill .lbl,.pill .caret{display:inline}}
+/* the real <select> covers the pill invisibly so the native picker opens on tap */
+.pill select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0;font-size:16px;-webkit-appearance:none;appearance:none}
+.pill select option{color:#22302a;background:#fff}
+#google_translate_element{display:none}
 .goog-te-banner-frame,.skiptranslate iframe{display:none!important}
 body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
@@ -116,16 +120,21 @@ body{top:0!important}
 
 <header class="banner">
  <div class="banner-top-bar">
-  <select id="topMenuNav" class="top-menu-dropdown" onchange="if(this.value) window.location.href=this.value;" aria-label="Navigation Menu">
-   <option value="">📂 നാവിഗേഷൻ</option>
-   <option value="https://onlinenanma.github.io/quran/">സൂറത്ത് (Surah)</option>
-   <option value="https://onlinenanma.github.io/quran/tafsir">തഫ്സീർ (Tafsir)</option>
-   <option value="https://onlinenanma.github.io/quran/hadith">ഹദീസ് (Hadith)</option>
-   <option value="https://onlinenanma.github.io/quran/hifd">ഹിഫ്ള് (Hifz)</option>
-  </select>
+  <label class="pill" aria-label="Menu">
+   <span class="ico" aria-hidden="true">☰</span><span class="lbl">നാവിഗേഷൻ</span><span class="caret" aria-hidden="true">▾</span>
+   <select id="topMenuNav" aria-label="Navigation Menu">
+    <option value="" selected disabled>☰ നാവിഗേഷൻ</option>
+    <option value="https://onlinenanma.github.io/quran/">📖 സൂറത്ത് (Surah)</option>
+    <option value="https://onlinenanma.github.io/quran/tafsir">📚 തഫ്സീർ (Tafsir)</option>
+    <option value="https://onlinenanma.github.io/quran/hadith">📜 ഹദീസ് (Hadith)</option>
+    <option value="https://onlinenanma.github.io/quran/hifd">🧠 ഹിഫ്ള് (Hifz)</option>
+   </select>
+  </label>
 
-  <select id="langPick" class="langpick notranslate" translate="no" aria-label="Translate">
-   <option value="">🌐 Language</option>
+  <label class="pill notranslate" translate="no" aria-label="Language">
+   <span class="ico" aria-hidden="true">🌐</span><span class="lbl" id="langLabel">Language</span><span class="caret" aria-hidden="true">▾</span>
+   <select id="langSelect" aria-label="Language">
+    <option value="" disabled>🌐 Language / ഭാഷ</option>
    <option value="ml">മലയാളം</option>
    <option value="en">English</option>
    <option value="hi">हिन्दी</option>
@@ -165,8 +174,10 @@ body{top:0!important}
    <option value="sw">Kiswahili</option>
    <option value="am">አማርኛ</option>
    <option value="ha">Hausa</option>
-  </select>
+   </select>
+  </label>
  </div>
+ <div id="google_translate_element"></div>
 
  <div class="bismi">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
  <h1>ഖുർആൻ സാരം</h1>
@@ -535,6 +546,44 @@ function onCityDropdownChange(auto){
 /* compass help window: close by tapping outside it or with Esc */
 document.getElementById('calibModal').addEventListener('click',e=>{ if(e.target.id==='calibModal') toggleCalibModal(false); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') toggleCalibModal(false); });
+
+/* ---------- Navigation menu ---------- */
+document.getElementById('topMenuNav').addEventListener('change',function(){
+ if(this.value) window.location.href=this.value;
+});
+
+/* ---------- Language (Google Translate, page source = Malayalam) ---------- */
+(function(){
+ const SRC='ml', sel=document.getElementById('langSelect'), lbl=document.getElementById('langLabel');
+ function getCookie(n){const m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):'';}
+ function setCookie(v){
+  const host=location.hostname, exp=v?'':';expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  const val=v?encodeURIComponent(v):'';
+  document.cookie='googtrans='+val+exp+';path=/';
+  if(host&&host.indexOf('.')>0) document.cookie='googtrans='+val+exp+';path=/;domain='+host;
+ }
+ function current(){const m=getCookie('googtrans').match(/^\/[^/]+\/(.+)$/);return m?m[1]:SRC;}
+ function showLabel(code){
+  const o=[...sel.options].find(o=>o.value===code);
+  lbl.textContent=o?o.text:'Language';
+ }
+ const cur=current(); sel.value=cur; showLabel(cur);
+
+ window.googleTranslateElementInit=function(){
+  new google.translate.TranslateElement({pageLanguage:SRC,autoDisplay:false},'google_translate_element');
+ };
+ const sc=document.createElement('script');
+ sc.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+ sc.async=true; document.head.appendChild(sc);
+
+ sel.addEventListener('change',function(){
+  const code=sel.value; if(!code) return;
+  showLabel(code);
+  if(code===SRC){ setCookie(''); }
+  else{ setCookie('/'+SRC+'/'+code); }
+  location.reload();  /* reliable on mobile: Google applies the cookie on load */
+ });
+})();
 </script>
 
 <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
