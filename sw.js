@@ -2,7 +2,7 @@
 'use strict';
 
 const CFG = Object.assign({
-  VERSION: 'v3',
+  VERSION: 'v4',
   HOST_GAP_MS: { 'everyayah.com': 1000, 'api.alquran.cloud': 110 },
   DEFAULT_COOLDOWN_MS: { 'api.alquran.cloud': 5000, default: 60000 },
   MAX_COOLDOWN_MS: 300000,
@@ -14,7 +14,7 @@ const CFG = Object.assign({
 }, self.HIFZ_SW_CONFIG || {});
 
 // Cache Names
-const SITE_CACHE = 'quran-site-v3';
+const SITE_CACHE = 'quran-site-v4';
 const STATIC_CACHE = `hifz-static-${CFG.VERSION}`;
 const API_CACHE = `hifz-api-${CFG.VERSION}`;
 const IMAGE_CACHE = `hifz-images-${CFG.VERSION}`;
@@ -32,6 +32,7 @@ const CORE_PAGES = [
   '/quran/surah-index',
   '/quran/tafsir',
   '/quran/site.js',
+  '/quran/player.js',
   'https://cdn.tailwindcss.com/',
   'https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap'
 ];
@@ -281,14 +282,13 @@ async function withRange(request, response) {
 // Same-origin audio: cache-first, fetch the FULL file (no Range) so it can be cached, then slice.
 async function handleLocalAudio(request) {
   const cache = await caches.open(AUDIO_CACHE);
-  const hit = await cache.match(request.url, { ignoreSearch: true });
+  // Key = full URL including ?v=hash, so a re-recorded file (new hash) is fetched again
+  const hit = await cache.match(request.url);
   if (hit) return withRange(request, hit);
   try {
     const res = await fetch(new Request(request.url, { credentials: 'same-origin' }));
     if (res.status === 200) {
-      // Cache under the URL without ?v=hash so a changed hash doesn't duplicate entries
-      const clean = new URL(request.url); clean.search = '';
-      try { await remember(cache, 'audio', clean.href, res.clone(), CFG.MAX_AUDIO); } catch (e) { /* quota */ }
+      try { await remember(cache, 'audio', request.url, res.clone(), CFG.MAX_AUDIO); } catch (e) { /* quota */ }
       return withRange(request, res);
     }
     return res; // e.g. 404 - let the player see the real status
