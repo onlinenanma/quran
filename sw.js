@@ -2,7 +2,7 @@
 'use strict';
 
 const CFG = Object.assign({
-  VERSION: 'v2',
+  VERSION: 'v3',
   HOST_GAP_MS: { 'everyayah.com': 1000, 'api.alquran.cloud': 110 },
   DEFAULT_COOLDOWN_MS: { 'api.alquran.cloud': 5000, default: 60000 },
   MAX_COOLDOWN_MS: 300000,
@@ -14,7 +14,7 @@ const CFG = Object.assign({
 }, self.HIFZ_SW_CONFIG || {});
 
 // Cache Names
-const SITE_CACHE = 'quran-site-v2';
+const SITE_CACHE = 'quran-site-v3';
 const STATIC_CACHE = `hifz-static-${CFG.VERSION}`;
 const API_CACHE = `hifz-api-${CFG.VERSION}`;
 const IMAGE_CACHE = `hifz-images-${CFG.VERSION}`;
@@ -27,7 +27,6 @@ const AUDIO_HOSTS = new Set(['everyayah.com', 'cdn.islamic.network', 'cdn.islami
 const IMAGE_HOSTS = new Set(['android.quran.com', 'mushaf.quran.com', 'api.islamic.app', 'cdn.islamic.network']);
 const STATIC_HOSTS = new Set(['cdn.tailwindcss.com', 'fonts.googleapis.com', 'fonts.gstatic.com']);
 
-// Core pages from your main site and hifd precache list
 const CORE_PAGES = [
   '/quran/',
   '/quran/surah-index',
@@ -54,7 +53,6 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     for (const name of await caches.keys()) {
-      // Clear old versions of site or hifz caches
       if ((name.startsWith('quran-site-') || name.startsWith('hifz-')) && !ALL_CACHES.includes(name)) {
         await caches.delete(name);
       }
@@ -74,7 +72,6 @@ async function precacheHifd() {
   }));
 }
 
-// Dynamic caching message handler for runtime pages
 self.addEventListener('message', event => {
   const data = event.data || {};
   if (data.type !== 'CACHE_URLS' || !Array.isArray(data.urls)) return;
@@ -96,37 +93,45 @@ self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
   if (request.cache === 'only-if-cached' && request.mode !== 'same-origin') return;
-  
-  const url = new URL(request.url);
-  if (url.protocol !== 'https:' && url.protocol !== 'http:' ) return;
 
-  // 1. Hifd API Requests (alquran.cloud)
+  const url = new URL(request.url);
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return;
+
+  const sameOrigin = url.origin === self.location.origin;
+
+  // 1. API (alquran.cloud)
   if (url.hostname === 'api.alquran.cloud') {
     return event.respondWith(handleApi(request));
   }
-  
-  // 2. Hifd Audio Requests (EveryAyah, etc.)
+
+  // 2. Remote audio (EveryAyah, etc.)
   if (AUDIO_HOSTS.has(url.hostname) && /\.mp3$/i.test(url.pathname)) {
     return event.respondWith(handleAudio(request));
   }
-  
-  // 3. Hifd Mus'haf Images
+
+  // 3. Mus'haf images
   if (request.destination === 'image' && IMAGE_HOSTS.has(url.hostname)) {
     return event.respondWith(handleImage(request));
   }
 
-  // 4. Navigation & General Pages (Network first with fallback)
-  if (request.mode === 'navigate' || request.headers.has('range') === false && url.origin === self.location.origin) {
+  // 3b. Same-origin audio (your own meaning/translation mp3s: audio/001/001001-ml.mp3)
+  //     Must come BEFORE the navigation/site rule, otherwise the 4s timeout breaks playback.
+  if (sameOrigin && /\.(mp3|m4a|ogg|wav)$/i.test(url.pathname)) {
+    return event.respondWith(handleLocalAudio(request));
+  }
+
+  // 4. Navigation & same-origin pages/assets (network first with cache fallback)
+  if (request.mode === 'navigate' || (sameOrigin && !request.headers.has('range'))) {
     return event.respondWith(handleNavigationAndSite(event, request));
   }
 
-  // 5. External Static Assets (Fonts / Tailwind)
+  // 5. External static assets
   if (STATIC_HOSTS.has(url.hostname)) {
     return event.respondWith(staleWhileRevalidate(event, request));
   }
 });
 
-// ------------------------------------------------------------------ The Polite Gate (For Hifd APIs & Audio)
+// ------------------------------------------------------------------ The Polite Gate
 const lastSlot = new Map();
 const corsBlocked = new Set();
 const putCounter = new Map();
@@ -197,15 +202,18 @@ async function handleNavigationAndSite(event, request) {
   const siteCache = await caches.open(SITE_CACHE);
   try {
     const res = await Promise.race([fetch(request), sleep(CFG.NAV_TIMEOUT_MS).then(() => { throw new Error('slow'); })]);
-    if (res && res.ok) {
-      siteCache.put(request, res.clone());
+    if (res && res.status === 200) {
+      siteCache.put(request, res.clone()).catch(() => {});
     }
     return res;
   } catch (e) {
+    const staticCache = await caches.open(STATIC_CACHE);
     return (await siteCache.match(request, { ignoreSearch: true }))
-      || (await caches.open(STATIC_CACHE)).match(request, { ignoreSearch: true })
-      || siteCache.match('/quran/')
-      || new Response('Offline - please open the site online once.', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+      || (await staticCache.match(request, { ignoreSearch: true }))
+      || (request.mode === 'navigate' ? await siteCache.match('/quran/') : null)
+      || (request.mode === 'navigate'
+        ? new Response('Offline - please open the site online once.', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' } })
+        : Response.error());
   }
 }
 
@@ -268,6 +276,25 @@ async function withRange(request, response) {
       'Accept-Ranges': 'bytes'
     }
   });
+}
+
+// Same-origin audio: cache-first, fetch the FULL file (no Range) so it can be cached, then slice.
+async function handleLocalAudio(request) {
+  const cache = await caches.open(AUDIO_CACHE);
+  const hit = await cache.match(request.url, { ignoreSearch: true });
+  if (hit) return withRange(request, hit);
+  try {
+    const res = await fetch(new Request(request.url, { credentials: 'same-origin' }));
+    if (res.status === 200) {
+      // Cache under the URL without ?v=hash so a changed hash doesn't duplicate entries
+      const clean = new URL(request.url); clean.search = '';
+      try { await remember(cache, 'audio', clean.href, res.clone(), CFG.MAX_AUDIO); } catch (e) { /* quota */ }
+      return withRange(request, res);
+    }
+    return res; // e.g. 404 - let the player see the real status
+  } catch (e) {
+    return Response.error();
+  }
 }
 
 async function handleAudio(request) {
