@@ -1,23 +1,31 @@
 /* Shared Qur'an reader engine - loaded by every chapter page.
-   Each page only defines its own data (SURAH, VERSES, INTRO, LESSONS, SUGGESTED, QUIZ, AI_ENDPOINT).
+   Each page only defines its own data (SURAH, VERSES; optional: INTRO, LESSONS, SUGGESTED, QUIZ, AI_ENDPOINT).
    Optional: set window.QURAN_AUDIO_BASE (before this file loads) if your audio/ folder is not next to the pages. */
 'use strict';
   const $ = id => document.getElementById(id);
+const P_LESSONS = typeof LESSONS !== "undefined" ? LESSONS : "";
+const P_SUGGESTED = typeof SUGGESTED !== "undefined" ? SUGGESTED : [];
+const P_QUIZ = typeof QUIZ !== "undefined" ? QUIZ : [];
+const P_AI_ENDPOINT = typeof AI_ENDPOINT !== "undefined" ? AI_ENDPOINT : "";
+const verseOf = n => VERSES.find(v => v.n === n) || {};       // pages may cover a range, e.g. verses 21-40
 const isOn = id => { const e = $(id); return !!(e && e.checked); };   // missing box = unticked
-const contBox = () => $("opt-cont") || $("cont");                     // older pages call it "cont"
+const CONT_IDS = ["opt-cont", "cont", "opt-cont-b", "opt-cont-p"];   // banner copy + panel copy (older pages: "cont")
+const contBoxes = () => CONT_IDS.map($).filter(Boolean);
+const isCont = () => { const b = contBoxes(); return !b.length || b[0].checked; };
   const hasIntro = () => typeof INTRO !== "undefined";
 const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ") : "";
   /* =====================================================
      SAVED OPTIONS (same key on every chapter page)
      ===================================================== */
   const SKEY = "quran-reader-settings";
-  const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-cont", "cont", "opt-wake"];
+  const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-wake"];
   const checkIds = () => CHECKS.filter(id => $(id));
 
   function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
   function saveSettings() {
     const s = Object.assign(loadSettings(), { fontSize, reciterId, repeat: $("repeat").value });
     checkIds().forEach(id => s[id] = $(id).checked);
+    s.contPlay = isCont();
     try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
   }
   function applySettings() {
@@ -28,6 +36,7 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
       $("fs-label").textContent = fontSize;
     }
     checkIds().forEach(id => { if (id in s) $(id).checked = s[id]; });
+    if ("contPlay" in s) contBoxes().forEach(b => { b.checked = !!s.contPlay; });
     if (s.repeat) $("repeat").value = s.repeat;
   }
 
@@ -207,14 +216,38 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
   const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
   const wantWake = () => wakeOn() && (continuous || !!activeKey);
 
-  function ensureContOption() {       // pages without the banner checkbox get one (ticked by default)
-    if (contBox()) return;
-    const m = $("master"); if (!m || !m.parentNode) return;
-    m.parentNode.style.flexWrap = "wrap";
-    const lab = document.createElement("label");
-    lab.className = "opt";
-    lab.innerHTML = '<input type="checkbox" id="opt-cont" checked> ' + "\u0D24\u0D41\u0D1F\u0D7C\u0D1A\u0D4D\u0D1A\u0D2F\u0D3E\u0D2F\u0D3F \u0D15\u0D47\u0D7E\u0D15\u0D4D\u0D15\u0D3E\u0D02";
-    m.parentNode.appendChild(lab);
+  function ensureBanner() {           // same single-line banner on every page: [options] [play] [continuous]
+    try {
+      const m = $("master"), o = $("opt-toggle");
+      if (!m || !o || !m.parentNode) return;
+      const row = m.parentNode, old = o.parentNode;
+      if (old !== row) {
+        row.insertBefore(o, m);
+        if (old && old.classList && old.classList.contains("banner-row") && !old.children.length && old.remove) old.remove();
+      }
+      const st = document.createElement("style");
+      st.textContent =
+        ".banner-row{flex-wrap:nowrap!important;gap:6px!important;justify-content:center}" +
+        ".banner-row .opt{font-size:12px!important;white-space:nowrap;gap:3px}" +
+        ".banner-row .opt input{width:15px;height:15px}" +
+        ".banner-row .opt-btn,.banner-row .main-btn{padding:4px 9px!important;font-size:12.5px!important;flex:0 1 auto;min-width:0}" +
+        "@media(max-width:380px){.banner-row .opt{font-size:11px!important}.banner-row .opt-btn,.banner-row .main-btn{padding:4px 7px!important;font-size:11.5px!important}}";
+      (document.head || document.documentElement).appendChild(st);
+    } catch (e) { /* cosmetic only */ }
+  }
+
+  function ensureContOption() {       // continuous-play box in the banner AND in the options panel, kept in sync
+    const inside = (el, sel) => !!(el && el.closest && el.closest(sel));
+    const mk = id => { const l = document.createElement("label"); l.className = "opt";
+      l.innerHTML = '<input type="checkbox" id="' + id + '" checked> ' + "\u0D24\u0D41\u0D1F\u0D7C\u0D1A\u0D4D\u0D1A\u0D2F\u0D3E\u0D2F\u0D3F \u0D15\u0D47\u0D7E\u0D15\u0D4D\u0D15\u0D3E\u0D02"; return l; };
+    const m = $("master");
+    if (m && m.parentNode && !contBoxes().some(b => inside(b, ".banner"))) m.parentNode.appendChild(mk($("opt-cont") ? "opt-cont-b" : "opt-cont"));
+    const panel = $("panel");
+    if (panel && !contBoxes().some(b => inside(b, "#panel"))) {
+      const show = $("show-ar"), row = show && show.closest ? show.closest(".ctl-row") : null;
+      (row || panel).appendChild(mk("opt-cont-p"));
+    }
+    contBoxes().forEach(b => b.addEventListener("change", () => { contBoxes().forEach(x => { x.checked = b.checked; }); saveSettings(); }));
   }
 
   function ensureWakeOption() {      // adds the checkbox to the options panel of every page automatically
@@ -387,7 +420,10 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
     const langCode = curLang;
     const chunks = splitText(cleanForSpeech(text));
     if (!chunks.length) { done(); return; }
+    waitForNatural(2500, () => { if (my === token) speakChunks(chunks, langCode, my, done); });
+  }
 
+  function speakChunks(chunks, langCode, my, done) {
     const found = voiceProfile(curKind);
     if (!found) {
       statusEl.textContent = curLabel + " · no Malayalam voice found, using online voice...";
@@ -453,6 +489,20 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
     return q;
   }
 
+  // Opening recitation: a'udhu once before the first verse when playing from the start (master button);
+  // bismillah right before verse 1 (not in surah 1, where verse 1 is the bismillah, nor surah 9).
+  function addOpening(q, master) {
+    const out = []; let aud = false;
+    q.forEach(it => {
+      if (it.kind === "ar") {
+        if (master && !aud) { out.push({ kind: "aud", n: 0 }); aud = true; }
+        if (it.n === 1 && SURAH !== 1 && SURAH !== 9) out.push({ kind: "bm", n: 0 });
+      }
+      out.push(it);
+    });
+    return out;
+  }
+
   // Play queue[start...]; cont = true keeps going to the next items, false stops after the first
   function runQueue(queue, start, cont) {
     stopAll();
@@ -466,7 +516,7 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
     }
     const step = i => {
       if (my !== token) return;
-      if (i >= queue.length || (!cont && i > start)) {
+      if (i >= queue.length) {
         stopAll();
         if (cont) statusEl.textContent = "പൂർത്തിയായി.";
         return;
@@ -474,7 +524,11 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
       const { kind, n } = queue[i];
       if (kind === "tf") setTafseerVisible(n, true);
       if (kind === "in") setIntroVisible(true);
-      mark(kind + "-" + n);
+      let key = kind + "-" + n;
+      if (kind === "aud" || kind === "bm") {            // highlight the verse the opening belongs to
+        const nx = queue.slice(i + 1).find(x => x.kind === "ar"); if (nx) key = "ar-" + nx.n;
+      }
+      mark(key);
       playItem(kind, n, my, () => { if (my === token) step(i + 1); });
     };
     step(start);
@@ -483,24 +537,24 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
   // Round button next to each item: play it (and carry on to the following items if "തുടർച്ചയായി" is ticked)
   function toggleItem(kind, n) {
     if (activeKey === kind + "-" + n) { stopAll(); return; }
-    const cb = contBox();
-    if (!cb || cb.checked) {
-      const q = buildQueue({ kind, n });
-      const idx = q.findIndex(x => x.kind === kind && x.n === n);
+    if (isCont()) {
+      const q = addOpening(buildQueue({ kind, n }), false);
+      let idx = q.findIndex(x => x.kind === kind && x.n === n);
+      if (idx > 0 && q[idx - 1].kind === "bm") idx--;      // starting at verse 1: bismillah first
       if (idx >= 0) { runQueue(q, idx, true); return; }
     }
-    runQueue([{ kind, n }], 0, false);
+    runQueue(addOpening([{ kind, n }], false), 0, false);
   }
 
   // Main button: start from the beginning / stop
   function toggleContinuous() {
     if (continuous || activeKey) { stopAll(); return; }
-    const q = buildQueue();
-    if (!q.length) {
+    const q0 = buildQueue();
+    if (!q0.length) {
       statusEl.textContent = "‘കാണിക്കുക’ എന്നതിൽ ഒന്നെങ്കിലും തിരഞ്ഞെടുക്കുക. (⚙ ഓപ്ഷനുകൾ)";
       return;
     }
-    runQueue(q, 0, true);
+    runQueue(addOpening(q0, true), 0, true);
   }
 
   /* =====================================================
@@ -523,14 +577,14 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
   });
 
   /* =====================================================
-     LESSONS SUMMARY, QUESTIONS (AI) AND QUIZ
+     P_LESSONS SUMMARY, QUESTIONS (AI) AND P_QUIZ
      ===================================================== */
   const AI_RULE = "Answer in Malayalam, only from the text below. Be short and clear.\n\n";
   const pageText = () => VERSES.map(v => `ആയത്ത് ${v.n}: ${v.ml}\n${v.tf || ""}`).join("\n\n");
   const cleanJson = t => t.replace(/```json|```/g, "").trim();
 
   async function askAI(prompt) {
-    const res = await fetch(AI_ENDPOINT, {
+    const res = await fetch(P_AI_ENDPOINT, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt })
     });
@@ -551,14 +605,14 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
 
   async function showSummary() {
     const out = $("ai-summary");
-    if (!AI_ENDPOINT) { out.textContent = LESSONS; return; }
+    if (!P_AI_ENDPOINT) { out.textContent = P_LESSONS; return; }
     out.textContent = "⏳ ...";
     try {
       out.textContent = await askAI(AI_RULE + "Summarise the key lessons of this page in 5-7 short numbered points.\n\n" + pageText());
       const qs = JSON.parse(cleanJson(await askAI(AI_RULE +
         "Return ONLY a JSON array of 5 short Malayalam questions a learner may ask about this page.\n\n" + pageText())));
       if (Array.isArray(qs) && qs.length) renderQuestions(qs);
-    } catch (e) { out.textContent = LESSONS; }
+    } catch (e) { out.textContent = P_LESSONS; }
   }
 
 
@@ -566,7 +620,7 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
 
 
 async function answerQuestion(q) {
-  const out = $("ai-answer"), hit = SUGGESTED.find(x => x.q === q);
+  const out = $("ai-answer"), hit = P_SUGGESTED.find(x => x.q === q);
   
   // ചോദ്യത്തിന് തൊട്ടടുത്തുള്ള ഉത്തരമറിയാൻ ഡിവിഷൻ കണ്ടെത്തുകയോ ഉണ്ടാക്കുകയോ ചെയ്യുക
   let ansContainer = $("inline-answer-" + CSS.escape(q));
@@ -586,7 +640,7 @@ async function answerQuestion(q) {
 
   ansContainer.innerHTML = "<strong>ഉത്തരം:</strong> ⏳ ചിന്തിക്കുന്നു...";
   
-  if (!AI_ENDPOINT) {
+  if (!P_AI_ENDPOINT) {
     ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."}`;
     return;
   }
@@ -602,7 +656,7 @@ async function answerQuestion(q) {
 function askCustom() { const q = $("ai-q").value.trim(); if (q) answerQuestion(q); }
 
   async function startQuiz() {
-    let qs = QUIZ;
+    let qs = P_QUIZ;
     if (AI_ENDPOINT) {
       $("quiz").textContent = "⏳ ...";
       try {
@@ -674,6 +728,28 @@ function playArabic(n, my, done) {
     fail(my, "Could not play audio. Tap the button again.");
   });
 }
+/* a'udhu / bismillah in the selected reciter's voice (EveryAyah): audhubillah.mp3, bismillah.mp3 (or verse 1 of surah 1).
+   If a file is missing the next source is tried, and if none plays the opening is simply skipped. */
+function playSpecial(kind, my, done) {
+  const base = currentReciter().base.replace(/\/*$/, "/");
+  const urls = kind === "aud"
+    ? [base + "audhubillah.mp3", "https://everyayah.com/data/Alafasy_128kbps/audhubillah.mp3"]
+    : [base + "bismillah.mp3", base + "001001.mp3"];
+  statusEl.textContent = (kind === "aud" ? "\u0623\u0639\u0648\u0630 \u0628\u0627\u0644\u0644\u0647 \u0645\u0646 \u0627\u0644\u0634\u064A\u0637\u0627\u0646 \u0627\u0644\u0631\u062C\u064A\u0645"
+    : "\u0628\u0633\u0645 \u0627\u0644\u0644\u0647 \u0627\u0644\u0631\u062D\u0645\u0646 \u0627\u0644\u0631\u062D\u064A\u0645") + " \u00B7 " + currentReciter().name;
+  const a = sharedAudio; currentAudio = a;
+  const tryAt = i => {
+    if (my !== token) return;
+    if (i >= urls.length) { done(); return; }
+    let used = false;
+    const next = () => { if (used || my !== token) return; used = true; tryAt(i + 1); };
+    a.onended = () => { if (my === token && !used) { used = true; done(); } };
+    a.onerror = next;
+    a.preservesPitch = true; a.playbackRate = 1; a.src = urls[i];
+    a.play().catch(e => { if (my !== token || (e && e.name === "AbortError")) return; next(); });
+  };
+  tryAt(0);
+}
 function playChunks(chunks, langCode, my, done, i = 0) {   // online fallback voice
   if (my !== token) return;
   if (i >= chunks.length) { done(); return; }
@@ -700,16 +776,16 @@ function meaningManifest() {
   }
   return manifestCache[key];
 }
-async function meaningFileUrl(n) {
+async function meaningFileUrl(n, kind) {
   const m = await meaningManifest();
-  const id = pad3(SURAH) + pad3(n) + "-ml";
+  const id = pad3(SURAH) + pad3(n) + "-" + (kind || "ml");
   if (m && !m[id]) return null;
   const u = new URL(AUDIO_BASE + pad3(SURAH) + "/" + id + ".mp3", location.href);
   if (m && m[id] && m[id].h) u.searchParams.set("v", m[id].h);
   return u.href;
 }
-function playMeaningFile(n, my, done, fallback) {
-  meaningFileUrl(n).then(url => {
+function playMeaningFile(n, my, done, fallback, kind) {
+  meaningFileUrl(n, kind).then(url => {
     if (my !== token) return;
     if (!url) { fallback(); return; }
     const a = sharedAudio;
@@ -740,6 +816,7 @@ function targetLang(text) {
   return nl === "ml" ? "en" : nl;
 }
 function playItem(kind, n, my, done) {
+  if (kind === "aud" || kind === "bm") { requestWake(); playSpecial(kind, my, done); return; }
   requestWake();
   curKind = kind === "tf" ? "tf" : "ml";
   curLabel = kind === "in" ? KIND_NAME.in : "ആയത്ത് " + ayahRef(n) + " – " + KIND_NAME[kind];
@@ -757,9 +834,9 @@ function playItem(kind, n, my, done) {
   const mlChars = (shown.match(/[\u0D00-\u0D7F]/g) || []).length;
   const translated = shown.length > 0 && mlChars / shown.length < 0.2;   // mostly not Malayalam any more
   curLang = translated ? targetLang(shown) : "ml";
-  const original = kind === "in" ? introSpeech() : (kind === "ml" ? VERSES[n - 1].ml : VERSES[n - 1].tf);
-  if (kind === "ml" && !translated) {
-    playMeaningFile(n, my, done, () => speakMalayalam(original, my, done));
+  const original = kind === "in" ? introSpeech() : (kind === "ml" ? (verseOf(n).ml || "") : (verseOf(n).tf || ""));
+  if ((kind === "ml" || kind === "tf") && !translated) {
+    playMeaningFile(n, my, done, () => speakMalayalam(original, my, done), kind);
     return;
   }
   speakMalayalam(translated ? shown : original, my, done);
@@ -785,11 +862,39 @@ function voiceProfile(kind) {
   const same = resolveVoice("ml") === resolveVoice("tf");
   return { voice: v, pitch: kind === "tf" && same ? 0.75 : 1, rate: kind === "tf" ? 0.85 : 0.95 };
 }
+/* ===== EDGE NATURAL VOICES =====
+   Edge lists its online "Natural" voices late - often only after Read Aloud has been used once. We ask for the
+   list as early as we can (silent utterance on the first tap) and, in Edge, wait up to 2.5 s once for a Natural
+   voice before falling back to the system voice. */
+const IS_EDGE = /\bEdg(e|A|iOS)?\//.test(navigator.userAgent || "");
+let voiceGaveUp = false, voiceWarmed = false;
+const hasNatural = () => mlVoices().some(v => NATURAL.test(v.name));
+function warmVoices() {
+  try { window.speechSynthesis.getVoices(); } catch (e) {}
+  if (voiceWarmed) return;
+  voiceWarmed = true;
+  try {
+    const u = new SpeechSynthesisUtterance(" "); u.volume = 0; u.lang = curLang === "ml" ? "ml-IN" : curLang;
+    window.speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function waitForNatural(ms, cb) {
+  if (!window.speechSynthesis || !IS_EDGE || voiceGaveUp || hasNatural()) { cb(); return; }
+  warmVoices();
+  const t0 = Date.now();
+  const tick = () => {
+    if (hasNatural()) { cb(); return; }
+    if (Date.now() - t0 > ms) { voiceGaveUp = true; cb(); return; }
+    setTimeout(tick, 150);
+  };
+  tick();
+}
   /* =====================================================
      START
      ===================================================== */
   buildPage();
   initReciters();
+  ensureBanner();
   ensureContOption();
   ensureWakeOption();
   applySettings();
@@ -797,9 +902,15 @@ function voiceProfile(kind) {
   checkIds().forEach(id => $(id).addEventListener("change", saveSettings));
   $("opt-wake").addEventListener("change", updateWake);
   const askBox = document.querySelector(".ai-ask");
-  if (askBox) askBox.style.display = AI_ENDPOINT ? "" : "none";
-  if ($("ai-box")) $("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
-  renderQuestions(SUGGESTED.map(x => x.q));
+  if (askBox) askBox.style.display = P_AI_ENDPOINT ? "" : "none";
+  if ($("ai-box")) $("ai-box").hidden = !P_LESSONS && !P_SUGGESTED.length && !P_QUIZ.length && !P_AI_ENDPOINT;
+  renderQuestions(P_SUGGESTED.map(x => x.q));
   updateWake();
 
-  if (window.speechSynthesis) window.speechSynthesis.getVoices();   // Chrome loads voices asynchronously
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();   // Chrome loads voices asynchronously
+    if (IS_EDGE) document.addEventListener("pointerdown", warmVoices, { passive: true });
+  }
+  // range pages (e.g. verses 21-40): the static bismillah heading only belongs on pages that start at verse 1
+  const bismiDiv = $("bismi-container");
+  if (bismiDiv && !(VERSES.length && VERSES[0].n === 1) && SURAH !== 1 && SURAH !== 9 && bismiDiv.remove) bismiDiv.remove();
