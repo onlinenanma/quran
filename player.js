@@ -3,17 +3,21 @@
    Optional: set window.QURAN_AUDIO_BASE (before this file loads) if your audio/ folder is not next to the pages. */
 'use strict';
   const $ = id => document.getElementById(id);
-  const introSpeech = () => [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ");
+const isOn = id => { const e = $(id); return !!(e && e.checked); };   // missing box = unticked
+const contBox = () => $("opt-cont") || $("cont");                     // older pages call it "cont"
+  const hasIntro = () => typeof INTRO !== "undefined";
+const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ") : "";
   /* =====================================================
      SAVED OPTIONS (same key on every chapter page)
      ===================================================== */
   const SKEY = "quran-reader-settings";
-  const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-cont", "opt-wake"];
+  const CHECKS = ["show-in", "show-ar", "show-ml", "show-tf", "opt-cont", "cont", "opt-wake"];
+  const checkIds = () => CHECKS.filter(id => $(id));
 
   function loadSettings() { try { return JSON.parse(localStorage.getItem(SKEY)) || {}; } catch (e) { return {}; } }
   function saveSettings() {
-    const s = { fontSize, reciterId, repeat: $("repeat").value };
-    CHECKS.forEach(id => s[id] = $(id).checked);
+    const s = Object.assign(loadSettings(), { fontSize, reciterId, repeat: $("repeat").value });
+    checkIds().forEach(id => s[id] = $(id).checked);
     try { localStorage.setItem(SKEY, JSON.stringify(s)); } catch (e) {}
   }
   function applySettings() {
@@ -23,7 +27,7 @@
       document.documentElement.style.setProperty("--fs", fontSize + "px");
       $("fs-label").textContent = fontSize;
     }
-    CHECKS.forEach(id => { if (id in s) $(id).checked = s[id]; });
+    checkIds().forEach(id => { if (id in s) $(id).checked = s[id]; });
     if (s.repeat) $("repeat").value = s.repeat;
   }
 
@@ -97,7 +101,7 @@
 
   function buildPage() {
     const wrap = $("verses");
-    wrap.innerHTML = introHtml() + VERSES.map(v => `
+    wrap.innerHTML = (hasIntro() ? introHtml() : "") + VERSES.map(v => `
       <div class="verse" id="verse-${v.n}">
         <div class="vhead"><span>ആയത്ത് ${ayahRef(v.n)}</span></div>
 
@@ -108,12 +112,12 @@
           </div>
         </div>
 
-        <div class="item it-ml" id="item-ml-${v.n}">
+        ${v.ml ? `<div class="item it-ml" id="item-ml-${v.n}">
           <div class="row">
             <button class="play-btn" id="btn-ml-${v.n}" title="Play / Stop" onclick="toggleItem('ml', ${v.n})">▶</button>
             <p class="text"><span class="tag">സാരം:</span>${v.ml}</p>
           </div>
-        </div>
+        </div>` : ""}
 
         ${v.tf ? `
         <button class="small-btn tf-btn" id="tgl-${v.n}" onclick="toggleTafseer(${v.n})">വിവരണം</button>
@@ -142,6 +146,7 @@
      SHOW / HIDE  (the "കാണിക്കുക" boxes decide what is shown AND what is played)
      ===================================================== */
   function setIntroVisible(show) {
+    if (!$("item-in-0")) return;
     $("item-in-0").classList.toggle("hidden", !show);
     const btn = $("tgl-in");
     btn.classList.toggle("open", show);
@@ -170,7 +175,7 @@
   }
 
   function applyDisplay() {
-    const on = id => $(id).checked;
+    const on = isOn;
     document.body.classList.toggle("hide-in", !on("show-in"));
     document.body.classList.toggle("hide-ar", !on("show-ar"));
     document.body.classList.toggle("hide-ml", !on("show-ml"));
@@ -201,6 +206,16 @@
 
   const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
   const wantWake = () => wakeOn() && (continuous || !!activeKey);
+
+  function ensureContOption() {       // pages without the banner checkbox get one (ticked by default)
+    if (contBox()) return;
+    const m = $("master"); if (!m || !m.parentNode) return;
+    m.parentNode.style.flexWrap = "wrap";
+    const lab = document.createElement("label");
+    lab.className = "opt";
+    lab.innerHTML = '<input type="checkbox" id="opt-cont" checked> ' + "\u0D24\u0D41\u0D1F\u0D7C\u0D1A\u0D4D\u0D1A\u0D2F\u0D3E\u0D2F\u0D3F \u0D15\u0D47\u0D7E\u0D15\u0D4D\u0D15\u0D3E\u0D02";
+    m.parentNode.appendChild(lab);
+  }
 
   function ensureWakeOption() {      // adds the checkbox to the options panel of every page automatically
     if ($("opt-wake")) return;
@@ -426,13 +441,13 @@
   // `force` = the item the user tapped: it is always in the queue, even when its
   // "show" box is unticked (intro / explanation are unticked by default), so playback continues from it.
   function buildQueue(force) {
-    const on = id => $(id).checked;
+    const on = isOn;
     const is = (k, n) => force && force.kind === k && force.n === n;
     const q = [];
-    if (on("show-in") || is("in", 0)) q.push({ kind: "in", n: 0 });
+    if (hasIntro() && (on("show-in") || is("in", 0))) q.push({ kind: "in", n: 0 });
     VERSES.forEach(v => {
       if (on("show-ar") || is("ar", v.n)) q.push({ kind: "ar", n: v.n });
-      if (on("show-ml") || is("ml", v.n)) q.push({ kind: "ml", n: v.n });
+      if (v.ml && (on("show-ml") || is("ml", v.n))) q.push({ kind: "ml", n: v.n });
       if ((on("show-tf") || is("tf", v.n)) && v.tf) q.push({ kind: "tf", n: v.n });
     });
     return q;
@@ -468,7 +483,8 @@
   // Round button next to each item: play it (and carry on to the following items if "തുടർച്ചയായി" is ticked)
   function toggleItem(kind, n) {
     if (activeKey === kind + "-" + n) { stopAll(); return; }
-    if ($("opt-cont").checked) {
+    const cb = contBox();
+    if (!cb || cb.checked) {
       const q = buildQueue({ kind, n });
       const idx = q.findIndex(x => x.kind === kind && x.n === n);
       if (idx >= 0) { runQueue(q, idx, true); return; }
@@ -523,6 +539,7 @@
   }
 
   function renderQuestions(list) {
+    if (!$("q-list")) return;
     $("q-list").innerHTML = "";
     list.forEach(q => {
       const b = document.createElement("button");
@@ -547,6 +564,42 @@
 
 
 
+
+async function answerQuestion(q) {
+  const out = $("ai-answer"), hit = SUGGESTED.find(x => x.q === q);
+  
+  // ചോദ്യത്തിന് തൊട്ടടുത്തുള്ള ഉത്തരമറിയാൻ ഡിവിഷൻ കണ്ടെത്തുകയോ ഉണ്ടാക്കുകയോ ചെയ്യുക
+  let ansContainer = $("inline-answer-" + CSS.escape(q));
+  if (!ansContainer) {
+    // നിലവിലുള്ള ചോദ്യത്തിന്റെ ബട്ടൺ കണ്ടെത്തി അതിന് താഴെ ഉത്തരം കാണിക്കാനായി പുതിയ എലമെന്റ് ഉണ്ടാക്കുന്നു
+    const buttons = document.querySelectorAll(".q-btn");
+    let targetBtn = Array.from(buttons).find(b => b.textContent === q);
+    if (targetBtn) {
+      ansContainer = document.createElement("div");
+      ansContainer.id = "inline-answer-" + CSS.escape(q);
+      ansContainer.style.cssText = "margin: 6px 0 12px 0; padding: 10px 12px; background: var(--paper); border-left: 3px solid var(--gold); border-radius: 4px; font-size: var(--fs); line-height: 1.7;";
+      targetBtn.parentNode.insertBefore(ansContainer, targetBtn.nextSibling);
+    } else {
+      ansContainer = out; // ലഭ്യമല്ലെങ്കിൽ സാധാരണ ഔട്ട്പുട്ട് ബോക്സ് ഉപയോഗിക്കുക
+    }
+  }
+
+  ansContainer.innerHTML = "<strong>ഉത്തരം:</strong> ⏳ ചിന്തിക്കുന്നു...";
+  
+  if (!AI_ENDPOINT) {
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "സ്വന്തം ചോദ്യങ്ങൾക്ക് ഉത്തരം ലഭിക്കാൻ AI സെർവർ (AI_ENDPOINT) ബന്ധിപ്പിക്കണം."}`;
+    return;
+  }
+  
+  try { 
+    const resText = await askAI(AI_RULE + "Question: " + q + "\n\n" + pageText());
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${resText}`;
+  }
+  catch (e) { 
+    ansContainer.innerHTML = `<strong>ഉത്തരം:</strong> ${hit ? hit.a : "ക്ഷമിക്കണം, ഉത്തരം ലഭ്യമായില്ല."}`; 
+  }
+}
+function askCustom() { const q = $("ai-q").value.trim(); if (q) answerQuestion(q); }
 
   async function startQuiz() {
     let qs = QUIZ;
@@ -737,11 +790,15 @@ function voiceProfile(kind) {
      ===================================================== */
   buildPage();
   initReciters();
+  ensureContOption();
   ensureWakeOption();
   applySettings();
   applyDisplay();
-  CHECKS.forEach(id => $(id).addEventListener("change", saveSettings));
+  checkIds().forEach(id => $(id).addEventListener("change", saveSettings));
   $("opt-wake").addEventListener("change", updateWake);
+  const askBox = document.querySelector(".ai-ask");
+  if (askBox) askBox.style.display = AI_ENDPOINT ? "" : "none";
+  if ($("ai-box")) $("ai-box").hidden = !LESSONS && !SUGGESTED.length && !QUIZ.length && !AI_ENDPOINT;
   renderQuestions(SUGGESTED.map(x => x.q));
   updateWake();
 
