@@ -198,8 +198,8 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
      ===================================================== */
   const statusEl = $("status");
   const masterBtn = $("master");
-  const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
-  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
+  const MASTER_TEXT = "▶ കേൾക്കാം";
+  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ";
   let token = 0;
   let activeKey = null;
   let currentAudio = null;
