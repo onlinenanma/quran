@@ -216,7 +216,7 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
   const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
   const wantWake = () => wakeOn() && (continuous || !!activeKey);
 
-  function ensureBanner() {           // same single-line banner on every page: [options] [play] [continuous]
+  function ensureBanner() {           // same single-line banner on every page: [options] [play]
     try {
       const m = $("master"), o = $("opt-toggle");
       if (!m || !o || !m.parentNode) return;
@@ -236,16 +236,18 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
     } catch (e) { /* cosmetic only */ }
   }
 
-  function ensureContOption() {       // continuous-play box in the banner AND in the options panel, kept in sync
+  function ensureContOption() {       // continuous-play box lives ONLY in the options panel; the banner keeps just 2 buttons
     const inside = (el, sel) => !!(el && el.closest && el.closest(sel));
-    const mk = id => { const l = document.createElement("label"); l.className = "opt";
-      l.innerHTML = '<input type="checkbox" id="' + id + '" checked> ' + "\u0D24\u0D41\u0D1F\u0D7C\u0D1A\u0D4D\u0D1A\u0D2F\u0D3E\u0D2F\u0D3F \u0D15\u0D47\u0D7E\u0D15\u0D4D\u0D15\u0D3E\u0D02"; return l; };
-    const m = $("master");
-    if (m && m.parentNode && !contBoxes().some(b => inside(b, ".banner"))) m.parentNode.appendChild(mk($("opt-cont") ? "opt-cont-b" : "opt-cont"));
+    contBoxes().filter(b => inside(b, ".banner")).forEach(b => {      // older pages: drop the copy left in the banner
+      const l = (b.closest && b.closest("label")) || b;
+      if (l.remove) l.remove();
+    });
     const panel = $("panel");
     if (panel && !contBoxes().some(b => inside(b, "#panel"))) {
+      const l = document.createElement("label"); l.className = "opt";
+      l.innerHTML = '<input type="checkbox" id="opt-cont-p" checked> ' + "\u0D24\u0D41\u0D1F\u0D7C\u0D1A\u0D4D\u0D1A\u0D2F\u0D3E\u0D2F\u0D3F \u0D15\u0D47\u0D7E\u0D15\u0D4D\u0D15\u0D3E\u0D02";
       const show = $("show-ar"), row = show && show.closest ? show.closest(".ctl-row") : null;
-      (row || panel).appendChild(mk("opt-cont-p"));
+      (row || panel).appendChild(l);
     }
     contBoxes().forEach(b => b.addEventListener("change", () => { contBoxes().forEach(x => { x.checked = b.checked; }); saveSettings(); }));
   }
