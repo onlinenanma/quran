@@ -198,8 +198,8 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
      ===================================================== */
   const statusEl = $("status");
   const masterBtn = $("master");
-  const MASTER_TEXT = "▶ കേൾക്കാം";
-  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ";
+  const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
+  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
   let token = 0;
   let activeKey = null;
   let currentAudio = null;
@@ -891,9 +891,28 @@ function waitForNatural(ms, cb) {
   };
   tick();
 }
+/* ===== TAFSIR FROM FILE =====
+   tafsir/<surah>.json  ->  { "21": "explanation of verse 21", "22": "..." }   (made from your Word files by build_tafsir.py)
+   Text found there fills each verse's explanation; verses without text keep whatever the page has.
+   Optional: window.QURAN_TAFSIR_BASE = "/other/folder/" before this script. */
+const TAFSIR_BASE = (window.QURAN_TAFSIR_BASE || "tafsir/").replace(/\/*$/, "/");
+async function loadTafsir() {
+  try {
+    const ctl = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = setTimeout(() => ctl && ctl.abort(), 3000);
+    const r = await fetch(new URL(TAFSIR_BASE + pad3(SURAH) + ".json", location.href), ctl ? { signal: ctl.signal } : undefined);
+    clearTimeout(timer);
+    if (!r.ok) return;
+    const m = await r.json();
+    const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    VERSES.forEach(v => { const x = m[String(v.n)]; if (typeof x === "string" && x.trim()) v.tf = esc(x.trim()); });
+  } catch (e) { /* no file for this chapter yet - fine */ }
+}
+
   /* =====================================================
      START
      ===================================================== */
+function startPage() {
   buildPage();
   initReciters();
   ensureBanner();
@@ -916,3 +935,5 @@ function waitForNatural(ms, cb) {
   // range pages (e.g. verses 21-40): the static bismillah heading only belongs on pages that start at verse 1
   const bismiDiv = $("bismi-container");
   if (bismiDiv && !(VERSES.length && VERSES[0].n === 1) && SURAH !== 1 && SURAH !== 9 && bismiDiv.remove) bismiDiv.remove();
+}
+loadTafsir().then(startPage);
