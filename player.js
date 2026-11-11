@@ -3,9 +3,9 @@
    Optional: set window.QURAN_AUDIO_BASE (before this file loads) if your audio/ folder is not next to the pages. */
 'use strict';
   const $ = id => document.getElementById(id);
-const P_LESSONS = typeof LESSONS !== "undefined" ? LESSONS : "";
-const P_SUGGESTED = typeof SUGGESTED !== "undefined" ? SUGGESTED : [];
-const P_QUIZ = typeof QUIZ !== "undefined" ? QUIZ : [];
+let P_LESSONS = typeof LESSONS !== "undefined" ? LESSONS : "";
+let P_SUGGESTED = typeof SUGGESTED !== "undefined" ? SUGGESTED : [];
+let P_QUIZ = typeof QUIZ !== "undefined" ? QUIZ : [];
 const P_AI_ENDPOINT = typeof AI_ENDPOINT !== "undefined" ? AI_ENDPOINT : "";
 const verseOf = n => VERSES.find(v => v.n === n) || {};       // pages may cover a range, e.g. verses 21-40
 const isOn = id => { const e = $(id); return !!(e && e.checked); };   // missing box = unticked
@@ -891,6 +891,36 @@ function waitForNatural(ms, cb) {
   };
   tick();
 }
+/* ===== LESSONS / QUESTIONS / QUIZ FROM FILE =====
+   extras/<page>.json  e.g. extras/002-1.json (this page only) or extras/002.json (whole chapter, used if no page file)
+   { "lessons": "text", "questions": [{ "q": "...", "a": "..." }], "quiz": [{ "q": "...", "o": ["..","..",".."], "c": 1, "e": "..." }] }
+   Made from your Word files by build_extras.py. When a page has any of these, its "lessons / questions / quiz" box appears.
+   Optional: window.QURAN_EXTRAS_BASE = "/other/folder/" before this script. */
+const EXTRAS_BASE = (window.QURAN_EXTRAS_BASE || "extras/").replace(/\/*$/, "/");
+async function fetchJson(url) {
+  try {
+    const ctl = typeof AbortController === "function" ? new AbortController() : null;
+    const timer = setTimeout(() => ctl && ctl.abort(), 3000);
+    const r = await fetch(url, ctl ? { signal: ctl.signal } : undefined);
+    clearTimeout(timer);
+    return r.ok ? await r.json() : null;
+  } catch (e) { return null; }
+}
+async function loadExtras() {
+  const m = location.pathname.match(/([^\/]+?)(?:\.html?)?$/);
+  const keys = [];
+  if (m && /^\d{3}(-\d+)?$/.test(m[1])) keys.push(m[1]);
+  if (!keys.includes(pad3(SURAH))) keys.push(pad3(SURAH));
+  for (const k of keys) {
+    const d = await fetchJson(new URL(EXTRAS_BASE + k + ".json", location.href));
+    if (!d) continue;
+    if (typeof d.lessons === "string" && d.lessons.trim()) P_LESSONS = d.lessons.trim();
+    if (Array.isArray(d.questions) && d.questions.length) P_SUGGESTED = d.questions.filter(x => x && x.q);
+    if (Array.isArray(d.quiz) && d.quiz.length) P_QUIZ = d.quiz.filter(x => x && x.q && Array.isArray(x.o) && x.o.length > 1);
+    return;
+  }
+}
+
 /* ===== TAFSIR FROM FILE =====
    tafsir/<surah>.json  ->  { "21": "explanation of verse 21", "22": "..." }   (made from your Word files by build_tafsir.py)
    Text found there fills each verse's explanation; verses without text keep whatever the page has.
@@ -936,4 +966,4 @@ function startPage() {
   const bismiDiv = $("bismi-container");
   if (bismiDiv && !(VERSES.length && VERSES[0].n === 1) && SURAH !== 1 && SURAH !== 9 && bismiDiv.remove) bismiDiv.remove();
 }
-loadTafsir().then(startPage);
+Promise.all([loadTafsir(), loadExtras()]).then(startPage);
