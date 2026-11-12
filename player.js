@@ -825,7 +825,7 @@ function playMeaningFile(n, my, done, fallback, kind) {
     a.preservesPitch = true; a.playbackRate = 1; a.src = url; currentAudio = a;
     statusEl.textContent = curLabel + " \u00B7 recorded audio";
     a.play().catch(e => { if (my !== token || (e && e.name === "AbortError")) return; fb(); });
-  }).catch(() => { if (my === token) fallback(); });
+  }).catch(() => { if (my !== token) fallback(); });
 }
 
 function shownText(kind, n) {
@@ -882,14 +882,19 @@ function resolveVoice(kind) {
   const vs = rankedVoices(); if (!vs.length) return null;
   const s = loadSettings(), saved = vs.find(v => v.name === (kind === "tf" ? s.voiceTf : s.voiceMl));
   if (saved) return saved;                          // a voice you picked earlier still wins
-  const ml = vs.find(isMale) || vs[0];              // meaning: Midhun if present
+  
+  const ml = vs.find(isMale) || vs[0];              // meaning uses Midhun (or default)
   if (kind !== "tf") return ml;
-  return vs.find(v => v !== ml && isFemale(v)) || vs.find(v => v !== ml) || ml;   // explanation: a different voice (Sobhana)
+  
+  // Explanation uses a different neural voice (preferring female voice or next available)
+  const tfVoice = vs.find(v => v !== ml && NATURAL.test(v.name) && isFemale(v)) ||
+                  vs.find(v => v !== ml && isFemale(v)) ||
+                  vs.find(v => v !== ml) || ml;
+  return tfVoice;
 }
 function voiceProfile(kind) {
   const v = resolveVoice(kind); if (!v) return null;
-  const same = resolveVoice("ml") === resolveVoice("tf");
-  return { voice: v, pitch: kind === "tf" && same ? 0.75 : 1, rate: kind === "tf" ? 0.85 : 0.95 };
+  return { voice: v, pitch: 1, rate: kind === "tf" ? 0.9 : 0.95 };
 }
 /* ===== EDGE NATURAL VOICES =====
    Edge lists its online "Natural" voices late - often only after Read Aloud has been used once. We ask for the
@@ -918,6 +923,35 @@ function waitForNatural(ms, cb) {
   };
   tick();
 }
+
+/* ===== GOOGLE TRANSLATE SETUP & UI CLEANUP ===== */
+(function setupGoogleTranslate() {
+  if (!document.querySelector('script[src*="translate_a/element.js"]')) {
+    const script = document.createElement("script");
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+  
+  // Hide spinner animation, translation feedback banners, and popups globally
+  const style = document.createElement("style");
+  style.textContent = `
+    .goog-te-spinner-pos, .goog-te-spinner, #goog-gt-tt, .goog-te-balloon-frame, .VIpgJd-yAWNEb-VIpgJd-fmcmnb { display: none !important; }
+    body { top: 0 !important; }
+    .goog-te-banner-frame { display: none !important; visibility: hidden !important; }
+  `;
+  (document.head || document.documentElement).appendChild(style);
+})();
+
+window.googleTranslateElementInit = function() {
+  try {
+    new google.translate.TranslateElement(
+      { pageLanguage: 'ml', autoDisplay: false },
+      'google_translate_element'
+    );
+  } catch (e) {}
+};
+
 /* ===== LESSONS / QUESTIONS / QUIZ FROM FILE =====
    extras/<page>.json  e.g. extras/002-1.json (this page only) or extras/002.json (whole chapter, used if no page file)
    { "lessons": "text", "questions": [{ "q": "...", "a": "..." }], "quiz": [{ "q": "...", "o": ["..","..",".."], "c": 1, "e": "..." }] }
