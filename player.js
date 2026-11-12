@@ -201,7 +201,7 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
   const statusEl = $("status");
   const masterBtn = $("master");
   const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
-  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ";
+  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
   let token = 0;
   let activeKey = null;
   let currentAudio = null;
