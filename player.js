@@ -825,7 +825,7 @@ function playMeaningFile(n, my, done, fallback, kind) {
     a.preservesPitch = true; a.playbackRate = 1; a.src = url; currentAudio = a;
     statusEl.textContent = curLabel + " \u00B7 recorded audio";
     a.play().catch(e => { if (my !== token || (e && e.name === "AbortError")) return; fb(); });
-  }).catch(() => { if (my === token) fallback(); });
+  }).catch(() => { if (my !== token) fallback(); });
 }
 
 function shownText(kind, n) {
@@ -870,7 +870,7 @@ function playItem(kind, n, my, done) {
   }
   speakMalayalam(translated ? shown : original, my, done);
 }
-/* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
+  /* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
 const NATURAL = /natural|neural|enhanced|premium|online/i;
 const isFemale = v => FEMALE_HINT.test(v.name);
 const isMale = v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
@@ -896,7 +896,6 @@ function voiceProfile(kind) {
   const v = resolveVoice(kind); if (!v) return null;
   return { voice: v, pitch: 1, rate: kind === "tf" ? 0.9 : 0.95 };
 }
-```[cite: 1]
 /* ===== EDGE NATURAL VOICES =====
    Edge lists its online "Natural" voices late - often only after Read Aloud has been used once. We ask for the
    list as early as we can (silent utterance on the first tap) and, in Edge, wait up to 2.5 s once for a Natural
