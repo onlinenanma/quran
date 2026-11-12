@@ -870,7 +870,7 @@ function playItem(kind, n, my, done) {
   }
   speakMalayalam(translated ? shown : original, my, done);
 }
-  /* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
+/* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
 const NATURAL = /natural|neural|enhanced|premium|online/i;
 const isFemale = v => FEMALE_HINT.test(v.name);
 const isMale = v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
@@ -882,15 +882,21 @@ function resolveVoice(kind) {
   const vs = rankedVoices(); if (!vs.length) return null;
   const s = loadSettings(), saved = vs.find(v => v.name === (kind === "tf" ? s.voiceTf : s.voiceMl));
   if (saved) return saved;                          // a voice you picked earlier still wins
-  const ml = vs.find(isMale) || vs[0];              // meaning: Midhun if present
+  
+  const ml = vs.find(isMale) || vs[0];              // meaning uses Midhun (or default)
   if (kind !== "tf") return ml;
-  return vs.find(v => v !== ml && isFemale(v)) || vs.find(v => v !== ml) || ml;   // explanation: a different voice (Sobhana)
+  
+  // Explanation uses a different neural voice (preferring a female voice or the next available one)
+  const tfVoice = vs.find(v => v !== ml && NATURAL.test(v.name) && isFemale(v)) ||
+                  vs.find(v => v !== ml && isFemale(v)) ||
+                  vs.find(v => v !== ml) || ml;
+  return tfVoice;
 }
 function voiceProfile(kind) {
   const v = resolveVoice(kind); if (!v) return null;
-  const same = resolveVoice("ml") === resolveVoice("tf");
-  return { voice: v, pitch: kind === "tf" && same ? 0.75 : 1, rate: kind === "tf" ? 0.85 : 0.95 };
+  return { voice: v, pitch: 1, rate: kind === "tf" ? 0.9 : 0.95 };
 }
+```[cite: 1]
 /* ===== EDGE NATURAL VOICES =====
    Edge lists its online "Natural" voices late - often only after Read Aloud has been used once. We ask for the
    list as early as we can (silent utterance on the first tap) and, in Edge, wait up to 2.5 s once for a Natural
