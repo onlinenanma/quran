@@ -870,7 +870,7 @@ function playItem(kind, n, my, done) {
   }
   speakMalayalam(translated ? shown : original, my, done);
 }
-  /* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
+/* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
 const NATURAL = /natural|neural|enhanced|premium|online/i;
 const isFemale = v => FEMALE_HINT.test(v.name);
 const isMale = v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
