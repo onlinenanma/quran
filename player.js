@@ -825,7 +825,7 @@ function playMeaningFile(n, my, done, fallback, kind) {
     a.preservesPitch = true; a.playbackRate = 1; a.src = url; currentAudio = a;
     statusEl.textContent = curLabel + " \u00B7 recorded audio";
     a.play().catch(e => { if (my !== token || (e && e.name === "AbortError")) return; fb(); });
-  }).catch(() => { if (my !== token) fallback(); });
+  }).catch(() => { if (my === token) fallback(); });
 }
 
 function shownText(kind, n) {
@@ -882,19 +882,14 @@ function resolveVoice(kind) {
   const vs = rankedVoices(); if (!vs.length) return null;
   const s = loadSettings(), saved = vs.find(v => v.name === (kind === "tf" ? s.voiceTf : s.voiceMl));
   if (saved) return saved;                          // a voice you picked earlier still wins
-  
-  const ml = vs.find(isMale) || vs[0];              // meaning uses Midhun (or default)
+  const ml = vs.find(isMale) || vs[0];              // meaning: Midhun if present
   if (kind !== "tf") return ml;
-  
-  // Explanation uses a different neural voice (preferring a female voice or the next available one)
-  const tfVoice = vs.find(v => v !== ml && NATURAL.test(v.name) && isFemale(v)) ||
-                  vs.find(v => v !== ml && isFemale(v)) ||
-                  vs.find(v => v !== ml) || ml;
-  return tfVoice;
+  return vs.find(v => v !== ml && isFemale(v)) || vs.find(v => v !== ml) || ml;   // explanation: a different voice (Sobhana)
 }
 function voiceProfile(kind) {
   const v = resolveVoice(kind); if (!v) return null;
-  return { voice: v, pitch: 1, rate: kind === "tf" ? 0.9 : 0.95 };
+  const same = resolveVoice("ml") === resolveVoice("tf");
+  return { voice: v, pitch: kind === "tf" && same ? 0.75 : 1, rate: kind === "tf" ? 0.85 : 0.95 };
 }
 /* ===== EDGE NATURAL VOICES =====
    Edge lists its online "Natural" voices late - often only after Read Aloud has been used once. We ask for the
