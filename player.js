@@ -5,6 +5,8 @@
   const $ = id => document.getElementById(id);
 let P_LESSONS = typeof LESSONS !== "undefined" ? LESSONS : "";
 let P_SUGGESTED = typeof SUGGESTED !== "undefined" ? SUGGESTED : [];
+let P_INTRO = typeof INTRO !== "undefined" ? INTRO : null;   // preface (page may define INTRO, or extras/<page>.json "preface")
+const escHtml = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 let P_QUIZ = typeof QUIZ !== "undefined" ? QUIZ : [];
 const P_AI_ENDPOINT = typeof AI_ENDPOINT !== "undefined" ? AI_ENDPOINT : "";
 const verseOf = n => VERSES.find(v => v.n === n) || {};       // pages may cover a range, e.g. verses 21-40
@@ -12,8 +14,8 @@ const isOn = id => { const e = $(id); return !!(e && e.checked); };   // missing
 const CONT_IDS = ["opt-cont", "cont", "opt-cont-b", "opt-cont-p"];   // banner copy + panel copy (older pages: "cont")
 const contBoxes = () => CONT_IDS.map($).filter(Boolean);
 const isCont = () => { const b = contBoxes(); return !b.length || b[0].checked; };
-  const hasIntro = () => typeof INTRO !== "undefined";
-const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTRO.istiMl].join(". ") : "";
+  const hasIntro = () => !!P_INTRO;
+const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body, P_INTRO.istiMl].filter(Boolean).join(". ") : "";
   /* =====================================================
      SAVED OPTIONS (same key on every chapter page)
      ===================================================== */
@@ -95,13 +97,13 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
           <div class="row">
             <button class="play-btn" id="btn-in-0" title="Play / Stop" onclick="toggleItem('in', 0)">▶</button>
             <div class="text">
-              <div class="intro-title">${INTRO.title}</div>
-              <div class="intro-sub">${INTRO.sub}</div>
-              <p class="intro-body">${INTRO.body}</p>
-              <div class="isti">
-<div class="isti-ar" translate="no" lang="ar" dir="rtl">${INTRO.istiAr}</div>    
-                <div>${INTRO.istiMl}</div>
-              </div>
+              ${P_INTRO.title ? `<div class="intro-title">${P_INTRO.title}</div>` : ""}
+              ${P_INTRO.sub ? `<div class="intro-sub">${P_INTRO.sub}</div>` : ""}
+              <p class="intro-body">${String(P_INTRO.body || "").replace(/\n/g, "<br>")}</p>
+              ${P_INTRO.istiAr ? `<div class="isti">
+<div class="isti-ar" translate="no" lang="ar" dir="rtl">${P_INTRO.istiAr}</div>
+                <div>${P_INTRO.istiMl || ""}</div>
+              </div>` : ""}
             </div>
           </div>
         </div>
@@ -215,6 +217,31 @@ const introSpeech = () => hasIntro() ? [INTRO.title, INTRO.sub, INTRO.body, INTR
 
   const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
   const wantWake = () => wakeOn() && (continuous || !!activeKey);
+
+  /* Preface (short surahs): shows the "preface" section with the same look and "show preface" option as 001.html.
+     Style rules and the option box are added here, so pages made earlier need no change. */
+  const PREFACE_DEFAULT_ON = false;    // true = preface shown (and read first by the Listen button) until a visitor unticks it
+  function ensureIntroOption() {
+    if (!hasIntro()) return;
+    try {
+      const st = document.createElement("style");
+      st.textContent = `.vhead .small-btn{margin-left:auto;padding:2px 10px;font-size:12px;font-weight:normal}
+body.hide-in #intro-wrap{display:none}
+.intro-title{font-weight:700;font-size:calc(var(--fs) * 1.2);color:var(--acc)}
+.intro-sub{color:var(--muted);font-size:calc(var(--fs) * .85);margin-bottom:6px;font-weight:600}
+.intro-body{margin:6px 0 10px;text-align:justify}
+.isti{background:var(--soft);border:1px solid var(--gold);border-radius:10px;padding:10px 14px}
+.isti-ar{font-size:calc(var(--fs) * 1.4);text-align:right;line-height:2;margin-bottom:4px;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+@media(prefers-color-scheme:dark){.isti-ar{color:var(--ink)}}`;
+      (document.head || document.documentElement).appendChild(st);
+    } catch (e) {}
+    if ($("show-in")) return;
+    const show = $("show-ar"); if (!show) return;
+    const lab = document.createElement("label"); lab.className = "opt";
+    lab.innerHTML = '<input type="checkbox" id="show-in" onchange="applyDisplay()"' + (PREFACE_DEFAULT_ON ? " checked" : "") + '> \u0d2e\u0d41\u0d16\u0d35\u0d41\u0d30';
+    const ref = show.closest ? show.closest("label") : null;
+    if (ref && ref.parentNode) ref.parentNode.insertBefore(lab, ref); else if ($("panel")) $("panel").appendChild(lab);
+  }
 
   function ensureBanner() {           // same single-line banner on every page: [options] [play]
     try {
@@ -915,6 +942,9 @@ async function loadExtras() {
     const d = await fetchJson(new URL(EXTRAS_BASE + k + ".json", location.href));
     if (!d) continue;
     if (typeof d.lessons === "string" && d.lessons.trim()) P_LESSONS = d.lessons.trim();
+    const pf = d.preface;       // preface of a short surah: { title, sub, body }
+    if (pf && typeof pf === "object" && typeof pf.body === "string" && pf.body.trim())
+      P_INTRO = { title: escHtml(pf.title), sub: escHtml(pf.sub), body: escHtml(pf.body.trim()) };
     if (Array.isArray(d.questions) && d.questions.length) P_SUGGESTED = d.questions.filter(x => x && x.q);
     if (Array.isArray(d.quiz) && d.quiz.length) P_QUIZ = d.quiz.filter(x => x && x.q && Array.isArray(x.o) && x.o.length > 1);
     return;
@@ -945,6 +975,7 @@ async function loadTafsir() {
 function startPage() {
   buildPage();
   initReciters();
+  ensureIntroOption();
   ensureBanner();
   ensureContOption();
   ensureWakeOption();
