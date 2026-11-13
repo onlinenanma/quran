@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. സൂറത്തുൽ അൽ അൻഫാൽ (1–20)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.banner .main-btn{padding:7px 20px}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status:empty{display:none}
+.verse,.item{min-width:0}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}
+.ai-box h3:first-child{margin-top:0}
+.ai-box>.main-btn{display:block;margin:0 auto}
+.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}
+.ai-out:empty{display:none}
+.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}
+.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}
+.ai-ask{display:flex;gap:6px;margin-top:8px}
+.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}
+.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.quiz-q p{margin:0 0 6px;font-size:var(--fs)}
+.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}
+.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
+.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
+.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/008"><span style="font-size: 1em;">📄</span>താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index"><span style="font-size: 1em;">📖</span>സൂറത്തുകൾ</a>
+ </div>
+ <h1>8. സൂറത്തുൽ അൽ അൻഫാൽ (1–20)</h1>
+</header>
+
+
+<div class="controls" id="controls">
+  <div class="banner">
+    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">▶ തുടക്കം മുതൽ കേൾക്കാം</button></div>
+    <div id="status"></div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">കാണിക്കുക:</span>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+    </div>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത് (പാരായണം):</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആയത്ത് ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  </div>
+</div>
+
+<div id="bismi-container">
+    <h1 style="text-align: center; margin: 14px 0 6px;">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</h1>
+</div>
+
+<div id="verses"></div>
+
+<div class="ai-box" id="ai-box">
+  <h3>💡 ഈ പേജിലെ പാഠങ്ങൾ</h3>
+  <button class="main-btn" onclick="showSummary()">പാഠങ്ങൾ സംഗ്രഹിക്കുക</button>
+  <div class="ai-out" id="ai-summary"></div>
+  <h3>❓ ചോദ്യങ്ങൾ </h3>
+  <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 6px;">ഉത്തരങ്ങൾ കാണാൻ ചോദ്യങ്ങൾ തിരഞ്ഞെടുക്കൂ..</div>
+  <div class="q-list" id="q-list"></div>
+  <div class="ai-ask"><input id="ai-q" placeholder="നിങ്ങളുടെ സ്വന്തം ചോദ്യം..."><button class="main-btn" onclick="askCustom()">ചോദിക്കുക</button></div>
+  <div class="ai-out" id="ai-answer"></div>
+  <h3>📝 ക്വിസ്</h3>
+  <button class="main-btn" onclick="startQuiz()">ക്വിസ് തുടങ്ങാം</button>
+  <div id="quiz"></div>
+</div>
+
+<script>
+/* Chapter data only. Everything else (playback, options, wake lock, tafsir loading ...) is in player.js */
+/* ===== PAGE SETTINGS ===== */
+const SURAH = 8;
+const SURAH_NAME = "സൂറത്തുൽ അൽ അൻഫാൽ";
+
+/* ===== VERSES ===== */
+const VERSES = [
+  {
+    "n": 1,
+    "ar": "يَسْـَٔلُونَكَ عَنِ ٱلْأَنفَالِ ۖ قُلِ ٱلْأَنفَالُ لِلَّهِ وَٱلرَّسُولِ ۖ فَٱتَّقُوا۟ ٱللَّهَ وَأَصْلِحُوا۟ ذَاتَ بَيْنِكُمْ ۖ وَأَطِيعُوا۟ ٱللَّهَ وَرَسُولَهُۥٓ إِن كُنتُم مُّؤْمِنِينَ",
+    "ml": "(നബിയേ,) നിന്നോടവര്‍ യുദ്ധത്തില്‍ നേടിയ സ്വത്തുക്കളെപ്പറ്റി ചോദിക്കുന്നു. പറയുക: യുദ്ധത്തില്‍ നേടിയ സ്വത്തുക്കള്‍ അല്ലാഹുവിനും അവന്‍റെ റസൂലിനുമുള്ളതാകുന്നു. അതിനാല്‍ നിങ്ങള്‍ അല്ലാഹുവെ സൂക്ഷിക്കുകയും നിങ്ങള്‍ തമ്മിലുള്ള ബന്ധങ്ങള്‍ നന്നാക്കിത്തീര്‍ക്കുകയും ചെയ്യുക. നിങ്ങള്‍ വിശ്വാസികളാണെങ്കില്‍ അല്ലാഹുവെയും റസൂലിനെയും നിങ്ങള്‍ അനുസരിക്കുകയും ചെയ്യുക.",
+    "tf": ""
+  },
+  {
+    "n": 2,
+    "ar": "إِنَّمَا ٱلْمُؤْمِنُونَ ٱلَّذِينَ إِذَا ذُكِرَ ٱللَّهُ وَجِلَتْ قُلُوبُهُمْ وَإِذَا تُلِيَتْ عَلَيْهِمْ ءَايَٰتُهُۥ زَادَتْهُمْ إِيمَٰنًۭا وَعَلَىٰ رَبِّهِمْ يَتَوَكَّلُونَ",
+    "ml": "അല്ലാഹുവെപ്പറ്റി പറയപ്പെട്ടാല്‍ ഹൃദയങ്ങള്‍ പേടിച്ച് നടുങ്ങുകയും, അവന്‍റെ ദൃഷ്ടാന്തങ്ങള്‍ വായിച്ചുകേള്‍പിക്കപ്പെട്ടാല്‍ വിശ്വാസം വര്‍ദ്ധിക്കുകയും, തങ്ങളുടെ രക്ഷിതാവിന്‍റെ മേല്‍ ഭരമേല്‍പിക്കുകയും ചെയ്യുന്നവര്‍ മാത്രമാണ് സത്യവിശ്വാസികള്‍.",
+    "tf": ""
+  },
+  {
+    "n": 3,
+    "ar": "ٱلَّذِينَ يُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ",
+    "ml": "നമസ്കാരം മുറപോലെ നിര്‍വഹിക്കുകയും നാം നല്‍കിയിട്ടുള്ളതില്‍ നിന്ന് ചെലവഴിക്കുകയും ചെയ്യുന്നവര്‍.",
+    "tf": ""
+  },
+  {
+    "n": 4,
+    "ar": "أُو۟لَٰٓئِكَ هُمُ ٱلْمُؤْمِنُونَ حَقًّۭا ۚ لَّهُمْ دَرَجَٰتٌ عِندَ رَبِّهِمْ وَمَغْفِرَةٌۭ وَرِزْقٌۭ كَرِيمٌۭ",
+    "ml": "അവര്‍ തന്നെയാണ് യഥാര്‍ത്ഥത്തില്‍ വിശ്വാസികള്‍. അവര്‍ക്ക് അവരുടെ രക്ഷിതാവിങ്കല്‍ പല പദവികളുണ്ട്‌. പാപമോചനവും ഉദാരമായ ഉപജീവനവുമുണ്ട്‌.",
+    "tf": ""
+  },
+  {
+    "n": 5,
+    "ar": "كَمَآ أَخْرَجَكَ رَبُّكَ مِنۢ بَيْتِكَ بِٱلْحَقِّ وَإِنَّ فَرِيقًۭا مِّنَ ٱلْمُؤْمِنِينَ لَكَٰرِهُونَ",
+    "ml": "വിശ്വാസികളില്‍ ഒരു വിഭാഗം ഇഷ്ടമില്ലാത്തവരായിരിക്കെ ത്തന്നെ നിന്‍റെ വീട്ടില്‍ നിന്ന് ന്യായമായ കാര്യത്തിന് നിന്‍റെ രക്ഷിതാവ് നിന്നെ പുറത്തിറക്കിയത് പോലെത്തന്നെയാണിത്‌.",
+    "tf": ""
+  },
+  {
+    "n": 6,
+    "ar": "يُجَٰدِلُونَكَ فِى ٱلْحَقِّ بَعْدَمَا تَبَيَّنَ كَأَنَّمَا يُسَاقُونَ إِلَى ٱلْمَوْتِ وَهُمْ يَنظُرُونَ",
+    "ml": "ന്യായമായ കാര്യത്തില്‍, അതു വ്യക്തമായതിനു ശേഷം അവര്‍ നിന്നോട് തര്‍ക്കിക്കുകയായിരുന്നു. അവര്‍ നോക്കിക്കൊണ്ടിരിക്കെ മരണത്തിലേക്ക് അവര്‍ നയിക്കപ്പെടുന്നത് പോലെ.",
+    "tf": ""
+  },
+  {
+    "n": 7,
+    "ar": "وَإِذْ يَعِدُكُمُ ٱللَّهُ إِحْدَى ٱلطَّآئِفَتَيْنِ أَنَّهَا لَكُمْ وَتَوَدُّونَ أَنَّ غَيْرَ ذَاتِ ٱلشَّوْكَةِ تَكُونُ لَكُمْ وَيُرِيدُ ٱللَّهُ أَن يُحِقَّ ٱلْحَقَّ بِكَلِمَٰتِهِۦ وَيَقْطَعَ دَابِرَ ٱلْكَٰفِرِينَ",
+    "ml": "രണ്ടു സംഘങ്ങളിലൊന്ന് നിങ്ങള്‍ക്ക് അധീനമാകുമെന്ന് അല്ലാഹു നിങ്ങളോട് വാഗ്ദാനം ചെയ്തിരുന്ന സന്ദര്‍ഭം (ഓര്‍ക്കുക.) ആയുധബലമില്ലാത്ത സംഘം നിങ്ങള്‍ക്കധീനമാകണമെന്നായിരുന്നു നിങ്ങള്‍ കൊതിച്ചിരുന്നത്‌. അല്ലാഹുവാകട്ടെ തന്‍റെ കല്‍പനകള്‍ മുഖേന സത്യം പുലര്‍ത്തിക്കാണിക്കുവാനും സത്യനിഷേധികളുടെ മുരട് മുറിച്ചുകളയുവാനും ആണ് ഉദ്ദേശിച്ചിരുന്നത്‌.",
+    "tf": ""
+  },
+  {
+    "n": 8,
+    "ar": "لِيُحِقَّ ٱلْحَقَّ وَيُبْطِلَ ٱلْبَٰطِلَ وَلَوْ كَرِهَ ٱلْمُجْرِمُونَ",
+    "ml": "സത്യത്തെ സത്യമായി പുലര്‍ത്തേണ്ടതിനും അസത്യത്തെ ഫലശൂന്യമാക്കിത്തീര്‍ക്കേണ്ടതിനുമത്രെ അത്‌. ദുഷ്ടന്‍മാര്‍ക്ക് അതെത്ര അനിഷ്ടകരമായാലും ശരി.",
+    "tf": ""
+  },
+  {
+    "n": 9,
+    "ar": "إِذْ تَسْتَغِيثُونَ رَبَّكُمْ فَٱسْتَجَابَ لَكُمْ أَنِّى مُمِدُّكُم بِأَلْفٍۢ مِّنَ ٱلْمَلَٰٓئِكَةِ مُرْدِفِينَ",
+    "ml": "നിങ്ങള്‍ നിങ്ങളുടെ രക്ഷിതാവിനോട് സഹായം തേടിയിരുന്ന സന്ദര്‍ഭം (ഓര്‍ക്കുക.) തുടരെത്തുടരെയായി ആയിരം മലക്കുകളെ അയച്ചുകൊണ്ട് ഞാന്‍ നിങ്ങള്‍ക്ക് സഹായം നല്‍കുന്നതാണ് എന്ന് അവന്‍ അപ്പോള്‍ നിങ്ങള്‍ക്കു മറുപടി നല്‍കി.",
+    "tf": ""
+  },
+  {
+    "n": 10,
+    "ar": "وَمَا جَعَلَهُ ٱللَّهُ إِلَّا بُشْرَىٰ وَلِتَطْمَئِنَّ بِهِۦ قُلُوبُكُمْ ۚ وَمَا ٱلنَّصْرُ إِلَّا مِنْ عِندِ ٱللَّهِ ۚ إِنَّ ٱللَّهَ عَزِيزٌ حَكِيمٌ",
+    "ml": "ഒരു സന്തോഷവാര്‍ത്തയായിക്കൊണ്ടും നിങ്ങളുടെ ഹൃദയങ്ങള്‍ക്കു സമാധാനം നല്‍കുന്നതിന് വേണ്ടിയും മാത്രമാണ് അല്ലാഹു അത് ഏര്‍പെടുത്തിയത്‌. അല്ലാഹുവിങ്കല്‍ നിന്നല്ലാതെ യാതൊരു സഹായവും ഇല്ല. തീര്‍ച്ചയായും അല്ലാഹു പ്രതാപിയും യുക്തിമാനുമാകുന്നു.",
+    "tf": ""
+  },
+  {
+    "n": 11,
+    "ar": "إِذْ يُغَشِّيكُمُ ٱلنُّعَاسَ أَمَنَةًۭ مِّنْهُ وَيُنَزِّلُ عَلَيْكُم مِّنَ ٱلسَّمَآءِ مَآءًۭ لِّيُطَهِّرَكُم بِهِۦ وَيُذْهِبَ عَنكُمْ رِجْزَ ٱلشَّيْطَٰنِ وَلِيَرْبِطَ عَلَىٰ قُلُوبِكُمْ وَيُثَبِّتَ بِهِ ٱلْأَقْدَامَ",
+    "ml": "അല്ലാഹു തന്‍റെ പക്കല്‍ നിന്നുള്ള മനഃശാന്തിയുമായി നിങ്ങളെ നിദ്രാമയക്കം കൊണ്ട് ആവരണം ചെയ്തിരുന്ന സന്ദര്‍ഭം (ഓര്‍ക്കുക.) നിങ്ങളെ ശുദ്ധീകരിക്കുന്നതിനും, നിങ്ങളില്‍ നിന്ന് പിശാചിന്‍റെ ദുര്‍ബോധനം നീക്കികളയുന്നതിനും, നിങ്ങളുടെ മനസ്സുകള്‍ക്ക് കെട്ടുറപ്പ് നല്‍കുന്നതിനും, പാദങ്ങള്‍ ഉറപ്പിച്ചു നിര്‍ത്തുന്നതിനും വേണ്ടി അവന്‍ നിങ്ങളുടെ മേല്‍ ആകാശത്തു നിന്ന് വെള്ളം ചൊരിഞ്ഞുതന്നിരുന്ന സന്ദര്‍ഭവും (ഓര്‍ക്കുക.)",
+    "tf": ""
+  },
+  {
+    "n": 12,
+    "ar": "إِذْ يُوحِى رَبُّكَ إِلَى ٱلْمَلَٰٓئِكَةِ أَنِّى مَعَكُمْ فَثَبِّتُوا۟ ٱلَّذِينَ ءَامَنُوا۟ ۚ سَأُلْقِى فِى قُلُوبِ ٱلَّذِينَ كَفَرُوا۟ ٱلرُّعْبَ فَٱضْرِبُوا۟ فَوْقَ ٱلْأَعْنَاقِ وَٱضْرِبُوا۟ مِنْهُمْ كُلَّ بَنَانٍۢ",
+    "ml": "നിന്‍റെ രക്ഷിതാവ് മലക്കുകള്‍ക്ക് ബോധനം നല്‍കിയിരുന്ന സന്ദര്‍ഭം (ഓര്‍ക്കുക.) ഞാന്‍ നിങ്ങളുടെ കൂടെയുണ്ട്‌. അതിനാല്‍ സത്യവിശ്വാസികളെ നിങ്ങള്‍ ഉറപ്പിച്ചു നിര്‍ത്തുക. സത്യനിഷേധികളുടെ മനസ്സുകളില്‍ ഞാന്‍ ഭയം ഇട്ടുകൊടുക്കുന്നതാണ്‌. അതിനാല്‍ കഴുത്തുകള്‍ക്ക് മീതെ നിങ്ങള്‍ വെട്ടിക്കൊള്ളുക. അവരുടെ വിരലുകളെല്ലാം നിങ്ങള്‍ വെട്ടിക്കളയുകയും ചെയ്യുക.",
+    "tf": ""
+  },
+  {
+    "n": 13,
+    "ar": "ذَٰلِكَ بِأَنَّهُمْ شَآقُّوا۟ ٱللَّهَ وَرَسُولَهُۥ ۚ وَمَن يُشَاقِقِ ٱللَّهَ وَرَسُولَهُۥ فَإِنَّ ٱللَّهَ شَدِيدُ ٱلْعِقَابِ",
+    "ml": "അവര്‍ അല്ലാഹുവോടും അവന്‍റെ ദൂതനോടും എതിര്‍ത്തു നിന്നതിന്‍റെ ഫലമത്രെ അത്‌. വല്ലവനും അല്ലാഹുവെയും അവന്‍റെ ദൂതനെയും എതിര്‍ക്കുന്ന പക്ഷം തീര്‍ച്ചയായും അല്ലാഹു കഠിനമായി ശിക്ഷിക്കുന്നവനാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 14,
+    "ar": "ذَٰلِكُمْ فَذُوقُوهُ وَأَنَّ لِلْكَٰفِرِينَ عَذَابَ ٱلنَّارِ",
+    "ml": "അതാ അതു നിങ്ങള്‍ ആസ്വദിച്ചുകൊള്ളുക. സത്യനിഷേധികള്‍ക്ക് തന്നെയാണ് നരകശിക്ഷ എന്ന് (മനസ്സിലാക്കുകയും ചെയ്യുക.)",
+    "tf": ""
+  },
+  {
+    "n": 15,
+    "ar": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ إِذَا لَقِيتُمُ ٱلَّذِينَ كَفَرُوا۟ زَحْفًۭا فَلَا تُوَلُّوهُمُ ٱلْأَدْبَارَ",
+    "ml": "സത്യവിശ്വാസികളേ, സത്യനിഷേധികള്‍ പടയണിയായി വരുന്നതു നിങ്ങള്‍ കണ്ടാല്‍ നിങ്ങള്‍ അവരില്‍ നിന്ന് പിന്തിരിഞ്ഞ് ഓടരുത്‌.",
+    "tf": ""
+  },
+  {
+    "n": 16,
+    "ar": "وَمَن يُوَلِّهِمْ يَوْمَئِذٍۢ دُبُرَهُۥٓ إِلَّا مُتَحَرِّفًۭا لِّقِتَالٍ أَوْ مُتَحَيِّزًا إِلَىٰ فِئَةٍۢ فَقَدْ بَآءَ بِغَضَبٍۢ مِّنَ ٱللَّهِ وَمَأْوَىٰهُ جَهَنَّمُ ۖ وَبِئْسَ ٱلْمَصِيرُ",
+    "ml": "യുദ്ധ (തന്ത്ര) ത്തിനായി സ്ഥാനം മാറുന്നതിനോ (സ്വന്തം) സംഘത്തോടൊപ്പം ചേരുന്നതിനോ അല്ലാതെ അന്ന് അവരില്‍ നിന്നു (ശത്രുക്കളുടെ മുമ്പില്‍ നിന്ന്‌) വല്ലവനും പിന്തിരിഞ്ഞ് കളയുന്ന പക്ഷം അവന്‍ അല്ലാഹുവില്‍നിന്നുള്ള കോപത്തിനു പാത്രമായിരിക്കുന്നതും അവന്‍റെ സങ്കേതം നരകമായിരിക്കുന്നതുമാണ്‌. ചെന്നുചേരാന്‍ കൊള്ളരുതാത്ത സ്ഥലമത്രെ അത്‌.",
+    "tf": ""
+  },
+  {
+    "n": 17,
+    "ar": "فَلَمْ تَقْتُلُوهُمْ وَلَٰكِنَّ ٱللَّهَ قَتَلَهُمْ ۚ وَمَا رَمَيْتَ إِذْ رَمَيْتَ وَلَٰكِنَّ ٱللَّهَ رَمَىٰ ۚ وَلِيُبْلِىَ ٱلْمُؤْمِنِينَ مِنْهُ بَلَآءً حَسَنًا ۚ إِنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌۭ",
+    "ml": "എന്നാല്‍ നിങ്ങള്‍ അവരെ കൊലപ്പെടുത്തിയിട്ടില്ല. പക്ഷെ അല്ലാഹുവാണ് അവരെ കൊലപ്പെടുത്തിയത്‌. (നബിയേ,) നീ എറിഞ്ഞ സമയത്ത് നീ എറിഞ്ഞിട്ടുമില്ല. പക്ഷെ അല്ലാഹുവാണ് എറിഞ്ഞത്‌. തന്‍റെ ഭാഗത്തു നിന്നുള്ള ഗുണകരമായ ഒരു പരീക്ഷണത്തിലൂടെ അല്ലാഹു സത്യവിശ്വാസികളെ പരീക്ഷിക്കുന്നതിനു വേണ്ടിയായിരുന്നു അത്‌. തീര്‍ച്ചയായും അല്ലാഹു എല്ലാം കേള്‍ക്കുന്നവനും അറിയുന്നവനുമാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 18,
+    "ar": "ذَٰلِكُمْ وَأَنَّ ٱللَّهَ مُوهِنُ كَيْدِ ٱلْكَٰفِرِينَ",
+    "ml": "അതാണ് (കാര്യം) സത്യനിഷേധികളുടെ തന്ത്രത്തെ അല്ലാഹു ബലഹീനമാക്കുക തന്നെ ചെയ്യുന്നതുമാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 19,
+    "ar": "إِن تَسْتَفْتِحُوا۟ فَقَدْ جَآءَكُمُ ٱلْفَتْحُ ۖ وَإِن تَنتَهُوا۟ فَهُوَ خَيْرٌۭ لَّكُمْ ۖ وَإِن تَعُودُوا۟ نَعُدْ وَلَن تُغْنِىَ عَنكُمْ فِئَتُكُمْ شَيْـًۭٔا وَلَوْ كَثُرَتْ وَأَنَّ ٱللَّهَ مَعَ ٱلْمُؤْمِنِينَ",
+    "ml": "(സത്യനിഷേധികളേ,) നിങ്ങള്‍ വിജയമായിരുന്നു തേടിയിരുന്നതെങ്കില്‍ ആ വിജയമിതാ നിങ്ങള്‍ക്കു വന്നു കഴിഞ്ഞിരിക്കുന്നു. നിങ്ങള്‍ വിരമിക്കുകയാണെങ്കില്‍ അതാണ് നിങ്ങള്‍ക്ക് ഉത്തമം. നിങ്ങള്‍ ആവര്‍ത്തിക്കുകയാണെങ്കിലോ നാമും ആവര്‍ത്തിക്കുന്നതാണ്‌. നിങ്ങളുടെ സംഘം എത്ര എണ്ണക്കൂടുതലുള്ളതാണെങ്കിലും അത് നിങ്ങള്‍ക്ക് ഉപകരിക്കുകയേയില്ല. അല്ലാഹു സത്യവിശ്വാസികളുടെ കൂടെത്തന്നെയാണ്‌.",
+    "tf": ""
+  },
+  {
+    "n": 20,
+    "ar": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوٓا۟ أَطِيعُوا۟ ٱللَّهَ وَرَسُولَهُۥ وَلَا تَوَلَّوْا۟ عَنْهُ وَأَنتُمْ تَسْمَعُونَ",
+    "ml": "സത്യവിശ്വാസികളേ, നിങ്ങള്‍ അല്ലാഹുവെയും അവന്‍റെ റസൂലിനെയും അനുസരിക്കുക. (സത്യസന്ദേശം) കേട്ടുകൊണ്ടിരിക്കെ നിങ്ങള്‍ അദ്ദേഹത്തെ വിട്ട് തിരിഞ്ഞുകളയരുത്‌.",
+    "tf": ""
+  }
+];
+
+/* ===== LESSONS / QUESTIONS / QUIZ ===== */
+const AI_ENDPOINT = "";
+const LESSONS = "";
+const SUGGESTED = [];
+const QUIZ = [];
+</script>
+<script src="/quran/player.js" defer></script>
+ <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>

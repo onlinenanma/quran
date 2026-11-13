@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta name="referrer" content="no-referrer">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>26. സൂറത്തുൽ അശ്ശുഅറാഅ് (201–220)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--fs:18px;--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0;--acc:#1d5240;--soft:rgba(212,175,55,.16)}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36;--acc:#d4af37;--soft:rgba(212,175,55,.14)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{overflow-x:hidden;font-family:"Noto Sans Malayalam",sans-serif;margin:0;padding:0 12px 40px;color:var(--ink);background:var(--paper);line-height:1.8}
+body>*{max-width:1000px;margin-left:auto;margin-right:auto}
+body>.hero{max-width:none;margin:0 -12px;text-align:center;color:#fff;padding:14px 0 16px;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.hero h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.controls{position:sticky;top:0;z-index:10;background:var(--card);border:2px solid var(--gold);border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-top:-30px;margin-bottom:16px}
+.banner{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 8px 8px}
+.banner-row{display:flex;justify-content:center;align-items:center;gap:8px}
+.panel{display:none;position:absolute;left:-2px;right:-2px;top:100%;background:var(--card);border:2px solid var(--gold);border-top:1px solid var(--line);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,.15);padding:14px 14px 6px;max-height:75vh;overflow-y:auto}
+.controls.open .panel{display:block}
+.ctl-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:10px}
+.ctl-title{font-size:13px;color:var(--muted);font-weight:600}
+.opt{font-size:14px;display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.opt input{width:16px;height:16px;accent-color:var(--green2)}
+.opt-sel,.ai-ask input{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--acc);border-radius:8px;background:var(--paper);color:var(--ink);max-width:100%}
+.opt-btn,.small-btn{font-family:inherit;border:1px solid var(--acc);background:transparent;color:var(--acc);border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;white-space:nowrap}
+.opt-btn.open,.small-btn.open{background:var(--green2);color:#fff;border-color:var(--green2)}
+.main-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.banner .main-btn{padding:7px 20px}
+.main-btn.playing{background:#d93025}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.fs-group{display:inline-flex;align-items:center;gap:4px}
+#fs-label{font-size:13px;color:var(--muted);min-width:24px;text-align:center}
+#status{width:100%;text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status:empty{display:none}
+.verse,.item{min-width:0}
+.verse{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(12px,3vw,20px);margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.vhead{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--acc);font-weight:700;margin-bottom:6px;padding-bottom:4px;border-bottom:1px dashed var(--gold)}
+.item{padding:4px 6px;border-radius:10px;margin-bottom:4px;border:2px solid transparent;scroll-margin-top:90px}
+.item.reading{background:var(--soft);border-color:var(--gold)}
+.row{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.row.rtl{direction:rtl}
+.play-btn{flex:0 0 32px;width:32px;height:32px;border:none;border-radius:50%;background-color:var(--green2);color:#fff;font-size:13px;line-height:32px;padding:0;margin-top:2px;cursor:pointer}
+.play-btn.playing{background-color:#d93025}
+.text{flex:1;min-width:0;margin:0;text-align:left;line-height:1.7;font-size:var(--fs);overflow-wrap:anywhere;word-break:break-word}
+.tag{font-size:12px;color:var(--muted);margin-right:4px}
+.pl{white-space:pre-line}
+.text.ar{font-size:calc(var(--fs) * 1.5);text-align:right;line-height:2;color:var(--acc);font-family:"Noto Naskh Arabic","Amiri","Scheherazade New","Geeza Pro","Traditional Arabic",serif}
+@media(prefers-color-scheme:dark){.text.ar{color:var(--ink)}}
+.hidden{display:none}
+.tf-btn{display:block;margin:4px 0 6px 6px}
+.it-tf{border-top:1px dashed var(--line);margin-top:2px}
+body.hide-ar .it-ar{display:none}
+body.hide-ml .it-ml{display:none}
+body.hide-tf .it-tf,body.hide-tf .tf-btn{display:none}
+.ai-box{margin:24px auto 0;padding:clamp(14px,3vw,22px);border:2px solid var(--gold);border-radius:12px;background:var(--card);box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.ai-box h3{margin:16px 0 8px;font-size:calc(var(--fs) * 1.1);color:var(--acc);text-align:center}
+.ai-box h3:first-child{margin-top:0}
+.ai-box>.main-btn{display:block;margin:0 auto}
+.ai-out{margin:10px 0;line-height:1.7;font-size:var(--fs);white-space:pre-line}
+.ai-out:empty{display:none}
+.q-list{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q-btn{font-family:inherit;text-align:left;border:1px solid var(--line);border-top:3px solid var(--gold);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:calc(var(--fs) * .85);cursor:pointer}
+.q-btn:hover,.q-btn:focus-visible{background:var(--green2);color:#fff;outline:none}
+.ai-ask{display:flex;gap:6px;margin-top:8px}
+.ai-ask input{flex:1;min-width:0;padding:8px;font-size:15px}
+.quiz-q{margin:12px 0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:10px}
+.quiz-q p{margin:0 0 6px;font-size:var(--fs)}
+.quiz-opt{font-family:inherit;display:block;width:100%;text-align:left;margin:4px 0;padding:8px 10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;font-size:calc(var(--fs) * .9);cursor:pointer}
+.quiz-opt.right{background:#e6f4ea;border-color:#188038;color:#123528}
+.quiz-opt.wrong{background:#fce8e6;border-color:#d93025;color:#5b1a14}
+.quiz-exp{font-size:calc(var(--fs) * .8);color:var(--muted);margin-top:4px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+</style>
+</head>
+<body>
+<header class="hero">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/026"><span style="font-size: 1em;">📄</span>താളുകൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index"><span style="font-size: 1em;">📖</span>സൂറത്തുകൾ</a>
+ </div>
+ <h1>26. സൂറത്തുൽ അശ്ശുഅറാഅ് (201–220)</h1>
+</header>
+
+
+<div class="controls" id="controls">
+  <div class="banner">
+    <div class="banner-row"><button id="opt-toggle" class="opt-btn" onclick="togglePanel(event)">⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം ▾</button>
+      <button id="master" class="main-btn" onclick="toggleContinuous()">▶ തുടക്കം മുതൽ കേൾക്കാം</button></div>
+    <div id="status"></div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="ctl-row">
+      <span class="ctl-title">അക്ഷര വലിപ്പം:</span>
+      <span class="fs-group">
+        <button class="small-btn" onclick="changeFont(-2)">A−</button>
+        <span id="fs-label">18</span>
+        <button class="small-btn" onclick="changeFont(2)">A+</button>
+      </span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-title">കാണിക്കുക:</span>
+      <label class="opt"><input type="checkbox" id="show-ar" checked onchange="applyDisplay()"> ആയത്ത്</label>
+      <label class="opt"><input type="checkbox" id="show-ml" checked onchange="applyDisplay()"> സാരം</label>
+      <label class="opt"><input type="checkbox" id="show-tf" onchange="applyDisplay()"> വിവരണം</label>
+    </div>
+    <div class="ctl-row"><span class="ctl-title">ഖിറാഅത്ത് (പാരായണം):</span><select id="reciter" class="opt-sel" onchange="changeReciter(this.value)"></select></div>
+    <div class="ctl-row"><span class="ctl-title">ആയത്ത് ആവർത്തനം:</span>
+      <select id="repeat" class="opt-sel" onchange="saveSettings()"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+  </div>
+</div>
+
+<div id="verses"></div>
+
+<div class="ai-box" id="ai-box">
+  <h3>💡 ഈ പേജിലെ പാഠങ്ങൾ</h3>
+  <button class="main-btn" onclick="showSummary()">പാഠങ്ങൾ സംഗ്രഹിക്കുക</button>
+  <div class="ai-out" id="ai-summary"></div>
+  <h3>❓ ചോദ്യങ്ങൾ </h3>
+  <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 6px;">ഉത്തരങ്ങൾ കാണാൻ ചോദ്യങ്ങൾ തിരഞ്ഞെടുക്കൂ..</div>
+  <div class="q-list" id="q-list"></div>
+  <div class="ai-ask"><input id="ai-q" placeholder="നിങ്ങളുടെ സ്വന്തം ചോദ്യം..."><button class="main-btn" onclick="askCustom()">ചോദിക്കുക</button></div>
+  <div class="ai-out" id="ai-answer"></div>
+  <h3>📝 ക്വിസ്</h3>
+  <button class="main-btn" onclick="startQuiz()">ക്വിസ് തുടങ്ങാം</button>
+  <div id="quiz"></div>
+</div>
+
+<script>
+/* Chapter data only. Everything else (playback, options, wake lock, tafsir loading ...) is in player.js */
+/* ===== PAGE SETTINGS ===== */
+const SURAH = 26;
+const SURAH_NAME = "സൂറത്തുൽ അശ്ശുഅറാഅ്";
+
+/* ===== VERSES ===== */
+const VERSES = [
+  {
+    "n": 201,
+    "ar": "لَا يُؤْمِنُونَ بِهِۦ حَتَّىٰ يَرَوُا۟ ٱلْعَذَابَ ٱلْأَلِيمَ",
+    "ml": "വേദനയേറിയ ശിക്ഷ കാണുന്നത് വരേക്കും അവരതില്‍ ‍വിശ്വസിക്കുകയില്ല",
+    "tf": ""
+  },
+  {
+    "n": 202,
+    "ar": "فَيَأْتِيَهُم بَغْتَةًۭ وَهُمْ لَا يَشْعُرُونَ",
+    "ml": "അവര്‍ ഓര്‍ക്കാത്ത നിലയില്‍ ‍പെട്ടെന്നായിരിക്കും അതവര്‍ക്ക് വന്നെത്തുന്നത്‌",
+    "tf": ""
+  },
+  {
+    "n": 203,
+    "ar": "فَيَقُولُوا۟ هَلْ نَحْنُ مُنظَرُونَ",
+    "ml": "ഞങ്ങള്‍ക്ക് (ഒരല്‍പം) അവധി നല്‍കപ്പെടുമോ? എന്ന് അപ്പോള്‍ അവര്‍ ചോദിച്ചേക്കും",
+    "tf": ""
+  },
+  {
+    "n": 204,
+    "ar": "أَفَبِعَذَابِنَا يَسْتَعْجِلُونَ",
+    "ml": "എന്നാല്‍ ‍നമ്മുടെ ശിക്ഷയെപ്പറ്റിയാണോ അവര്‍ ധൃതികൂട്ടികൊണ്ടിരിക്കുന്നത്‌?",
+    "tf": ""
+  },
+  {
+    "n": 205,
+    "ar": "أَفَرَءَيْتَ إِن مَّتَّعْنَٰهُمْ سِنِينَ",
+    "ml": "എന്നാല്‍ ‍നീ ആലോചിച്ചിട്ടുണ്ടോ? നാം അവര്‍ക്ക് കുറെ കൊല്ലങ്ങളോളം സുഖസൌകര്യം നല്‍കുകയും,",
+    "tf": ""
+  },
+  {
+    "n": 206,
+    "ar": "ثُمَّ جَآءَهُم مَّا كَانُوا۟ يُوعَدُونَ",
+    "ml": "അനന്തരം അവര്‍ക്ക് താക്കീത് നല്‍കപ്പെട്ടു കൊണ്ടിരിക്കുന്ന ശിക്ഷ അവര്‍ക്ക് വരികയും ചെയ്തുവെന്ന് വെക്കുക",
+    "tf": ""
+  },
+  {
+    "n": 207,
+    "ar": "مَآ أَغْنَىٰ عَنْهُم مَّا كَانُوا۟ يُمَتَّعُونَ",
+    "ml": "(എന്നാലും) അവര്‍ക്ക് നല്‍കപ്പെട്ടിരുന്ന ആ സുഖസൌകര്യങ്ങള്‍ അവര്‍ക്കൊരു പ്രയോജനവും ചെയ്യുമായിരുന്നില്ല",
+    "tf": ""
+  },
+  {
+    "n": 208,
+    "ar": "وَمَآ أَهْلَكْنَا مِن قَرْيَةٍ إِلَّا لَهَا مُنذِرُونَ",
+    "ml": "ഒരു രാജ്യവും നാം നശിപ്പിച്ചിട്ടില്ല; അതിന് താക്കീതുകാര്‍ ഉണ്ടായിട്ടല്ലാതെ",
+    "tf": ""
+  },
+  {
+    "n": 209,
+    "ar": "ذِكْرَىٰ وَمَا كُنَّا ظَٰلِمِينَ",
+    "ml": "ഓര്‍മപ്പെടുത്തുവാന്‍ വേണ്ടിയത്രെ അത് നാം അക്രമം ചെയ്യുന്നവനായിട്ടില്ല",
+    "tf": ""
+  },
+  {
+    "n": 210,
+    "ar": "وَمَا تَنَزَّلَتْ بِهِ ٱلشَّيَٰطِينُ",
+    "ml": "ഇതുമായി (ഖുര്‍ആനുമായി) പിശാചുക്കള്‍ ഇറങ്ങി വന്നിട്ടില്ല",
+    "tf": ""
+  },
+  {
+    "n": 211,
+    "ar": "وَمَا يَنۢبَغِى لَهُمْ وَمَا يَسْتَطِيعُونَ",
+    "ml": "അതവര്‍ക്ക് അനുയോജ്യമാവുകയുമില്ല അതവര്‍ക്ക് സാധിക്കുന്നതുമല്ല",
+    "tf": ""
+  },
+  {
+    "n": 212,
+    "ar": "إِنَّهُمْ عَنِ ٱلسَّمْعِ لَمَعْزُولُونَ",
+    "ml": "തീര്‍ച്ചയായും അവര്‍ (ദിവ്യസന്ദേശം) കേള്‍ക്കുന്നതില്‍നിന്ന് അകറ്റപെട്ടവരാകുന്നു",
+    "tf": ""
+  },
+  {
+    "n": 213,
+    "ar": "فَلَا تَدْعُ مَعَ ٱللَّهِ إِلَٰهًا ءَاخَرَ فَتَكُونَ مِنَ ٱلْمُعَذَّبِينَ",
+    "ml": "ആകയാല്‍ അല്ലാഹുവോടൊപ്പം മറ്റൊരു ദൈവത്തേയും നീ വിളിച്ചു പ്രാര്‍ത്ഥിക്കരുത് എങ്കില്‍ ‍നീ ശിക്ഷിക്കപ്പെടുന്നവരുടെ കൂട്ടത്തിലായിരിക്കും",
+    "tf": ""
+  },
+  {
+    "n": 214,
+    "ar": "وَأَنذِرْ عَشِيرَتَكَ ٱلْأَقْرَبِينَ",
+    "ml": "നിന്‍റെ അടുത്ത ബന്ധുക്കള്‍ക്ക് നീ താക്കീത് നല്‍കുക",
+    "tf": ""
+  },
+  {
+    "n": 215,
+    "ar": "وَٱخْفِضْ جَنَاحَكَ لِمَنِ ٱتَّبَعَكَ مِنَ ٱلْمُؤْمِنِينَ",
+    "ml": "നിന്നെ പിന്തുടര്‍ന്ന സത്യവിശ്വാസികള്‍ക്ക് നിന്‍റെ ചിറക് താഴ്ത്തികൊടുക്കുകയും ചെയ്യുക",
+    "tf": ""
+  },
+  {
+    "n": 216,
+    "ar": "فَإِنْ عَصَوْكَ فَقُلْ إِنِّى بَرِىٓءٌۭ مِّمَّا تَعْمَلُونَ",
+    "ml": "ഇനി അവര്‍ നിന്നെ അനുസരിക്കാതിരിക്കുന്ന പക്ഷം, നിങ്ങള്‍ പ്രവര്‍ത്തിക്കുന്നതിനൊന്നും ഞാന്‍ ഉത്തരവാദിയല്ലെന്ന് നീ പറഞ്ഞേക്കുക",
+    "tf": ""
+  },
+  {
+    "n": 217,
+    "ar": "وَتَوَكَّلْ عَلَى ٱلْعَزِيزِ ٱلرَّحِيمِ",
+    "ml": "പ്രതാപിയും കരുണാനിധിയുമായിട്ടുള്ളവനെ നീ ഭരമേല്‍പിക്കുകയും ചെയ്യുക",
+    "tf": ""
+  },
+  {
+    "n": 218,
+    "ar": "ٱلَّذِى يَرَىٰكَ حِينَ تَقُومُ",
+    "ml": "നീ നിന്നു പ്രാര്‍ത്ഥിക്കുന്ന സമയത്ത് നിന്നെ കാണുന്നവനത്രെ അവന്‍",
+    "tf": ""
+  },
+  {
+    "n": 219,
+    "ar": "وَتَقَلُّبَكَ فِى ٱلسَّٰجِدِينَ",
+    "ml": "സാഷ്ടാംഗംചെയ്യുന്നവരുടെ കൂട്ടത്തിലുള്ള നിന്‍റെ ചലനവും (കാണുന്നവന്‍)",
+    "tf": ""
+  },
+  {
+    "n": 220,
+    "ar": "إِنَّهُۥ هُوَ ٱلسَّمِيعُ ٱلْعَلِيمُ",
+    "ml": "തീര്‍ച്ചയായും അവന്‍ എല്ലാം കേള്‍ക്കുന്നവനും അറിയുന്നവനുമത്രെ",
+    "tf": ""
+  }
+];
+
+/* ===== LESSONS / QUESTIONS / QUIZ ===== */
+const AI_ENDPOINT = "";
+const LESSONS = "";
+const SUGGESTED = [];
+const QUIZ = [];
+</script>
+<script src="/quran/player.js" defer></script>
+ <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>
