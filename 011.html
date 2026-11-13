@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>സൂറത്തുൽ ഹൂദ്</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--line:#e2e8f0}
+@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--line:#2c3f36}}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{width:100%;overflow-x:hidden}
+body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
+.banner{text-align:center;color:#fff;padding:14px 0 16px;background:
+ radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
+ repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
+ linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
+.banner h1{font-size:clamp(1.2rem,4.8vw,1.7rem);font-weight:500;line-height:1.4;margin-top:4px}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 12px 40px}
+.card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(14px,3vw,26px);box-shadow:0 4px 15px rgba(0,0,0,.06);margin-bottom:18px}
+h2{color:var(--green2);font-size:1.2rem;margin-bottom:12px;text-align:center}
+@media(prefers-color-scheme:dark){h2{color:var(--gold)}}
+.preface p{margin-bottom:14px;text-align:justify;max-width:75ch;margin-inline:auto}
+.preface p:last-child{margin-bottom:0}
+.meta{text-align:center;font-weight:700;color:var(--green2)}
+@media(prefers-color-scheme:dark){.meta{color:var(--gold)}}
+.ar{font-family:"Noto Naskh Arabic",serif;font-size:1.15em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pg{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:8px;padding:10px 6px;text-align:center;line-height:1.5}
+.pg:hover,.pg:focus-visible{background:var(--green2);color:#fff;outline:none}
+.pg b{display:block;font-size:.8rem;color:var(--muted)}
+.pg:hover b,.pg:focus-visible b{color:#fff}
+.pg span{font-weight:800;font-size:1.05rem}
+.sum{display:block;margin-top:14px;text-align:center;text-decoration:none;background:var(--green2);color:#fff;font-weight:700;padding:12px;border-radius:8px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
+
+/* preface toggle */
+.pref-toggle{display:block;width:100%;font-family:inherit;font-size:1.1rem;font-weight:700;background:none;border:none;color:var(--green2);cursor:pointer;text-align:center;padding:2px 0}
+@media(prefers-color-scheme:dark){.pref-toggle{color:var(--gold)}}
+.pref-toggle .arrow{display:inline-block;transition:transform .2s}
+.pref-toggle[aria-expanded="true"] .arrow{transform:rotate(180deg)}
+#prefBody{margin-top:14px}
+
+/* text to speech */
+.tts-bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center;margin-bottom:12px}
+.tts-btn{font-family:inherit;border:none;background:var(--green2);color:#fff;border-radius:20px;padding:8px 18px;font-size:14px;font-weight:600;cursor:pointer}
+.tts-btn.playing{background:#d93025}
+.preface.reading{background:rgba(212,175,55,.12)}
+#status{text-align:center;font-size:12px;color:var(--muted);line-height:1.3}
+#status:empty{display:none}
+button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+.topnav{display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:8px;padding:0 12px}
+.topnav .back{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: clamp(0.95rem, 3.4vw, 1.1rem);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.topnav .back:hover,
+.topnav .back:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+}
+</style>
+</head>
+<body>
+<header class="banner">
+ <div class="topnav">
+    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1.25em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">സൂറത്തുകൾ<span style="font-size: 1.25em;">📖</span></a>
+ </div>
+ <h1>11. സൂറത്തുൽ ഹൂദ്</h1>
+</header>
+ 
+<main class="wrap">
+  <section class="card preface">
+    <button id="prefToggle" class="pref-toggle" type="button" aria-expanded="false" aria-controls="prefBody">
+      മുഖവുര <span class="arrow">▾</span>
+    </button>
+
+    <div id="prefBody" hidden>
+      <div class="tts-bar">
+        <button id="ttsBtn" class="tts-btn" type="button">▶ മുഖവുര കേൾക്കാം</button>
+      </div>
+      <div id="status"></div>
+      <p class="meta">ആയത്തുകൾ 123</p>
+      <p>സൂറത്തുൽ ഹൂദ്-ന്റെ വിശദീകരണങ്ങളും പഠനസഹായിയും താഴെ നൽകിയിരിക്കുന്ന ഭാഗങ്ങളായി തിരിക്കപ്പെട്ടിരിക്കുന്നു. ഓരോ ഭാഗവും തെരഞ്ഞെടുത്ത് വചനങ്ങളും അവയുടെ ആശയങ്ങളും പഠിക്കാവുന്നതാണ്.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>ആയത്തുകളുടെ ഭാഗങ്ങൾ</h2>
+    <div id="grid" class="grid"></div>
+    <a id="summary" class="sum" href="#" target="_top">📝 സംഗ്രഹം (Summary)</a>
+  </section>
+</main>
+<footer>© ഖുർആൻ മലയാള സാരം</footer>
+
+<script>
+const TOTAL_AYAH = 123;
+const SURAH = 11;
+const PER_PAGE = 20;
+const BASE = 'https://onlinenanma.github.io/quran/';
+const pad = String(SURAH).padStart(3, '0');
+const PAGE_URL = p => `${BASE}${pad}-${p}`;
+const SUMMARY_URL = `${BASE}${pad}-summary`;
+
+const grid = document.getElementById('grid');
+const pages = Math.ceil(TOTAL_AYAH / PER_PAGE);
+for (let p = 1; p <= pages; p++) {
+  const from = (p - 1) * PER_PAGE + 1, to = Math.min(p * PER_PAGE, TOTAL_AYAH);
+  const a = document.createElement('a');
+  a.className = 'pg'; a.href = PAGE_URL(p); a.target = '_top';
+  a.innerHTML = `<b>ഭാഗം ${p}</b><span>${from} – ${to}</span>`;
+  grid.appendChild(a);
+}
+document.getElementById('summary').href = SUMMARY_URL;
+
+/* ---------- Preface show / hide ---------- */
+const $ = id => document.getElementById(id);
+const prefToggle = $("prefToggle"), prefBody = $("prefBody");
+prefToggle.addEventListener("click", () => {
+  const open = prefBody.hidden;
+  prefBody.hidden = !open;
+  prefToggle.setAttribute("aria-expanded", String(open));
+  if (!open) stopSpeech();
+});
+
+/* ---------- Text to speech ---------- */
+const statusEl = $("status"), ttsBtn = $("ttsBtn"), prefaceEl = document.querySelector(".preface");
+let token = 0, speaking = false, curLang = "ml";
+const audio = new Audio(), utt = [];
+
+function silentWavUrl() {
+  const n = 800, b = new DataView(new ArrayBuffer(44 + n)), w = (o, s) => [...s].forEach((c, i) => b.setUint8(o + i, c.charCodeAt(0)));
+  w(0, "RIFF"); b.setUint32(4, 36 + n, true); w(8, "WAVEfmt "); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+  b.setUint32(24, 8000, true); b.setUint32(28, 8000, true); b.setUint16(32, 1, true); b.setUint16(34, 8, true); w(36, "data"); b.setUint32(40, n, true);
+  for (let i = 0; i < n; i++) b.setUint8(44 + i, 128);
+  return URL.createObjectURL(new Blob([b], { type: "audio/wav" }));
+}
+const SILENT = silentWavUrl();
+
+const MALE = /midhun|\bmale\b|ravi|prabhat|hemant|madhur/i;
+const vscore = v => (/natural|neural|enhanced|premium|online/i.test(v.name) ? 8 : 0) + (/google/i.test(v.name) ? 3 : 0)
+  + (v.localService ? 0 : 2) - (/compact|espeak/i.test(v.name) ? 6 : 0);
+function voiceFor(lang) {
+  if (window.quranVoice) { const q = window.quranVoice(lang); if (q) return q; }
+  const vs = (window.speechSynthesis ? speechSynthesis.getVoices() : [])
+    .filter(v => v.lang.toLowerCase().replace("_", "-").startsWith(lang)).sort((a, b) => vscore(b) - vscore(a));
+  if (!vs.length) return null;
+  return vs.find(v => MALE.test(v.name) && vscore(v) >= vscore(vs[0]) - 2) || vs[0];
+}
+function targetLang(text) {
+  const h = (document.documentElement.lang || "").toLowerCase().split("-")[0];
+  if (h && h !== "ml") return h;
+  const g = document.cookie.match(/googtrans=\/[^/]*\/([a-z-]+)/i); if (g) return g[1].toLowerCase().split("-")[0];
+  if (/[\u0900-\u097F]/.test(text)) return "hi";
+  if (/[\u0B80-\u0BFF]/.test(text)) return "ta";
+  if (/[\u0C80-\u0CFF]/.test(text)) return "kn";
+  const nl = (navigator.language || "en").toLowerCase().split("-")[0];
+  return nl === "ml" ? "en" : nl;
+}
+function cleanForSpeech(t) {
+  return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, " ")
+          .replace(/[()\u2018\u2019\u201C\u201D"]/g, "").replace(/\s+/g, " ").trim();
+}
+function splitText(text, max = 150) {
+  const sents = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], out = []; let cur = "";
+  for (let s of sents) {
+    s = s.trim();
+    while (s.length > max) {
+      let cut = s.lastIndexOf(" ", max); if (cut <= 0) cut = max;
+      if (cur) { out.push(cur); cur = ""; }
+      out.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
+    }
+    if (!s) continue;
+    if (cur && (cur + " " + s).length > max) { out.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;
+  }
+  if (cur) out.push(cur);
+  return out.filter(c => /[^\s.,:;!?।]/.test(c));
+}
+function stopSpeech() {
+  token++; speaking = false;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  audio.onended = audio.onerror = null; audio.pause();
+  ttsBtn.textContent = "▶ മുഖവുര കേൾക്കാം"; ttsBtn.classList.remove("playing");
+  prefaceEl.classList.remove("reading"); statusEl.textContent = "";
+}
+function fail(my, msg) { if (my !== token) return; stopSpeech(); statusEl.textContent = msg; }
+
+function playChunks(chunks, my, i = 0) {
+  if (my !== token) return;
+  if (i >= chunks.length) { stopSpeech(); return; }
+  statusEl.textContent = "online voice " + (i + 1) + " / " + chunks.length;
+  audio.onended = () => playChunks(chunks, my, i + 1);
+  audio.onerror = () => fail(my, "Online voice is blocked or offline.");
+  audio.src = "https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + curLang + "&q=" + encodeURIComponent(chunks[i]);
+  audio.playbackRate = 0.92;
+  audio.play().catch(() => fail(my, "Could not play audio."));
+}
+function speak(text, my) {
+  const chunks = splitText(cleanForSpeech(text)); if (!chunks.length) { stopSpeech(); return; }
+  const v = voiceFor(curLang);
+  if (!v) { statusEl.textContent = "no voice found, using online voice..."; playChunks(chunks, my); return; }
+  const next = i => {
+    if (my !== token) return;
+    if (i >= chunks.length) { stopSpeech(); return; }
+    statusEl.textContent = curLang + " · " + v.name + " · " + (i + 1) + "/" + chunks.length;
+    const u = new SpeechSynthesisUtterance(chunks[i]); utt[0] = u;
+    u.voice = v; u.lang = v.lang; u.pitch = 1; u.rate = 0.95;
+    let over = false, started = false;
+    const fb = () => { if (over) return; over = true; clearTimeout(wd); speechSynthesis.cancel(); playChunks(chunks, my, i); };
+    const wd = setTimeout(() => { if (my === token && !started) fb(); }, 5000);
+    u.onstart = () => { started = true; };
+    u.onend = () => { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
+    u.onerror = e => { if (my === token && e.error !== "canceled" && e.error !== "interrupted") fb(); };
+    speechSynthesis.speak(u);
+  };
+  setTimeout(() => next(0), 100);
+}
+function toggleSpeech() {
+  if (speaking) { stopSpeech(); return; }
+  stopSpeech(); speaking = true; const my = token;
+  try { audio.src = SILENT; audio.play().catch(() => {}); } catch (e) {}
+  ttsBtn.textContent = "■ നിർത്തുക"; ttsBtn.classList.add("playing"); prefaceEl.classList.add("reading");
+  const text = [document.querySelector(".banner h1").textContent,
+    ...[...prefaceEl.querySelectorAll(".meta, #prefBody p")].map(x => x.textContent)].join(". ");
+  let clean = cleanForSpeech(text);
+  const ml = (clean.match(/[\u0D00-\u0D7F]/g) || []).length;
+  const translated = clean.length > 0 && ml / clean.length < 0.5;
+  curLang = translated ? targetLang(clean) : "ml";
+  if (translated) clean = clean.replace(/(^|\s)\d+\s*[-–:.)]\s*/g, " ");
+  speak(clean, my);
+}
+ttsBtn.addEventListener("click", toggleSpeech);
+if (window.speechSynthesis) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; }
+window.addEventListener("pagehide", stopSpeech);
+</script>
+<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+</body>
+</html>
