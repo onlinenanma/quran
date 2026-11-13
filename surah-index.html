@@ -113,7 +113,7 @@ SURAHS.forEach(([ml, ar], i) => {
  a.target = '_parent';
 
  a.dataset.s = (n + ' ' + ml + ' ' + ar).toLowerCase();
- a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${ml}</b><span class="ar">${ar}</span></span>`;
+ a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${ml}</b><span class="ar" translate="no" lang="ar">${ar}</span></span>`;
  grid.appendChild(a);
 });
 
@@ -125,6 +125,7 @@ document.getElementById('q').addEventListener('input', e => {
  empty.hidden = shown > 0;
 });
 </script>
-<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+<script src="/quran/translate.js" defer></script>
+ <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
 </body>
 </html>
