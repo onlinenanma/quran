@@ -114,7 +114,7 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
     const wrap = $("verses");
     wrap.innerHTML = (hasIntro() ? introHtml() : "") + VERSES.map(v => `
       <div class="verse" id="verse-${v.n}">
-        <div class="vhead"><span>ആയത്ത് ${ayahRef(v.n)}</span></div>
+        <div class="vhead"><span>ആയത്ത് ${ayahRef(v.n)}</span><button class="share-btn" type="button" title="\u0d2a\u0d19\u0d4d\u0d15\u0d3f\u0d1f\u0d41\u0d15" aria-label="Share" onclick="shareVerse(${v.n})">${SHARE_ICON}</button></div>
 
         <div class="item it-ar" id="item-ar-${v.n}">
           <div class="row rtl">
@@ -140,6 +140,62 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
         </div>` : ""}
       </div>
     `).join("");
+  }
+
+  /* =====================================================
+     SHARE a verse (phone share sheet: WhatsApp, Telegram, Facebook, Instagram ...)
+     Shares only what is displayed in the card (verse / meaning / explanation) + reference + link to the verse.
+     ===================================================== */
+  const SHARE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
+
+  function ensureShareStyle() {
+    try {
+      const st = document.createElement("style");
+      st.textContent = ".vhead{display:flex;align-items:center;gap:8px}" +
+        ".share-btn{margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:34px;height:30px;padding:0;border-radius:15px;border:1px solid var(--gold);background:transparent;color:var(--green2);cursor:pointer}" +
+        ".share-btn svg{width:18px;height:18px}" +
+        "@media(prefers-color-scheme:dark){.share-btn{color:var(--gold)}}" +
+        ".verse{scroll-margin-top:120px}";
+      (document.head || document.documentElement).appendChild(st);
+    } catch (e) {}
+  }
+
+  function verseShareText(n) {
+    const shown = el => !!el && !el.classList.contains("hidden") && (!el.getClientRects || el.getClientRects().length > 0);
+    const textOf = el => {
+      const p = el.querySelector(".text"); if (!p) return "";
+      const c = p.cloneNode(true);
+      c.querySelectorAll(".tag").forEach(x => x.remove());              // drop the small label in front of the meaning
+      return (c.textContent || "").replace(/\s+/g, " ").trim();
+    };
+    const parts = [];
+    ["ar", "ml", "tf"].forEach(k => {
+      const el = $("item-" + k + "-" + n);
+      if (!shown(el)) return;
+      let t = textOf(el);
+      if (t && k === "ar") t = "\uFD3F " + t + " \uFD3E";
+      if (t) parts.push(t);
+    });
+    if (!parts.length) { const v = verseOf(n); if (v.ar) parts.push("\uFD3F " + v.ar + " \uFD3E"); }   // nothing displayed: share the verse itself
+    const name = typeof SURAH_NAME !== "undefined" ? SURAH_NAME : document.title;
+    const ref = name + " " + SURAH + ":" + n;
+    const url = location.origin + location.pathname + "#verse-" + n;
+    return { ref, text: parts.join("\n\n") + "\n\n\u2014 " + ref + "\n" + url };
+  }
+
+  async function shareVerse(n) {
+    let s;
+    try { s = verseShareText(n); } catch (e) { return; }
+    try {
+      if (navigator.share) { await navigator.share({ title: s.ref, text: s.text }); return; }
+    } catch (e) {
+      if (e && e.name === "AbortError") return;           // the person closed the share sheet
+    }
+    try {                                                  // no share sheet (computer): copy instead
+      await navigator.clipboard.writeText(s.text);
+      statusEl.textContent = "\u0d2a\u0d15\u0d7c\u0d24\u0d4d\u0d24\u0d3f \u2713";
+      setTimeout(() => { if (!activeKey) statusEl.textContent = ""; }, 2000);
+    } catch (e) { window.prompt("Copy:", s.text); }
   }
 
   /* =====================================================
@@ -201,7 +257,7 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
   const statusEl = $("status");
   const masterBtn = $("master");
   const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
-  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ";
+  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
   let token = 0;
   let activeKey = null;
   let currentAudio = null;
@@ -825,7 +881,7 @@ function playMeaningFile(n, my, done, fallback, kind) {
     a.preservesPitch = true; a.playbackRate = 1; a.src = url; currentAudio = a;
     statusEl.textContent = curLabel + " \u00B7 recorded audio";
     a.play().catch(e => { if (my !== token || (e && e.name === "AbortError")) return; fb(); });
-  }).catch(() => { if (my !== token) fallback(); });
+  }).catch(() => { if (my === token) fallback(); });
 }
 
 function shownText(kind, n) {
@@ -870,7 +926,7 @@ function playItem(kind, n, my, done) {
   }
   speakMalayalam(translated ? shown : original, my, done);
 }
-/* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
+  /* ===== VOICE FIX: prefer natural voices, no pitch change on them ===== */
 const NATURAL = /natural|neural|enhanced|premium|online/i;
 const isFemale = v => FEMALE_HINT.test(v.name);
 const isMale = v => MALE_HINT.test(v.name) && !FEMALE_HINT.test(v.name);
@@ -882,19 +938,14 @@ function resolveVoice(kind) {
   const vs = rankedVoices(); if (!vs.length) return null;
   const s = loadSettings(), saved = vs.find(v => v.name === (kind === "tf" ? s.voiceTf : s.voiceMl));
   if (saved) return saved;                          // a voice you picked earlier still wins
-  
-  const ml = vs.find(isMale) || vs[0];              // meaning uses Midhun (or default)
+  const ml = vs.find(isMale) || vs[0];              // meaning: Midhun if present
   if (kind !== "tf") return ml;
-  
-  // Explanation uses a different neural voice (preferring female voice or next available)
-  const tfVoice = vs.find(v => v !== ml && NATURAL.test(v.name) && isFemale(v)) ||
-                  vs.find(v => v !== ml && isFemale(v)) ||
-                  vs.find(v => v !== ml) || ml;
-  return tfVoice;
+  return vs.find(v => v !== ml && isFemale(v)) || vs.find(v => v !== ml) || ml;   // explanation: a different voice (Sobhana)
 }
 function voiceProfile(kind) {
   const v = resolveVoice(kind); if (!v) return null;
-  return { voice: v, pitch: 1, rate: kind === "tf" ? 0.9 : 0.95 };
+  const same = resolveVoice("ml") === resolveVoice("tf");
+  return { voice: v, pitch: kind === "tf" && same ? 0.75 : 1, rate: kind === "tf" ? 0.85 : 0.95 };
 }
 /* ===== EDGE NATURAL VOICES =====
    Edge lists its online "Natural" voices late - often only after Read Aloud has been used once. We ask for the
@@ -923,35 +974,6 @@ function waitForNatural(ms, cb) {
   };
   tick();
 }
-
-/* ===== GOOGLE TRANSLATE SETUP & UI CLEANUP ===== */
-(function setupGoogleTranslate() {
-  if (!document.querySelector('script[src*="translate_a/element.js"]')) {
-    const script = document.createElement("script");
-    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-    script.async = true;
-    document.head.appendChild(script);
-  }
-  
-  // Hide spinner animation, translation feedback banners, and popups globally
-  const style = document.createElement("style");
-  style.textContent = `
-    .goog-te-spinner-pos, .goog-te-spinner, #goog-gt-tt, .goog-te-balloon-frame, .VIpgJd-yAWNEb-VIpgJd-fmcmnb { display: none !important; }
-    body { top: 0 !important; }
-    .goog-te-banner-frame { display: none !important; visibility: hidden !important; }
-  `;
-  (document.head || document.documentElement).appendChild(style);
-})();
-
-window.googleTranslateElementInit = function() {
-  try {
-    new google.translate.TranslateElement(
-      { pageLanguage: 'ml', autoDisplay: false },
-      'google_translate_element'
-    );
-  } catch (e) {}
-};
-
 /* ===== LESSONS / QUESTIONS / QUIZ FROM FILE =====
    extras/<page>.json  e.g. extras/002-1.json (this page only) or extras/002.json (whole chapter, used if no page file)
    { "lessons": "text", "questions": [{ "q": "...", "a": "..." }], "quiz": [{ "q": "...", "o": ["..","..",".."], "c": 1, "e": "..." }] }
@@ -1009,6 +1031,7 @@ async function loadTafsir() {
 function startPage() {
   buildPage();
   initReciters();
+  ensureShareStyle();
   ensureIntroOption();
   ensureBanner();
   ensureContOption();
@@ -1030,5 +1053,9 @@ function startPage() {
   // range pages (e.g. verses 21-40): the static bismillah heading only belongs on pages that start at verse 1
   const bismiDiv = $("bismi-container");
   if (bismiDiv && !(VERSES.length && VERSES[0].n === 1) && SURAH !== 1 && SURAH !== 9 && bismiDiv.remove) bismiDiv.remove();
+  if (/^#verse-\d+$/.test(location.hash)) {                 // a shared link opens at that verse
+    const el = $(location.hash.slice(1));
+    if (el && el.scrollIntoView) setTimeout(() => el.scrollIntoView({ block: "start" }), 150);
+  }
 }
 Promise.all([loadTafsir(), loadExtras()]).then(startPage);
