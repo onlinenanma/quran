@@ -31,6 +31,113 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
+  /* ---------- first visit: ask which language to use ---------- */
+  var ASKED = 'quran-lang-asked';
+  var LANGS = [
+    ["ml", "മലയാളം"],
+    ["en", "English"],
+    ["hi", "हिन्दी"],
+    ["ta", "தமிழ்"],
+    ["te", "తెలుగు"],
+    ["kn", "ಕನ್ನಡ"],
+    ["mr", "मराठी"],
+    ["gu", "ગુજરાતી"],
+    ["pa", "ਪੰਜਾਬੀ"],
+    ["bn", "বাংলা"],
+    ["ur", "اردو"],
+    ["ne", "नेपाली"],
+    ["si", "සිංහල"],
+    ["ar", "العربية"],
+    ["fa", "فارسی"],
+    ["tr", "Türkçe"],
+    ["id", "Indonesia"],
+    ["ms", "Melayu"],
+    ["th", "ไทย"],
+    ["vi", "Tiếng Việt"],
+    ["zh-CN", "中文简体"],
+    ["zh-TW", "中文繁體"],
+    ["ja", "日本語"],
+    ["ko", "한국어"],
+    ["fr", "Français"],
+    ["de", "Deutsch"],
+    ["es", "Español"],
+    ["pt", "Português"],
+    ["it", "Italiano"],
+    ["ru", "Русский"],
+    ["nl", "Nederlands"],
+    ["pl", "Polski"],
+    ["uk", "Українська"],
+    ["sv", "Svenska"],
+    ["el", "Ελληνικά"],
+    ["ro", "Română"],
+    ["sw", "Kiswahili"],
+    ["am", "አማርኛ"],
+    ["ha", "Hausa"]
+  ];
+  function askLanguage() {
+    try {
+      if (window.top !== window.self) return;                                        // not inside embedded frames
+      if (window.QURAN_NO_LANG_POPUP || document.documentElement.hasAttribute('data-no-lang-popup')) return;
+      if (/bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent || '')) return;
+      if (cookieLang()) { localStorage.setItem(ASKED, '1'); return; }                // already chose a language (e.g. on the index)
+      if (localStorage.getItem(ASKED)) return;                                       // already asked once
+    } catch (e) { return; }
+
+    var css = document.createElement('style');
+    css.textContent =
+      '.qlp{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.6);font-family:"Noto Sans Malayalam",system-ui,sans-serif}' +
+      '.qlp-card{width:100%;max-width:440px;max-height:88vh;overflow:auto;background:#fff;color:#22302a;border:2px solid #d4af37;border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 40px rgba(0,0,0,.45);text-align:center;position:relative}' +
+      '.qlp-t{font-size:1.15rem;font-weight:700;color:#1d5240;margin:0 0 2px}.qlp-s{font-size:.9rem;color:#55605a;margin:0 0 12px}' +
+      '.qlp-g{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}' +
+      '.qlp-b{font:inherit;font-size:1rem;padding:10px 6px;border-radius:10px;border:1px solid #e2e8f0;border-top:3px solid #d4af37;background:#f6f3ea;color:inherit;cursor:pointer}' +
+      '.qlp-b:hover,.qlp-b:focus-visible{background:#1d5240;color:#fff;outline:none}' +
+      '.qlp-b.main{grid-column:1/-1;font-weight:700;background:#1d5240;color:#fff}' +
+      '.qlp-x{position:absolute;top:6px;right:8px;border:none;background:none;font-size:1.3rem;line-height:1;color:inherit;cursor:pointer;padding:6px}' +
+      '.qlp-n{font-size:.8rem;color:#55605a;margin:12px 0 0}' +
+      '@media(prefers-color-scheme:dark){.qlp-card{background:#17261f;color:#e9efe9}.qlp-t{color:#d4af37}.qlp-s,.qlp-n{color:#a9b6ae}.qlp-b{background:#0f1a15;border-color:#2c3f36}}';
+    document.head.appendChild(css);
+
+    var ov = document.createElement('div');
+    ov.className = 'qlp notranslate'; ov.setAttribute('translate', 'no');
+    ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-labelledby', 'qlp-title');
+    var card = document.createElement('div'); card.className = 'qlp-card';
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'qlp-x'; x.setAttribute('aria-label', 'Close'); x.textContent = '\u00D7';
+    var t = document.createElement('p'); t.className = 'qlp-t'; t.id = 'qlp-title'; t.textContent = '\u0D2D\u0D3E\u0D37 \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D41\u0D15 \u00B7 Choose your language';
+    var s = document.createElement('p'); s.className = 'qlp-s'; s.textContent = '\uD83C\uDF10';
+    var g = document.createElement('div'); g.className = 'qlp-g';
+    var n = document.createElement('p'); n.className = 'qlp-n';
+    n.textContent = 'You can change it any time from the home page \u00B7 \u0D2D\u0D3E\u0D37 \u0D2A\u0D3F\u0D28\u0D4D\u0D28\u0D40\u0D1F\u0D4D \u0D2E\u0D3E\u0D31\u0D4D\u0D31\u0D3E\u0D02';
+
+    var prevOverflow = document.documentElement.style.overflow;
+    function close() {
+      document.documentElement.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKey);
+      if (ov.parentNode) ov.parentNode.removeChild(ov);
+    }
+    function choose(code) {
+      try { localStorage.setItem(ASKED, '1'); } catch (e) {}
+      if (code !== 'ml') { savePref(code); close(); location.reload(); }          // reload: Google applies the cookie on load
+      else { savePref('ml'); close(); }
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { try { localStorage.setItem(ASKED, '1'); } catch (er) {} close(); }
+    }
+    LANGS.forEach(function (l, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'qlp-b' + (i === 0 ? ' main' : ''); b.textContent = l[1]; b.lang = l[0];
+      b.addEventListener('click', function () { choose(l[0]); });
+      g.appendChild(b);
+    });
+    x.addEventListener('click', function () { try { localStorage.setItem(ASKED, '1'); } catch (e) {} close(); });
+    card.appendChild(x); card.appendChild(t); card.appendChild(s); card.appendChild(g); card.appendChild(n);
+    ov.appendChild(card);
+    document.body.appendChild(ov);
+    document.documentElement.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKey);
+    var first = g.firstChild; if (first && first.focus) first.focus();
+  }
+  onReady(askLanguage);
+
   /* hide Google's own bar / highlights & ensure minimal centered layout */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
