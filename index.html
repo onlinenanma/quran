@@ -578,6 +578,7 @@ document.getElementById('topMenuNav').addEventListener('change',function(){
 
  sel.addEventListener('change',function(){
   const code=sel.value; if(!code) return;
+  try{localStorage.setItem('quran-lang-asked','1');}catch(e){}   /* the first-visit language popup will not ask again */
   showLabel(code);
   if(code===SRC){ setCookie(''); }
   else{ setCookie('/'+SRC+'/'+code); }
