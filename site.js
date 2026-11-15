@@ -138,6 +138,97 @@
   }
   onReady(askLanguage);
 
+  /* ---------- top panel: the same pill buttons (icon + label) on every page ---------- */
+  var ICONS = {
+    home:    '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+    surahs:  '<path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5z"/><path d="M12 6v13.5"/>',
+    pages:   '<rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/>',
+    summary: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+    back:    '<circle cx="12" cy="12" r="9"/><path d="M13.5 8.5 10 12l3.5 3.5"/>',
+    tafsir:  '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/><path d="M9 7h6"/>',
+    hadith:  '<path d="M8 21h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H8"/><path d="M8 21a2 2 0 0 1-2-2V5a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1h3"/><path d="M11 9h5M11 13h5"/>',
+    hifz:    '<path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/>',
+    link:    '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 9l3 3-3 3"/>'
+  };
+  function iconFor(href) {
+    var p = (href || '').replace(/[?#].*$/, '').replace(/\/+$/, '').replace(/\.html?$/i, '');
+    var inSummary = /-summary$/.test(location.pathname.replace(/\/+$/, '').replace(/\.html?$/i, ''));
+    if (/\/quran$/.test(p)) return 'home';
+    if (/surah-index$/.test(p)) return 'surahs';
+    if (/\d{3}-summary$/.test(p)) return 'summary';
+    if (/\/\d{3}(-\d+)?$/.test(p)) return inSummary ? 'back' : 'pages';
+    if (/tafsir$/.test(p)) return 'tafsir';
+    if (/hadith$/.test(p)) return 'hadith';
+    if (/hifd$/.test(p)) return 'hifz';
+    return 'link';
+  }
+  function styleTopNav() {
+    var links = document.querySelectorAll('.topnav a.back');
+    if (!links.length) return;
+    var css = document.createElement('style');
+    css.textContent =
+      '.topnav{display:flex!important;gap:8px!important;justify-content:center!important;align-items:stretch!important;flex-wrap:nowrap!important;width:100%;max-width:560px;margin:0 auto 10px!important;padding:12px 12px 0!important}' +
+      '.topnav .back{flex:1 1 0;min-width:0;display:inline-flex!important;align-items:center;justify-content:center;gap:7px;padding:8px 10px;border-radius:999px;' +
+        'border:1px solid rgba(212,175,55,.7);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05));color:#fff!important;' +
+        'font-family:inherit;font-size:clamp(.78rem,3.3vw,.95rem)!important;font-weight:600!important;line-height:1.2;text-decoration:none!important;white-space:nowrap;' +
+        'box-shadow:0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .15s,background .15s,color .15s}' +
+      '.topnav .back:hover,.topnav .back:focus-visible{background:#d4af37;color:#123528!important;transform:translateY(-1px);outline:none}' +
+      '.topnav .back:active{transform:scale(.97)}' +
+      '.topnav.tn3 .back{flex-direction:column;gap:3px;padding:7px 4px 6px;border-radius:16px;font-size:clamp(.72rem,3vw,.85rem)!important}' +
+      '.topnav.tn3 .tn-lbl{max-width:100%}' +
+      '.tn-ico{display:inline-flex;flex:none;width:20px;height:20px}' +
+      '.tn-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
+      '.tn-lbl{min-width:0;overflow:hidden;text-overflow:ellipsis}' +
+      '@media(max-width:380px){.topnav{gap:6px!important;padding:10px 8px 0!important}.topnav .back{gap:5px;padding:7px 8px}.tn-ico,.tn-ico svg{width:18px;height:18px}}';
+    document.head.appendChild(css);
+    var bar = links[0].parentNode;
+    if (links.length > 2 && bar && bar.classList) bar.classList.add('tn3');
+    Array.prototype.forEach.call(links, function (a) {
+      if (a.getAttribute('data-tn')) return;
+      var label = '';
+      Array.prototype.forEach.call(a.childNodes, function (n) { if (n.nodeType === 3) label += n.textContent; });   // the words, without the old emoji
+      label = label.replace(/\s+/g, ' ').trim() || (a.getAttribute('aria-label') || '');
+      var ico = document.createElement('span'); ico.className = 'tn-ico'; ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' + ICONS[iconFor(a.getAttribute('href'))] + '</svg>';
+      var lbl = document.createElement('span'); lbl.className = 'tn-lbl'; lbl.textContent = label;
+      a.textContent = '';
+      a.appendChild(ico); a.appendChild(lbl);
+      a.setAttribute('data-tn', '1');
+      if (label) a.setAttribute('title', label);
+    });
+  }
+  onReady(styleTopNav);
+
+  /* index page: its menu / language buttons get the same look as the top panel of the other pages */
+  function styleIndexBar() {
+    var pills = document.querySelectorAll('.banner-top-bar .pill');
+    if (!pills.length) return;
+    var css = document.createElement('style');
+    css.textContent =
+      '.banner-top-bar{justify-content:center!important;gap:8px!important}' +
+      '.banner-top-bar .pill{height:42px!important;min-width:0!important;padding:0 14px!important;gap:8px!important;border-radius:999px!important;' +
+        'border:1px solid rgba(212,175,55,.7)!important;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05))!important;color:#fff!important;' +
+        'font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2)}' +
+      '.banner-top-bar .pill:hover,.banner-top-bar .pill:focus-within{background:#d4af37!important;color:#123528!important}' +
+      '.banner-top-bar .pill .lbl{display:inline!important;font-size:clamp(.8rem,3.2vw,.95rem);max-width:9.5em;overflow:hidden;text-overflow:ellipsis}' +
+      '.banner-top-bar .pill .caret{display:inline!important}' +
+      '.banner-top-bar .pill .tn-ico{display:inline-flex;flex:none;width:20px;height:20px}' +
+      '.banner-top-bar .pill .tn-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}';
+    document.head.appendChild(css);
+    var SV = {
+      menu:  '<path d="M4 6.5h16M4 12h16M4 17.5h16"/>',
+      globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.2 3.2 3.2 14.8 0 18"/><path d="M12 3c-3.2 3.2-3.2 14.8 0 18"/>'
+    };
+    Array.prototype.forEach.call(pills, function (p) {
+      var old = p.querySelector('.ico'); if (!old) return;
+      var sel = p.querySelector('select');
+      var ico = document.createElement('span'); ico.className = 'tn-ico'; ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' + ((sel && sel.id === 'langSelect') ? SV.globe : SV.menu) + '</svg>';
+      old.parentNode.replaceChild(ico, old);
+    });
+  }
+  onReady(styleIndexBar);
+
   /* hide Google's own bar / highlights & ensure minimal centered layout */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
