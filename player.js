@@ -256,8 +256,9 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
      ===================================================== */
   const statusEl = $("status");
   const masterBtn = $("master");
-  const MASTER_TEXT = "▶ തുടക്കം മുതൽ കേൾക്കാം";
-  const OPT_TEXT = "⚙ ഓപ്ഷനുകൾ തെരഞ്ഞെടുക്കാം";
+    // Button labels: one place for the whole site. site.js sets window.QURAN_LABELS (change them there); these are the defaults.
+const QL = () => Object.assign({ listen: "\u0d15\u0d47\u0d7e\u0d15\u0d4d\u0d15\u0d3e\u0d02", stop: "\u25a0 \u0d28\u0d3f\u0d7c\u0d24\u0d4d\u0d24\u0d41\u0d15",
+  options: "\u0d13\u0d2a\u0d4d\u0d37\u0d28\u0d41\u0d15\u0d7e" }, window.QURAN_LABELS || {});
   let token = 0;
   let activeKey = null;
   let currentAudio = null;
@@ -596,7 +597,7 @@ body.hide-in #intro-wrap{display:none}
     continuous = cont;
     const my = token;
     if (cont) {
-      masterBtn.textContent = "■ നിർത്തുക";
+      masterBtn.textContent = QL().stop;
       masterBtn.classList.add("playing");
     }
     const step = i => {
@@ -651,7 +652,8 @@ body.hide-in #intro-wrap{display:none}
   function setPanel(open) {
     controlsEl.classList.toggle("open", open);
     optBtn.classList.toggle("open", open);
-    optBtn.textContent = OPT_TEXT + (open ? " ▴" : " ▾");
+    const pn = $("panel"); if (pn) { pn.classList.toggle("open", open); pn.style.display = open ? "block" : "none"; }
+    optBtn.textContent = QL().options + (open ? " ▴" : " ▾");
   }
   function togglePanel(e) {
     e.stopPropagation();
@@ -799,7 +801,7 @@ function stopAll() {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   sharedAudio.onended = sharedAudio.onerror = null; sharedAudio.pause(); currentAudio = null;
   clearMark();
-  masterBtn.textContent = MASTER_TEXT; masterBtn.classList.remove("playing"); statusEl.textContent = "";
+  masterBtn.textContent = QL().listen; masterBtn.classList.remove("playing"); statusEl.textContent = "";
   releaseWake();
 }
 function playArabic(n, my, done) {
