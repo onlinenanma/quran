@@ -11,11 +11,15 @@
   function onReady(fn) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn();
   }
-  function getPref() {
-    var p = null;
-    try { p = localStorage.getItem(KEY); } catch (e) {}
-    if (!p) { var m = document.cookie.match(/googtrans=\/[^/]*\/([A-Za-z-]+)/); if (m) p = m[1]; }
-    return p || 'ml';
+  function cookieLang() {                         // index page writes the cookie URL-encoded (%2Fml%2Fen), older pages as /ml/en
+    var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
+    if (!m) return '';
+    var v = m[1]; try { v = decodeURIComponent(v); } catch (e) {}
+    var x = v.match(/^\/[^\/]*\/([A-Za-z-]+)/);
+    return x ? x[1] : '';
+  }
+  function getPref() {                            // the cookie is the one source of truth, shared with the index page
+    return cookieLang() || 'ml';
   }
   function setCookie(l) {                         // Google reads this cookie to translate
     var gone = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
@@ -27,20 +31,216 @@
   var lang = getPref();
   setCookie(lang);                                // keep cookie in step with the saved choice
 
-  /* hide Google's own bar / highlights & ensure options panel is hidden by default */
+  /* ---------- first visit: ask which language to use ---------- */
+  var ASKED = 'quran-lang-asked';
+  var LANGS = [
+    ["ml", "മലയാളം"],
+    ["en", "English"],
+    ["hi", "हिन्दी"],
+    ["ta", "தமிழ்"],
+    ["te", "తెలుగు"],
+    ["kn", "ಕನ್ನಡ"],
+    ["mr", "मराठी"],
+    ["gu", "ગુજરાતી"],
+    ["pa", "ਪੰਜਾਬੀ"],
+    ["bn", "বাংলা"],
+    ["ur", "اردو"],
+    ["ne", "नेपाली"],
+    ["si", "සිංහල"],
+    ["ar", "العربية"],
+    ["fa", "فارسی"],
+    ["tr", "Türkçe"],
+    ["id", "Indonesia"],
+    ["ms", "Melayu"],
+    ["th", "ไทย"],
+    ["vi", "Tiếng Việt"],
+    ["zh-CN", "中文简体"],
+    ["zh-TW", "中文繁體"],
+    ["ja", "日本語"],
+    ["ko", "한국어"],
+    ["fr", "Français"],
+    ["de", "Deutsch"],
+    ["es", "Español"],
+    ["pt", "Português"],
+    ["it", "Italiano"],
+    ["ru", "Русский"],
+    ["nl", "Nederlands"],
+    ["pl", "Polski"],
+    ["uk", "Українська"],
+    ["sv", "Svenska"],
+    ["el", "Ελληνικά"],
+    ["ro", "Română"],
+    ["sw", "Kiswahili"],
+    ["am", "አማርኛ"],
+    ["ha", "Hausa"]
+  ];
+  function askLanguage() {
+    try {
+      if (window.top !== window.self) return;                                        // not inside embedded frames
+      if (window.QURAN_NO_LANG_POPUP || document.documentElement.hasAttribute('data-no-lang-popup')) return;
+      if (/bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent || '')) return;
+      if (cookieLang()) { localStorage.setItem(ASKED, '1'); return; }                // already chose a language (e.g. on the index)
+      if (localStorage.getItem(ASKED)) return;                                       // already asked once
+    } catch (e) { return; }
+
+    var css = document.createElement('style');
+    css.textContent =
+      '.qlp{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.6);font-family:"Noto Sans Malayalam",system-ui,sans-serif}' +
+      '.qlp-card{width:100%;max-width:440px;max-height:88vh;overflow:auto;background:#fff;color:#22302a;border:2px solid #d4af37;border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 40px rgba(0,0,0,.45);text-align:center;position:relative}' +
+      '.qlp-t{font-size:1.15rem;font-weight:700;color:#1d5240;margin:0 0 2px}.qlp-s{font-size:.9rem;color:#55605a;margin:0 0 12px}' +
+      '.qlp-g{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}' +
+      '.qlp-b{font:inherit;font-size:1rem;padding:10px 6px;border-radius:10px;border:1px solid #e2e8f0;border-top:3px solid #d4af37;background:#f6f3ea;color:inherit;cursor:pointer}' +
+      '.qlp-b:hover,.qlp-b:focus-visible{background:#1d5240;color:#fff;outline:none}' +
+      '.qlp-b.main{grid-column:1/-1;font-weight:700;background:#1d5240;color:#fff}' +
+      '.qlp-x{position:absolute;top:6px;right:8px;border:none;background:none;font-size:1.3rem;line-height:1;color:inherit;cursor:pointer;padding:6px}' +
+      '.qlp-n{font-size:.8rem;color:#55605a;margin:12px 0 0}' +
+      '@media(prefers-color-scheme:dark){.qlp-card{background:#17261f;color:#e9efe9}.qlp-t{color:#d4af37}.qlp-s,.qlp-n{color:#a9b6ae}.qlp-b{background:#0f1a15;border-color:#2c3f36}}';
+    document.head.appendChild(css);
+
+    var ov = document.createElement('div');
+    ov.className = 'qlp notranslate'; ov.setAttribute('translate', 'no');
+    ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-labelledby', 'qlp-title');
+    var card = document.createElement('div'); card.className = 'qlp-card';
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'qlp-x'; x.setAttribute('aria-label', 'Close'); x.textContent = '\u00D7';
+    var t = document.createElement('p'); t.className = 'qlp-t'; t.id = 'qlp-title'; t.textContent = '\u0D2D\u0D3E\u0D37 \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D41\u0D15 \u00B7 Choose your language';
+    var s = document.createElement('p'); s.className = 'qlp-s'; s.textContent = '\uD83C\uDF10';
+    var g = document.createElement('div'); g.className = 'qlp-g';
+    var n = document.createElement('p'); n.className = 'qlp-n';
+    n.textContent = 'You can change it any time from the home page \u00B7 \u0D2D\u0D3E\u0D37 \u0D2A\u0D3F\u0D28\u0D4D\u0D28\u0D40\u0D1F\u0D4D \u0D2E\u0D3E\u0D31\u0D4D\u0D31\u0D3E\u0D02';
+
+    var prevOverflow = document.documentElement.style.overflow;
+    function close() {
+      document.documentElement.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKey);
+      if (ov.parentNode) ov.parentNode.removeChild(ov);
+    }
+    function choose(code) {
+      try { localStorage.setItem(ASKED, '1'); } catch (e) {}
+      if (code !== 'ml') { savePref(code); close(); location.reload(); }          // reload: Google applies the cookie on load
+      else { savePref('ml'); close(); }
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { try { localStorage.setItem(ASKED, '1'); } catch (er) {} close(); }
+    }
+    LANGS.forEach(function (l, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'qlp-b' + (i === 0 ? ' main' : ''); b.textContent = l[1]; b.lang = l[0];
+      b.addEventListener('click', function () { choose(l[0]); });
+      g.appendChild(b);
+    });
+    x.addEventListener('click', function () { try { localStorage.setItem(ASKED, '1'); } catch (e) {} close(); });
+    card.appendChild(x); card.appendChild(t); card.appendChild(s); card.appendChild(g); card.appendChild(n);
+    ov.appendChild(card);
+    document.body.appendChild(ov);
+    document.documentElement.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKey);
+    var first = g.firstChild; if (first && first.focus) first.focus();
+  }
+  onReady(askLanguage);
+
+  /* ---------- top panel: the same pill buttons (icon + label) on every page ---------- */
+  var ICONS = {
+    home:    '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+    surahs:  '<path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5z"/><path d="M12 6v13.5"/>',
+    pages:   '<rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/>',
+    summary: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+    back:    '<circle cx="12" cy="12" r="9"/><path d="M13.5 8.5 10 12l3.5 3.5"/>',
+    tafsir:  '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/><path d="M9 7h6"/>',
+    hadith:  '<path d="M8 21h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H8"/><path d="M8 21a2 2 0 0 1-2-2V5a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1h3"/><path d="M11 9h5M11 13h5"/>',
+    hifz:    '<path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/>',
+    link:    '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 9l3 3-3 3"/>'
+  };
+  function iconFor(href) {
+    var p = (href || '').replace(/[?#].*$/, '').replace(/\/+$/, '').replace(/\.html?$/i, '');
+    var inSummary = /-summary$/.test(location.pathname.replace(/\/+$/, '').replace(/\.html?$/i, ''));
+    if (/\/quran$/.test(p)) return 'home';
+    if (/surah-index$/.test(p)) return 'surahs';
+    if (/\d{3}-summary$/.test(p)) return 'summary';
+    if (/\/\d{3}(-\d+)?$/.test(p)) return inSummary ? 'back' : 'pages';
+    if (/tafsir$/.test(p)) return 'tafsir';
+    if (/hadith$/.test(p)) return 'hadith';
+    if (/hifd$/.test(p)) return 'hifz';
+    return 'link';
+  }
+  function styleTopNav() {
+    var links = document.querySelectorAll('.topnav a.back');
+    if (!links.length) return;
+    var css = document.createElement('style');
+    css.textContent =
+      '.topnav{display:flex!important;gap:8px!important;justify-content:center!important;align-items:stretch!important;flex-wrap:nowrap!important;width:100%;max-width:560px;margin:0 auto 10px!important;padding:12px 12px 0!important}' +
+      '.topnav .back{flex:1 1 0;min-width:0;display:inline-flex!important;align-items:center;justify-content:center;gap:7px;padding:8px 10px;border-radius:999px;' +
+        'border:1px solid rgba(212,175,55,.7);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05));color:#fff!important;' +
+        'font-family:inherit;font-size:clamp(.78rem,3.3vw,.95rem)!important;font-weight:600!important;line-height:1.2;text-decoration:none!important;white-space:nowrap;' +
+        'box-shadow:0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .15s,background .15s,color .15s}' +
+      '.topnav .back:hover,.topnav .back:focus-visible{background:#d4af37;color:#123528!important;transform:translateY(-1px);outline:none}' +
+      '.topnav .back:active{transform:scale(.97)}' +
+      '.topnav.tn3 .back{flex-direction:column;gap:3px;padding:7px 4px 6px;border-radius:16px;font-size:clamp(.72rem,3vw,.85rem)!important}' +
+      '.topnav.tn3 .tn-lbl{max-width:100%}' +
+      '.tn-ico{display:inline-flex;flex:none;width:20px;height:20px}' +
+      '.tn-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
+      '.tn-lbl{min-width:0;overflow:hidden;text-overflow:ellipsis}' +
+      '@media(max-width:380px){.topnav{gap:6px!important;padding:10px 8px 0!important}.topnav .back{gap:5px;padding:7px 8px}.tn-ico,.tn-ico svg{width:18px;height:18px}}';
+    document.head.appendChild(css);
+    var bar = links[0].parentNode;
+    if (links.length > 2 && bar && bar.classList) bar.classList.add('tn3');
+    Array.prototype.forEach.call(links, function (a) {
+      if (a.getAttribute('data-tn')) return;
+      var label = '';
+      Array.prototype.forEach.call(a.childNodes, function (n) { if (n.nodeType === 3) label += n.textContent; });   // the words, without the old emoji
+      label = label.replace(/\s+/g, ' ').trim() || (a.getAttribute('aria-label') || '');
+      var ico = document.createElement('span'); ico.className = 'tn-ico'; ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' + ICONS[iconFor(a.getAttribute('href'))] + '</svg>';
+      var lbl = document.createElement('span'); lbl.className = 'tn-lbl'; lbl.textContent = label;
+      a.textContent = '';
+      a.appendChild(ico); a.appendChild(lbl);
+      a.setAttribute('data-tn', '1');
+      if (label) a.setAttribute('title', label);
+    });
+  }
+  onReady(styleTopNav);
+
+  /* index page: its menu / language buttons get the same look as the top panel of the other pages */
+  function styleIndexBar() {
+    var pills = document.querySelectorAll('.banner-top-bar .pill');
+    if (!pills.length) return;
+    var css = document.createElement('style');
+    css.textContent =
+      '.banner-top-bar{justify-content:center!important;gap:8px!important}' +
+      '.banner-top-bar .pill{height:42px!important;min-width:0!important;padding:0 14px!important;gap:8px!important;border-radius:999px!important;' +
+        'border:1px solid rgba(212,175,55,.7)!important;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05))!important;color:#fff!important;' +
+        'font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2)}' +
+      '.banner-top-bar .pill:hover,.banner-top-bar .pill:focus-within{background:#d4af37!important;color:#123528!important}' +
+      '.banner-top-bar .pill .lbl{display:inline!important;font-size:clamp(.8rem,3.2vw,.95rem);max-width:9.5em;overflow:hidden;text-overflow:ellipsis}' +
+      '.banner-top-bar .pill .caret{display:inline!important}' +
+      '.banner-top-bar .pill .tn-ico{display:inline-flex;flex:none;width:20px;height:20px}' +
+      '.banner-top-bar .pill .tn-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}';
+    document.head.appendChild(css);
+    var SV = {
+      menu:  '<path d="M4 6.5h16M4 12h16M4 17.5h16"/>',
+      globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.2 3.2 3.2 14.8 0 18"/><path d="M12 3c-3.2 3.2-3.2 14.8 0 18"/>'
+    };
+    Array.prototype.forEach.call(pills, function (p) {
+      var old = p.querySelector('.ico'); if (!old) return;
+      var sel = p.querySelector('select');
+      var ico = document.createElement('span'); ico.className = 'tn-ico'; ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' + ((sel && sel.id === 'langSelect') ? SV.globe : SV.menu) + '</svg>';
+      old.parentNode.replaceChild(ico, old);
+    });
+  }
+  onReady(styleIndexBar);
+
+  /* hide Google's own bar / highlights & ensure minimal centered layout */
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    /* Controls container & panel default hidden state */
     '.controls{margin:0!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
-    '.controls .bar-row,.controls > div:first-child{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:12px!important;margin:0!important;padding:0!important;width:auto!important}' +
-    /* Hide panel by default unless it has open class or display block */
+    '.banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
+    '.banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
     '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
-    /* Audio status description styling in a new line below */
-    '#status,#audio-status,.status-text,.controls div:not(.bar-row):not(:first-child):not(#panel){font-size:0.85rem;color:var(--acc, #1d5240);text-align:center;margin:2px 0 0 0!important;display:block!important;width:100%!important}' +
-    'body>.hero{margin-bottom:0!important;border-bottom:3px solid var(--gold)!important}' +
-    'body>.hero + div{text-align:center;margin:4px auto}' +
-    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1.1rem,3vw,1.4rem);margin:2px 0}' +
+    '#status,#audio-status,.status-text{width:100%!important;text-align:center!important;display:block!important;margin:4px auto 0 auto!important;float:none!important;clear:both!important;font-size:0.85rem!important;color:var(--acc, #1d5240)!important}' +
+    'body>.hero{margin-bottom:0!important;border-bottom:2px solid var(--gold)!important;padding-bottom:8px!important}' +
+    'body>.hero + div{text-align:center;margin:2px auto}' +
+    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1rem,2.5vw,1.3rem);margin:1px 0}' +
     '@media(prefers-color-scheme:dark){body>.hero + div h1{color:var(--ink, #e9efe9)}}';
   document.head.appendChild(st);
 
@@ -96,62 +296,80 @@
       });
     }
     if (lang !== 'ml') {
-      markArabic(document.body);
-      wrapArabic(document.body);
+      try { markArabic(document.body); } catch (e) {}
+      try { wrapArabic(document.body); } catch (e) {}
       var rm = document.querySelector('meta[name="referrer"]');
       if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
-      window.googleTranslateElementInit = function () {
-        new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
-      };
-      var d = document.createElement('div'); d.id = 'gt_el'; d.style.display = 'none'; document.body.appendChild(d);
-      var s = document.createElement('script');
-      s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; s.async = true;
-      document.head.appendChild(s);
+      if (!document.querySelector('script[src*="translate_a/element.js"]')) {     // the index page loads the widget itself
+        window.googleTranslateElementInit = function () {
+          new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
+        };
+        var d = document.createElement('div'); d.id = 'gt_el'; d.style.display = 'none'; document.body.appendChild(d);
+        var s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; s.async = true;
+        document.head.appendChild(s);
+      }
+      try {                                                    // verse cards are built by player.js a moment later
+        var AR_SEL = '[lang="ar"],.ar,.isti-ar';
+        var mark = function (e) { if (e.getAttribute('translate') !== 'no') { e.setAttribute('translate', 'no'); e.classList.add('notranslate'); } };
+        new MutationObserver(function (list) {
+          list.forEach(function (mu) {
+            mu.addedNodes.forEach(function (n) {
+              if (n.nodeType !== 1) return;
+              if (n.matches && n.matches(AR_SEL)) mark(n);
+              n.querySelectorAll(AR_SEL).forEach(mark);
+            });
+          });
+        }).observe(document.body, { childList: true, subtree: true });
+      } catch (e) {}
     }
 
     /* Robust Option panel toggle & label state handler */
     var optBtn = document.getElementById('opt-toggle');
     var panel = document.getElementById('panel');
+    var controls = document.querySelector('.controls');
+    
     if (optBtn && panel) {
-      // Ensure panel is hidden by default on load
       panel.classList.remove('open');
-      if (panel.style.display === 'block') panel.style.display = 'none';
+      panel.style.display = 'none';
       optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+      optBtn.removeAttribute('onclick'); // prevent double handling conflict
 
-      var updateState = function () {
-        var isOpen = panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block';
-        optBtn.textContent = isOpen ? 'ഓപ്ഷനുകൾ ▴' : 'ഓപ്ഷനുകൾ ▾';
-      };
-
-      // Handle click on option toggle button to toggle panel cleanly
       optBtn.addEventListener('click', function (e) {
-        setTimeout(function() {
-          var isOpen = panel.classList.contains('open') || panel.style.display === 'block' || window.getComputedStyle(panel).display === 'block';
-          if (!isOpen && panel.style.display === 'none') {
-            panel.style.display = 'block';
-            panel.classList.add('open');
-          }
-          updateState();
-        }, 10);
-      });
-
-      // Close panel when clicking anywhere outside the controls/panel
-      document.addEventListener('click', function (e) {
-        var controls = document.querySelector('.controls');
-        if (controls && !controls.contains(e.target)) {
+        e.preventDefault();
+        e.stopPropagation();
+        var isOpen = panel.classList.contains('open') || panel.style.display === 'block';
+        if (isOpen) {
           panel.classList.remove('open');
           panel.style.display = 'none';
+          if (controls) controls.classList.remove('open');
           optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        } else {
+          panel.classList.add('open');
+          panel.style.display = 'block';
+          if (controls) controls.classList.add('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
         }
       });
 
-      if (window.MutationObserver) {
-        var observer = new MutationObserver(updateState);
-        observer.observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
-      }
+      document.addEventListener('click', function (e) {
+        if (controls && !controls.contains(e.target)) {
+          panel.classList.remove('open');
+          panel.style.display = 'none';
+          if (controls) controls.classList.remove('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        }
+      });
     }
 
-    /* 'കേൾക്കാം' master toggle button with Stop feature */
+    /* Status text centering below buttons */
+    var banner = document.querySelector('.banner');
+    var statusEl = document.getElementById('status');
+    if (statusEl && banner) {
+      banner.appendChild(statusEl);
+    }
+
+    /* 'കേൾക്കാം' master toggle button with stop capability */
     var masterBtn = document.getElementById('master');
     if (masterBtn) {
       masterBtn.textContent = 'കേൾക്കാം';
@@ -169,7 +387,7 @@
       }, true);
     }
 
-    /* Move 'തുടർച്ചയായി കേൾക്കുക' check box next to 'വിവരണം' inside the panel */
+    /* Move 'തുടർച്ചയായി കേൾക്കുക' checkbox inside panel next to 'വിവരണം' */
     var contInput = document.getElementById('cont');
     if (contInput && panel) {
       var wrapper = contInput.closest('label');
@@ -191,7 +409,7 @@
       }
     }
 
-    /* Bismillah display only on pages starting with Verse 1 */
+    /* Bismillah handling: only on pages starting with verse 1, matching verse color */
     var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
     var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
     if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
@@ -241,7 +459,7 @@
     };
   });
 
-  /* ===== text-to-speech engine: Page 2+ multi-part fix ===== */
+  /* ===== text-to-speech engine with robust translated speech support ===== */
   var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
   function mlFrac(t) {
     var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
@@ -285,61 +503,56 @@
     return chunks.filter(function (c) { return /[^\s.,:;!?।]/.test(c); });
   }
 
-  function onlineChunks(chunks, code, my, done, i, kind, label) {
-    if (my !== token) return;
-    if (i >= chunks.length) { done(); return; }
-    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + 'online voice (' + code + ') ' + (i + 1) + ' / ' + chunks.length;
-    var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
-    a.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' + code + '&q=' + encodeURIComponent(chunks[i]);
-    if (typeof currentAudio !== 'undefined') currentAudio = a;
-    a.playbackRate = kind === 'tf' ? 0.85 : 0.95;
-    a.onended = function () { onlineChunks(chunks, code, my, done, i + 1, kind, label); };
-    a.onerror = function () { done(); }; 
-    a.play().catch(function () { done(); });
-  }
-
+  /* Reliable SpeechSynthesis for translated pages */
   function speakIn(code, text, my, done, kind, label) {
     var chunks = splitText(cleanForSpeech(text));
     if (!chunks.length) { done(); return; }
-    var vc = code.toLowerCase(), v = pick(kind, vc) || (vc.indexOf('-') > 0 ? pick(kind, vc.split('-')[0]) : null);
-    if (!v) { onlineChunks(chunks, code, my, done, 0, kind, label); return; }
-    var natural = vscore(v) >= 8, same = pick('ml', vc) === pick('tf', vc);
-    var pitch = (kind === 'tf' && same && !natural) ? 0.8 : 1, rate = kind === 'tf' ? 0.85 : 0.95;
     
-    var next = function (i) {
+    if (typeof window.speechSynthesis === 'undefined') {
+      done();
+      return;
+    }
+
+    var vc = code.toLowerCase();
+    var voices = speechSynthesis.getVoices();
+    var v = voices.find(function(item) { return item.lang.toLowerCase().replace('_', '-').indexOf(vc) === 0; }) ||
+            voices.find(function(item) { return item.lang.toLowerCase().substring(0, 2) === vc.substring(0, 2); }) ||
+            voices[0];
+
+    var nextChunk = function (i) {
       if (my !== token) return;
       if (i >= chunks.length) { done(); return; }
-      if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (label ? label + ' · ' : '') + code + ' · ' + v.name + ' ' + (i + 1) + '/' + chunks.length;
-      
-      if (typeof window.speechSynthesis === 'undefined') {
-        onlineChunks(chunks, code, my, done, i, kind, label);
-        return;
+      if (typeof statusEl !== 'undefined' && statusEl) {
+        statusEl.textContent = (label ? label + ' · ' : '') + code + (v ? ' · ' + v.name : '') + ' (' + (i + 1) + '/' + chunks.length + ')';
       }
 
       var u = new SpeechSynthesisUtterance(chunks[i]);
-      if (typeof utterances !== 'undefined') utterances[0] = u;
-      u.voice = v; u.lang = v.lang; u.pitch = pitch; u.rate = rate;
-      
-      var started = false, over = false, wd;
-      var fb = function () {
-        if (over) return; over = true; clearTimeout(wd);
-        try { speechSynthesis.cancel(); } catch(e) {}
-        onlineChunks(chunks, code, my, done, i, kind, label);
+      if (v) u.voice = v;
+      u.lang = code;
+      u.rate = 0.95;
+
+      var finished = false, timer;
+      var advance = function () {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        nextChunk(i + 1);
       };
-      
-      wd = setTimeout(function () { if (my === token && !started) fb(); }, 6000);
-      u.onstart = function () { started = true; };
-      u.onend = function () { if (over) return; over = true; clearTimeout(wd); next(i + 1); };
-      u.onerror = function (e) { if (my === token && e.error !== 'canceled' && e.error !== 'interrupted') fb(); };
-      
+
+      timer = setTimeout(advance, 8000);
+      u.onend = advance;
+      u.onerror = advance;
+
       try {
+        speechSynthesis.cancel();
         speechSynthesis.speak(u);
-      } catch (ex) {
-        fb();
+      } catch (e) {
+        advance();
       }
     };
+
     try { speechSynthesis.cancel(); } catch(e) {}
-    setTimeout(function () { next(0); }, 50);
+    setTimeout(function () { nextChunk(0); }, 50);
   }
 
   var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
@@ -383,7 +596,7 @@
         if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
         a.play().catch(bad);
       });
-    }).catch(function () { if (my === token) fallback(); });
+    }).catch(function () { if (my !== token) fallback(); });
   }
   onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
 
@@ -418,7 +631,7 @@
             var kind = typeof curKind !== 'undefined' ? curKind : 'ml';
             var found = pick(kind);
             if (!found) {
-              onlineChunks(chunks, 'ml', my, done, 0, kind, typeof curLabel !== 'undefined' ? curLabel : '');
+              done();
               return;
             }
             var nextChunk = function(idx) {
@@ -427,7 +640,7 @@
               if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (found.name || 'Malayalam Voice') + ' (' + (idx+1) + '/' + chunks.length + ')';
               
               if (typeof window.speechSynthesis === 'undefined') {
-                onlineChunks(chunks, 'ml', my, done, idx, kind, typeof curLabel !== 'undefined' ? curLabel : '');
+                done();
                 return;
               }
 
