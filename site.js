@@ -138,6 +138,29 @@
   }
   onReady(askLanguage);
 
+  /* ---------- button labels: set once, here, for every page ---------- */
+  var LABELS = window.QURAN_LABELS = window.QURAN_LABELS || {
+    listen:  '\u0d15\u0d47\u0d7e\u0d15\u0d4d\u0d15\u0d3e\u0d02',                    // Listen
+    stop:    '\u25a0 \u0d28\u0d3f\u0d7c\u0d24\u0d4d\u0d24\u0d41\u0d15',               // Stop
+    options: '\u0d13\u0d2a\u0d4d\u0d37\u0d28\u0d41\u0d15\u0d7e'                     // Options
+  };
+  /* Pages (and older page scripts) write long texts such as "Listen from the beginning" into the two buttons.
+     Keep them short whoever writes them. Not done in a translated page: there Google translates the labels. */
+  function keepShortLabels() {
+    if (lang !== 'ml') return;
+    var m = document.getElementById('master'), o = document.getElementById('opt-toggle'), panel = document.getElementById('panel');
+    if (!m && !o) return;
+    function isOpen() { return !!(panel && (panel.classList.contains('open') || panel.style.display === 'block')); }
+    function fix() {
+      if (m && !m.classList.contains('playing') && m.textContent !== LABELS.listen) m.textContent = LABELS.listen;
+      if (o) { var want = LABELS.options + (isOpen() ? ' \u25b4' : ' \u25be'); if (o.textContent !== want) o.textContent = want; }
+    }
+    [m, o].forEach(function (b) { if (b) new MutationObserver(fix).observe(b, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] }); });
+    if (panel) new MutationObserver(fix).observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
+    fix();
+  }
+  onReady(keepShortLabels);
+
   /* ---------- top panel: the same pill buttons (icon + label) on every page ---------- */
   var ICONS = {
     home:    '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
@@ -584,8 +607,8 @@
   function playRecorded(kind, n, text, my, done, fallback) {
     recManifest().then(function (man) {
       var key = p3(SURAH) + p3(n) + '-' + kind, e = man[key];
-      if (!e || e.h !== fnv(text)) return fallback();
-      return recSrc(REC_BASE + p3(SURAH) + '/' + key + '.mp3').then(function (src) {
+      if (!e) return fallback();
+      return recSrc(REC_BASE + p3(SURAH) + '/' + key + '.mp3' + (e.h ? '?v=' + e.h : '')).then(function (src) {
         if (my !== token) return;
         if (!src) return fallback();
         var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
@@ -600,9 +623,17 @@
   }
   onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
 
-  function ensureVoices(code, cb) { cb(); }
+  function ensureVoices(code, cb) {
+    var ss = window.speechSynthesis;
+    if (!ss || (ss.getVoices() || []).length) { cb(); return; }
+    var fin = false;
+    function finish() { if (fin) return; fin = true; try { ss.removeEventListener('voiceschanged', finish); } catch (e) {} cb(); }
+    try { ss.addEventListener('voiceschanged', finish); } catch (e) {}
+    setTimeout(finish, 1500);                                   // no voices at all: carry on, the fallback below takes over
+  }
 
   onReady(function () {
+    var pageSpeak = typeof window.speakMalayalam === 'function' ? window.speakMalayalam : null;   // the page's own version (browser voice, then online voice)
     window.speakMalayalam = function (text, my, done) {
       var el = null;
       if (typeof activeKey !== 'undefined' && activeKey) {
@@ -630,8 +661,8 @@
             if (!chunks.length) { done(); return; }
             var kind = typeof curKind !== 'undefined' ? curKind : 'ml';
             var found = pick(kind);
-            if (!found) {
-              done();
+            if (!found) {                                   // no Malayalam voice in this browser: use the page's own method, never stay silent
+              if (pageSpeak) pageSpeak(text, my, done); else done();
               return;
             }
             var nextChunk = function(idx) {
