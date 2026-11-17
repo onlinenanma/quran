@@ -106,6 +106,16 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 body{top:0!important}
 .goog-text-highlight{background:none!important;box-shadow:none!important}
 
+/* Hide Google Translate Spinner & Loading Overlay */
+.goog-te-spinner-pos,
+.goog-te-spinner-animation,
+.goog-te-spinner,
+div[id*="goog-gt-"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
 /* Calibration Modal */
 .calib-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:16px}
 .calib-modal-content{background:var(--card);color:var(--ink);padding:20px;border-radius:12px;max-width:420px;width:100%;border:2px solid var(--gold);box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left}
@@ -150,12 +160,12 @@ body{top:0!important}
     <option value="ur">اردو (Urdu)</option>
     <option value="ne">नेपाली (Nepali)</option>
     <option value="si">සිංහල (Sinhala)</option>
-    <option value="as">অসমীয়া (Assamese)</option>
+    <option value="as">অসমീয়া (Assamese)</option>
     <option value="bho">भोजपुरी (Bhojpuri)</option>
     <option value="doi">डोगरी (Dogri)</option>
     <option value="gom">कोंकणी (Konkani)</option>
     <option value="mai">मैथिली (Maithili)</option>
-    <option value="mni-Mtei">ꯃꯩꯇꯩꯂꯣꯟ (Meiteilon / Manipuri)</option>
+    <option value="mni-Mtei">ꯃꯩꯇꯩꯂꯣꯟ (Manipuri)</option>
     <option value="sa">संस्कृतम् (Sanskrit)</option>
     <option value="sat">ᱥᱟᱱᱛᱟᱲᱤ (Santali)</option>
     <option value="sd">سنڌي (Sindhi)</option>
@@ -166,8 +176,8 @@ body{top:0!important}
     <option value="fa">فارسی (Persian)</option>
     <option value="he">עברית (Hebrew)</option>
     <option value="ps">پښتو (Pashto)</option>
-    <option value="ckb">سۆرانی (Kurdish - Sorani)</option>
-    <option value="ku">Kurdî (Kurdish - Kurmanji)</option>
+    <option value="ckb">سۆرانی (Kurdish Sorani)</option>
+    <option value="ku">Kurdî (Kurdish Kurmanji)</option>
     <option value="hy">Հայերեն (Armenian)</option>
     <option value="ka">ქართული (Georgian)</option>
     <option value="az">Azərbaycan (Azerbaijani)</option>
@@ -177,25 +187,25 @@ body{top:0!important}
     <option value="ky">Кыргызча (Kyrgyz)</option>
     <option value="tg">Тоҷикӣ (Tajik)</option>
     <option value="ug">ئۇيغۇرچە (Uyghur)</option>
-    <option value="yi">ייִדיש (Yiddish)</option>
+    <option value="yi">ייִדיશ (Yiddish)</option>
 
     <!-- East & Southeast Asian Languages -->
     <option value="zh-CN">中文 (简体) (Chinese Simplified)</option>
     <option value="zh-TW">中文 (繁體) (Chinese Traditional)</option>
     <option value="ja">日本語 (Japanese)</option>
     <option value="ko">한국어 (Korean)</option>
-    <option value="id">Indonesia (Indonesian)</option>
-    <option value="ms">Melayu (Malay)</option>
+    <option value="id">Bahasa Indonesia (Indonesian)</option>
+    <option value="ms">Bahasa Melayu (Malay)</option>
     <option value="th">ไทย (Thai)</option>
     <option value="vi">Tiếng Việt (Vietnamese)</option>
-    <option value="my">မြန်မာ (Myanmar / Burmese)</option>
+    <option value="my">မြန်မာ (Burmese)</option>
     <option value="km">ភាសាខ្មែរ (Khmer)</option>
     <option value="lo">ລາວ (Lao)</option>
     <option value="tl">Tagalog (Filipino)</option>
     <option value="ceb">Cebuano</option>
     <option value="jv">Basa Jawa (Javanese)</option>
     <option value="su">Basa Sunda (Sundanese)</option>
-    <option value="hmn">Hmong</option>
+    <option value="hmn">Hmoob (Hmong)</option>
     <option value="mn">Монгол (Mongolian)</option>
 
     <!-- European Languages -->
@@ -236,7 +246,7 @@ body{top:0!important}
     <option value="sr">Српски (Serbian)</option>
     <option value="sk">Slovenčina (Slovak)</option>
     <option value="sl">Slovenščina (Slovenian)</option>
-    <option value="es-419">Español (Latinoamérica)</option>
+    <option value="es-419">Español (LatAm)</option>
     <option value="eu">Euskara (Basque)</option>
     <option value="be">Беларуская (Belarusian)</option>
     <option value="co">Corsu (Corsican)</option>
@@ -251,24 +261,22 @@ body{top:0!important}
     <option value="af">Afrikaans</option>
     <option value="bm">Bamanankan (Bambara)</option>
     <option value="ee">Eʋegbe (Ewe)</option>
-    <option value="ig">Igbo</option>
+    <option value="ig">Asụsụ Igbo (Igbo)</option>
     <option value="kri">Krio</option>
     <option value="lg">Luganda</option>
-    <option value="ln">Lingála</option>
-
+    <option value="ln">Lingála (Lingala)</option>
     <option value="mg">Malagasy</option>
     <option value="nso">Sepedi (Northern Sotho)</option>
-    <option value="om">Oromoo (Oromo)</option>
+    <option value="om">Afaan Oromoo (Oromo)</option>
     <option value="rw">Kinyarwanda</option>
     <option value="sn">chiShona (Shona)</option>
     <option value="so">Soomaali (Somali)</option>
     <option value="st">Sesotho (Southern Sotho)</option>
     <option value="ti">ትግርኛ (Tigrinya)</option>
     <option value="ts">Xitsonga (Tsonga)</option>
-    <option value="ak">Akan (Twi)</option>
-
+    <option value="ak">Twi (Akan)</option>
     <option value="xh">isiXhosa (Xhosa)</option>
-    <option value="yo">Yorùbá</option>
+    <option value="yo">Yorùbá (Yoruba)</option>
     <option value="zu">isiZulu (Zulu)</option>
 
     <!-- Americas & Other Indigenous / Regional Languages -->
@@ -277,7 +285,7 @@ body{top:0!important}
     <option value="ht">Kreyòl Ayisyen (Haitian Creole)</option>
     <option value="sm">Gagana Sāmoa (Samoan)</option>
     <option value="qu">Runa Simi (Quechua)</option>
-    <option value="tt">Tatar</option>
+    <option value="tt">Татарча (Tatar)</option>
     <option value="eo">Esperanto</option>
   </select>
 </label>
@@ -447,7 +455,7 @@ body{top:0!important}
 
 <script>
 const SURAH_URL = n => `https://onlinenanma.github.io/quran/${n}`;
-const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
+const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തക്കാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
 (function(){
  const s=document.getElementById('surahSelect');
  s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
