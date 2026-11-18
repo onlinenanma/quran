@@ -5,7 +5,7 @@
   const $ = id => document.getElementById(id);
 let P_LESSONS = typeof LESSONS !== "undefined" ? LESSONS : "";
 let P_SUGGESTED = typeof SUGGESTED !== "undefined" ? SUGGESTED : [];
-let P_INTRO = typeof INTRO !== "undefined" ? INTRO : null;   // preface (page may define INTRO, or extras/<page>.json "preface")
+let P_INTRO = typeof INTRO !== "undefined" ? INTRO : null;   // preface (page may define INTRO, or data/extras/<page>.json "preface")
 const escHtml = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 let P_QUIZ = typeof QUIZ !== "undefined" ? QUIZ : [];
 const P_AI_ENDPOINT = typeof AI_ENDPOINT !== "undefined" ? AI_ENDPOINT : "";
@@ -977,11 +977,11 @@ function waitForNatural(ms, cb) {
   tick();
 }
 /* ===== LESSONS / QUESTIONS / QUIZ FROM FILE =====
-   extras/<page>.json  e.g. extras/002-1.json (this page only) or extras/002.json (whole chapter, used if no page file)
+   data/extras/<page>.json  e.g. data/extras/002-1.json (this page only) or data/extras/002.json (whole chapter, used if no page file)
    { "lessons": "text", "questions": [{ "q": "...", "a": "..." }], "quiz": [{ "q": "...", "o": ["..","..",".."], "c": 1, "e": "..." }] }
    Made from your Word files by build_extras.py. When a page has any of these, its "lessons / questions / quiz" box appears.
    Optional: window.QURAN_EXTRAS_BASE = "/other/folder/" before this script. */
-const EXTRAS_BASE = (window.QURAN_EXTRAS_BASE || "extras/").replace(/\/*$/, "/");
+const EXTRAS_BASE = (window.QURAN_EXTRAS_BASE || "data/extras/").replace(/\/*$/, "/");
 async function fetchJson(url) {
   try {
     const ctl = typeof AbortController === "function" ? new AbortController() : null;
@@ -1010,10 +1010,10 @@ async function loadExtras() {
 }
 
 /* ===== TAFSIR FROM FILE =====
-   tafsir/<surah>.json  ->  { "21": "explanation of verse 21", "22": "..." }   (made from your Word files by build_tafsir.py)
+   data/tafsir/<surah>.json  ->  { "21": "explanation of verse 21", "22": "..." }   (made from your Word files by build_tafsir.py)
    Text found there fills each verse's explanation; verses without text keep whatever the page has.
    Optional: window.QURAN_TAFSIR_BASE = "/other/folder/" before this script. */
-const TAFSIR_BASE = (window.QURAN_TAFSIR_BASE || "tafsir/").replace(/\/*$/, "/");
+const TAFSIR_BASE = (window.QURAN_TAFSIR_BASE || "data/tafsir/").replace(/\/*$/, "/");
 async function loadTafsir() {
   try {
     const ctl = typeof AbortController === "function" ? new AbortController() : null;
