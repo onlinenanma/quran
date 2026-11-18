@@ -1002,7 +1002,7 @@ async function loadExtras() {
     if (typeof d.lessons === "string" && d.lessons.trim()) P_LESSONS = d.lessons.trim();
     const pf = d.preface;       // preface of a short surah: { title, sub, body }
     if (pf && typeof pf === "object" && typeof pf.body === "string" && pf.body.trim())
-      P_INTRO = { title: escHtml(pf.title), sub: escHtml(pf.sub), body: escHtml(pf.body.trim()) };
+      P_INTRO = { title: escHtml(pf.title), sub: escHtml(pf.sub), body: escHtml(pf.body.trim()), istiAr: escHtml(pf.istiAr), istiMl: escHtml(pf.istiMl) };
     if (Array.isArray(d.questions) && d.questions.length) P_SUGGESTED = d.questions.filter(x => x && x.q);
     if (Array.isArray(d.quiz) && d.quiz.length) P_QUIZ = d.quiz.filter(x => x && x.q && Array.isArray(x.o) && x.o.length > 1);
     return;
