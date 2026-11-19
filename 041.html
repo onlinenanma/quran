@@ -73,8 +73,8 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offse
 <body>
 <header class="banner">
  <div class="topnav">
-    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1.25em;">🏠</span>പ്രധാനതാൾ</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/surah-index">സൂറത്തുകൾ<span style="font-size: 1.25em;">📖</span></a>
+    <a class="back" href="https://quranmeaning.app/"><span style="font-size: 1.25em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://quranmeaning.app/surah-index">സൂറത്തുകൾ<span style="font-size: 1.25em;">📖</span></a>
  </div>
  <h1>41. സൂറത്തുൽ ഫുസ്സിലത്</h1>
 </header>
@@ -107,7 +107,7 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offse
 const TOTAL_AYAH = 54;
 const SURAH = 41;
 const PER_PAGE = 20;
-const BASE = 'https://onlinenanma.github.io/quran/';
+const BASE = 'https://quranmeaning.app/';
 const pad = String(SURAH).padStart(3, '0');
 const PAGE_URL = p => `${BASE}${pad}-${p}`;
 const SUMMARY_URL = `${BASE}${pad}-summary`;
@@ -243,6 +243,6 @@ ttsBtn.addEventListener("click", toggleSpeech);
 if (window.speechSynthesis) { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => {}; }
 window.addEventListener("pagehide", stopSpeech);
 </script>
-<script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+<script src="https://quranmeaning.app/site.js" defer></script>
 </body>
 </html>

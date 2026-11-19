@@ -4,7 +4,7 @@
 
    Use ONE of these (both together is harmless):
      A) paste this whole file at the very end of site.js - every page already loads site.js, so nothing else to change;
-     B) upload it as /quran/translate.js and add  <script src="/quran/translate.js" defer></script>  before site.js. */
+     B) upload it as /quran/translate.js and addbefore site.js. */
 (function () {
   'use strict';
   if (window.__qTranslate) return;
