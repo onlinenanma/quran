@@ -54,8 +54,8 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 <body>
 <header class="banner">
  <div class="topnav">
-    <a class="back" href="https://onlinenanma.github.io/quran/"><span style="font-size: 1.25em;">🏠</span>പ്രധാനതാൾ</a>
-    <a class="back" href="https://onlinenanma.github.io/quran/tafsir">തഫ്സീർ<span style="font-size: 1.25em;">📖</span></a>
+    <a class="back" href="https://quranmeaning.app/"><span style="font-size: 1.25em;">🏠</span>പ്രധാനതാൾ</a>
+    <a class="back" href="https://quranmeaning.app/surah-index">സൂറത്തുകൾ<span style="font-size: 1.25em;">📖</span></a>
  </div>
  
  <h1>സൂറത്തുകൾ</h1>
@@ -69,7 +69,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 <footer>© ഖുർആൻ സാരം</footer>
 
 <script>
-const BASE = 'https://onlinenanma.github.io/quran/';
+const BASE = 'https://quranmeaning.app/';
 const pad = n => String(n).padStart(3, '0');   // 1 -> 001
 const SURAHS = [
 ["അൽ ഫാതിഹ","الفاتحة"],["അൽ ബഖറഃ","البقرة"],["ആലു ഇംറാൻ","آل عمران"],["അന്നിസാഅ്","النساء"],
@@ -113,7 +113,7 @@ SURAHS.forEach(([ml, ar], i) => {
  a.target = '_parent';
 
  a.dataset.s = (n + ' ' + ml + ' ' + ar).toLowerCase();
- a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${ml}</b><span class="ar" translate="no" lang="ar">${ar}</span></span>`;
+ a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${ml}</b><span class="ar">${ar}</span></span>`;
  grid.appendChild(a);
 });
 
@@ -125,7 +125,6 @@ document.getElementById('q').addEventListener('input', e => {
  empty.hidden = shown > 0;
 });
 </script>
-<script src="/quran/translate.js" defer></script>
- <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+<script src="https://quranmeaning.app/site.js" defer></script>
 </body>
 </html>
