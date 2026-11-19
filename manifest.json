@@ -1,0 +1,56 @@
+{
+  "name": "Quran Meaning App",
+  "short_name": "Quran App",
+  "id": "quran-meaning-app",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d5240",
+  "orientation": "any",
+  "dir": "auto",
+  "lang": "en",
+  "description": "Read the Holy Quran with multi-language meanings and brief explanations. Listen to verses by renowned reciters with meaning and commentary in your language, supporting both continuous and single-verse playback.",
+  "categories": [
+    "books",
+    "personalization",
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Desktop Quran App Workspace"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Quran App Workspace"
+    }
+  ]
+}
