@@ -394,8 +394,7 @@
     if (statusEl && banner) {
       banner.appendChild(statusEl);
     }
-
-    /* 'കേൾക്കാം' master toggle button with stop capability */
+      /* 'കേൾക്കാം' master toggle button with stop capability */
     var masterBtn = document.getElementById('master');
     if (masterBtn) {
       masterBtn.textContent = 'കേൾക്കാം';
@@ -842,4 +841,23 @@
       if (sw.origin === location.origin) navigator.serviceWorker.register(sw.pathname, { scope: sw.pathname.replace(/[^\/]*$/, '') }).catch(function () {});
     });
   }
+   /* manifest & theme-color on every page */
+  onReady(function () {
+    var head = document.head || document.getElementsByTagName('head')[0];
+    if (!head) return;
+
+    if (!head.querySelector('link[rel="manifest"]')) {
+      var link = document.createElement('link');
+      link.rel = 'manifest';
+      link.href = BASE_URL + 'manifest.json';
+      head.appendChild(link);
+    }
+
+    if (!head.querySelector('meta[name="theme-color"]')) {
+      var meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      meta.content = '#1d5240';
+      head.appendChild(meta);
+    }
+  });
 })();
