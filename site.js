@@ -1,12 +1,14 @@
 /* site.js – include on EVERY page:
-   <script src="https://onlinenanma.github.io/quran/site.js" defer></script>
+   <script src="/site.js" defer></script>
    1) remembers the chosen language for the whole site
    2) loads Google Translate only when a language other than Malayalam is chosen
    3) natural voices + text to speech in the translated language
    4) recitation audio: saves only Al-Ghamdi for offline use; recorded Malayalam voice with browser fallback
-   5) registers the offline service worker (/quran/sw.js) */
+   5) registers the offline service worker (sw.js, next to this file) */
 (function () {
   var KEY = 'quran-lang', YEAR = 'max-age=31536000';
+  // folder this file is served from (https://quranmeaning.app/ today) - audio and sw.js are found relative to it, so no address is written in the code
+  var BASE_URL = (document.currentScript && document.currentScript.src) ? document.currentScript.src.replace(/[^\/]*$/, '') : (location.origin + '/');
 
   function onReady(fn) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn();
@@ -174,9 +176,10 @@
     link:    '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 9l3 3-3 3"/>'
   };
   function iconFor(href) {
-    var p = (href || '').replace(/[?#].*$/, '').replace(/\/+$/, '').replace(/\.html?$/i, '');
+    var u; try { u = new URL(href || '', location.href); } catch (e) { return 'link'; }
+    var p = u.pathname.replace(/\/+$/, '').replace(/\.html?$/i, '');                 // '' = the home page
     var inSummary = /-summary$/.test(location.pathname.replace(/\/+$/, '').replace(/\.html?$/i, ''));
-    if (/\/quran$/.test(p)) return 'home';
+    if (p === '' || /\/quran$/.test(p)) return 'home';
     if (/surah-index$/.test(p)) return 'surahs';
     if (/\d{3}-summary$/.test(p)) return 'summary';
     if (/\/\d{3}(-\d+)?$/.test(p)) return inSummary ? 'back' : 'pages';
@@ -256,7 +259,7 @@
   var st = document.createElement('style');
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
-    '.controls{margin:0!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
+    '.controls{margin:0 auto!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
     '.banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
     '.banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
     '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
@@ -578,7 +581,7 @@
     setTimeout(function () { nextChunk(0); }, 50);
   }
 
-  var REC_BASE = 'https://onlinenanma.github.io/quran/audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
+  var REC_BASE = BASE_URL + 'audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
   function p3(n) { return String(n).padStart(3, '0'); }
   function fnv(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); }
   var recMan = null;
@@ -835,7 +838,8 @@
   /* offline support */
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
     window.addEventListener('load', function () {
-      navigator.serviceWorker.register('/quran/sw.js', { scope: '/quran/' }).catch(function () {});
+      var sw = new URL('sw.js', BASE_URL);
+      if (sw.origin === location.origin) navigator.serviceWorker.register(sw.pathname, { scope: sw.pathname.replace(/[^\/]*$/, '') }).catch(function () {});
     });
   }
 })();
