@@ -1,592 +1,845 @@
-<!doctype html>
-<html lang="ml">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>ഖുർആൻ സാരം</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@600;700&family=Noto+Sans+Malayalam:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<style>
-:root{--green:#123528;--green2:#1d5240;--gold:#d4af37;--paper:#f6f3ea;--card:#fff;--ink:#22302a;--muted:#55605a;--dial:#fff}
-@media(prefers-color-scheme:dark){:root{--paper:#0f1a15;--card:#17261f;--ink:#e9efe9;--muted:#a9b6ae;--green:#0b231a;--dial:#1d2f27}}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;overflow-x:hidden}
-.pill select{width:100%}
-body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
-.banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:
- radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
- repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
- linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
-.bismi{font-family:"Noto Naskh Arabic",serif;font-size:clamp(1.3rem,4.5vw,2rem);color:var(--gold);margin-bottom:6px}
-.banner h1{font-size:clamp(2rem,8vw,3.8rem);font-weight:700;line-height:1.3}
-.wrap{max-width:1100px;margin:0 auto;padding:18px 12px 40px}
-.card{background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:clamp(14px,3vw,24px);box-shadow:0 4px 15px rgba(0,0,0,.06)}
-.picker{margin:-34px auto 16px;position:relative;max-width:640px;text-align:center}
-.picker h2{font-size:1.1rem;color:var(--green2);margin-bottom:10px}
-@media(prefers-color-scheme:dark){.picker h2,.desc h2,.widget-title,.prayer-name,.qibla-angle-text{color:var(--gold)}}
-.row{display:flex;gap:8px;flex-direction:column}
-@media(min-width:500px){.row{flex-direction:row}}
-select,button{font-family:inherit;font-size:.95rem;padding:11px 12px;border-radius:6px;border:1px solid #c9d1cc;width:100%}
-select{background:var(--paper);color:var(--ink);cursor:pointer}
-button{background:var(--green2);color:#fff;border-color:var(--green2);font-weight:600;cursor:pointer;white-space:nowrap}
-@media(min-width:500px){.row button{width:auto}}
-button:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-.desc{margin-top:20px}
-.desc p{margin-bottom:14px;text-align:justify;max-width:75ch;margin-inline:auto}
-.desc .dua{text-align:center;font-weight:600}
-.desc p:last-child{margin-bottom:0}
-footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
+/* site.js – include on EVERY page:
+   <script src="/site.js" defer></script>
+   1) remembers the chosen language for the whole site
+   2) loads Google Translate only when a language other than Malayalam is chosen
+   3) natural voices + text to speech in the translated language
+   4) recitation audio: saves only Al-Ghamdi for offline use; recorded Malayalam voice with browser fallback
+   5) registers the offline service worker (sw.js, next to this file) */
+(function () {
+  var KEY = 'quran-lang', YEAR = 'max-age=31536000';
+  // folder this file is served from (https://quranmeaning.app/ today) - audio and sw.js are found relative to it, so no address is written in the code
+  var BASE_URL = (document.currentScript && document.currentScript.src) ? document.currentScript.src.replace(/[^\/]*$/, '') : (location.origin + '/');
 
-/* Hijri Banner */
-.hijri-banner{background:#f4f8f6;color:var(--green);padding:10px 14px;border-radius:8px;text-align:center;font-size:.9rem;font-weight:700;border:1px solid var(--gold);margin-bottom:16px}
-@media(prefers-color-scheme:dark){.hijri-banner{background:#17261f;color:var(--gold)}}
-
-/* Resource Cards Grid (Tafsir, Hadith & Hifz) */
-.resource-grid{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
-@media(min-width:650px){.resource-grid{flex-direction:row}}
-.resource-card{flex:1;background:var(--card);border:2px solid var(--gold);border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.06);transition:transform .2s ease}
-.resource-card:hover{transform:translateY(-2px)}
-.resource-card h3{color:var(--green);font-size:1.15rem;margin-bottom:6px}
-@media(prefers-color-scheme:dark){.resource-card h3{color:var(--gold)}}
-.resource-card p{font-size:.88rem;color:var(--muted);margin-bottom:12px}
-.resource-btn{display:inline-block;background:var(--green2);color:#fff;padding:8px 18px;border-radius:6px;text-decoration:none;font-weight:600;font-size:.9rem;transition:background .2s}
-.resource-btn:hover{background:#254d3e}
-
-.widgets-wrapper{display:flex;flex-direction:column;gap:16px;width:100%}
-@media(min-width:850px){.widgets-wrapper{flex-direction:row;align-items:stretch}}
-.widget-container{padding:16px;width:100%;display:flex;flex-direction:column;gap:12px}
-.prayer-widget-box{flex:1.6}
-.qibla-widget-box{flex:1;align-items:center;text-align:center}
-.widget-title{color:var(--green);font-size:1.2rem;font-weight:700;text-align:center}
-.location-subtitle{text-align:center;font-size:.85rem;color:var(--muted);margin:2px 0 8px;font-weight:600;word-break:break-word}
-.city-selector{display:flex;gap:8px;width:100%;flex-direction:column}
-@media(min-width:500px){.city-selector{flex-direction:row}.city-selector button{width:auto}}
-.prayer-times-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:10px;width:100%}
-.prayer-time-card{background:var(--card);border:1px solid #e2e8f0;border-top:3px solid var(--gold);border-radius:8px;padding:12px 6px;text-align:center}
-@media(prefers-color-scheme:dark){.prayer-time-card{border-color:#2c3f36;border-top-color:var(--gold)}}
-.prayer-name{color:var(--green);font-weight:700;font-size:.8rem;margin-bottom:4px}
-.prayer-time{font-weight:800;font-size:1.15rem}
-
-/* Compass */
-.compass-wrap{position:relative;width:190px;height:190px;margin:14px auto 6px}
-.phone-marker{position:absolute;top:-12px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:12px solid var(--green2);z-index:3}
-@media(prefers-color-scheme:dark){.phone-marker{border-top-color:#fff}}
-.compass-container{position:absolute;inset:0;border-radius:50%;border:3px solid var(--green2);background:radial-gradient(circle,var(--dial) 60%,rgba(128,128,128,.15) 100%);color:var(--muted);pointer-events:none;transition:transform .1s ease-out,box-shadow .2s}
-.compass-container.aligned{box-shadow:0 0 0 4px rgba(46,160,90,.55)}
-.compass-mark{position:absolute;font-weight:700;font-size:.8rem;line-height:1}
-.mark-n{top:16px;left:50%;transform:translateX(-50%);color:#d9534f;font-size:.95rem}
-.mark-e{right:9px;top:50%;margin-top:-6px}.mark-s{bottom:9px;left:50%;transform:translateX(-50%)}.mark-w{left:9px;top:50%;margin-top:-6px}
-.north-pointer{position:absolute;top:-3px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:15px solid #d9534f}
-.north-line{position:absolute;left:50%;top:34px;width:2px;height:calc(50% - 34px);margin-left:-1px;background:#d93025;opacity:.75}
-.qibla-needle{position:absolute;inset:0;transition:transform .1s ease-out}
-.qibla-needle .stem{position:absolute;left:50%;top:44px;width:4px;height:calc(50% - 44px);margin-left:-2px;background:var(--gold);border-radius:2px}
-.qibla-needle .head{position:absolute;left:50%;top:26px;margin-left:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:22px solid var(--gold);filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
-.qibla-needle .kaaba{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--green2);border:2px solid var(--gold);border-radius:50%}
-.qibla-angle-text{font-size:1.15rem;font-weight:800;color:var(--green)}
-.compass-status{font-size:.78rem;color:var(--muted)}
-.legend{display:flex;gap:14px;justify-content:center;font-size:.75rem;color:var(--muted);flex-wrap:wrap}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
-.loading-message{color:var(--muted);font-size:.9rem;grid-column:1/-1;text-align:center;padding:12px}
-.btn{display:block;text-align:center;text-decoration:none;font-size:.95rem;padding:11px 12px;border-radius:6px;background:var(--green2);color:#fff;font-weight:600;white-space:nowrap}
-@media(min-width:500px){.row .btn{width:auto}}
-
-/* Top bar: sits in normal flow, never overlaps the title */
-.banner{padding-top:0}
-.banner-top-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 0 0;margin-bottom:clamp(10px,4vw,22px);position:relative;z-index:10}
-.pill{position:relative;display:inline-flex;align-items:center;gap:8px;height:42px;min-width:42px;padding:0 12px;border:1px solid var(--gold);border-radius:21px;background:rgba(0,0,0,.25);color:var(--gold);font-size:.88rem;font-weight:600;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.pill:hover,.pill:focus-within{background:rgba(212,175,55,.18)}
-.pill .ico{font-size:1.25rem;line-height:1}
-.pill .lbl{display:none;white-space:nowrap}
-.pill .caret{display:none;font-size:.7rem;opacity:.8}
-@media(min-width:520px){.pill{padding:0 16px}.pill .lbl,.pill .caret{display:inline}}
-/* the real <select> covers the pill invisibly so the native picker opens on tap */
-.pill select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0;font-size:16px;-webkit-appearance:none;appearance:none}
-.pill select option{color:#22302a;background:#fff}
-#google_translate_element{display:none}
-.goog-te-banner-frame,.skiptranslate iframe{display:none!important}
-body{top:0!important}
-.goog-text-highlight{background:none!important;box-shadow:none!important}
-
-/* Calibration Modal */
-.calib-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;justify-content:center;align-items:center;padding:16px}
-.calib-modal-content{background:var(--card);color:var(--ink);padding:20px;border-radius:12px;max-width:420px;width:100%;border:2px solid var(--gold);box-shadow:0 10px 25px rgba(0,0,0,0.2);text-align:left}
-.calib-modal-content h4{color:var(--green);font-size:1.1rem;margin-bottom:10px;text-align:center}
-@media(prefers-color-scheme:dark){.calib-modal-content h4{color:var(--gold)}}
-.calib-modal-content ul{padding-left:20px;margin-bottom:14px;font-size:.88rem;line-height:1.5}
-.calib-modal-content ul li{margin-bottom:6px}
-.close-modal-btn{width:100%;background:var(--green2);color:white;padding:8px;border:none;border-radius:6px;font-weight:bold;cursor:pointer}
-</style>
-</head>
-<body onload="initWidgets()">
-
-<header class="banner">
- <div class="banner-top-bar">
-  <label class="pill" aria-label="Menu">
-   <span class="ico" aria-hidden="true">☰</span><span class="lbl">നാവിഗേഷൻ</span><span class="caret" aria-hidden="true">▾</span>
-   <select id="topMenuNav" aria-label="Navigation Menu">
-    <option value="" selected disabled>☰ നാവിഗേഷൻ</option>
-    <option value="https://quranmeaning.app/">📖 സൂറത്ത് (Surah)</option>
-    <option value="https://quranmeaning.app/tafsir">📚 തഫ്സീർ (Tafsir)</option>
-    <option value="https://quranmeaning.app/hadith">📜 ഹദീസ് (Hadith)</option>
-    <option value="https://quranmeaning.app/hifd">🧠 ഹിഫ്ള് (Hifz)</option>
-   </select>
-  </label>
-
-  <label class="pill notranslate" translate="no" aria-label="Language">
-   <span class="ico" aria-hidden="true">🌐</span><span class="lbl" id="langLabel">Language</span><span class="caret" aria-hidden="true">▾</span>
-   <select id="langSelect" aria-label="Language">
-    <option value="" disabled>🌐 Language / ഭാഷ</option>
-   <option value="ml">മലയാളം</option>
-   <option value="en">English</option>
-   <option value="hi">हिन्दी</option>
-   <option value="ta">தமிழ்</option>
-   <option value="te">తెలుగు</option>
-   <option value="kn">ಕನ್ನಡ</option>
-   <option value="mr">मराठी</option>
-   <option value="gu">ગુજરાતી</option>
-   <option value="pa">ਪੰਜਾਬੀ</option>
-   <option value="bn">বাংলা</option>
-   <option value="ur">اردو</option>
-   <option value="ne">नेपाली</option>
-   <option value="si">සිංහල</option>
-   <option value="ar">العربية</option>
-   <option value="fa">فارسی</option>
-   <option value="tr">Türkçe</option>
-   <option value="id">Indonesia</option>
-   <option value="ms">Melayu</option>
-   <option value="th">ไทย</option>
-   <option value="vi">Tiếng Việt</option>
-   <option value="zh-CN">中文简体</option>
-   <option value="zh-TW">中文繁體</option>
-   <option value="ja">日本語</option>
-   <option value="ko">한국어</option>
-   <option value="fr">Français</option>
-   <option value="de">Deutsch</option>
-   <option value="es">Español</option>
-   <option value="pt">Português</option>
-   <option value="it">Italiano</option>
-   <option value="ru">Русский</option>
-   <option value="nl">Nederlands</option>
-   <option value="pl">Polski</option>
-   <option value="uk">Українська</option>
-   <option value="sv">Svenska</option>
-   <option value="el">Ελληνικά</option>
-   <option value="ro">Română</option>
-   <option value="sw">Kiswahili</option>
-   <option value="am">አማርኛ</option>
-   <option value="ha">Hausa</option>
-   </select>
-  </label>
- </div>
- <div id="google_translate_element"></div>
-
- <div class="bismi">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
- <h1>ഖുർആൻ സാരം</h1>
-</header>
-
-<main class="wrap">
- <section class="card picker" aria-labelledby="sh">
-  <h2 id="sh">സൂറത്ത് തിരഞ്ഞെടുക്കുക</h2>
-  <div class="row">
-   <select id="surahSelect" aria-label="സൂറത്ത്"></select>
-   <a id="openLink" class="btn" href="#" target="_top" rel="noopener">തുറക്കുക</a>
-  </div>
- </section>
-
- <!-- Resource Cards Grid (Tafsir, Hadith & Hifz) -->
- <div class="resource-grid">
-  <div class="resource-card">
-   <h3>📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ</h3>
-   <p>വിശുദ്ധ ഖുർആന്റെ സമഗ്രമായ വ്യാഖ്യാനങ്ങളും വിശദീകരണങ്ങളും വായിക്കുക.</p>
-   <a href="https://quranmeaning.app/tafsir" target="_top" class="resource-btn">തഫ്സീറുകൾ വായിക്കാം</a>
-  </div>
-  <div class="resource-card">
-   <h3>📜 പ്രവാചക ഹദീസുകൾ (Hadith)</h3>
-   <p>പ്രമാണബദ്ധമായ പ്രവാചക വചനങ്ങളും ഹദീസ് ഗ്രന്ഥങ്ങളും പരിശോധിക്കുക.</p>
-   <a href="https://quranmeaning.app/hadith" target="_top" class="resource-btn">ഹദീസുകൾ വായിക്കാം</a>
-  </div>
-  <div class="resource-card">
-   <h3>🧠 ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ (Hifz)</h3>
-   <p>വിശുദ്ധ ഖുർആൻ മനഃപാഠമാക്കാനും വര്ദ് നിലനിർത്താനും ട്രാക്ക് ചെയ്യുക.</p>
-   <a href="https://quranmeaning.app/hifd" target="_top" class="resource-btn">ഹിഫ്ള് ട്രാക്കർ തുറക്കാം</a>
-  </div>
- </div>
-
- <!-- Hijri Date Sub-Banner -->
- <div id="hijriDateDisplay" class="hijri-banner">
-  🌙 ഹിജ്റ തീയതി: ലോഡ് ചെയ്യുന്നു...
- </div>
-
- <div class="widgets-wrapper">
-  <div class="card widget-container prayer-widget-box">
-   <div>
-    <h3 class="widget-title">🕌 നമസ്‌കാര സമയങ്ങൾ (Prayer Times)</h3>
-    <div id="locationSubtitle" class="location-subtitle">ലൊക്കേഷൻ കണ്ടെത്തുന്നു...</div>
-    <div class="city-selector">
-     <select id="citySelect" onchange="onCityDropdownChange()">
-      <option value="">Select Major International City</option>
-
-      <optgroup label="India & Kerala">
-       <option value="9.9312,76.2673">Kochi, India</option>
-       <option value="10.5200,76.2100">Thrissur, India</option>
-       <option value="11.2588,75.7804">Kozhikode, India</option>
-       <option value="8.5241,76.9366">Trivandrum, India</option>
-       <option value="9.0581,76.5414">Karunagappally, India</option>
-       <option value="19.0760,72.8777">Mumbai, India</option>
-       <option value="28.7041,77.1025">Delhi, India</option>
-       <option value="12.9716,77.5946">Bangalore, India</option>
-       <option value="13.0827,80.2707">Chennai, India</option>
-       <option value="17.3850,78.4867">Hyderabad, India</option>
-      </optgroup>
-
-      <optgroup label="Middle East & Gulf">
-       <option value="21.4225,39.8262">Makkah, Saudi Arabia</option>
-       <option value="24.4672,39.6112">Madinah, Saudi Arabia</option>
-       <option value="21.5433,39.1728">Jeddah, Saudi Arabia</option>
-       <option value="24.7136,46.6753">Riyadh, Saudi Arabia</option>
-       <option value="26.4207,50.0888">Dammam, Saudi Arabia</option>
-       <option value="25.2769,55.2962">Dubai, UAE</option>
-       <option value="24.4539,54.3773">Abu Dhabi, UAE</option>
-       <option value="25.2854,51.5310">Doha, Qatar</option>
-       <option value="29.3759,47.9774">Kuwait City, Kuwait</option>
-       <option value="26.2278,50.5856">Manama, Bahrain</option>
-       <option value="23.5880,58.3829">Muscat, Oman</option>
-       <option value="17.0151,54.0924">Salalah, Oman</option>
-       <option value="30.0444,31.2357">Cairo, Egypt</option>
-       <option value="31.9454,35.9284">Amman, Jordan</option>
-       <option value="41.0082,28.9784">Istanbul, Turkey</option>
-      </optgroup>
-
-      <optgroup label="Asia & Oceania">
-       <option value="3.1390,101.6869">Kuala Lumpur, Malaysia</option>
-       <option value="-6.2088,106.8456">Jakarta, Indonesia</option>
-       <option value="1.3521,103.8198">Singapore</option>
-       <option value="23.8103,90.4125">Dhaka, Bangladesh</option>
-       <option value="24.8607,67.0011">Karachi, Pakistan</option>
-       <option value="35.6762,139.6503">Tokyo, Japan</option>
-       <option value="37.5665,126.9780">Seoul, South Korea</option>
-       <option value="13.7563,100.5018">Bangkok, Thailand</option>
-       <option value="-33.8688,151.2093">Sydney, Australia</option>
-       <option value="-37.8136,144.9631">Melbourne, Australia</option>
-      </optgroup>
-
-      <optgroup label="Europe">
-       <option value="51.5074,-0.1278">London, United Kingdom</option>
-       <option value="48.8566,2.3522">Paris, France</option>
-       <option value="52.5200,13.4050">Berlin, Germany</option>
-       <option value="52.3676,4.9041">Amsterdam, Netherlands</option>
-       <option value="55.7558,37.6173">Moscow, Russia</option>
-       <option value="40.4168,-3.7038">Madrid, Spain</option>
-       <option value="41.9028,12.4964">Rome, Italy</option>
-      </optgroup>
-
-      <optgroup label="Americas & Africa">
-       <option value="40.7128,-74.0060">New York, USA</option>
-       <option value="34.0522,-118.2437">Los Angeles, USA</option>
-       <option value="41.8781,-87.6298">Chicago, USA</option>
-       <option value="43.6532,-79.3832">Toronto, Canada</option>
-       <option value="-23.5505,-46.6333">São Paulo, Brazil</option>
-       <option value="-33.9249,18.4241">Cape Town, South Africa</option>
-       <option value="6.5244,3.3792">Lagos, Nigeria</option>
-      </optgroup>
-     </select>
-     <button type="button" onclick="requestGPSPermission()">📍 GPS Precision</button>
-    </div>
-   </div>
-   <div id="prayerTimesDisplay" class="prayer-times-grid"><p class="loading-message">സമയങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p></div>
-  </div>
-
-  <div class="card widget-container qibla-widget-box">
-   <h3 class="widget-title">🕋 ഖിബ്‌ല ദിശ (Qibla)</h3>
-   <div id="qiblaSubtitle" class="location-subtitle">ലൊക്കേഷൻ കാത്തിരിക്കുന്നു...</div>
-   <div class="compass-wrap">
-    <div class="phone-marker" title="Phone direction"></div>
-    <div id="compassDial" class="compass-container">
-     <div class="north-pointer"></div><div class="north-line"></div>
-     <span class="compass-mark mark-n">N</span><span class="compass-mark mark-e">E</span>
-     <span class="compass-mark mark-s">S</span><span class="compass-mark mark-w">W</span>
-     <div id="qiblaNeedle" class="qibla-needle"><div class="head"></div><div class="stem"></div><div class="kaaba"></div></div>
-    </div>
-   </div>
-   <div class="legend"><span><i style="background:#d9534f"></i>True North</span><span><i style="background:var(--gold)"></i>Qibla</span></div>
-   <div id="qiblaAngle" class="qibla-angle-text">--°</div>
-   <div id="compassStatus" class="compass-status">Tap Start Compass &middot; keep phone flat</div>
-   <button id="btnStartCompass" type="button" style="max-width:250px;font-size:.85rem;padding:8px 14px;margin-bottom:6px" onclick="enableLiveCompass(event)">🧭 Calibrate / Start Compass</button>
-   <button type="button" style="max-width:250px;font-size:.8rem;padding:6px 12px;background:#f0f4f2;color:var(--green);border:1px solid var(--green)" onclick="toggleCalibModal(true)">ℹ️ Compass Calibration Guide</button>
-  </div>
- </div>
-
- <section class="card desc">
-  <h2 style="color:var(--green2);font-size:1.25rem;margin-bottom:12px;text-align:center">സ്വാഗതം</h2>
-  <p>അർ-റഹ്‌മാനും അർ-റഹീമുമായ അല്ലാഹുവിന്റെ നാമത്തില്‍. സർവ്വ സ്തുതികളും ലോകങ്ങളുടെ റബ്ബായ അല്ലാഹുവിന്നാകുന്നു. അന്തിമ പ്രാവാചകൻ മുഹമ്മദ് നബി (ﷺ) യുടെ മേൽ അല്ലാഹുവിന്റെ സ്വലാത്തും സലാമും സദാ വർഷിക്കുമാറാകട്ടെ. ആമീൻ.</p>
-  <p>വിശുദ്ധ ഖുർആൻ പാരായണത്തിനും പഠനത്തിനും സഹായിക്കുന്ന ഒരു ഡിജിറ്റൽ സംരംഭമാണ് 'ഖുർആൻ സാരം'. ഖുർആനിക വചനങ്ങളുടെ സാരവും ചുരുക്കരൂപത്തിലുള്ള വിവരണവും എളുപ്പത്തിൽ വായിക്കാനും, കേട്ട് മനസ്സിലാക്കാനും, മറ്റുള്ളവരിലേക്ക് എത്തിക്കാനും ഈ സൈറ്റ് സഹായിക്കുന്നു. വിശുദ്ധ ഖുർആന്റെ പാരായണം ആവർത്തിച്ച് ആസ്വദിക്കാനും, അതിന്റെ മഹത്തായ ആശയങ്ങൾ ലളിതമായി മനസ്സിലാക്കാനും അനുയോജ്യമായ രീതിയിലാണ് ഇതിന്റെ ഉള്ളടക്കം ക്രമീകരിച്ചിരിക്കുന്നത്.</p>
-  <p>നിങ്ങളുടെ കുടുംബങ്ങൾക്കും സുഹൃത്തക്കൾക്കും ഈ സൈറ്റ് ഷെയർ ചെയ്ത് അവരെ കൂടി ഈ നന്മയിൽ പങ്കാളികളാക്കാൻ ശ്രദ്ദിക്കുമല്ലോ. അള്ളാഹു അവന്റെ റഹ്‌മത് നമ്മുടെ മേൽ ഇരു ലോകത്തും ചൊരിഞ്ഞു തരുമാറാകട്ടെ.</p>
-  <p class="dua">റഹ്‌മാനായ റബ്ബേ.. ഈ പരിശ്രമം ഒരു സത്കർമ്മമായി നീ സ്വീകരിക്കുമാറാകണേ.. ആമീൻ.</p>
- </section>
-</main>
-
-<footer>© ഖുർആൻ സാരം</footer>
-
-<!-- Calibration Guide Modal Popup -->
-<div id="calibModal" class="calib-modal">
- <div class="calib-modal-content">
-  <h4>🧭 Compass Calibration Guide</h4>
-  <ul>
-   <li><strong>Hold Phone Flat:</strong> Keep your mobile device completely flat parallel to the ground for optimal magnetic sensor readings.</li>
-   <li><strong>Figure-8 Motion:</strong> Wave your phone slowly in a horizontal "8" pattern 2-3 times in the air to calibrate the built-in sensor.</li>
-   <li><strong>Avoid Magnetic Cases:</strong> Remove phone cases containing magnets, metallic rings, or magnetic latches.</li>
-   <li><strong>Stay Away from Electronics:</strong> Move away from metal tables, laptops, or large electrical appliances.</li>
-  </ul>
-  <button class="close-modal-btn" onclick="toggleCalibModal(false)">Close / മനസ്സിലായി</button>
- </div>
-</div>
-
-<script>
-const SURAH_URL = n => `https://quranmeaning.app/${n}`;
-const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തകാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
-(function(){
- const s=document.getElementById('surahSelect');
- s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
- SURAHS.forEach((n,i)=>{const k=String(i+1).padStart(3,'0');s.add(new Option(`${k} - ${n}`,k));});
- s.addEventListener('change',openSurah);
-})();
-
-function openSurah(){
- const v = document.getElementById('surahSelect').value, a = document.getElementById('openLink');
- if (!v) { a.removeAttribute('href'); return; }
- a.href = SURAH_URL(v);
- a.click();
-}
-
-let currentQiblaBearing=0, deviceHeading=0, hasHeading=false, dialAngle=0, sinH=0, cosH=1, sensorOn=false;
-
-function toggleCalibModal(show) {
- document.getElementById('calibModal').style.display = show ? 'flex' : 'none';
-}
-
-function calculateQibla(lat,lon){
- const kl=21.4225*Math.PI/180,ko=39.8262*Math.PI/180,ul=lat*Math.PI/180,uo=lon*Math.PI/180,d=ko-uo;
- const y=Math.sin(d),x=Math.cos(ul)*Math.tan(kl)-Math.sin(ul)*Math.cos(d);
- return (Math.atan2(y,x)*180/Math.PI+360)%360;
-}
-
-function updateQiblaUI(lat,lon){
- currentQiblaBearing=calculateQibla(lat,lon);
- document.getElementById('qiblaAngle').innerText=`${currentQiblaBearing.toFixed(1)}°`;
- renderCompass();
-}
-
-/* Tilt-Compensated Compass Math */
-function headingFrom(e) {
- if (e.webkitCompassHeading != null) return e.webkitCompassHeading;
- if (e.alpha == null) return null;
- if (e.beta == null || e.gamma == null) return (360 - e.alpha) % 360;
- const r = Math.PI / 180, a = e.alpha * r, b = e.beta * r, g = e.gamma * r;
- const rA = -Math.cos(a) * Math.sin(g) - Math.sin(a) * Math.sin(b) * Math.cos(g);
- const rB = -Math.sin(a) * Math.sin(g) + Math.cos(a) * Math.sin(b) * Math.cos(g);
- return (Math.atan2(rA, rB) / r + 360) % 360;
-}
-
-function setHeading(h) {
- const r = Math.PI / 180;
- if (!hasHeading) { sinH = Math.sin(h * r); cosH = Math.cos(h * r); }
- else { sinH = sinH * 0.75 + Math.sin(h * r) * 0.25; cosH = cosH * 0.75 + Math.cos(h * r) * 0.25; }
- deviceHeading = (Math.atan2(sinH, cosH) / r + 360) % 360;
- hasHeading = true; 
- renderCompass();
-}
-
-function handleOrientation(e) {
- const h = headingFrom(e); 
- if (h == null || isNaN(h)) return;
- const so = (screen.orientation && screen.orientation.angle) || 0;
- setHeading((h + so) % 360);
- const b = document.getElementById('btnStartCompass'); 
- if (b) b.style.display = 'none';
-}
-
-function renderCompass(){
- const n = document.getElementById('qiblaNeedle'), d = document.getElementById('compassDial');
- if(!d||!n)return;
- dialAngle += ((((-deviceHeading - dialAngle + 180) % 360) + 360) % 360) - 180;
- d.style.transform=`rotate(${dialAngle}deg)`;
- n.style.transform=`rotate(${currentQiblaBearing}deg)`;
- if(hasHeading){
-  const diff=Math.abs(((currentQiblaBearing-deviceHeading+540)%360)-180), ok=diff<=5;
-  d.classList.toggle('aligned',ok);
-  document.getElementById('compassStatus').innerText=ok?"✓ ഖിബ്‌ല ദിശയിൽ (Facing Qibla)":"Turn until the gold arrow points to the top ▼";
- }
-}
-
-async function startSensors(manual) {
- const st = document.getElementById('compassStatus');
- if (sensorOn) return;
- try {
-  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-   if (!manual) return;
-   if (await DeviceOrientationEvent.requestPermission() !== 'granted') { st.innerText = "Permission Denied"; return; }
-   window.addEventListener('deviceorientation', handleOrientation, true);
-  } else if ('ondeviceorientationabsolute' in window) {
-   window.addEventListener('deviceorientationabsolute', handleOrientation, true);
-  } else if ('ondeviceorientation' in window) {
-   window.addEventListener('deviceorientation', handleOrientation, true);
-  } else { 
-   st.innerText = "Sensors Not Supported"; 
-   return; 
+  function onReady(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn();
   }
-  sensorOn = true;
- } catch (err) { console.error(err); }
- setTimeout(() => { if (!hasHeading) st.innerText = "സെൻസർ ഡാറ്റ ലഭിക്കുന്നില്ല. പേജ് നേരിട്ട് തുറന്ന് നോക്കുക."; }, 2500);
-}
-
-function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }
-
-function showHijri(h){
- try{ document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`; }catch(e){}
-}
-
-let locLocked = false;   // true once the visitor picks a city / uses GPS, so a late IP lookup cannot override it
-let ptGen = 0;           // ignore prayer-time answers that arrive late
-const LOC_KEY = 'qs-loc';
-function rememberLocation(lat, lon, name){ try{ localStorage.setItem(LOC_KEY, JSON.stringify({lat, lon, name})); }catch(e){} }
-
-async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
- const disp=document.getElementById('prayerTimesDisplay'),sub=document.getElementById('locationSubtitle'),qsub=document.getElementById('qiblaSubtitle');
- const my=++ptGen;
- updateQiblaUI(lat,lon);
- const t=new Date(), ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
- const key=`qs-pt:${lat.toFixed(2)},${lon.toFixed(2)}:${ds}`;
- const label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
- const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};
- const draw=c=>{
-  sub.innerText=label; qsub.innerText=label;
-  let h='';
-  for(const [k,v] of Object.entries(names)) if(c.tm[k]) h+=`<div class="prayer-time-card"><div class="prayer-name">${v}</div><div class="prayer-time">${c.tm[k]}</div></div>`;
-  disp.innerHTML=h;
-  if(c.h) showHijri(c.h);
- };
-
- /* today's times for this place are kept on the device: no repeat download (saves mobile data) */
- try{ const c=JSON.parse(localStorage.getItem(key)); if(c&&c.tm){ draw(c); return; } }catch(e){}
-
- disp.innerHTML=`<p class="loading-message">ലോഡ് ചെയ്യുന്നു...</p>`;
- try{
-  const res=await fetch(`https://api.aladhan.com/v1/timings/${ds}?latitude=${lat}&longitude=${lon}&method=2`);
-  const data=await res.json();
-  if(my!==ptGen) return;
-  if(data&&data.code===200){
-   const c={tm:data.data.timings,h:data.data.date.hijri};
-   try{
-    for(let i=localStorage.length-1;i>=0;i--){ const k=localStorage.key(i); if(k&&k.startsWith('qs-pt:')&&!k.endsWith(':'+ds)) localStorage.removeItem(k); }
-    localStorage.setItem(key,JSON.stringify(c));
-   }catch(e){}
-   draw(c);
-  }else disp.innerHTML=`<p class="loading-message">സമയങ്ങൾ ലഭ്യമായില്ല.</p>`;
- }catch(err){
-  if(my!==ptGen) return;
-  disp.innerHTML=`<p class="loading-message">ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.</p>`;
-  document.getElementById('hijriDateDisplay').innerText=`🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്`;
- }
-}
-
-async function initWidgets(){
- startSensors(false);
-
- /* the last city / GPS place the visitor chose is used again: no IP lookup needed */
- try{
-  const saved=JSON.parse(localStorage.getItem(LOC_KEY));
-  if(saved&&isFinite(saved.lat)&&isFinite(saved.lon)){
-   locLocked=true; matchDropdownOption(saved.lat,saved.lon);
-   fetchAndDisplayPrayerTimes(saved.lat,saved.lon,saved.name||"");
-   return;
+  function cookieLang() {                         // index page writes the cookie URL-encoded (%2Fml%2Fen), older pages as /ml/en
+    var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
+    if (!m) return '';
+    var v = m[1]; try { v = decodeURIComponent(v); } catch (e) {}
+    var x = v.match(/^\/[^\/]*\/([A-Za-z-]+)/);
+    return x ? x[1] : '';
   }
- }catch(e){}
+  function getPref() {                            // the cookie is the one source of truth, shared with the index page
+    return cookieLang() || 'ml';
+  }
+  function setCookie(l) {                         // Google reads this cookie to translate
+    var gone = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+    document.cookie = gone; document.cookie = gone + '; domain=' + location.hostname;
+    if (l !== 'ml') document.cookie = 'googtrans=/ml/' + l + '; path=/; ' + YEAR;
+  }
+  function savePref(l) { try { localStorage.setItem(KEY, l); } catch (e) {} setCookie(l); }
 
- /* otherwise find the place from the IP address (HTTPS services only) */
- const sources=[
-  ['https://ipapi.co/json/', d=>d&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country_name}`}:null],
-  ['https://ipwho.is/',       d=>d&&d.success&&d.latitude&&d.longitude?{lat:d.latitude,lon:d.longitude,place:`${d.city}, ${d.country}`}:null]
- ];
- for(const [url,pick] of sources){
-  try{
-   const r=await fetch(url), p=pick(await r.json());
-   if(p){ if(!locLocked){ matchDropdownOption(p.lat,p.lon); fetchAndDisplayPrayerTimes(p.lat,p.lon,p.place); } return; }
-  }catch(e){}
- }
- if(locLocked) return;
- document.getElementById('citySelect').value="9.9312,76.2673";   // default: Kochi
- onCityDropdownChange(true);
-}
+  var lang = getPref();
+  setCookie(lang);                                // keep cookie in step with the saved choice
 
-function requestGPSPermission(){
- if(navigator.geolocation)navigator.geolocation.getCurrentPosition(
-  p=>{const la=p.coords.latitude,lo=p.coords.longitude;locLocked=true;matchDropdownOption(la,lo);rememberLocation(la,lo,"GPS Location");fetchAndDisplayPrayerTimes(la,lo,"GPS Location");},
-  ()=>alert("Location access denied or unavailable."));
-}
+  /* ---------- first visit: ask which language to use ---------- */
+  var ASKED = 'quran-lang-asked';
+  var LANGS = [
+    ["ml", "മലയാളം"],
+    ["en", "English"],
+    ["hi", "हिन्दी"],
+    ["ta", "தமிழ்"],
+    ["te", "తెలుగు"],
+    ["kn", "ಕನ್ನಡ"],
+    ["mr", "मराठी"],
+    ["gu", "ગુજરાતી"],
+    ["pa", "ਪੰਜਾਬੀ"],
+    ["bn", "বাংলা"],
+    ["ur", "اردو"],
+    ["ne", "नेपाली"],
+    ["si", "සිංහල"],
+    ["ar", "العربية"],
+    ["fa", "فارسی"],
+    ["tr", "Türkçe"],
+    ["id", "Indonesia"],
+    ["ms", "Melayu"],
+    ["th", "ไทย"],
+    ["vi", "Tiếng Việt"],
+    ["zh-CN", "中文简体"],
+    ["zh-TW", "中文繁體"],
+    ["ja", "日本語"],
+    ["ko", "한국어"],
+    ["fr", "Français"],
+    ["de", "Deutsch"],
+    ["es", "Español"],
+    ["pt", "Português"],
+    ["it", "Italiano"],
+    ["ru", "Русский"],
+    ["nl", "Nederlands"],
+    ["pl", "Polski"],
+    ["uk", "Українська"],
+    ["sv", "Svenska"],
+    ["el", "Ελληνικά"],
+    ["ro", "Română"],
+    ["sw", "Kiswahili"],
+    ["am", "አማርኛ"],
+    ["ha", "Hausa"]
+  ];
+  function askLanguage() {
+    try {
+      if (window.top !== window.self) return;                                        // not inside embedded frames
+      if (window.QURAN_NO_LANG_POPUP || document.documentElement.hasAttribute('data-no-lang-popup')) return;
+      if (/bot|crawl|spider|lighthouse|headless/i.test(navigator.userAgent || '')) return;
+      if (cookieLang()) { localStorage.setItem(ASKED, '1'); return; }                // already chose a language (e.g. on the index)
+      if (localStorage.getItem(ASKED)) return;                                       // already asked once
+    } catch (e) { return; }
 
-/* select the nearest listed city (within ~0.4°), or clear the box if none is close */
-function matchDropdownOption(lat,lon){
- const s=document.getElementById('citySelect');
- let best=null,bd=0.4;
- for(const o of s.options){
-  if(!o.value)continue;
-  const [a,b]=o.value.split(',').map(Number), d=Math.max(Math.abs(a-lat),Math.abs(b-lon));
-  if(d<bd){bd=d;best=o;}
- }
- s.value=best?best.value:"";
-}
+    var css = document.createElement('style');
+    css.textContent =
+      '.qlp{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.6);font-family:"Noto Sans Malayalam",system-ui,sans-serif}' +
+      '.qlp-card{width:100%;max-width:440px;max-height:88vh;overflow:auto;background:#fff;color:#22302a;border:2px solid #d4af37;border-radius:14px;padding:18px 16px 14px;box-shadow:0 10px 40px rgba(0,0,0,.45);text-align:center;position:relative}' +
+      '.qlp-t{font-size:1.15rem;font-weight:700;color:#1d5240;margin:0 0 2px}.qlp-s{font-size:.9rem;color:#55605a;margin:0 0 12px}' +
+      '.qlp-g{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}' +
+      '.qlp-b{font:inherit;font-size:1rem;padding:10px 6px;border-radius:10px;border:1px solid #e2e8f0;border-top:3px solid #d4af37;background:#f6f3ea;color:inherit;cursor:pointer}' +
+      '.qlp-b:hover,.qlp-b:focus-visible{background:#1d5240;color:#fff;outline:none}' +
+      '.qlp-b.main{grid-column:1/-1;font-weight:700;background:#1d5240;color:#fff}' +
+      '.qlp-x{position:absolute;top:6px;right:8px;border:none;background:none;font-size:1.3rem;line-height:1;color:inherit;cursor:pointer;padding:6px}' +
+      '.qlp-n{font-size:.8rem;color:#55605a;margin:12px 0 0}' +
+      '@media(prefers-color-scheme:dark){.qlp-card{background:#17261f;color:#e9efe9}.qlp-t{color:#d4af37}.qlp-s,.qlp-n{color:#a9b6ae}.qlp-b{background:#0f1a15;border-color:#2c3f36}}';
+    document.head.appendChild(css);
 
-function onCityDropdownChange(auto){
- const s=document.getElementById('citySelect');
- if(!s.value)return;
- const [la,lo]=s.value.split(',').map(parseFloat), name=s.options[s.selectedIndex].text;
- if(auto!==true){ locLocked=true; rememberLocation(la,lo,name); }
- fetchAndDisplayPrayerTimes(la,lo,name);
-}
+    var ov = document.createElement('div');
+    ov.className = 'qlp notranslate'; ov.setAttribute('translate', 'no');
+    ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-labelledby', 'qlp-title');
+    var card = document.createElement('div'); card.className = 'qlp-card';
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'qlp-x'; x.setAttribute('aria-label', 'Close'); x.textContent = '\u00D7';
+    var t = document.createElement('p'); t.className = 'qlp-t'; t.id = 'qlp-title'; t.textContent = '\u0D2D\u0D3E\u0D37 \u0D24\u0D3F\u0D30\u0D1E\u0D4D\u0D1E\u0D46\u0D1F\u0D41\u0D15\u0D4D\u0D15\u0D41\u0D15 \u00B7 Choose your language';
+    var s = document.createElement('p'); s.className = 'qlp-s'; s.textContent = '\uD83C\uDF10';
+    var g = document.createElement('div'); g.className = 'qlp-g';
+    var n = document.createElement('p'); n.className = 'qlp-n';
+    n.textContent = 'You can change it any time from the home page \u00B7 \u0D2D\u0D3E\u0D37 \u0D2A\u0D3F\u0D28\u0D4D\u0D28\u0D40\u0D1F\u0D4D \u0D2E\u0D3E\u0D31\u0D4D\u0D31\u0D3E\u0D02';
 
-/* compass help window: close by tapping outside it or with Esc */
-document.getElementById('calibModal').addEventListener('click',e=>{ if(e.target.id==='calibModal') toggleCalibModal(false); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') toggleCalibModal(false); });
+    var prevOverflow = document.documentElement.style.overflow;
+    function close() {
+      document.documentElement.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKey);
+      if (ov.parentNode) ov.parentNode.removeChild(ov);
+    }
+    function choose(code) {
+      try { localStorage.setItem(ASKED, '1'); } catch (e) {}
+      if (code !== 'ml') { savePref(code); close(); location.reload(); }          // reload: Google applies the cookie on load
+      else { savePref('ml'); close(); }
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { try { localStorage.setItem(ASKED, '1'); } catch (er) {} close(); }
+    }
+    LANGS.forEach(function (l, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'qlp-b' + (i === 0 ? ' main' : ''); b.textContent = l[1]; b.lang = l[0];
+      b.addEventListener('click', function () { choose(l[0]); });
+      g.appendChild(b);
+    });
+    x.addEventListener('click', function () { try { localStorage.setItem(ASKED, '1'); } catch (e) {} close(); });
+    card.appendChild(x); card.appendChild(t); card.appendChild(s); card.appendChild(g); card.appendChild(n);
+    ov.appendChild(card);
+    document.body.appendChild(ov);
+    document.documentElement.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKey);
+    var first = g.firstChild; if (first && first.focus) first.focus();
+  }
+  onReady(askLanguage);
 
-/* ---------- Navigation menu ---------- */
-document.getElementById('topMenuNav').addEventListener('change',function(){
- if(this.value) window.location.href=this.value;
-});
+  /* ---------- button labels: set once, here, for every page ---------- */
+  var LABELS = window.QURAN_LABELS = window.QURAN_LABELS || {
+    listen:  '\u0d15\u0d47\u0d7e\u0d15\u0d4d\u0d15\u0d3e\u0d02',                    // Listen
+    stop:    '\u25a0 \u0d28\u0d3f\u0d7c\u0d24\u0d4d\u0d24\u0d41\u0d15',               // Stop
+    options: '\u0d13\u0d2a\u0d4d\u0d37\u0d28\u0d41\u0d15\u0d7e'                     // Options
+  };
+  /* Pages (and older page scripts) write long texts such as "Listen from the beginning" into the two buttons.
+     Keep them short whoever writes them. Not done in a translated page: there Google translates the labels. */
+  function keepShortLabels() {
+    if (lang !== 'ml') return;
+    var m = document.getElementById('master'), o = document.getElementById('opt-toggle'), panel = document.getElementById('panel');
+    if (!m && !o) return;
+    function isOpen() { return !!(panel && (panel.classList.contains('open') || panel.style.display === 'block')); }
+    function fix() {
+      if (m && !m.classList.contains('playing') && m.textContent !== LABELS.listen) m.textContent = LABELS.listen;
+      if (o) { var want = LABELS.options + (isOpen() ? ' \u25b4' : ' \u25be'); if (o.textContent !== want) o.textContent = want; }
+    }
+    [m, o].forEach(function (b) { if (b) new MutationObserver(fix).observe(b, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] }); });
+    if (panel) new MutationObserver(fix).observe(panel, { attributes: true, attributeFilter: ['class', 'style'] });
+    fix();
+  }
+  onReady(keepShortLabels);
 
-/* ---------- Language (Google Translate, page source = Malayalam) ---------- */
-(function(){
- const SRC='ml', sel=document.getElementById('langSelect'), lbl=document.getElementById('langLabel');
- function getCookie(n){const m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):'';}
- function setCookie(v){
-  const host=location.hostname, exp=v?'':';expires=Thu, 01 Jan 1970 00:00:00 GMT';
-  const val=v?encodeURIComponent(v):'';
-  document.cookie='googtrans='+val+exp+';path=/';
-  if(host&&host.indexOf('.')>0) document.cookie='googtrans='+val+exp+';path=/;domain='+host;
- }
- function current(){const m=getCookie('googtrans').match(/^\/[^/]+\/(.+)$/);return m?m[1]:SRC;}
- function showLabel(code){
-  const o=[...sel.options].find(o=>o.value===code);
-  lbl.textContent=o?o.text:'Language';
- }
- const cur=current(); sel.value=cur; showLabel(cur);
+  /* ---------- top panel: the same pill buttons (icon + label) on every page ---------- */
+  var ICONS = {
+    home:    '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+    surahs:  '<path d="M2 5.5C4.5 4 8 4 12 6c4-2 7.5-2 10-.5V19c-2.5-1.5-6-1.5-10 .5-4-2-7.5-2-10-.5z"/><path d="M12 6v13.5"/>',
+    pages:   '<rect x="3" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.6"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.6"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.6"/>',
+    summary: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/>',
+    back:    '<circle cx="12" cy="12" r="9"/><path d="M13.5 8.5 10 12l3.5 3.5"/>',
+    tafsir:  '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/><path d="M9 7h6"/>',
+    hadith:  '<path d="M8 21h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H8"/><path d="M8 21a2 2 0 0 1-2-2V5a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1h3"/><path d="M11 9h5M11 13h5"/>',
+    hifz:    '<path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/>',
+    link:    '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M13 9l3 3-3 3"/>'
+  };
+  function iconFor(href) {
+    var u; try { u = new URL(href || '', location.href); } catch (e) { return 'link'; }
+    var p = u.pathname.replace(/\/+$/, '').replace(/\.html?$/i, '');                 // '' = the home page
+    var inSummary = /-summary$/.test(location.pathname.replace(/\/+$/, '').replace(/\.html?$/i, ''));
+    if (p === '' || /\/quran$/.test(p)) return 'home';
+    if (/surah-index$/.test(p)) return 'surahs';
+    if (/\d{3}-summary$/.test(p)) return 'summary';
+    if (/\/\d{3}(-\d+)?$/.test(p)) return inSummary ? 'back' : 'pages';
+    if (/tafsir$/.test(p)) return 'tafsir';
+    if (/hadith$/.test(p)) return 'hadith';
+    if (/hifd$/.test(p)) return 'hifz';
+    return 'link';
+  }
+  function styleTopNav() {
+    var links = document.querySelectorAll('.topnav a.back');
+    if (!links.length) return;
+    var css = document.createElement('style');
+    css.textContent =
+      '.topnav{display:flex!important;gap:8px!important;justify-content:center!important;align-items:stretch!important;flex-wrap:nowrap!important;width:100%;max-width:560px;margin:0 auto 10px!important;padding:12px 12px 0!important}' +
+      '.topnav .back{flex:1 1 0;min-width:0;display:inline-flex!important;align-items:center;justify-content:center;gap:7px;padding:8px 10px;border-radius:999px;' +
+        'border:1px solid rgba(212,175,55,.7);background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05));color:#fff!important;' +
+        'font-family:inherit;font-size:clamp(.78rem,3.3vw,.95rem)!important;font-weight:600!important;line-height:1.2;text-decoration:none!important;white-space:nowrap;' +
+        'box-shadow:0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .15s,background .15s,color .15s}' +
+      '.topnav .back:hover,.topnav .back:focus-visible{background:#d4af37;color:#123528!important;transform:translateY(-1px);outline:none}' +
+      '.topnav .back:active{transform:scale(.97)}' +
+      '.topnav.tn3 .back{flex-direction:column;gap:3px;padding:7px 4px 6px;border-radius:16px;font-size:clamp(.72rem,3vw,.85rem)!important}' +
+      '.topnav.tn3 .tn-lbl{max-width:100%}' +
+      '.tn-ico{display:inline-flex;flex:none;width:20px;height:20px}' +
+      '.tn-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
+      '.tn-lbl{min-width:0;overflow:hidden;text-overflow:ellipsis}' +
+      '@media(max-width:380px){.topnav{gap:6px!important;padding:10px 8px 0!important}.topnav .back{gap:5px;padding:7px 8px}.tn-ico,.tn-ico svg{width:18px;height:18px}}';
+    document.head.appendChild(css);
+    var bar = links[0].parentNode;
+    if (links.length > 2 && bar && bar.classList) bar.classList.add('tn3');
+    Array.prototype.forEach.call(links, function (a) {
+      if (a.getAttribute('data-tn')) return;
+      var label = '';
+      Array.prototype.forEach.call(a.childNodes, function (n) { if (n.nodeType === 3) label += n.textContent; });   // the words, without the old emoji
+      label = label.replace(/\s+/g, ' ').trim() || (a.getAttribute('aria-label') || '');
+      var ico = document.createElement('span'); ico.className = 'tn-ico'; ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' + ICONS[iconFor(a.getAttribute('href'))] + '</svg>';
+      var lbl = document.createElement('span'); lbl.className = 'tn-lbl'; lbl.textContent = label;
+      a.textContent = '';
+      a.appendChild(ico); a.appendChild(lbl);
+      a.setAttribute('data-tn', '1');
+      if (label) a.setAttribute('title', label);
+    });
+  }
+  onReady(styleTopNav);
 
- window.googleTranslateElementInit=function(){
-  new google.translate.TranslateElement({pageLanguage:SRC,autoDisplay:false},'google_translate_element');
- };
- const sc=document.createElement('script');
- sc.src='https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
- sc.async=true; document.head.appendChild(sc);
+  /* index page: its menu / language buttons get the same look as the top panel of the other pages */
+  function styleIndexBar() {
+    var pills = document.querySelectorAll('.banner-top-bar .pill');
+    if (!pills.length) return;
+    var css = document.createElement('style');
+    css.textContent =
+      '.banner-top-bar{justify-content:center!important;gap:8px!important}' +
+      '.banner-top-bar .pill{height:42px!important;min-width:0!important;padding:0 14px!important;gap:8px!important;border-radius:999px!important;' +
+        'border:1px solid rgba(212,175,55,.7)!important;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.05))!important;color:#fff!important;' +
+        'font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.2)}' +
+      '.banner-top-bar .pill:hover,.banner-top-bar .pill:focus-within{background:#d4af37!important;color:#123528!important}' +
+      '.banner-top-bar .pill .lbl{display:inline!important;font-size:clamp(.8rem,3.2vw,.95rem);max-width:9.5em;overflow:hidden;text-overflow:ellipsis}' +
+      '.banner-top-bar .pill .caret{display:inline!important}' +
+      '.banner-top-bar .pill .tn-ico{display:inline-flex;flex:none;width:20px;height:20px}' +
+      '.banner-top-bar .pill .tn-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}';
+    document.head.appendChild(css);
+    var SV = {
+      menu:  '<path d="M4 6.5h16M4 12h16M4 17.5h16"/>',
+      globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c3.2 3.2 3.2 14.8 0 18"/><path d="M12 3c-3.2 3.2-3.2 14.8 0 18"/>'
+    };
+    Array.prototype.forEach.call(pills, function (p) {
+      var old = p.querySelector('.ico'); if (!old) return;
+      var sel = p.querySelector('select');
+      var ico = document.createElement('span'); ico.className = 'tn-ico'; ico.setAttribute('aria-hidden', 'true');
+      ico.innerHTML = '<svg viewBox="0 0 24 24" focusable="false">' + ((sel && sel.id === 'langSelect') ? SV.globe : SV.menu) + '</svg>';
+      old.parentNode.replaceChild(ico, old);
+    });
+  }
+  onReady(styleIndexBar);
 
- sel.addEventListener('change',function(){
-  const code=sel.value; if(!code) return;
-  showLabel(code);
-  if(code===SRC){ setCookie(''); }
-  else{ setCookie('/'+SRC+'/'+code); }
-  location.reload();  /* reliable on mobile: Google applies the cookie on load */
- });
+  /* hide Google's own bar / highlights & ensure minimal centered layout */
+  var st = document.createElement('style');
+  st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
+    '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
+    '.controls{margin:0 auto!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
+    '.controls .banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
+    '.controls .banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
+    '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
+    '#status,#audio-status,.status-text{width:100%!important;text-align:center!important;display:block!important;margin:4px auto 0 auto!important;float:none!important;clear:both!important;font-size:0.85rem!important;color:var(--acc, #1d5240)!important}' +
+    'body>.hero{margin-bottom:0!important;border-bottom:2px solid var(--gold)!important;padding-bottom:8px!important}' +
+    'body>.hero + div{text-align:center;margin:2px auto}' +
+    'body>.hero + div h1{color:var(--acc, #1d5240);font-size:clamp(1rem,2.5vw,1.3rem);margin:1px 0}' +
+    '@media(prefers-color-scheme:dark){body>.hero + div h1{color:var(--ink, #e9efe9)}}';
+  document.head.appendChild(st);
+
+  /* keep Arabic text untranslated: mark elements that are mostly Arabic */
+  function markArabic(root) {
+    var AR = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/g;
+    root.querySelectorAll('h1,h2,h3,p,span,div,a,li').forEach(function (e) {
+      if (e.children.length) return;                       // only elements with no child elements
+      var t = e.textContent, n = (t.match(AR) || []).length, len = t.replace(/\s/g, '').length;
+      if (n && len && n / len > 0.5) e.setAttribute('translate', 'no');
+    });
+  }
+  /* wrap every Arabic phrase inside normal text so Google leaves it alone */
+  function wrapArabic(root) {
+    var A = '[\\u0600-\\u06FF\\u0750-\\u077F\\u08A0-\\u08FF\\uFB50-\\uFDFF\\uFE70-\\uFEFF]',
+        RE = new RegExp(A + '+(?:[ \\u00a0\\u200c\\u200d]+' + A + '+)*', 'g'),
+        skip = /^(SCRIPT|STYLE|TEXTAREA|INPUT|SELECT|OPTION|CODE|PRE)$/;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        var p = n.parentNode;
+        if (!p || skip.test(p.nodeName) || (p.closest && p.closest('[translate="no"],.notranslate'))) return NodeFilter.FILTER_REJECT;
+        RE.lastIndex = 0;
+        return RE.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);                 // collect first, then edit
+    nodes.forEach(function (node) {
+      var text = node.nodeValue, frag = document.createDocumentFragment(), last = 0, m;
+      RE.lastIndex = 0;
+      while ((m = RE.exec(text))) {
+        if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        var s = document.createElement('span');
+        s.setAttribute('translate', 'no'); s.className = 'notranslate';
+        s.style.fontFamily = '"Noto Naskh Arabic",serif';
+        s.textContent = m[0]; frag.appendChild(s);
+        last = m.index + m[0].length;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  window.quranWrapArabic = wrapArabic;                             // pages that load text later can call this
+
+  onReady(function () {
+    /* language picker */
+    var sel = document.getElementById('langPick');
+    if (sel) {
+      if (lang !== 'ml') sel.value = lang;
+      sel.addEventListener('change', function () {
+        if (!sel.value) return;
+        savePref(sel.value); location.reload();
+      });
+    }
+    if (lang !== 'ml') {
+      try { markArabic(document.body); } catch (e) {}
+      try { wrapArabic(document.body); } catch (e) {}
+      var rm = document.querySelector('meta[name="referrer"]');
+      if (rm) rm.setAttribute('content', 'strict-origin-when-cross-origin');
+      if (!document.querySelector('script[src*="translate_a/element.js"]')) {     // the index page loads the widget itself
+        window.googleTranslateElementInit = function () {
+          new google.translate.TranslateElement({ pageLanguage: 'ml', autoDisplay: false }, 'gt_el');
+        };
+        var d = document.createElement('div'); d.id = 'gt_el'; d.style.display = 'none'; document.body.appendChild(d);
+        var s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; s.async = true;
+        document.head.appendChild(s);
+      }
+      try {                                                    // verse cards are built by player.js a moment later
+        var AR_SEL = '[lang="ar"],.ar,.isti-ar';
+        var mark = function (e) { if (e.getAttribute('translate') !== 'no') { e.setAttribute('translate', 'no'); e.classList.add('notranslate'); } };
+        new MutationObserver(function (list) {
+          list.forEach(function (mu) {
+            mu.addedNodes.forEach(function (n) {
+              if (n.nodeType !== 1) return;
+              if (n.matches && n.matches(AR_SEL)) mark(n);
+              n.querySelectorAll(AR_SEL).forEach(mark);
+            });
+          });
+        }).observe(document.body, { childList: true, subtree: true });
+      } catch (e) {}
+    }
+
+    /* Robust Option panel toggle & label state handler */
+    var optBtn = document.getElementById('opt-toggle');
+    var panel = document.getElementById('panel');
+    var controls = document.querySelector('.controls');
+    
+    if (optBtn && panel) {
+      panel.classList.remove('open');
+      panel.style.display = 'none';
+      optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+      optBtn.removeAttribute('onclick'); // prevent double handling conflict
+
+      optBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var isOpen = panel.classList.contains('open') || panel.style.display === 'block';
+        if (isOpen) {
+          panel.classList.remove('open');
+          panel.style.display = 'none';
+          if (controls) controls.classList.remove('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        } else {
+          panel.classList.add('open');
+          panel.style.display = 'block';
+          if (controls) controls.classList.add('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▴';
+        }
+      });
+
+      document.addEventListener('click', function (e) {
+        if (controls && !controls.contains(e.target)) {
+          panel.classList.remove('open');
+          panel.style.display = 'none';
+          if (controls) controls.classList.remove('open');
+          optBtn.textContent = 'ഓപ്ഷനുകൾ ▾';
+        }
+      });
+    }
+
+    /* Status text centering below buttons */
+    var banner = document.querySelector('.banner');
+    var statusEl = document.getElementById('status');
+    if (statusEl && banner) {
+      banner.appendChild(statusEl);
+    }
+
+    /* 'കേൾക്കാം' master toggle button with stop capability */
+    var masterBtn = document.getElementById('master');
+    if (masterBtn) {
+      masterBtn.textContent = 'കേൾക്കാം';
+      masterBtn.addEventListener('click', function(e) {
+        if (masterBtn.classList.contains('playing')) {
+          e.stopImmediatePropagation();
+          if (typeof stopSpeech === 'function') stopSpeech();
+          if (typeof currentAudio !== 'undefined' && currentAudio) { 
+            currentAudio.pause(); 
+            currentAudio.currentTime = 0; 
+          }
+          masterBtn.classList.remove('playing');
+          masterBtn.textContent = 'കേൾക്കാം';
+        }
+      }, true);
+    }
+
+    /* Move 'തുടർച്ചയായി കേൾക്കുക' checkbox inside panel next to 'വിവരണം' */
+    var contInput = document.getElementById('cont');
+    if (contInput && panel) {
+      var wrapper = contInput.closest('label');
+      if (wrapper) wrapper.remove();
+      var newLabel = document.createElement('label');
+      newLabel.className = 'opt';
+      newLabel.appendChild(contInput);
+      newLabel.appendChild(document.createTextNode(' തുടർച്ചയായി കേൾക്കുക'));
+
+      var vivaranamLabel = null;
+      var labels = panel.querySelectorAll('label');
+      labels.forEach(function(l) {
+        if (l.textContent.indexOf('വിവരണം') > -1) vivaranamLabel = l;
+      });
+      if (vivaranamLabel && vivaranamLabel.parentNode) {
+        vivaranamLabel.parentNode.insertBefore(newLabel, vivaranamLabel.nextSibling);
+      } else {
+        panel.appendChild(newLabel);
+      }
+    }
+
+    /* Bismillah handling: only on pages starting with verse 1, matching verse color */
+    var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
+    var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
+    if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
+      if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+        bismiDiv.remove();
+      } else {
+        var bEl = bismiDiv.querySelector('h1') || bismiDiv;
+        if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
+      }
+    }
+  });
+
+  /* ===== natural voices on every device ===== */
+  var MALE = /midhun|\bmale\b|ravi|prabhat|hemant|madhur|rishi/i, FEMALE = /female|sobhana|swara|lekha|heera|soumya|veena|neerja/i;
+  function isM(v) { return MALE.test(v.name) && !FEMALE.test(v.name); }
+  function vscore(v) {
+    var n = v.name || '', s = 0;
+    if (/natural|neural/i.test(n)) s += 10;            
+    if (/enhanced|premium|siri/i.test(n)) s += 8;      
+    if (/online/i.test(n)) s += 6;
+    if (/google/i.test(n)) s += 5;                     
+    if (v.localService === false) s += 2;
+    if (/compact|espeak|festival/i.test(n)) s -= 6;    
+    return s;
+  }
+  function byLang(l) {
+    return window.speechSynthesis ? speechSynthesis.getVoices().filter(function (v) {
+      return v.lang.toLowerCase().replace('_', '-').indexOf(l) === 0; }) : [];
+  }
+  function pick(kind, lang) {          
+    var vs = lang ? byLang(lang) : (typeof window.mlVoices === 'function' ? window.mlVoices() : byLang('ml'));
+    if (!vs.length) return null;
+    vs = vs.slice().sort(function (a, b) { return vscore(b) - vscore(a) || a.name.localeCompare(b.name); });
+    var best = vscore(vs[0]), pool = vs.filter(function (v) { return vscore(v) >= best - 2; });
+    var a = pool.filter(isM)[0] || pool[0];
+    if (kind !== 'tf') return a;
+    return pool.filter(function (v) { return v !== a && isM(v) !== isM(a); })[0] ||
+           vs.filter(function (v) { return v !== a; })[0] || a;
+  }
+  window.quranVoice = function (lang) { return pick('ml', lang); };
+  onReady(function () {
+    if (typeof window.resolveVoice === 'function') window.resolveVoice = function (kind) { return pick(kind); };
+    if (typeof window.voiceProfile === 'function') window.voiceProfile = function (kind) {
+      var v = pick(kind); if (!v) return null;
+      var natural = vscore(v) >= 8, same = pick('ml') === pick('tf');
+      return { voice: v, pitch: (kind === 'tf' && same && !natural) ? 0.8 : 1, rate: kind === 'tf' ? 0.85 : 0.95 };
+    };
+  });
+
+  /* ===== text-to-speech engine with robust translated speech support ===== */
+  var NUM = /(^|\s)\d+\s*[-\u2013:.)]\s*/g;
+  function mlFrac(t) {
+    var rest = t.replace(/[\s\d\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF.,:;!?()'"\u2018\u2019\u201C\u201D\-\u2013]/g, '');
+    var ml = (rest.match(/[\u0D00-\u0D7F]/g) || []).length;
+    return rest.length ? ml / rest.length : 1;
+  }
+  function spokenCode(text) {
+    if (lang && lang !== 'ml') return lang;
+    var h = (document.documentElement.lang || '').toLowerCase().split('-')[0];
+    if (h && h !== 'ml') return h;
+    if (/[\u0900-\u097F]/.test(text)) return 'hi';
+    if (/[\u0B80-\u0BFF]/.test(text)) return 'ta';
+    if (/[\u0C80-\u0CFF]/.test(text)) return 'kn';
+    var nl = (navigator.language || 'en').toLowerCase().split('-')[0];
+    return nl === 'ml' ? 'en' : nl;
+  }
+  function shownText(el) {
+    if (!el) return '';
+    var src = el.querySelector('.pl') || el.querySelector('.text') || el, c = src.cloneNode(true);
+    c.querySelectorAll('.tag,.isti-ar,[translate="no"]').forEach(function (x) { x.remove(); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  function cleanForSpeech(t) {
+    return t.replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g, ' ').replace(/[()\u2018\u2019\u201C\u201D"]/g, '').replace(/\s+/g, ' ').trim();
+  }
+  function splitText(text, max) {
+    max = max || 140;
+    var sentences = text.match(/[^.,:;!?।]+[.,:;!?।]*/g) || [text], chunks = [], cur = '';
+    for (var j = 0; j < sentences.length; j++) {
+      var s = sentences[j].trim();
+      while (s.length > max) {
+        var cut = s.lastIndexOf(' ', max); if (cut <= 0) cut = max;
+        if (cur) { chunks.push(cur); cur = ''; }
+        chunks.push(s.slice(0, cut).trim()); s = s.slice(cut).trim();
+      }
+      if (!s) continue;
+      if (cur && (cur + ' ' + s).length > max) { chunks.push(cur); cur = s; } else cur = cur ? cur + ' ' + s : s;
+    }
+    if (cur) chunks.push(cur);
+    return chunks.filter(function (c) { return /[^\s.,:;!?।]/.test(c); });
+  }
+
+  /* Reliable SpeechSynthesis for translated pages */
+  function speakIn(code, text, my, done, kind, label) {
+    var chunks = splitText(cleanForSpeech(text));
+    if (!chunks.length) { done(); return; }
+    
+    if (typeof window.speechSynthesis === 'undefined') {
+      done();
+      return;
+    }
+
+    var vc = code.toLowerCase();
+    var voices = speechSynthesis.getVoices();
+    var v = voices.find(function(item) { return item.lang.toLowerCase().replace('_', '-').indexOf(vc) === 0; }) ||
+            voices.find(function(item) { return item.lang.toLowerCase().substring(0, 2) === vc.substring(0, 2); }) ||
+            voices[0];
+
+    var nextChunk = function (i) {
+      if (my !== token) return;
+      if (i >= chunks.length) { done(); return; }
+      if (typeof statusEl !== 'undefined' && statusEl) {
+        statusEl.textContent = (label ? label + ' · ' : '') + code + (v ? ' · ' + v.name : '') + ' (' + (i + 1) + '/' + chunks.length + ')';
+      }
+
+      var u = new SpeechSynthesisUtterance(chunks[i]);
+      if (v) u.voice = v;
+      u.lang = code;
+      u.rate = 0.95;
+
+      var finished = false, timer;
+      var advance = function () {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        nextChunk(i + 1);
+      };
+
+      timer = setTimeout(advance, 8000);
+      u.onend = advance;
+      u.onerror = advance;
+
+      try {
+        speechSynthesis.cancel();
+        speechSynthesis.speak(u);
+      } catch (e) {
+        advance();
+      }
+    };
+
+    try { speechSynthesis.cancel(); } catch(e) {}
+    setTimeout(function () { nextChunk(0); }, 50);
+  }
+
+  var REC_BASE = BASE_URL + 'audio/', REC_CACHE = 'quran-voice-v1', REC_MAX = 400;
+  function p3(n) { return String(n).padStart(3, '0'); }
+  function fnv(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(16); }
+  var recMan = null;
+  function recManifest() {
+    if (typeof SURAH === 'undefined') return Promise.resolve({});
+    if (!recMan) recMan = fetch(REC_BASE + p3(SURAH) + '/manifest.json').then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+    return recMan;
+  }
+  function recSrc(url) {
+    if (!window.caches) return Promise.resolve(url);
+    var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
+    return caches.open(REC_CACHE).then(function (c) {
+      return c.match(url).then(function (hit) {
+        if (hit) return blobUrl(hit);
+        if (!navigator.onLine) return null;
+        return fetch(url).then(function (r) {
+          if (!r.ok) return null;
+          return c.put(url, r.clone()).then(function () {
+            c.keys().then(function (ks) { for (var i = 0; i < ks.length - REC_MAX; i++) c.delete(ks[i]); });
+            return blobUrl(r);
+          });
+        });
+      });
+    }).catch(function () { return null; });
+  }
+  function playRecorded(kind, n, text, my, done, fallback) {
+    recManifest().then(function (man) {
+      var key = p3(SURAH) + p3(n) + '-' + kind, e = man[key];
+      if (!e) return fallback();
+      return recSrc(REC_BASE + p3(SURAH) + '/' + key + '.mp3' + (e.h ? '?v=' + e.h : '')).then(function (src) {
+        if (my !== token) return;
+        if (!src) return fallback();
+        var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio();
+        var failed = false, bad = function () { if (failed || my !== token) return; failed = true; fallback(); };
+        a.onended = function () { if (my === token) done(); };
+        a.onerror = bad;
+        a.src = src; a.playbackRate = 1; if (typeof currentAudio !== 'undefined') currentAudio = a;
+        if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
+        a.play().catch(bad);
+      });
+    }).catch(function () { if (my !== token) fallback(); });
+  }
+  onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
+
+  function ensureVoices(code, cb) {
+    var ss = window.speechSynthesis;
+    if (!ss || (ss.getVoices() || []).length) { cb(); return; }
+    var fin = false;
+    function finish() { if (fin) return; fin = true; try { ss.removeEventListener('voiceschanged', finish); } catch (e) {} cb(); }
+    try { ss.addEventListener('voiceschanged', finish); } catch (e) {}
+    setTimeout(finish, 1500);                                   // no voices at all: carry on, the fallback below takes over
+  }
+
+  onReady(function () {
+    var pageSpeak = typeof window.speakMalayalam === 'function' ? window.speakMalayalam : null;   // the page's own version (browser voice, then online voice)
+    window.speakMalayalam = function (text, my, done) {
+      var el = null;
+      if (typeof activeKey !== 'undefined' && activeKey) {
+        el = document.getElementById('item-' + activeKey);
+        if (!el) {
+          var parts = activeKey.split('-');
+          if (parts.length >= 2) {
+            el = document.getElementById('item-' + parts[0] + '-' + parts[parts.length - 1]);
+          }
+        }
+      }
+      var shown = el ? shownText(el) : text, translated = !!shown && mlFrac(shown) < 0.5;
+      var code = translated ? spokenCode(shown) : 'ml';
+      
+      ensureVoices(code, function () {
+        if (my !== token) return;
+        if (translated) {
+          speakIn(code, (shown || text).replace(NUM, ' '), my, done,
+                  typeof curKind !== 'undefined' ? curKind : 'ml', typeof curLabel !== 'undefined' ? curLabel : '');
+        } else {
+          var kn = (typeof activeKey !== 'undefined' && activeKey) ? activeKey.split('-') : [];
+          var verseNum = kn.length ? +kn[kn.length - 1] : 0;
+          var fallbackSpeech = function() {
+            var chunks = splitText(cleanForSpeech(text), 120);
+            if (!chunks.length) { done(); return; }
+            var kind = typeof curKind !== 'undefined' ? curKind : 'ml';
+            var found = pick(kind);
+            if (!found) {                                   // no Malayalam voice in this browser: use the page's own method, never stay silent
+              if (pageSpeak) pageSpeak(text, my, done); else done();
+              return;
+            }
+            var nextChunk = function(idx) {
+              if (my !== token) return;
+              if (idx >= chunks.length) { done(); return; }
+              if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (found.name || 'Malayalam Voice') + ' (' + (idx+1) + '/' + chunks.length + ')';
+              
+              if (typeof window.speechSynthesis === 'undefined') {
+                done();
+                return;
+              }
+
+              var u = new SpeechSynthesisUtterance(chunks[idx]);
+              if (typeof utterances !== 'undefined') utterances[0] = u;
+              u.voice = found.voice || found; u.lang = u.voice.lang || 'ml-IN'; u.pitch = 1; u.rate = 0.95;
+              
+              var doneCalled = false, tmr;
+              var advance = function() {
+                if (doneCalled) return; doneCalled = true;
+                clearTimeout(tmr);
+                nextChunk(idx + 1);
+              };
+              
+              tmr = setTimeout(advance, 7000); 
+              u.onend = advance;
+              u.onerror = advance;
+              
+              try {
+                speechSynthesis.speak(u);
+              } catch(e) {
+                advance();
+              }
+            };
+            try { speechSynthesis.cancel(); } catch(e) {}
+            setTimeout(function() { nextChunk(0); }, 50);
+          };
+
+          if ((kn[0] === 'ml' || kn[0] === 'tf') && verseNum > 0) {
+            playRecorded(kn[0], verseNum, text, my, done, fallbackSpeech);
+          } else {
+            fallbackSpeech();
+          }
+        }
+      });
+    };
+
+    if (typeof window.speakPreface === 'function') {
+      var origPref = window.speakPreface;
+      window.speakPreface = function (text, my) {
+        var translated = mlFrac(text) < 0.5, code = translated ? spokenCode(text) : 'ml';
+        ensureVoices(code, function () {
+          if (my !== token) return;
+          if (translated) speakIn(code, text.replace(NUM, ' '), my, function () { if (typeof stopSpeech === 'function') stopSpeech(); }, 'ml', '');
+          else origPref(text, my);
+        });
+      };
+    }
+  });
+
+  /* ===== extra reciters ===== */
+  var EXTRA_RECITERS = [
+    { id: 'alafasy',    name: 'മിഷാരി അൽ അഫാസി',         base: 'https://everyayah.com/data/Alafasy_64kbps' },
+    { id: 'sudais',     name: 'അബ്ദുറഹ്മാൻ അസ്സുദൈസ്',    base: 'https://everyayah.com/data/Abdurrahmaan_As-Sudais_64kbps' },
+    { id: 'shuraym',    name: 'സഊദ് അശ്ശുറൈം',           base: 'https://everyayah.com/data/Saood_ash-Shuraym_64kbps' },
+    { id: 'husary',     name: 'മഹ്മൂദ് ഖലീൽ അൽ ഹുസ്വരി',   base: 'https://everyayah.com/data/Husary_64kbps' },
+    { id: 'abdulbasit', name: 'അബ്ദുൽ ബാസിത്വ്',          base: 'https://everyayah.com/data/Abdul_Basit_Murattal_64kbps' },
+    { id: 'jibreel',    name: 'മുഹമ്മദ് ജിബ്രീൽ',         base: 'https://everyayah.com/data/Muhammad_Jibreel_64kbps' },
+    { id: 'budair',     name: 'സ്വലാഹ് അൽ ബുദൈർ',        base: 'https://everyayah.com/data/Salah_Al_Budair_128kbps' }
+  ];
+  onReady(function () {
+    if (typeof RECITERS === 'undefined' || typeof initReciters !== 'function') return;
+    EXTRA_RECITERS.forEach(function (r) {
+      if (!RECITERS.some(function (x) { return x.id === r.id; })) RECITERS.push(r);
+    });
+    initReciters();
+  });
+
+  /* ===== audio caching ===== */
+  var DEFAULT_REC = '/Ghamadi_40kbps/', AUDIO_CACHE = 'quran-audio-v1', MAX_FILES = 1000;
+  function isDefaultRec(url) { return url.indexOf(DEFAULT_REC) > -1; }
+  function trimAudio(c) {
+    return c.keys().then(function (ks) { for (var i = 0; i < ks.length - MAX_FILES; i++) c.delete(ks[i]); });
+  }
+  window.cachedSrc = function (url) {
+    if (!window.caches) return Promise.resolve(url);
+    var blobUrl = function (r) { return r.blob().then(function (b) { return URL.createObjectURL(b); }); };
+    var alt = url.replace(/\/data\/[^/]+\//, '/data/Ghamadi_40kbps/');
+    return caches.open(AUDIO_CACHE).then(function (c) {
+      var saved = function () {
+        return c.match(url).then(function (h) { return h || c.match(alt); })
+                .then(function (h) { return h ? blobUrl(h) : url; });
+      };
+      if (!navigator.onLine) return saved();
+      if (!isDefaultRec(url)) return url;
+      return c.match(url).then(function (hit) {
+        if (hit) return blobUrl(hit);
+        return fetch(url, { mode: 'cors' }).then(function (r) {
+          if (!r.ok) return url;
+          return c.put(url, r.clone()).then(function () { trimAudio(c); return blobUrl(r); });
+        }).catch(saved);
+      });
+    }).catch(function () { return url; });
+  };
+  if (window.caches) {
+    caches.open(AUDIO_CACHE).then(function (c) {
+      return c.keys().then(function (ks) { ks.forEach(function (r) { if (!isDefaultRec(r.url)) c.delete(r); }); });
+    }).catch(function () {});
+  }
+
+  /* ===== error messages & non-blocking fallback handling ===== */
+  var VERSE_ERROR = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, അല്ലെങ്കിൽ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക';
+  var TRY_AGAIN = 'വീണ്ടും ക്ലിക്ക് ചെയ്യുക, ';
+  onReady(function () {
+    if (typeof window.fail !== 'function') return;
+    var origFail = window.fail;
+    window.fail = function (my, msg) {
+      msg = msg || '';
+      var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');
+      if (recitation) msg = VERSE_ERROR;
+      else if (msg.indexOf(TRY_AGAIN) !== 0) msg = TRY_AGAIN + msg;
+      origFail(msg);
+    };
+  });
+
+  /* ===== Bismillah: show only on pages with verse 1, matching verse color style ===== */
+  function playBismillah(my, done) {
+    var rec = currentReciter(), url = rec.base.replace(/\/*$/, '/') + '001001.mp3';
+    if (typeof curKind !== 'undefined') curKind = 'ml';
+    if (typeof curLabel !== 'undefined') curLabel = 'ബിസ്മി';
+    if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = 'ബിസ്മി · ' + rec.name;
+    Promise.resolve(typeof window.cachedSrc === 'function' ? window.cachedSrc(url) : url).then(function (u) {
+      if (my !== token) return;
+      var a = (typeof sharedAudio !== 'undefined') ? sharedAudio : new Audio(), over = false;
+      var next = function () { if (over || my !== token) return; over = true; done(); };
+      a.onended = next; a.onerror = next;
+      a.src = u; a.playbackRate = 1; if (typeof currentAudio !== 'undefined') currentAudio = a;
+      a.play().catch(next);
+    }).catch(function () { if (my !== token) done(); });
+  }
+  onReady(function () {
+    if (typeof SURAH === 'undefined') return;
+    var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
+    var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
+    
+    if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
+      if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
+        bismiDiv.remove();
+      }
+    } else if (bismiDiv) {
+      var bEl = bismiDiv.querySelector('h1') || bismiDiv;
+      if (bEl) bEl.style.color = 'var(--acc, #1d5240)';
+    }
+
+    if (SURAH === 1 || SURAH === 9) return;
+    if (typeof window.playItem !== 'function' || typeof window.toggleContinuous !== 'function' ||
+        typeof fullQueue !== 'function' || typeof runQueue !== 'function' || typeof VERSES === 'undefined') return;
+    
+    var origPlay = window.playItem, origToggle = window.toggleContinuous;
+    window.playItem = function (kind, n, my, done) { return kind === 'bm' ? playBismillah(my, done) : origPlay(kind, n, my, done); };
+    window.toggleContinuous = function () {
+      var masterBtn = document.getElementById('master');
+      if (masterBtn && masterBtn.classList.contains('playing')) return origToggle();
+      var q = (typeof fullQueue === 'function' ? fullQueue() : []), ar = document.getElementById('show-ar');
+      if (!q.length || !VERSES.length || VERSES[0].n !== 1 || q[0].n !== 1 || (ar && !ar.checked)) return origToggle();
+      q.unshift({ kind: 'bm', n: 0 });
+      runQueue(q, true);
+    };
+  });
+
+  /* offline support */
+  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+    window.addEventListener('load', function () {
+      var sw = new URL('sw.js', BASE_URL);
+      if (sw.origin === location.origin) navigator.serviceWorker.register(sw.pathname, { scope: sw.pathname.replace(/[^\/]*$/, '') }).catch(function () {});
+    });
+  }
 })();
-</script>
-
-<script src="https://quranmeaning.app/site.js" defer></script>
-
-</body>
-</html>
