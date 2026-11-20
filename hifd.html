@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d3322">
   <title id="pageTitle">ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Lateef:wght@400;700&family=Markazi+Text:wght@400;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
     .font-quran { font-family: 'Amiri', serif; }
@@ -13,23 +14,65 @@
     .bg-dark-emerald { background-color: #0d3322; }
     .bg-dark-emerald-light { background-color: #133e2b; }
     .border-dark-emerald { border-color: #1b5239; }
+
+    /* Verse font + line spacing */
+    .font-quran.verse-arabic { font-family: var(--vfont, 'Scheherazade New'), 'Scheherazade New', serif; }
+    .verse-arabic { line-height: 2.4; }
+    html[data-vfont="Scheherazade New"] .verse-arabic,
+    html[data-vfont="Noto Naskh Arabic"] .verse-arabic,
+    html[data-vfont="Markazi Text"] .verse-arabic { line-height: 2.8; }
+    html[data-vfont="Lateef"] .verse-arabic { font-size: 1.3em; line-height: 2.2; }
+    html[data-vfont="Noto Nastaliq Urdu"] .verse-arabic { line-height: 3.8; }
+    html[data-vfont="Amiri"] .verse-arabic,
+    html[data-vfont="Amiri Quran"] .verse-arabic { line-height: 3; }
+    @media (min-width: 768px) {
+      .verse-arabic { line-height: 2.8; }
+      html[data-vfont="Scheherazade New"] .verse-arabic,
+      html[data-vfont="Noto Naskh Arabic"] .verse-arabic,
+      html[data-vfont="Markazi Text"] .verse-arabic { line-height: 3.2; }
+      html[data-vfont="Lateef"] .verse-arabic { line-height: 2.6; }
+      html[data-vfont="Noto Nastaliq Urdu"] .verse-arabic { line-height: 4.2; }
+      html[data-vfont="Amiri"] .verse-arabic,
+      html[data-vfont="Amiri Quran"] .verse-arabic { line-height: 3.7; }
+    }
+
     .active-verse {
       border-color: #059669 !important;
       background-color: #f0fdf4 !important;
-      box-shadow: 0 4px 14px rgba(13, 51, 34, 0.12);
+      box-shadow: 0 4px 18px rgba(5, 150, 105, 0.25);
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
 
-  <!-- Main Layout Container -->
+  <!-- Instruction Info Modal Popup -->
+  <div id="infoModal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl p-5 shadow-2xl max-w-md w-full border border-slate-200 max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
+        <h4 id="infoModalTitle" class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+          <span>ℹ️</span> <span id="infoModalHeadingText">വിവരങ്ങൾ</span>
+        </h4>
+        <button type="button" onclick="toggleInfoModal()" class="text-slate-400 hover:text-slate-600 font-bold text-sm">✕</button>
+      </div>
+      <p id="settingsInstruction" class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium"></p>
+      <p id="zoomInstruction" class="mt-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium"></p>
+      <div class="mt-4 pt-3 border-t border-slate-100 text-right">
+        <button type="button" id="btnGotIt" onclick="toggleInfoModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-1.5 rounded-xl text-xs font-semibold">
+          ശരി
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Layout Container (Left-Aligned Sidebar + Workspace) -->
   <div class="flex flex-col md:flex-row min-h-screen">
-    
-    <!-- Left-Aligned Control Panel Sidebar (Compact Layout) -->
+
+    <!-- Left-Aligned Control Panel Sidebar -->
     <aside class="w-full md:w-72 bg-dark-emerald text-emerald-50 p-4 flex flex-col justify-between shadow-2xl z-20 shrink-0 border-r border-emerald-950">
       <div>
 
-        <!-- App Header: Main Page button & Title -->
+        <!-- App Header: Home button, Title & Right-Aligned Date Badge -->
         <div class="mb-4 border-b border-dark-emerald pb-3">
           <div class="flex items-center justify-between gap-2">
             <a href="https://quranmeaning.app/" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-all">
@@ -38,21 +81,39 @@
               </svg>
               <span id="btnHome">പ്രധാനതാൾ</span>
             </a>
+
+            <!-- Hijri Date Toggle -->
+            <div class="flex items-center gap-1.5" dir="ltr">
+              <span id="lblHijri" class="text-[10px] font-semibold text-emerald-200 uppercase tracking-wider">ഹിജ്റ തീയതി</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="hijriToggle" onchange="toggleHijriDate(this)" class="sr-only peer">
+                <div class="w-9 h-5 bg-dark-emerald-light rounded-full peer peer-focus:ring-2 peer-focus:ring-emerald-400 peer-checked:bg-emerald-600 border border-dark-emerald after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:after:translate-x-4"></div>
+              </label>
+            </div>
           </div>
 
-          <div class="mt-2 flex flex-wrap items-baseline gap-x-2">
-            <h1 id="brandTitle" class="font-bold text-base leading-tight text-white">ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h1>
-            <p id="brandSub" class="text-[11px] text-emerald-300 font-medium">Qur'an Hifz Tracker</p>
+          <div class="mt-3 flex items-center justify-between gap-2 flex-wrap">
+            <div>
+              <h1 id="brandTitle" class="font-bold text-base leading-tight text-white">ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h1>
+              <p id="brandSub" class="text-[11px] text-emerald-300 font-medium">Qur'an Hifz Tracker</p>
+            </div>
+            <!-- Date Badge moved to Title Panel (Right-Aligned) -->
+            <span class="bg-emerald-900/80 text-emerald-200 border border-emerald-700/60 text-[11px] font-semibold px-2.5 py-1 rounded-lg text-right" id="currentDateBadge">
+              --
+            </span>
           </div>
         </div>
 
         <!-- Sidebar Inputs & Controls -->
         <div class="space-y-3">
-          <!-- Surah Selector Dropdown -->
+          <!-- Surah Selector Dropdown + Total Verses Badge -->
           <div>
-            <label id="lblSurah" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-              സൂറത്ത് തിരഞ്ഞെടുക്കുക
-            </label>
+            <div class="flex items-center justify-between gap-1.5 mb-1">
+              <label id="lblSurah" for="surahSelect" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider">
+                സൂറത്ത് തിരഞ്ഞെടുക്കുക
+              </label>
+              <span id="totalVersesBadge" class="text-[10px] bg-dark-emerald-light text-emerald-300 px-2 py-0.5 rounded-md border border-dark-emerald font-semibold whitespace-nowrap">-- ആയത്തുകൾ</span>
+            </div>
             <select id="surahSelect" onchange="onSurahChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-2 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
               <!-- Dynamically populated with 114 surahs -->
             </select>
@@ -61,34 +122,50 @@
           <!-- Verse Range Picker -->
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label id="lblFromVerse" class="block text-[10px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              <label id="lblFromVerse" for="fromVerse" class="block text-[10px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
                 ആദ്യം ആയത്ത്
               </label>
-              <input type="number" id="fromVerse" value="1" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
+              <input type="number" inputmode="numeric" id="fromVerse" value="1" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
             </div>
             <div>
-              <label id="lblToVerse" class="block text-[10px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              <label id="lblToVerse" for="toVerse" class="block text-[10px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
                 അവസാന ആയത്ത്
               </label>
-              <input type="number" id="toVerse" value="7" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
+              <input type="number" inputmode="numeric" id="toVerse" value="7" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
             </div>
           </div>
 
           <!-- Repetition Counter Target -->
           <div>
-            <label id="lblRepetition" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+            <label id="lblRepetition" for="repetitionTarget" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
               ആവർത്തനം
             </label>
-            <div class="flex items-center space-x-1.5">
-              <button onclick="adjustRepetition(-1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-2.5 py-1 rounded-md text-xs font-bold border border-dark-emerald text-emerald-200">-</button>
-              <input type="number" id="repetitionTarget" value="9" min="1" oninput="onTargetChange()" class="w-full text-center bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
-              <button onclick="adjustRepetition(1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-2.5 py-1 rounded-md text-xs font-bold border border-dark-emerald text-emerald-200">+</button>
+            <div class="flex items-center space-x-1.5" dir="ltr">
+              <button type="button" onclick="adjustRepetition(-1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-2.5 py-1 rounded-md text-xs font-bold border border-dark-emerald text-emerald-200">−</button>
+              <input type="number" inputmode="numeric" id="repetitionTarget" value="9" min="1" oninput="onTargetChange()" class="w-full text-center bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
+              <button type="button" onclick="adjustRepetition(1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-2.5 py-1 rounded-md text-xs font-bold border border-dark-emerald text-emerald-200">+</button>
             </div>
+          </div>
+
+          <!-- Verse Font Selector -->
+          <div>
+            <label id="lblVerseFont" for="verseFontSelect" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              അറബി ഫോണ്ട്
+            </label>
+            <select id="verseFontSelect" onchange="onVerseFontChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-2 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
+              <option value="Amiri">Amiri (أميري)</option>
+              <option value="Amiri Quran">Amiri Quran (أميري قرآن)</option>
+              <option value="Scheherazade New">Scheherazade New (شهرزاد)</option>
+              <option value="Noto Naskh Arabic">Noto Naskh (نسخ)</option>
+              <option value="Lateef">Lateef (لطيف)</option>
+              <option value="Markazi Text">Markazi Text (مركزي)</option>
+              <option value="Noto Nastaliq Urdu">Nastaliq (نستعليق)</option>
+            </select>
           </div>
 
           <!-- Reciter Audio Picker -->
           <div>
-            <label id="lblReciter" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+            <label id="lblReciter" for="reciterSelect" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
               ഖാരിഅ്
             </label>
             <select id="reciterSelect" onchange="onReciterChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-2 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
@@ -103,6 +180,15 @@
             </select>
           </div>
 
+          <!-- Keep Screen ON Toggle -->
+          <div class="flex items-center justify-between pt-1">
+            <span id="lblKeepAwake" class="text-[11px] font-semibold text-emerald-200 uppercase tracking-wider">സ്ക്രീൻ ഓൺ</span>
+            <label class="relative inline-flex items-center cursor-pointer" dir="ltr">
+              <input type="checkbox" id="keepAwakeToggle" onchange="onKeepAwakeChange()" class="sr-only peer">
+              <div class="w-9 h-5 bg-dark-emerald-light rounded-full peer peer-focus:ring-2 peer-focus:ring-emerald-400 peer-checked:bg-emerald-600 border border-dark-emerald after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:after:translate-x-4"></div>
+            </label>
+          </div>
+
           <!-- Daily Page Wird Selector -->
           <div class="pt-2 border-t border-dark-emerald">
             <label id="lblDailyWird" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1.5">
@@ -111,14 +197,14 @@
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <span id="lblFromPage" class="text-[10px] text-emerald-300 block mb-0.5">പേജ് മുതൽ</span>
-                <input type="number" id="fromPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
+                <input type="number" inputmode="numeric" id="fromPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
               </div>
               <div>
                 <span id="lblToPage" class="text-[10px] text-emerald-300 block mb-0.5">പേജ് വരെ</span>
-                <input type="number" id="toPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
+                <input type="number" inputmode="numeric" id="toPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
               </div>
             </div>
-            <button id="btnLoadPages" onclick="loadPageRange()" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-1.5 rounded-md transition-all">പേജുകൾ ലോഡ് ചെയ്യുക</button>
+            <button type="button" id="btnLoadPages" onclick="loadPageRange()" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-1.5 rounded-md transition-all">പേജുകൾ ലോഡ് ചെയ്യുക</button>
             <p id="pageModeNote" class="hidden mt-1.5 text-[10px] text-emerald-300 leading-snug"></p>
           </div>
 
@@ -128,10 +214,10 @@
               ആയത്തുകൾ കാണേണ്ട രൂപം
             </label>
             <div class="flex rounded-lg bg-dark-emerald-light p-1 border border-dark-emerald">
-              <button id="btnVerseMode" onclick="setViewMode('verse')" class="flex-1 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white transition-all">
+              <button type="button" id="btnVerseMode" onclick="setViewMode('verse')" class="flex-1 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white transition-all">
                 ആയത്തുകൾ
               </button>
-              <button id="btnMushafMode" onclick="setViewMode('mushaf')" class="flex-1 py-1 text-xs font-semibold rounded-md text-emerald-200 hover:text-white transition-all">
+              <button type="button" id="btnMushafMode" onclick="setViewMode('mushaf')" class="flex-1 py-1 text-xs font-semibold rounded-md text-emerald-200 hover:text-white transition-all">
                 മുസ്ഹഫ് പേജ്
               </button>
             </div>
@@ -144,31 +230,18 @@
     <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-6xl flex flex-col justify-between">
       
       <div>
-        <!-- Main Top Header Bar -->
-        <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 id="mainHeaderTitle" class="text-xl md:text-2xl font-bold text-emerald-950">ഹിഫ്ള് ലേണിംഗ് & ഓഡിയോ പ്ലെയർ</h2>
-            <p id="mainHeaderDesc" class="text-xs md:text-sm text-slate-500 mt-0.5">അറബി പാഠം, അർത്ഥം, തക്രാർ & ആയത്ത് ഓഡിയോ പ്ലെയർ</p>
-          </div>
-          <div class="flex items-center space-x-3">
-            <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold px-3 py-1.5 rounded-full" id="currentDateBadge">
-              --
-            </span>
-          </div>
-        </header>
-
         <!-- Global Audio Controls Bar -->
         <section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6">
           <div class="flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-3 w-full md:w-auto">
-              <button id="globalPlayBtn" onclick="toggleContinuousPlay()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-5 py-2.5 rounded-xl text-sm flex items-center justify-center space-x-2 transition-all shadow-sm w-full sm:w-auto">
+              <button type="button" id="globalPlayBtn" onclick="toggleContinuousPlay()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-5 py-2.5 rounded-xl text-sm flex items-center justify-center space-x-2 transition-all shadow-sm w-full sm:w-auto">
                 <svg id="globalPlayIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <span id="globalPlayText">മുഴുവൻ ആയത്തുകളും പ്ലേ ചെയ്യുക</span>
               </button>
-              <button id="pauseResumeBtn" onclick="togglePauseResume()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border border-slate-200">
+              <button type="button" id="pauseResumeBtn" onclick="togglePauseResume()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border border-slate-200">
                 പോസ്
               </button>
             </div>
@@ -182,12 +255,20 @@
 
         <!-- Verses Render List -->
         <section class="mb-8">
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
             <h3 class="font-bold text-lg text-slate-800 flex items-center space-x-2">
               <span id="lblSelectedVersesHeading">ആയത്തുകൾ</span>
               <span id="verseCountBadge" class="text-xs bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full font-semibold">0</span>
             </h3>
-            <span id="surahMetaHeader" class="text-xs text-slate-500 font-medium">--</span>
+            <div class="flex items-center space-x-2">
+              <span id="surahMetaHeader" class="text-xs text-slate-500 font-medium">--</span>
+              <button type="button" id="viewToggleBtn" onclick="toggleViewMode()" class="bg-white border border-emerald-200 text-emerald-700 hover:text-emerald-900 text-sm px-2 py-1 rounded-xl shadow-sm hover:bg-emerald-50 transition-all cursor-pointer flex items-center gap-1" title="Switch view" aria-pressed="false">
+                <span>📜</span>
+              </button>
+              <button type="button" onclick="toggleInfoModal()" class="bg-white border border-emerald-200 text-emerald-700 hover:text-emerald-900 text-sm px-2 py-1 rounded-xl shadow-sm hover:bg-emerald-50 transition-all cursor-pointer flex items-center gap-1" title="Instructions">
+                <span>ℹ️</span>
+              </button>
+            </div>
           </div>
 
           <div id="versesList" class="space-y-4">
@@ -210,10 +291,10 @@
               </p>
             </div>
             <div class="flex items-center gap-2">
-              <button id="btnResetCounters" onclick="resetCounters()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl text-xs font-semibold border border-slate-200 transition-all">
+              <button type="button" id="btnResetCounters" onclick="resetCounters()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl text-xs font-semibold border border-slate-200 transition-all">
                 കൗണ്ടർ റീസെറ്റ്
               </button>
-              <button id="btnSaveProgress" onclick="logCurrentSession()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl shadow-md transition-all text-sm flex items-center justify-center space-x-2">
+              <button type="button" id="btnSaveProgress" onclick="logCurrentSession()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl shadow-md transition-all text-sm flex items-center justify-center space-x-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
                 </svg>
@@ -225,16 +306,16 @@
 
         <!-- Weekly Progress & LocalStorage Table Section -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
-          <div class="p-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+          <div class="p-5 border-b border-slate-200 flex justify-between items-center bg-slate-50 flex-wrap gap-3">
             <div>
               <h3 id="lblWeeklyLogTitle" class="font-bold text-slate-800 text-base">ആഴ്ചയിലെ പുരോഗതിയും കുറിപ്പുകളും</h3>
               <p id="lblWeeklyLogDesc" class="text-xs text-slate-500">നിങ്ങളുടെ പ്രതിദിന പാഠങ്ങളും ആവർത്തന റെക്കോർഡുകളും</p>
             </div>
             <div class="flex items-center space-x-2">
-              <button id="btnClearHistory" onclick="clearSavedLogs()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl text-xs font-medium transition-all">
+              <button type="button" id="btnClearHistory" onclick="clearSavedLogs()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl text-xs font-medium transition-all">
                 ഹിസ്റ്ററി നീക്കം ചെയ്യുക
               </button>
-              <button id="btnShareProgress" onclick="shareTodayProgress()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm flex items-center space-x-1">
+              <button type="button" id="btnShareProgress" onclick="shareTodayProgress()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm flex items-center space-x-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
                 </svg>
@@ -274,31 +355,38 @@
   <!-- Audio Player -->
   <audio id="globalAudioPlayer" class="hidden"></audio>
 
- <script>
+  <script>
     let surahList = [];
     let currentVerses = [];
     let activeVerseIndex = -1;
     let isRunning = false;
     let isPaused = false;
+    let pendingResume = null;
     const audioPlayer = document.getElementById('globalAudioPlayer');
 
-    // Malayalam Translations Dictionary
+    const HIJRI_MONTHS = [
+      "Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani",
+      "Jumada al-Ula", "Jumada al-Thani", "Rajab", "Sha'ban",
+      "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"
+    ];
+
     const translations = {
       ml: {
         pageTitle: "ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ",
         brandTitle: "ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ",
         brandSub: "Qur'an Hifz Tracker",
+        lblHijri: "ഹിജ്റ തീയതി",
         lblSurah: "സൂറത്ത് തിരഞ്ഞെടുക്കുക",
         lblFromVerse: "ആദ്യം ആയത്ത്",
         lblToVerse: "അവസാന ആയത്ത്",
         lblRepetition: "ആവർത്തനം",
+        lblVerseFont: "അറബി ഫോണ്ട്",
         lblReciter: "ഖാരിഅ്",
+        lblKeepAwake: "സ്ക്രീൻ ഓൺ",
         lblDailyWird: "ദൈനംദിന ലക്ഷ്യം",
         lblFromPage: "പേജ് മുതൽ",
         lblToPage: "പേജ് വരെ",
         btnSaveProgress: "ഇന്നത്തെ പുരോഗതി സേവ് ചെയ്യുക",
-        mainHeaderTitle: "ഹിഫ്ള് ലേണിംഗ് & ഓഡിയോ പ്ലെയർ",
-        mainHeaderDesc: "അറബി പാഠം, അർത്ഥം, തക്രാർ & ആയത്ത് ഓഡിയോ പ്ലെയർ",
         globalPlayText: "മുഴുവൻ ആയത്തുകളും പ്ലേ ചെയ്യുക",
         pauseResumeBtn: "പോസ്",
         lblActiveVerseTitle: "നിലവിലെ ആയത്ത്:",
@@ -338,7 +426,7 @@
         loadFailed: "ഡാറ്റ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക.",
         placeholderPortion: "ഉദാ: അൽ-ഫാതിഹ (1-7)",
         placeholderNotes: "കുറിപ്പുകൾ എഴുതുക...",
-        audioFallbackToast: "തിരഞ്ഞെടുത്ത ഖാരിഅിന്റെ ഓഡിയോ ലഭ്യമല്ല - മിഷാരി അൽ-അഫാസിയിലേക്ക് മാറ്റി",
+        audioFallbackToast: "തിരഞ്ഞെടുത്ത ഖാരിഇന്റെ ഓഡിയോ ലഭ്യമല്ല - മിഷാരി അൽ-അഫാസിയിലേക്ക് മാറ്റി",
         audioFailed: "ഓഡിയോ ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക.",
         introAudhu: "അഊദു ബില്ലാഹ്",
         introBismillah: "ബിസ്മില്ലാഹ്",
@@ -366,20 +454,33 @@
         lblViewMode: "ആയത്തുകൾ കാണേണ്ട രൂപം",
         btnVerseMode: "ആയത്തുകൾ",
         btnMushafMode: "മുസ്ഹഫ് പേജ്",
-        mushafFullRes: "സ്ക്രീൻ പുഴുവനായി കാണിക്കുക",
-        mushafLoadFailed: "പേജ് ചിത്രം ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക."
+        viewShortVerse: "ആയത്തുകൾ",
+        viewShortMushaf: "മുസ്ഹഫ്",
+        mushafFullRes: "സ്ക്രീൻ മുഴുവനായി കാണിക്കുക",
+        mushafLoadFailed: "പേജ് ചിത്രം ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക.",
+        infoModalHeadingText: "വിവരങ്ങൾ",
+        btnGotIt: "ശരി",
+        settingsInstruction: "ഖാരിഅ്, ആവർത്തന എണ്ണം, അറബി ഫോണ്ട്, സൂറത്ത് തിരഞ്ഞെടുക്കൽ, വ്യൂ മോഡ് എന്നിവ ക്രമീകരിക്കാൻ സൈഡ്ബാർ ഉപയോഗിക്കുക.",
+        zoomInstruction: "🔍 പേജ്/സ്ക്രീൻ സൂം ചെയ്യാൻ രണ്ട് വിരലുകൾ കൊണ്ട് സ്ക്രീനിൽ തൊട്ട് വിരലുകൾ അകറ്റിയാൽ സൂം ഇൻ, അടുപ്പിച്ചാൽ സൂം ഔട്ട്. മുസ്ഹഫ് പേജ് ചിത്രത്തിൽ ഡബിൾ ടാപ്പ് ചെയ്താൽ വേഗത്തിൽ സൂം ചെയ്യാം. സൂം ചെയ്ത ശേഷം ഒരു വിരൽ കൊണ്ട് നീക്കി കാണാം.",
+        shareTip: "ഈ ആയത്ത് പങ്കിടുക",
+        shareSurah: "സൂറത്ത്",
+        shareRequest: "ഇത് നിങ്ങളുടെ എല്ലാ സുഹൃത്തുക്കളുമായും ബന്ധുക്കളുമായും പങ്കിടണമെന്ന് അഭ്യർത്ഥിക്കുന്നു. 🤲",
+        shareCopied: "ആയത്ത് കോപ്പി ചെയ്തു. പങ്കിടാൻ പേസ്റ്റ് ചെയ്യുക.",
+        promptRepTarget: "ആയത്ത് {verse} നുള്ള ആവർത്തന എണ്ണം നൽകുക:",
+        versesCountSuffix: "ആയത്തുകൾ"
       }
     };
 
-    let currentLang = 'ml';
-
     const STORE = {
-      state:  'quran_hifz_state',
-      lang:   'quran_hifz_lang',
-      logs:   'quran_hifz_logs',
-      counts: 'quran_hifz_counts',
-      missing: 'quran_hifz_missing',
-      editions: 'quran_hifz_editions'
+      state:    'quran_hifz_state',
+      lang:     'quran_hifz_lang',
+      logs:     'quran_hifz_logs',
+      counts:   'quran_hifz_counts',
+      missing:  'quran_hifz_missing',
+      editions: 'quran_hifz_editions',
+      hijri:    'quran_hifz_hijri',
+      awake:    'quran_hifz_awake',
+      vfont:    'quran_hifz_vfont'
     };
     const LEGACY_RECITERS = { Ayman_Sowaid_64kbps: 'ar.aymanswoaid' };
 
@@ -396,6 +497,9 @@
     let viewMode = 'surah';
     let currentViewMode = 'verse';
     let loadedPages = null;
+    let showHijriDate = false;
+    let keepAwake = false;
+    let wakeLockSentinel = null;
 
     const $ = id => document.getElementById(id);
     const T = () => translations.ml;
@@ -416,12 +520,160 @@
     const getTarget = () => Math.max(1, parseInt($('repetitionTarget').value) || 1);
     const repKey = (surah, verse) => `${surah}:${verse}`;
 
+    function formatGregorianDate() {
+      return new Date().toLocaleDateString('ml-IN',
+        { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function formatHijriDate() {
+      try {
+        const parts = new Intl.DateTimeFormat('en-TN-u-ca-islamic-umalqura', {
+          day: 'numeric', month: 'numeric', year: 'numeric'
+        }).formatToParts(new Date());
+        const map = {};
+        parts.forEach(p => { if (p.type !== 'literal') map[p.type] = p.value; });
+        const day = parseInt(map.day, 10);
+        const monthIdx = parseInt(map.month, 10) - 1;
+        const year = map.year;
+        const monthName = HIJRI_MONTHS[monthIdx] || map.month;
+        if (day && monthName && year) return `${day} ${monthName} ${year} AH`;
+      } catch (e) {}
+      return new Intl.DateTimeFormat('ml-IN-u-ca-islamic-umalqura', {
+        weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+      }).format(new Date());
+    }
+
+    function updateDateBadge() {
+      const g = formatGregorianDate();
+      setText('currentDateBadge', showHijriDate ? `${g} · ${formatHijriDate()}` : g);
+    }
+
+    function toggleHijriDate(checkbox) {
+      showHijriDate = !!(checkbox && checkbox.checked);
+      saveJSON(STORE.hijri, showHijriDate);
+      updateDateBadge();
+    }
+
+    // Verse Font Support
+    function applyVerseFont(fontName) {
+      const val = fontName || 'Scheherazade New';
+      document.documentElement.style.setProperty('--vfont', `'${val}', serif`);
+      document.documentElement.setAttribute('data-vfont', val);
+      const sel = $('verseFontSelect');
+      if (sel && sel.value !== val) sel.value = val;
+    }
+
+    function onVerseFontChange() {
+      const sel = $('verseFontSelect');
+      const val = sel ? sel.value : 'Scheherazade New';
+      applyVerseFont(val);
+      saveJSON(STORE.vfont, val);
+    }
+
+    // Screen Wake Lock Support
+    async function requestWakeLock() {
+      if (!keepAwake || document.hidden || !('wakeLock' in navigator)) return;
+      try {
+        if (!wakeLockSentinel) {
+          wakeLockSentinel = await navigator.wakeLock.request('screen');
+          wakeLockSentinel.addEventListener('release', () => { wakeLockSentinel = null; });
+        }
+      } catch (e) {}
+    }
+
+    async function releaseWakeLock() {
+      if (wakeLockSentinel) {
+        try { await wakeLockSentinel.release(); } catch (e) {}
+        wakeLockSentinel = null;
+      }
+    }
+
+    function onKeepAwakeChange() {
+      const cb = $('keepAwakeToggle');
+      keepAwake = !!(cb && cb.checked);
+      saveJSON(STORE.awake, keepAwake);
+      if (keepAwake) requestWakeLock();
+      else releaseWakeLock();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && keepAwake) requestWakeLock();
+    });
+
+    // Instruction Modal & View Toggle
+    function toggleInfoModal() {
+      const m = $('infoModal');
+      if (m) m.classList.toggle('hidden');
+    }
+
+    function updateViewToggleButton() {
+      const btn = $('viewToggleBtn');
+      if (!btn) return;
+      const isMushaf = currentViewMode === 'mushaf';
+      btn.setAttribute('aria-pressed', String(isMushaf));
+      btn.innerHTML = isMushaf ? '<span>📖</span>' : '<span>📜</span>';
+    }
+
+    function toggleViewMode() {
+      setViewMode(currentViewMode === 'mushaf' ? 'verse' : 'mushaf');
+    }
+
+    function updateTotalVersesBadge(count) {
+      const el = $('totalVersesBadge');
+      if (!el) return;
+      el.textContent = count ? `${count} ${T().versesCountSuffix}` : `-- ${T().versesCountSuffix}`;
+    }
+
+    // Verse Share Support
+    async function shareVerse(idx) {
+      const v = currentVerses[idx];
+      if (!v) return;
+      const t = T();
+      const sd = surahList.find(x => x.number === v.surah);
+      const surahTitle = sd ? `${sd.englishName} (${sd.name})` : `${t.shareSurah} ${v.surah}`;
+      const lines = [
+        `📖 ${surahTitle} — ${t.verseLabel} ${v.numberInSurah}`,
+        '',
+        v.arabic
+      ];
+      if (v.translation) lines.push('', `${t.meaningLabel} ${v.translation}`);
+      lines.push('', t.shareRequest);
+      const text = lines.join('\n');
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: `${surahTitle} (${v.numberInSurah})`, text });
+          return;
+        } catch (e) {
+          if (e && e.name === 'AbortError') return;
+        }
+      }
+      if (await copyText(text)) showToast(t.shareCopied);
+      else showShareFallback(text);
+    }
+
+    // Target Prompt via Verse Target Label Click
+    function promptVerseTarget(idx) {
+      const v = currentVerses[idx];
+      if (!v) return;
+      const t = T();
+      const raw = prompt(t.promptRepTarget.replace('{verse}', v.numberInSurah), String(getTarget()));
+      if (raw == null) return;
+      const parsed = parseInt(raw, 10);
+      if (!isNaN(parsed) && parsed >= 1) {
+        $('repetitionTarget').value = parsed;
+        onTargetChange();
+      }
+    }
+
     const LABEL_IDS = [
-      'brandTitle', 'brandSub', 'lblSurah', 'lblFromVerse', 'lblToVerse', 'lblRepetition', 'lblReciter',
-      'lblDailyWird', 'lblFromPage', 'lblToPage', 'btnLoadPages', 'lblViewMode', 'btnVerseMode', 'btnMushafMode', 'mainHeaderTitle', 'mainHeaderDesc', 'lblActiveVerseTitle',
-      'lblSelectedVersesHeading', 'lblSessionTitle', 'lblSessionHint', 'btnResetCounters',
-      'lblWeeklyLogTitle', 'lblWeeklyLogDesc', 'btnClearHistory',
-      'thDate', 'thPortion', 'thReps', 'thCompleted', 'thNotes', 'thAction', 'footerCopy'
+      'brandTitle', 'brandSub', 'lblHijri', 'lblSurah', 'lblFromVerse', 'lblToVerse',
+      'lblRepetition', 'lblVerseFont', 'lblReciter', 'lblKeepAwake', 'lblDailyWird', 'lblFromPage',
+      'lblToPage', 'btnLoadPages', 'lblViewMode', 'btnVerseMode', 'btnMushafMode',
+      'lblActiveVerseTitle', 'lblSelectedVersesHeading', 'lblSessionTitle',
+      'lblSessionHint', 'btnResetCounters', 'lblWeeklyLogTitle', 'lblWeeklyLogDesc', 'btnClearHistory',
+      'thDate', 'thPortion', 'thReps', 'thCompleted', 'thNotes', 'thAction', 'footerCopy',
+      'infoModalHeadingText', 'btnGotIt', 'settingsInstruction', 'zoomInstruction'
     ];
 
     function applyLanguage() {
@@ -433,11 +685,13 @@
       setText('globalPlayText', isRunning ? t.stopText : t.globalPlayText);
       setText('pauseResumeBtn', isPaused ? t.continueText : t.resumeText);
       if (!isRunning) setText('activeVerseIndicator', t.notPlaying);
-      setText('currentDateBadge', new Date().toLocaleDateString('ml-IN',
-        { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }));
+      updateDateBadge();
+      const surahData = surahList.find(s => s.number === (parseInt($('surahSelect').value) || 1));
+      updateTotalVersesBadge(surahData ? surahData.numberOfAyahs : 0);
       document.documentElement.lang = 'ml';
       document.documentElement.dir = 'ltr';
       updateModeUI();
+      updateViewToggleButton();
     }
 
     function saveState() {
@@ -458,20 +712,33 @@
 
     function restoreInputs() {
       const st = loadJSON(STORE.state, null);
-      if (!st) return null;
-      if (st.fromVerse) $('fromVerse').value = st.fromVerse;
-      if (st.toVerse) $('toVerse').value = st.toVerse;
-      if (st.repetition) $('repetitionTarget').value = st.repetition;
-      if (st.fromPage) $('fromPage').value = st.fromPage;
-      if (st.toPage) $('toPage').value = st.toPage;
-      if (st.mode === 'pages') viewMode = 'pages';
-      if (st.view === 'mushaf') currentViewMode = 'mushaf';
-      const sel = $('reciterSelect');
-      const wanted = LEGACY_RECITERS[st.reciter] || st.reciter;
-      if (wanted && [...sel.options].some(o => o.value === wanted)) {
-        sel.value = wanted;
-        preferredReciter = wanted;
+      if (st) {
+        if (st.fromVerse) $('fromVerse').value = st.fromVerse;
+        if (st.toVerse) $('toVerse').value = st.toVerse;
+        if (st.repetition) $('repetitionTarget').value = st.repetition;
+        if (st.fromPage) $('fromPage').value = st.fromPage;
+        if (st.toPage) $('toPage').value = st.toPage;
+        if (st.mode === 'pages') viewMode = 'pages';
+        if (st.view === 'mushaf') currentViewMode = 'mushaf';
+        const sel = $('reciterSelect');
+        const wanted = LEGACY_RECITERS[st.reciter] || st.reciter;
+        if (wanted && [...sel.options].some(o => o.value === wanted)) {
+          sel.value = wanted;
+          preferredReciter = wanted;
+        }
       }
+
+      showHijriDate = !!loadJSON(STORE.hijri, false);
+      if ($('hijriToggle')) $('hijriToggle').checked = showHijriDate;
+
+      keepAwake = !!loadJSON(STORE.awake, false);
+      if ($('keepAwakeToggle')) $('keepAwakeToggle').checked = keepAwake;
+      if (keepAwake) requestWakeLock();
+
+      const savedFont = loadJSON(STORE.vfont, 'Scheherazade New');
+      applyVerseFont(savedFont);
+
+      updateDateBadge();
       return st;
     }
 
@@ -480,6 +747,7 @@
       await syncReciterList();
       const st = restoreInputs();
       updateViewToggleUI();
+      updateViewToggleButton();
       await fetchSurahList(st ? st.surah : 1);
       await refreshVerses();
       renderLogsTable();
@@ -499,7 +767,10 @@
             opt.innerText = `${s.number}. ${s.englishName} (${s.name})`;
             select.appendChild(opt);
           });
-          select.value = surahList.some(s => s.number === selectedNumber) ? selectedNumber : 1;
+          const chosen = surahList.some(s => s.number === selectedNumber) ? selectedNumber : 1;
+          select.value = chosen;
+          const sd = surahList.find(s => s.number === chosen);
+          updateTotalVersesBadge(sd ? sd.numberOfAyahs : 0);
         }
       } catch (err) {
         console.error('Failed to load Surah list:', err);
@@ -512,6 +783,7 @@
       if (surahData) {
         $('fromVerse').value = 1;
         $('toVerse').value = Math.min(10, surahData.numberOfAyahs);
+        updateTotalVersesBadge(surahData.numberOfAyahs);
       }
       validateAndFetchVerses();
     }
@@ -545,6 +817,7 @@
       const surahNum = parseInt($('surahSelect').value) || 1;
       const surahData = surahList.find(s => s.number === surahNum);
       const maxAyahs = surahData ? surahData.numberOfAyahs : 286;
+      updateTotalVersesBadge(surahData ? surahData.numberOfAyahs : 0);
 
       let fromV = parseInt($('fromVerse').value) || 1;
       let toV = parseInt($('toVerse').value) || 1;
@@ -651,27 +924,35 @@
               <span class="bg-dark-emerald text-emerald-100 font-bold text-xs px-2.5 py-1 rounded-lg">
                 ${escapeHtml(t.verseLabel)} ${verse.numberInSurah}
               </span>
-              <span id="tgt-label-${idx}" class="text-xs text-slate-400">${escapeHtml(t.repsLabel)} ${targetReps}</span>
+              <button type="button" id="tgt-label-${idx}" onclick="promptVerseTarget(${idx})" class="text-xs text-slate-400 hover:text-emerald-700 cursor-pointer">
+                ${escapeHtml(t.repsLabel)} ${targetReps}
+              </button>
               ${pageTag}
             </div>
 
             <div class="flex items-center space-x-2">
-              <button onclick="onListenClick(${idx})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-all">
+              <button type="button" onclick="onListenClick(${idx})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-all">
                 <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                 </svg>
                 <span id="play-text-${idx}">${escapeHtml(t.playBtnText)}</span>
               </button>
 
-              <button onclick="bumpRep(${idx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 flex items-center space-x-1">
+              <button type="button" onclick="bumpRep(${idx})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-medium border border-slate-200 flex items-center space-x-1">
                 <span>${escapeHtml(t.repsCountLabel)}</span>
                 <span id="rep-count-${idx}" class="font-bold text-emerald-800">${verse.repetitionCount}</span>
                 <span id="tgt-total-${idx}">/ ${targetReps}</span>
               </button>
+
+              <button type="button" onclick="shareVerse(${idx})" title="${escapeHtml(t.shareTip)}" aria-label="${escapeHtml(t.shareTip)}" class="bg-slate-50 hover:bg-emerald-50 text-slate-600 hover:text-emerald-800 border border-slate-200 p-1.5 rounded-xl text-xs transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
+                </svg>
+              </button>
             </div>
           </div>
 
-          <p class="text-right font-quran text-2xl md:text-3xl text-emerald-950 leading-loose mb-4" dir="rtl">
+          <p class="text-right font-quran verse-arabic text-2xl md:text-3xl text-emerald-950 mb-4" dir="rtl">
             ${escapeHtml(verse.arabic)}
           </p>
 
@@ -783,6 +1064,8 @@
         $('surahSelect').value = firstSurah;
         $('fromVerse').value = inFirst[0].numberInSurah;
         $('toVerse').value = inFirst[inFirst.length - 1].numberInSurah;
+        const sdFirst = surahList.find(s => s.number === firstSurah);
+        updateTotalVersesBadge(sdFirst ? sdFirst.numberOfAyahs : 0);
         saveState();
 
         $('verseCountBadge').innerText = verses.length;
@@ -818,6 +1101,7 @@
       if (mode !== 'verse' && mode !== 'mushaf') return;
       currentViewMode = mode;
       updateViewToggleUI();
+      updateViewToggleButton();
       saveState();
       if (currentVerses.length) renderCurrentView();
     }
@@ -850,13 +1134,13 @@
       const t = T();
       return `
         <div id="verse-card-${idx}" class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-xl px-2 py-1 text-xs transition-all">
-          <button onclick="onListenClick(${idx})" title="${escapeHtml(t.playBtnText)}" class="text-emerald-700 hover:text-emerald-900">
+          <button type="button" onclick="onListenClick(${idx})" title="${escapeHtml(t.playBtnText)}" class="text-emerald-700 hover:text-emerald-900">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
             </svg>
           </button>
           <span class="font-semibold text-slate-700">${v.surah}:${v.numberInSurah}</span>
-          <button onclick="bumpRep(${idx})" class="bg-white border border-slate-200 rounded-lg px-1.5 py-0.5 flex items-center gap-1">
+          <button type="button" onclick="bumpRep(${idx})" class="bg-white border border-slate-200 rounded-lg px-1.5 py-0.5 flex items-center gap-1">
             <span id="rep-count-${idx}" class="font-bold text-emerald-800">${v.repetitionCount}</span>
             <span id="tgt-total-${idx}" class="text-slate-400">/ ${targetReps}</span>
           </button>
@@ -1440,7 +1724,7 @@
               class="w-full min-w-[9rem] bg-white border border-slate-200 rounded-lg p-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500">
           </td>
           <td class="p-3.5 text-center">
-            <button onclick="deleteLog(${idx})" class="text-rose-500 hover:text-rose-700 font-semibold text-xs">${escapeHtml(t.deleteText)}</button>
+            <button type="button" onclick="deleteLog(${idx})" class="text-rose-500 hover:text-rose-700 font-semibold text-xs">${escapeHtml(t.deleteText)}</button>
           </td>`;
         tbody.appendChild(row);
       });
@@ -1585,21 +1869,6 @@
         toast.style.opacity = '0';
         setTimeout(() => toast.remove(), 300);
       }, isWarning ? 4500 : 2500);
-    }
-  </script>
- 
-  <!-- Service Worker Registration Script -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registered with scope: ', registration.scope);
-          })
-          .catch(error => {
-            console.log('ServiceWorker registration failed: ', error);
-          });
-      });
     }
   </script>
 <script src="https://quranmeaning.app/site.js" defer></script>
