@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ml" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">Qur'an Hifz Tracker</title>
+  <title id="pageTitle">ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -25,46 +25,40 @@
   <!-- Main Layout Container -->
   <div class="flex flex-col md:flex-row min-h-screen">
     
-    <!-- Left-Aligned Control Panel Sidebar (Dark Green Theme) -->
-    <aside class="w-full md:w-80 bg-dark-emerald text-emerald-50 p-6 flex flex-col justify-between shadow-2xl z-20 shrink-0 border-r border-emerald-950">
+    <!-- Left-Aligned Control Panel Sidebar (Compact Layout) -->
+    <aside class="w-full md:w-72 bg-dark-emerald text-emerald-50 p-4 flex flex-col justify-between shadow-2xl z-20 shrink-0 border-r border-emerald-950">
       <div>
 
-        <!-- App Header: Main Page button + language, title below on one line -->
-        <div class="mb-6 border-b border-dark-emerald pb-4">
-          <div class="flex items-center justify-between gap-3">
-            <a href="https://quranmeaning.app/" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-sm transition-all">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- App Header: Main Page button & Title -->
+        <div class="mb-4 border-b border-dark-emerald pb-3">
+          <div class="flex items-center justify-between gap-2">
+            <a href="https://quranmeaning.app/" class="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3v-6h6v6h3a1 1 0 001-1V10"></path>
               </svg>
               <span id="btnHome">Main Page</span>
             </a>
 
-            <!-- Language Selector with Globe Icon -->
-            <div class="flex items-center space-x-1.5">
-              <span class="text-sm">🌐</span>
-              <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-lg p-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-400">
-                <option value="en" selected>English</option>
-                <option value="ar">العربية</option>
-                <option value="ml">മലയാളം</option>
-                <option value="ur">اردو</option>
-                <option value="bn">বাংলা</option>
-              </select>
+            <div class="flex items-center space-x-1 text-xs text-emerald-300 font-medium">
+              <span>🌐</span>
+              <span class="bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md px-2 py-1">മലയാളം</span>
             </div>
           </div>
 
-          <div class="mt-3 flex flex-wrap items-baseline gap-x-2">
-            <h1 id="brandTitle" class="font-bold text-lg leading-tight text-white">Qur'an Hifz Tracker</h1>
-            <p id="brandSub" class="text-xs text-emerald-300 font-medium">حفظ القرآن</p>
+          <div class="mt-2 flex flex-wrap items-baseline gap-x-2">
+            <h1 id="brandTitle" class="font-bold text-base leading-tight text-white">ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ</h1>
+            <p id="brandSub" class="text-[11px] text-emerald-300 font-medium">Qur'an Hifz Tracker</p>
           </div>
         </div>
+
         <!-- Sidebar Inputs & Controls -->
-        <div class="space-y-4">
+        <div class="space-y-3">
           <!-- Surah Selector Dropdown -->
           <div>
-            <label id="lblSurah" class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-              Select Surah (السورة)
+            <label id="lblSurah" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              സൂറത്ത് തിരഞ്ഞെടുക്കുക
             </label>
-            <select id="surahSelect" onchange="onSurahChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+            <select id="surahSelect" onchange="onSurahChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-2 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
               <!-- Dynamically populated with 114 surahs -->
             </select>
           </div>
@@ -72,37 +66,37 @@
           <!-- Verse Range Picker -->
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label id="lblFromVerse" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-                From Verse (من آية)
+              <label id="lblFromVerse" class="block text-[10px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+                ആദ്യം ആയത്ത്
               </label>
-              <input type="number" id="fromVerse" value="1" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+              <input type="number" id="fromVerse" value="1" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
             </div>
             <div>
-              <label id="lblToVerse" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-                To Verse (إلى آية)
+              <label id="lblToVerse" class="block text-[10px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+                അവസാന ആയത്ത്
               </label>
-              <input type="number" id="toVerse" value="7" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+              <input type="number" id="toVerse" value="7" min="1" onchange="validateAndFetchVerses()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
             </div>
           </div>
 
-          <!-- Repetition Counter Target (Default: 9) -->
+          <!-- Repetition Counter Target -->
           <div>
-            <label id="lblRepetition" class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-              Repetition Target (التكرار)
+            <label id="lblRepetition" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              ആവർത്തനം
             </label>
-            <div class="flex items-center space-x-2">
-              <button onclick="adjustRepetition(-1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-3 py-2 rounded-lg text-sm font-bold border border-dark-emerald text-emerald-200">-</button>
-              <input type="number" id="repetitionTarget" value="9" min="1" oninput="onTargetChange()" class="w-full text-center bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:outline-none">
-              <button onclick="adjustRepetition(1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-3 py-2 rounded-lg text-sm font-bold border border-dark-emerald text-emerald-200">+</button>
+            <div class="flex items-center space-x-1.5">
+              <button onclick="adjustRepetition(-1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-2.5 py-1 rounded-md text-xs font-bold border border-dark-emerald text-emerald-200">-</button>
+              <input type="number" id="repetitionTarget" value="9" min="1" oninput="onTargetChange()" class="w-full text-center bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
+              <button onclick="adjustRepetition(1)" class="bg-dark-emerald-light hover:bg-emerald-800 px-2.5 py-1 rounded-md text-xs font-bold border border-dark-emerald text-emerald-200">+</button>
             </div>
           </div>
 
           <!-- Reciter Audio Picker -->
           <div>
-            <label id="lblReciter" class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-1">
-              Reciter (القارئ)
+            <label id="lblReciter" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1">
+              ഖാരിഅ്
             </label>
-            <select id="reciterSelect" onchange="onReciterChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2.5 focus:ring-2 focus:ring-emerald-400 focus:outline-none">
+            <select id="reciterSelect" onchange="onReciterChange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-2 focus:ring-1 focus:ring-emerald-400 focus:outline-none">
               <option value="ar.husary">Mahmoud Khalil Al-Husary</option>
               <option value="ar.aymanswoaid">Dr. Ayman Sowaid</option>
               <option value="ar.alafasy">Mishary Rashid Alafasy</option>
@@ -114,35 +108,35 @@
           </div>
 
           <!-- Daily Page Wird Selector -->
-          <div class="pt-3 border-t border-dark-emerald">
-            <label id="lblDailyWird" class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
-              Daily Page Range (الورد اليومي)
+          <div class="pt-2 border-t border-dark-emerald">
+            <label id="lblDailyWird" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1.5">
+              ദൈനംദിന ലക്ഷ്യം
             </label>
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <span id="lblFromPage" class="text-[10px] text-emerald-300 block mb-0.5">From Page</span>
-                <input type="number" id="fromPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2 focus:outline-none">
+                <span id="lblFromPage" class="text-[10px] text-emerald-300 block mb-0.5">പേജ് മുതൽ</span>
+                <input type="number" id="fromPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
               </div>
               <div>
-                <span id="lblToPage" class="text-[10px] text-emerald-300 block mb-0.5">To Page</span>
-                <input type="number" id="toPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-sm rounded-lg p-2 focus:outline-none">
+                <span id="lblToPage" class="text-[10px] text-emerald-300 block mb-0.5">പേജ് വരെ</span>
+                <input type="number" id="toPage" value="1" min="1" max="604" onchange="onPageInputsChange()" onkeydown="if(event.key==='Enter')loadPageRange()" class="w-full bg-dark-emerald-light border border-dark-emerald text-white text-xs rounded-md p-1.5 focus:outline-none">
               </div>
             </div>
-            <button id="btnLoadPages" onclick="loadPageRange()" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2 rounded-lg transition-all">Load Pages</button>
-            <p id="pageModeNote" class="hidden mt-2 text-[11px] text-emerald-300 leading-snug"></p>
+            <button id="btnLoadPages" onclick="loadPageRange()" class="mt-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-1.5 rounded-md transition-all">പേജുകൾ ലോഡ് ചെയ്യുക</button>
+            <p id="pageModeNote" class="hidden mt-1.5 text-[10px] text-emerald-300 leading-snug"></p>
           </div>
 
           <!-- View Mode Toggle -->
-          <div class="pt-3 border-t border-dark-emerald">
-            <label id="lblViewMode" class="block text-xs font-semibold text-emerald-200 uppercase tracking-wider mb-2">
-              View Mode (نمط العرض)
+          <div class="pt-2 border-t border-dark-emerald">
+            <label id="lblViewMode" class="block text-[11px] font-semibold text-emerald-200 uppercase tracking-wider mb-1.5">
+              ആയത്തുകൾ കാണേണ്ട രൂപം
             </label>
             <div class="flex rounded-lg bg-dark-emerald-light p-1 border border-dark-emerald">
-              <button id="btnVerseMode" onclick="setViewMode('verse')" class="flex-1 py-1.5 text-xs font-semibold rounded-md bg-emerald-600 text-white transition-all">
-                Verses (آيات)
+              <button id="btnVerseMode" onclick="setViewMode('verse')" class="flex-1 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white transition-all">
+                ആയത്തുകൾ
               </button>
-              <button id="btnMushafMode" onclick="setViewMode('mushaf')" class="flex-1 py-1.5 text-xs font-semibold rounded-md text-emerald-200 hover:text-white transition-all">
-                Mus'haf Page (مصحف)
+              <button id="btnMushafMode" onclick="setViewMode('mushaf')" class="flex-1 py-1 text-xs font-semibold rounded-md text-emerald-200 hover:text-white transition-all">
+                മുസ്ഹഫ് പേജ്
               </button>
             </div>
           </div>
@@ -157,8 +151,8 @@
         <!-- Main Top Header Bar -->
         <header class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 id="mainHeaderTitle" class="text-xl md:text-2xl font-bold text-emerald-950">Hifz Learning & Audio Player</h2>
-            <p id="mainHeaderDesc" class="text-xs md:text-sm text-slate-500 mt-0.5">Arabic text, Translation, Repetition & Verse Audio Player</p>
+            <h2 id="mainHeaderTitle" class="text-xl md:text-2xl font-bold text-emerald-950">ഹിഫ്ള് ലേണിംഗ് & ഓഡിയോ പ്ലെയർ</h2>
+            <p id="mainHeaderDesc" class="text-xs md:text-sm text-slate-500 mt-0.5">അറബി പാഠം, അർത്ഥം, തക്രാർ & ആയത്ത് ഓഡിയോ പ്ലെയർ</p>
           </div>
           <div class="flex items-center space-x-3">
             <span class="bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold px-3 py-1.5 rounded-full" id="currentDateBadge">
@@ -176,16 +170,16 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <span id="globalPlayText">Play All Verses</span>
+                <span id="globalPlayText">മുഴുവൻ ആയത്തുകളും പ്ലേ ചെയ്യുക</span>
               </button>
               <button id="pauseResumeBtn" onclick="togglePauseResume()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all border border-slate-200">
-                Pause
+                പോസ്
               </button>
             </div>
 
             <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl text-xs text-slate-600 w-full md:w-auto flex items-center justify-between space-x-3">
-              <span id="lblActiveVerseTitle" class="font-semibold text-emerald-900">Active Verse:</span>
-              <span id="activeVerseIndicator" class="font-medium text-slate-700">Not Playing</span>
+              <span id="lblActiveVerseTitle" class="font-semibold text-emerald-900">നിലവിലെ ആയത്ത്:</span>
+              <span id="activeVerseIndicator" class="font-medium text-slate-700">പ്ലേ ചെയ്തിട്ടില്ല</span>
             </div>
           </div>
         </section>
@@ -194,7 +188,7 @@
         <section class="mb-8">
           <div class="flex justify-between items-center mb-4">
             <h3 class="font-bold text-lg text-slate-800 flex items-center space-x-2">
-              <span id="lblSelectedVersesHeading">Selected Verses</span>
+              <span id="lblSelectedVersesHeading">ആയത്തുകൾ</span>
               <span id="verseCountBadge" class="text-xs bg-emerald-100 text-emerald-900 px-2.5 py-0.5 rounded-full font-semibold">0</span>
             </h3>
             <span id="surahMetaHeader" class="text-xs text-slate-500 font-medium">--</span>
@@ -202,7 +196,7 @@
 
           <div id="versesList" class="space-y-4">
             <div id="loadingVersesText" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center text-slate-400">
-              Loading verses...
+              ആയത്തുകൾ ലോഡ് ചെയ്യുന്നു...
             </div>
           </div>
         </section>
@@ -211,8 +205,8 @@
         <section class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 mb-6">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h3 id="lblSessionTitle" class="font-bold text-slate-800 text-base">Current Session</h3>
-              <p id="lblSessionHint" class="text-xs text-slate-500 mt-0.5">Saving adds this session's actual repetitions to your log and resets the counters.</p>
+              <h3 id="lblSessionTitle" class="font-bold text-slate-800 text-base">നിലവിലെ സെഷൻ</h3>
+              <p id="lblSessionHint" class="text-xs text-slate-500 mt-0.5">സേവ് ചെയ്യുമ്പോൾ ഈ സെഷനിലെ യഥാർത്ഥ ആവർത്തനങ്ങൾ ലോഗിൽ ചേർക്കുകയും കൗണ്ടറുകൾ പൂജ്യമാക്കുകയും ചെയ്യും.</p>
               <p class="mt-2 text-sm text-slate-700">
                 <span id="sessionPortion" class="font-medium">--</span>
                 <span class="text-slate-300 mx-1">•</span>
@@ -221,13 +215,13 @@
             </div>
             <div class="flex items-center gap-2">
               <button id="btnResetCounters" onclick="resetCounters()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl text-xs font-semibold border border-slate-200 transition-all">
-                Reset Counters
+                കൗണ്ടർ റീസെറ്റ്
               </button>
               <button id="btnSaveProgress" onclick="logCurrentSession()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-5 rounded-xl shadow-md transition-all text-sm flex items-center justify-center space-x-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
                 </svg>
-                <span id="btnSaveProgressText">Save Today's Progress</span>
+                <span id="btnSaveProgressText">ഇന്നത്തെ പുരോഗതി സേവ് ചെയ്യുക</span>
               </button>
             </div>
           </div>
@@ -237,18 +231,18 @@
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
           <div class="p-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
             <div>
-              <h3 id="lblWeeklyLogTitle" class="font-bold text-slate-800 text-base">Weekly Log & Progress</h3>
-              <p id="lblWeeklyLogDesc" class="text-xs text-slate-500">Your daily lessons and repetition records (Saved on your browser)</p>
+              <h3 id="lblWeeklyLogTitle" class="font-bold text-slate-800 text-base">ആഴ്ചയിലെ പുരോഗതിയും കുറിപ്പുകളും</h3>
+              <p id="lblWeeklyLogDesc" class="text-xs text-slate-500">നിങ്ങളുടെ പ്രതിദിന പാഠങ്ങളും ആവർത്തന റെക്കോർഡുകളും</p>
             </div>
             <div class="flex items-center space-x-2">
               <button id="btnClearHistory" onclick="clearSavedLogs()" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-xl text-xs font-medium transition-all">
-                Clear History
+                ഹിസ്റ്ററി നീക്കം ചെയ്യുക
               </button>
               <button id="btnShareProgress" onclick="shareTodayProgress()" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-sm flex items-center space-x-1">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
                 </svg>
-                <span id="btnShareText">Share Today's Progress</span>
+                <span id="btnShareText">ഇന്നത്തെ പുരോഗതി ഷെയർ ചെയ്യുക</span>
               </button>
             </div>
           </div>
@@ -257,12 +251,12 @@
             <table class="w-full text-left border-collapse" id="logTable">
               <thead>
                 <tr class="bg-slate-100/80 text-slate-600 text-xs uppercase tracking-wider border-b border-slate-200">
-                  <th id="thDate" class="p-3.5 font-semibold">Date / Day</th>
-                  <th id="thPortion" class="p-3.5 font-semibold">Surah & Portion</th>
-                  <th id="thReps" class="p-3.5 font-semibold text-center">Reps</th>
-                  <th id="thCompleted" class="p-3.5 font-semibold text-center">Completed</th>
-                  <th id="thNotes" class="p-3.5 font-semibold">Notes</th>
-                  <th id="thAction" class="p-3.5 font-semibold text-center">Action</th>
+                  <th id="thDate" class="p-3.5 font-semibold">തീയതി / ദിവസം</th>
+                  <th id="thPortion" class="p-3.5 font-semibold">സൂറത്ത് & ആയത്ത്</th>
+                  <th id="thReps" class="p-3.5 font-semibold text-center">ആവർത്തനം</th>
+                  <th id="thCompleted" class="p-3.5 font-semibold text-center">പൂർത്തിയായി</th>
+                  <th id="thNotes" class="p-3.5 font-semibold">കുറിപ്പുകൾ</th>
+                  <th id="thAction" class="p-3.5 font-semibold text-center">നടപടി</th>
                 </tr>
               </thead>
               <tbody id="logTableBody" class="divide-y divide-slate-200 text-xs sm:text-sm">
@@ -292,178 +286,8 @@
     let isPaused = false;
     const audioPlayer = document.getElementById('globalAudioPlayer');
 
-    // Translations Dictionary (Fully populated with table headers & labels for all languages)
+    // Malayalam Translations Dictionary
     const translations = {
-      en: {
-        pageTitle: "Qur'an Hifz Tracker",
-        brandTitle: "Qur'an Hifz Tracker",
-        brandSub: "حفظ القرآن",
-        lblSurah: "Select Surah (السورة)",
-        lblFromVerse: "From Verse (من آية)",
-        lblToVerse: "To Verse (إلى آية)",
-        lblRepetition: "Repetition Target (التكرار)",
-        lblReciter: "Reciter (القارئ)",
-        lblDailyWird: "Daily Page Range (الورد اليومي)",
-        lblFromPage: "From Page",
-        lblToPage: "To Page",
-        btnSaveProgress: "Save Today's Progress",
-        mainHeaderTitle: "Hifz Learning & Audio Player",
-        mainHeaderDesc: "Arabic text, Translation, Repetition & Verse Audio Player",
-        globalPlayText: "Play All Verses",
-        pauseResumeBtn: "Pause",
-        lblActiveVerseTitle: "Active Verse:",
-        notPlaying: "Not Playing",
-        lblSelectedVersesHeading: "Selected Verses",
-        loadingVersesText: "Loading verses...",
-        lblWeeklyLogTitle: "Weekly Log & Progress",
-        lblWeeklyLogDesc: "Your daily lessons and repetition records (Saved on your browser)",
-        btnClearHistory: "Clear History",
-        btnAddRowText: "Add New Row",
-        thDate: "Date / Day",
-        thPortion: "Surah & Portion",
-        thReps: "Reps",
-        thCompleted: "Completed",
-        thNotes: "Notes",
-        thAction: "Action",
-        footerCopy: "© Qur'an Hifz Tracker - All Rights Reserved",
-        playBtnText: "Listen",
-        playingText: "Playing...",
-        repsLabel: "Target:",
-        repsCountLabel: "Reps:",
-        meaningLabel: "Meaning:",
-        toastSaved: "Progress saved successfully!",
-        toastNewRow: "New row saved successfully!",
-        confirmClear: "Are you sure you want to clear all history?",
-        noLogs: "No saved logs found.",
-        defaultNote: "Hifz completed",
-        stopText: "Stop",
-        pausedText: "Paused",
-        continueText: "Continue",
-        resumeText: "Pause",
-        deleteText: "Delete",
-        saveText: "Save",
-        cancelText: "Cancel",
-        verseLabel: "Verse",
-        verseRange: "Verse {from} to {to}",
-        loadFailed: "Failed to load data. Please check your internet connection.",
-        placeholderPortion: "e.g. Al-Fatihah (1-7)",
-        placeholderNotes: "Write notes...",
-        audioFallbackToast: "Selected reciter's audio is unavailable - switched to Mishary Alafasy",
-        audioFailed: "Audio could not be loaded. Please check your connection.",
-        introAudhu: "A'udhu billah",
-        introBismillah: "Bismillah",
-        lblSessionTitle: "Current Session",
-        lblSessionHint: "Saving adds this session's actual repetitions to your log and resets the counters.",
-        btnResetCounters: "Reset Counters",
-        confirmReset: "Reset the repetition counters for the selected verses?",
-        toastNothingToSave: "No repetitions completed yet - nothing to save.",
-        runComplete: "Round complete! Don't forget to save your progress.",
-        statusDone: "Done",
-        statusPartial: "Partial",
-        btnShareProgress: "Share Today's Progress",
-        shareTitle: "Hifz Progress",
-        shareTotal: "Total repetitions",
-        shareEmail: "Email",
-        shareCopy: "Copy",
-        toastCopied: "Copied to clipboard",
-        toastNoTodayLogs: "No progress saved today yet.",
-        repsShort: "reps",
-        lblShareVia: "Share via",
-        btnLoadPages: "Load Pages",
-        pageShort: "Page",
-        pageModeNote: "Showing your daily page range. Changing the surah or verses switches back.",
-        pageRangeTooLong: "Please choose at most 20 pages at a time.",
-        lblViewMode: "View Mode",
-        btnVerseMode: "Verses",
-        btnMushafMode: "Mus'haf Page",
-        mushafFullRes: "Full Resolution",
-        mushafLoadFailed: "This page image could not be loaded. Please check your connection."
-      },
-      ar: {
-        pageTitle: "متابع حفظ القرآن",
-        brandTitle: "متابع حفظ القرآن",
-        brandSub: "Qur'an Hifz Tracker",
-        lblSurah: "اختر السورة",
-        lblFromVerse: "من آية",
-        lblToVerse: "إلى آية",
-        lblRepetition: "عدد التكرار",
-        lblReciter: "القارئ",
-        lblDailyWird: "الورد اليومي (نطاق الصفحات)",
-        lblFromPage: "من صفحة",
-        lblToPage: "إلى صفحة",
-        btnSaveProgress: "حفظ تقدم اليوم",
-        mainHeaderTitle: "تعلم الحفظ ومشغل الصوت",
-        mainHeaderDesc: "النص العربي ومشغل صوت الآيات",
-        globalPlayText: "تشغيل كل الآيات",
-        pauseResumeBtn: "إيقاف مؤقت",
-        lblActiveVerseTitle: "الآية الحالية:",
-        notPlaying: "لا يتم التشغيل",
-        lblSelectedVersesHeading: "الآيات المختارة",
-        loadingVersesText: "جاري تحميل الآيات...",
-        lblWeeklyLogTitle: "السجل الأسبوعي والتقدم",
-        lblWeeklyLogDesc: "دروسك اليومية وسجلات التكرار (محفوظة على متصفحك)",
-        btnClearHistory: "مسح السجل",
-        btnAddRowText: "إضافة صف جديد",
-        thDate: "التاريخ / اليوم",
-        thPortion: "السورة والآيات",
-        thReps: "التكرار",
-        thCompleted: "مكتمل",
-        thNotes: "ملاحظات",
-        thAction: "الإجراء",
-        footerCopy: "© متابع حفظ القرآن - جميع الحقوق محفوظة",
-        playBtnText: "استماع",
-        playingText: "جاري التشغيل...",
-        repsLabel: "الهدف:",
-        repsCountLabel: "التكرار:",
-        meaningLabel: "المعنى:",
-        toastSaved: "تم حفظ التقدم بنجاح!",
-        toastNewRow: "تم حفظ الصف الجديد بنجاح!",
-        confirmClear: "هل أنت متأكد من رغبتك في مسح كل السجل؟",
-        noLogs: "لا توجد سجلات محفوظة.",
-        defaultNote: "اكتمل الحفظ",
-        stopText: "إيقاف",
-        pausedText: "متوقف مؤقتاً",
-        continueText: "متابعة",
-        resumeText: "إيقاف مؤقت",
-        deleteText: "حذف",
-        saveText: "حفظ",
-        cancelText: "إلغاء",
-        verseLabel: "آية",
-        verseRange: "الآيات {from} إلى {to}",
-        loadFailed: "تعذّر تحميل البيانات. تحقق من اتصالك بالإنترنت.",
-        placeholderPortion: "مثال: الفاتحة (1-7)",
-        placeholderNotes: "اكتب ملاحظات...",
-        audioFallbackToast: "تعذّر تشغيل صوت القارئ المختار - تم التبديل إلى مشاري العفاسي",
-        audioFailed: "تعذّر تحميل الصوت. تحقق من اتصالك بالإنترنت.",
-        introAudhu: "الاستعاذة",
-        introBismillah: "البسملة",
-        lblSessionTitle: "الجلسة الحالية",
-        lblSessionHint: "عند الحفظ تُضاف تكرارات هذه الجلسة الفعلية إلى السجل ثم تُصفَّر العدادات.",
-        btnResetCounters: "تصفير العدادات",
-        confirmReset: "هل تريد تصفير عدادات التكرار للآيات المحددة؟",
-        toastNothingToSave: "لم يتم إكمال أي تكرار بعد - لا يوجد ما يُحفظ.",
-        runComplete: "اكتملت الجولة! لا تنسَ حفظ تقدمك.",
-        statusDone: "مكتمل",
-        statusPartial: "جزئي",
-        btnShareProgress: "مشاركة تقدم اليوم",
-        shareTitle: "تقدم الحفظ",
-        shareTotal: "إجمالي التكرار",
-        shareEmail: "البريد الإلكتروني",
-        shareCopy: "نسخ",
-        toastCopied: "تم النسخ",
-        toastNoTodayLogs: "لا يوجد تقدم محفوظ اليوم بعد.",
-        repsShort: "تكرار",
-        lblShareVia: "مشاركة عبر",
-        btnLoadPages: "عرض الصفحات",
-        pageShort: "صفحة",
-        pageModeNote: "يتم عرض نطاق الصفحات اليومي. تغيير السورة أو الآيات يعيدك إلى الوضع العادي.",
-        pageRangeTooLong: "اختر 20 صفحة كحد أقصى في المرة الواحدة.",
-        lblViewMode: "نمط العرض",
-        btnVerseMode: "آيات",
-        btnMushafMode: "صفحات المصحف",
-        mushafFullRes: "الدقة الكاملة",
-        mushafLoadFailed: "تعذّر تحميل صورة الصفحة. تحقق من اتصالك بالإنترنت."
-      },
       ml: {
         pageTitle: "ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ",
         brandTitle: "ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ",
@@ -548,184 +372,11 @@
         btnMushafMode: "മുസ്ഹഫ് പേജ്",
         mushafFullRes: "സ്ക്രീൻ പുഴുവനായി കാണിക്കുക",
         mushafLoadFailed: "പേജ് ചിത്രം ലോഡ് ചെയ്യാനായില്ല. ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക."
-      },
-      ur: {
-        pageTitle: "قرآن حفظ ٹریکر",
-        brandTitle: "قرآن حفظ ٹریکر",
-        brandSub: "Qur'an Hifz Tracker",
-        lblSurah: "سورۃ منتخب کریں",
-        lblFromVerse: "آیت نمبر سے",
-        lblToVerse: "آیت نمبر تک",
-        lblRepetition: "تکرار کا ہدف",
-        lblReciter: "قاری",
-        lblDailyWird: "روزانہ کا ورد (صفحات)",
-        lblFromPage: "صفحہ از",
-        lblToPage: "صفحہ تا",
-        btnSaveProgress: "آج کی پیشرفت محفوظ کریں",
-        mainHeaderTitle: "حفظ لرننگ اور آڈیو پلیئر",
-        mainHeaderDesc: "عربی متن، تکرار اور آیت آڈیو پلیئر",
-        globalPlayText: "تمام آیات چلائیں",
-        pauseResumeBtn: "وقفہ",
-        lblActiveVerseTitle: "موجودہ آیت:",
-        notPlaying: "نہیں چل رہا",
-        lblSelectedVersesHeading: "منتخب کردہ آیات",
-        loadingVersesText: "آیات لوڈ ہو رہی ہیں...",
-        lblWeeklyLogTitle: "ہفتہ وار لاگ اور پیشرفت",
-        lblWeeklyLogDesc: "آپ کے روزانہ کے اسباق اور تکرار کے ریکارڈز",
-        btnClearHistory: "تاریخچہ صاف کریں",
-        btnAddRowText: "نئی سطر شامل کریں",
-        thDate: "تاریخ / دن",
-        thPortion: "سورۃ اور حصہ",
-        thReps: "تکرار",
-        thCompleted: "مکمل",
-        thNotes: "نوٹس",
-        thAction: "عمل",
-        footerCopy: "© قرآن حفظ ٹریکر - جملہ حقوق محفوظ ہیں",
-        playBtnText: "سنیں",
-        playingText: "چل رہا ہے...",
-        repsLabel: "ہدف:",
-        repsCountLabel: "تکرار:",
-        meaningLabel: "معنی:",
-        toastSaved: "پیشرفت کامیابی سے محفوظ ہو گئی!",
-        toastNewRow: "نئی سطر کامیابی سے محفوظ ہو گئی!",
-        confirmClear: "کیا آپ تمام ہسٹری حذف کرنا چاہتے ہیں؟",
-        noLogs: "کوئی محفوظ شدہ لاگ نہیں ملا۔",
-        defaultNote: "حفظ مکمل ہو گیا",
-        stopText: "روکیں",
-        pausedText: "روکا گیا",
-        continueText: "جاری رکھیں",
-        resumeText: "وقفہ",
-        deleteText: "حذف کریں",
-        saveText: "محفوظ",
-        cancelText: "منسوخ",
-        verseLabel: "آیت",
-        verseRange: "آیت {from} تا {to}",
-        loadFailed: "ڈیٹا لوڈ نہیں ہو سکا۔ اپنا انٹرنیٹ کنکشن چیک کریں۔",
-        placeholderPortion: "مثلاً: الفاتحہ (1-7)",
-        placeholderNotes: "نوٹس لکھیں...",
-        audioFallbackToast: "منتخب قاری کی آڈیو دستیاب نہیں - مشاری العفاسی پر منتقل کر دیا گیا",
-        audioFailed: "آڈیو لوڈ نہیں ہو سکی۔ اپنا انٹرنیٹ کنکشن چیک کریں۔",
-        introAudhu: "اعوذ باللہ",
-        introBismillah: "بسم اللہ",
-        lblSessionTitle: "موجودہ سیشن",
-        lblSessionHint: "محفوظ کرنے پر اس سیشن کے اصل تکرار لاگ میں شامل ہوں گے اور کاؤنٹر صفر ہو جائیں گے۔",
-        btnResetCounters: "کاؤنٹر ری سیٹ کریں",
-        confirmReset: "کیا منتخب آیات کے تکرار کاؤنٹر ری سیٹ کریں؟",
-        toastNothingToSave: "ابھی کوئی تکرار مکمل نہیں ہوا - محفوظ کرنے کو کچھ نہیں۔",
-        runComplete: "دور مکمل ہوا! اپنی پیشرفت محفوظ کرنا نہ بھولیں۔",
-        statusDone: "مکمل",
-        statusPartial: "جزوی",
-        btnShareProgress: "آج کی پیشرفت شیئر کریں",
-        shareTitle: "حفظ کی پیشرفت",
-        shareTotal: "کل تکرار",
-        shareEmail: "ای میل",
-        shareCopy: "کاپی",
-        toastCopied: "کاپی ہو گیا",
-        toastNoTodayLogs: "آج کی کوئی پیشرفت محفوظ نہیں۔",
-        repsShort: "تکرار",
-        lblShareVia: "شیئر کریں",
-        btnLoadPages: "صفحات لوڈ کریں",
-        pageShort: "صفحہ",
-        pageModeNote: "روزانہ صفحات کی حد دکھائی جا رہی ہے۔ سورۃ یا آیات بدلنے پر واپس چلا جائے گا۔",
-        pageRangeTooLong: "ایک وقت میں زیادہ سے زیادہ 20 صفحات منتخب کریں۔",
-        lblViewMode: "منظر کا انداز",
-        btnVerseMode: "آیات",
-        btnMushafMode: "مصحف صفحہ",
-        mushafFullRes: "مکمل ریزولوشن",
-        mushafLoadFailed: "صفحے کی تصویر لوڈ نہیں ہو سکی۔ اپنا انٹرنیٹ کنکشن چیک کریں۔"
-      },
-      bn: {
-        pageTitle: "কুরআন হিফজ ট্র্যাকার",
-        brandTitle: "কুরআন হিফজ ট্র্যাকার",
-        brandSub: "Qur'an Hifz Tracker",
-        lblSurah: "সুরা নির্বাচন করুন",
-        lblFromVerse: "যে আয়াত থেকে",
-        lblToVerse: "যে আয়াত পর্যন্ত",
-        lblRepetition: "পুনরাবৃত্তির লক্ষ্য",
-        lblReciter: "কারী",
-        lblDailyWird: "দৈনিক পাঠের পৃষ্ঠা পরিসীমা",
-        lblFromPage: "পৃষ্ঠা থেকে",
-        lblToPage: "পৃষ্ঠা পর্যন্ত",
-        btnSaveProgress: "আজকের অগ্রগতি সংরক্ষণ করুন",
-        mainHeaderTitle: "হিফজ লার্নিং এবং অডিও প্লেয়ার",
-        mainHeaderDesc: "আরবি পাঠ, পুনরাবৃত্তি এবং আয়াত অডিও প্লেয়ার",
-        globalPlayText: "সমস্ত আয়াত চালান",
-        pauseResumeBtn: "বিরতি",
-        lblActiveVerseTitle: "সক্রিয় আয়াত:",
-        notPlaying: "চলছে না",
-        lblSelectedVersesHeading: "নির্বাচিত আয়াতসমূহ",
-        loadingVersesText: "আয়াত লোড হচ্ছে...",
-        lblWeeklyLogTitle: "সাপ্তাহিক লগ এবং অগ্রগতি",
-        lblWeeklyLogDesc: "আপনার প্রতিদিনের পাঠ এবং পুনরাবৃত্তি রেকর্ড",
-        btnClearHistory: "ইতিহাস মুছুন",
-        btnAddRowText: "নতুন সারি যোগ করুন",
-        thDate: "তারিখ / দিন",
-        thPortion: "সুরা এবং অংশ",
-        thReps: "রিপিট",
-        thCompleted: "সম্পন্ন",
-        thNotes: "নোট",
-        thAction: "কার্যক্রম",
-        footerCopy: "© কুরআন হিফজ ট্র্যাকার - সর্বস্বত্ব সংরক্ষিত",
-        playBtnText: "শুনুন",
-        playingText: "চলছে...",
-        repsLabel: "লক্ষ্য:",
-        repsCountLabel: "রিপিট:",
-        meaningLabel: "অর্থ:",
-        toastSaved: "অগ্রগতি সফলভাবে সংরক্ষিত হয়েছে!",
-        toastNewRow: "নতুন সারি সফলভাবে সংরক্ষিত হয়েছে!",
-        confirmClear: "আপনি কি সমস্ত ইতিহাস মুছে ফেলতে চান?",
-        noLogs: "কোন সংরক্ষিত লগ পাওয়া যায়নি।",
-        defaultNote: "হিফজ সম্পন্ন হয়েছে",
-        stopText: "থামান",
-        pausedText: "বিরতি দেওয়া হয়েছে",
-        continueText: "চালিয়ে যান",
-        resumeText: "বিরতি",
-        deleteText: "মুছে ফেলুন",
-        saveText: "সংরক্ষণ",
-        cancelText: "বাতিল",
-        verseLabel: "আয়াত",
-        verseRange: "আয়াত {from} থেকে {to}",
-        loadFailed: "ডেটা লোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।",
-        placeholderPortion: "যেমন: আল-ফাতিহা (1-7)",
-        placeholderNotes: "নোট লিখুন...",
-        audioFallbackToast: "নির্বাচিত কারীর অডিও পাওয়া যায়নি - মিশারী আলাফাসিতে পরিবর্তন করা হয়েছে",
-        audioFailed: "অডিও লোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন।",
-        introAudhu: "আউযুবিল্লাহ",
-        introBismillah: "বিসমিল্লাহ",
-        lblSessionTitle: "বর্তমান সেশন",
-        lblSessionHint: "সংরক্ষণ করলে এই সেশনের প্রকৃত পুনরাবৃত্তি লগে যুক্ত হবে এবং কাউন্টার শূন্য হবে।",
-        btnResetCounters: "কাউন্টার রিসেট",
-        confirmReset: "নির্বাচিত আয়াতের পুনরাবৃত্তি কাউন্টার রিসেট করবেন?",
-        toastNothingToSave: "এখনও কোনো পুনরাবৃত্তি সম্পন্ন হয়নি - সংরক্ষণের কিছু নেই।",
-        runComplete: "রাউন্ড সম্পন্ন! অগ্রগতি সংরক্ষণ করতে ভুলবেন না।",
-        statusDone: "সম্পন্ন",
-        statusPartial: "আংশিক",
-        btnShareProgress: "আজকের অগ্রগতি শেয়ার করুন",
-        shareTitle: "হিফজ অগ্রগতি",
-        shareTotal: "মোট পুনরাবৃত্তি",
-        shareEmail: "ইমেইল",
-        shareCopy: "কপি",
-        toastCopied: "কপি করা হয়েছে",
-        toastNoTodayLogs: "আজ কোনো অগ্রগতি সংরক্ষিত হয়নি।",
-        repsShort: "রিপিট",
-        lblShareVia: "শেয়ার করুন",
-        btnLoadPages: "পৃষ্ঠা লোড করুন",
-        pageShort: "পৃষ্ঠা",
-        pageModeNote: "দৈনিক পৃষ্ঠা পরিসীমা দেখানো হচ্ছে। সুরা বা আয়াত বদলালে আগের অবস্থায় ফিরবে।",
-        pageRangeTooLong: "একবারে সর্বোচ্চ 20টি পৃষ্ঠা নির্বাচন করুন।",
-        lblViewMode: "দেখার মোড",
-        btnVerseMode: "আয়াত",
-        btnMushafMode: "মুসহাফ পৃষ্ঠা",
-        mushafFullRes: "পূর্ণ রেজোলিউশন",
-        mushafLoadFailed: "পৃষ্ঠার ছবি লোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করুন."
       }
     };
 
-    let currentLang = 'en';
+    let currentLang = 'ml';
 
-    // ==================================================================
-    // STORAGE (everything the page remembers lives in localStorage)
-    // ==================================================================
     const STORE = {
       state:  'quran_hifz_state',
       lang:   'quran_hifz_lang',
@@ -735,7 +386,6 @@
       editions: 'quran_hifz_editions'
     };
     const LEGACY_RECITERS = { Ayman_Sowaid_64kbps: 'ar.aymanswoaid' };
-    const LANG_LOCALES = { en: 'en-US', ar: 'ar', ml: 'ml-IN', ur: 'ur-PK', bn: 'bn-BD' };
 
     function loadJSON(key, fallback) {
       try { const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
@@ -752,7 +402,7 @@
     let loadedPages = null;
 
     const $ = id => document.getElementById(id);
-    const T = () => translations[currentLang];
+    const T = () => translations.ml;
     function setText(id, text) { const el = $(id); if (el && text !== undefined) el.textContent = text; }
     function escapeHtml(str) {
       return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -763,16 +413,13 @@
     }
     function formatLogDate(log) {
       if (log.iso) {
-        return new Date(log.iso + 'T00:00:00').toLocaleDateString(LANG_LOCALES[currentLang], { weekday: 'short', month: 'short', day: 'numeric' });
+        return new Date(log.iso + 'T00:00:00').toLocaleDateString('ml-IN', { weekday: 'short', month: 'short', day: 'numeric' });
       }
       return log.date || '';
     }
     const getTarget = () => Math.max(1, parseInt($('repetitionTarget').value) || 1);
     const repKey = (surah, verse) => `${surah}:${verse}`;
 
-    // ==================================================================
-    // LANGUAGE
-    // ==================================================================
     const LABEL_IDS = [
       'brandTitle', 'brandSub', 'lblSurah', 'lblFromVerse', 'lblToVerse', 'lblRepetition', 'lblReciter',
       'lblDailyWird', 'lblFromPage', 'lblToPage', 'btnLoadPages', 'lblViewMode', 'btnVerseMode', 'btnMushafMode', 'mainHeaderTitle', 'mainHeaderDesc', 'lblActiveVerseTitle',
@@ -790,25 +437,13 @@
       setText('globalPlayText', isRunning ? t.stopText : t.globalPlayText);
       setText('pauseResumeBtn', isPaused ? t.continueText : t.resumeText);
       if (!isRunning) setText('activeVerseIndicator', t.notPlaying);
-      setText('currentDateBadge', new Date().toLocaleDateString(LANG_LOCALES[currentLang],
+      setText('currentDateBadge', new Date().toLocaleDateString('ml-IN',
         { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }));
-      document.documentElement.lang = currentLang;
-      document.documentElement.dir = (currentLang === 'ar' || currentLang === 'ur') ? 'rtl' : 'ltr';
+      document.documentElement.lang = 'ml';
+      document.documentElement.dir = 'ltr';
       updateModeUI();
     }
 
-    function changeLanguage(lang) {
-      if (!translations[lang]) return;
-      currentLang = lang;
-      saveJSON(STORE.lang, lang);
-      applyLanguage();
-      renderLogsTable();
-      refreshVerses();
-    }
-
-    // ==================================================================
-    // REMEMBER LAST PAGE
-    // ==================================================================
     function saveState() {
       const surah = parseInt($('surahSelect').value);
       if (!surah) return;
@@ -845,11 +480,7 @@
     }
 
     window.onload = async function () {
-      const savedLang = loadJSON(STORE.lang, 'en');
-      currentLang = translations[savedLang] ? savedLang : 'en';
-      $('langSelect').value = currentLang;
       applyLanguage();
-
       await syncReciterList();
       const st = restoreInputs();
       updateViewToggleUI();
@@ -910,9 +541,6 @@
       updateSessionSummary();
     }
 
-    // ==================================================================
-    // VERSES
-    // ==================================================================
     let versesFetchId = 0;
     async function validateAndFetchVerses() {
       const fetchId = ++versesFetchId;
@@ -940,13 +568,11 @@
         </div>`;
 
       try {
-        const editions = { en: 'en.sahih', ml: 'ml.abdulhameed', ur: 'ur.jalandhry', bn: 'bn.bengali' };
-        const translationEdition = editions[currentLang] || null;
-
-        const requests = [apiFetch(`https://api.alquran.cloud/v1/surah/${surahNum}/quran-uthmani`)];
-        if (translationEdition) {
-          requests.push(apiFetch(`https://api.alquran.cloud/v1/surah/${surahNum}/${translationEdition}`).catch(() => null));
-        }
+        const translationEdition = 'ml.abdulhameed';
+        const requests = [
+          apiFetch(`https://api.alquran.cloud/v1/surah/${surahNum}/quran-uthmani`),
+          apiFetch(`https://api.alquran.cloud/v1/surah/${surahNum}/${translationEdition}`).catch(() => null)
+        ];
         const responses = await Promise.all(requests);
         const arData = await responses[0].json();
         let transData = null;
@@ -1059,9 +685,6 @@
       });
     }
 
-    // ==================================================================
-    // DAILY PAGE RANGE
-    // ==================================================================
     const MAX_PAGE = 604;
     const MAX_PAGES_PER_LOAD = 20;
 
@@ -1125,13 +748,12 @@
         </div>`;
 
       try {
-        const editions = { en: 'en.sahih', ml: 'ml.abdulhameed', ur: 'ur.jalandhry', bn: 'bn.bengali' };
-        const edition = editions[currentLang] || null;
+        const edition = 'ml.abdulhameed';
         const pages = [];
         for (let p = from; p <= to; p++) pages.push(p);
 
         const arReqs = pages.map(p => apiFetch(`https://api.alquran.cloud/v1/page/${p}/quran-uthmani`));
-        const trReqs = edition ? pages.map(p => apiFetch(`https://api.alquran.cloud/v1/page/${p}/${edition}`).catch(() => null)) : [];
+        const trReqs = pages.map(p => apiFetch(`https://api.alquran.cloud/v1/page/${p}/${edition}`).catch(() => null));
         const [arRes, trRes] = await Promise.all([Promise.all(arReqs), Promise.all(trReqs)]);
         const arJson = await Promise.all(arRes.map(r => r.json()));
         const trJson = await Promise.all(trRes.map(async r => { try { return r ? await r.json() : null; } catch (e) { return null; } }));
@@ -1181,9 +803,6 @@
       }
     }
 
-    // ==================================================================
-    // VIEW MODE: Verses | Mus'haf Page
-    // ==================================================================
     const MUSHAF_IMAGE_SOURCES = [
       p => `https://android.quran.com/data/width_1024/page${String(p).padStart(3, '0')}.png`,
       p => `https://mushaf.quran.com/png/page${String(p).padStart(3, '0')}.png`,
@@ -1192,8 +811,8 @@
     let mushafSourceStart = 0;
 
     function updateViewToggleUI() {
-      const on = 'flex-1 py-1.5 text-xs font-semibold rounded-md bg-emerald-600 text-white transition-all';
-      const off = 'flex-1 py-1.5 text-xs font-semibold rounded-md text-emerald-200 hover:text-white transition-all';
+      const on = 'flex-1 py-1 text-xs font-semibold rounded-md bg-emerald-600 text-white transition-all';
+      const off = 'flex-1 py-1 text-xs font-semibold rounded-md text-emerald-200 hover:text-white transition-all';
       const bv = $('btnVerseMode'), bm = $('btnMushafMode');
       if (bv) bv.className = currentViewMode === 'verse' ? on : off;
       if (bm) bm.className = currentViewMode === 'mushaf' ? on : off;
@@ -1279,7 +898,7 @@
         pageCard.innerHTML = `
           <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
             <span class="bg-dark-emerald text-emerald-100 font-bold text-xs px-3 py-1 rounded-lg">
-              ${escapeHtml(t.pageShort)} ${page}${currentLang === 'ar' ? '' : ` (صفحة ${page})`}
+              ${escapeHtml(t.pageShort)} ${page}
             </span>
             <a id="mushaf-full-${page}" href="${escapeHtml(url)}" target="_blank" rel="noopener" class="text-xs text-emerald-700 font-medium hover:underline">
               🔍 ${escapeHtml(t.mushafFullRes)}
@@ -1319,9 +938,6 @@
       if (k > mushafSourceStart) mushafSourceStart = k;
     }
 
-    // ==================================================================
-    // REPETITION COUNTERS
-    // ==================================================================
     function bumpRep(i) {
       const verse = currentVerses[i];
       if (!verse) return;
@@ -1371,9 +987,6 @@
       setText('sessionReps', `${done} / ${total}`);
     }
 
-    // ==================================================================
-    // AUDIO
-    // ==================================================================
     const FALLBACK_RECITER = 'ar.alafasy';
     const AUDIO_START_TIMEOUT = 8000;
     const AUDHUBILLAH_FALLBACK_URL = 'https://everyayah.com/data/Alafasy_128kbps/audhubillah.mp3';
@@ -1787,9 +1400,6 @@
       setText('activeVerseIndicator', t.notPlaying);
     }
 
-    // ==================================================================
-    // LOG
-    // ==================================================================
     function getStoredLogs() {
       const logs = loadJSON(STORE.logs, []);
       return Array.isArray(logs) ? logs : [];
@@ -1889,15 +1499,12 @@
       }
     }
 
-    // ==================================================================
-    // SHARE
-    // ==================================================================
     function buildShareText() {
       const t = T();
       const todays = getStoredLogs().filter(l => l.iso === todayISO());
       if (!todays.length) return null;
 
-      const dateStr = new Date().toLocaleDateString(LANG_LOCALES[currentLang],
+      const dateStr = new Date().toLocaleDateString('ml-IN',
         { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
       const lines = [`📖 ${t.shareTitle} - ${dateStr}`, ''];
       let total = 0;
@@ -1968,9 +1575,6 @@
       document.body.appendChild(overlay);
     }
 
-    // ==================================================================
-    // TOAST
-    // ==================================================================
     function showToast(msg, isWarning = false) {
       const toast = document.createElement('div');
       toast.className = 'fixed bottom-5 right-5 border px-5 py-3 rounded-xl shadow-2xl z-50 text-xs font-semibold flex items-center space-x-2 transition-all '
