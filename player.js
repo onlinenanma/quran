@@ -272,7 +272,7 @@ const QL = () => Object.assign({ listen: "\u0d15\u0d47\u0d7e\u0d15\u0d4d\u0d15\u
   let wakeLock = null, waking = false;
   let nsVideo = null, nsTimer = null, nsCanvas = null;
 
-  const wakeOn = () => { const c = $(""); return !c || c.checked; };
+  const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
   const wantWake = () => wakeOn() && (continuous || !!activeKey);
 
   /* Preface (short surahs): shows the "preface" section with the same look and "show preface" option as 001.html.
@@ -343,13 +343,14 @@ body.hide-in #intro-wrap{display:none}
     row.className = "ctl-row";
     row.innerHTML = '<span class="ctl-title">സ്ക്രീൻ:</span>' +
       '<label class="opt"><input type="checkbox" id="opt-wake" checked> ' +
-      'ഓഫ് ആകരുത്</label>';
+      'പ്ലേ ചെയ്യുമ്പോഴും സ്ക്രീൻ ഓഫ് ആകരുത്</label>';
     panel.appendChild(row);
   }
 
 
   function startNoSleep() {
     try {
+      if (!wantWake() || document.hidden) return;
       if (nsVideo) { const q = nsVideo.play(); if (q && q.catch) q.catch(() => {}); return; }
       if (!HTMLCanvasElement.prototype.captureStream) return;
       nsCanvas = document.createElement("canvas");
@@ -366,7 +367,7 @@ body.hide-in #intro-wrap{display:none}
       v.loop = true;
       v.style.cssText = "position:fixed;bottom:0;right:0;width:8px;height:8px;opacity:0.05;pointer-events:none;";
       v.srcObject = nsCanvas.captureStream(5);
-      v.addEventListener("pause", () => { if (nsVideo === v && document.visibilityState === "visible") v.play().catch(() => {}); });
+      v.addEventListener("pause", () => { if (nsVideo === v && wantWake() && document.visibilityState === "visible") v.play().catch(() => {}); });
       document.body.appendChild(v);
       const p = v.play();
       if (p && p.catch) p.catch(() => {});
@@ -388,37 +389,45 @@ body.hide-in #intro-wrap{display:none}
   function updateWake() { if (wantWake()) requestWake(); else releaseWake(); }
 
   async function requestWake() {
-    if (!wantWake() || waking || wakeLock) return;
+    if (!wantWake() || document.hidden || waking || wakeLock) return;
     waking = true;
     try {
       if ("wakeLock" in navigator) {
         try {
           const w = await navigator.wakeLock.request("screen");
+          if (!wantWake() || document.hidden) {
+            try { w.release().catch(() => {}); } catch (e) {}
+            return;
+          }
           wakeLock = w;
           w.addEventListener("release", () => {
             if (wakeLock === w) wakeLock = null;
-            if (document.visibilityState === "visible") setTimeout(requestWake, 300);
+            if (wantWake() && document.visibilityState === "visible") setTimeout(requestWake, 300);
           });
           stopNoSleep();
         } catch (e) {}
       }
-      if (!wakeLock) startNoSleep();
+      if (!wakeLock && wantWake() && !document.hidden) startNoSleep();
     } finally {
       waking = false;
     }
   }
 
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible") requestWake();
+    if (document.hidden || !wantWake()) releaseWake();
+    else if (document.visibilityState === "visible") requestWake();
   });
   ["pointerdown", "touchstart", "click", "keydown"].forEach(ev =>
-    document.addEventListener(ev, () => requestWake(), { passive: true }));
+    document.addEventListener(ev, () => { if (wantWake()) requestWake(); else releaseWake(); }, { passive: true }));
 
   setInterval(() => {
-    if (!wantWake()) return;
+    if (!wantWake() || document.hidden) { releaseWake(); return; }
     if (!wakeLock) requestWake();
     if (nsVideo && nsVideo.paused) { const p = nsVideo.play(); if (p && p.catch) p.catch(() => {}); }
   }, 5000);
+
+  window.addEventListener("pagehide", () => { stopAll(); releaseWake(); });
+  window.addEventListener("beforeunload", () => { stopAll(); releaseWake(); });
 
   /* ---------- Lock-screen info / controls ---------- */
   function setMediaSession(label) {
