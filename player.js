@@ -341,9 +341,9 @@ body.hide-in #intro-wrap{display:none}
     const panel = $("panel"); if (!panel) return;
     const row = document.createElement("div");
     row.className = "ctl-row";
-    row.innerHTML = '<span class="ctl-title">സ്ക്രീൻ:</span>' +
+    row.innerHTML = '<span class="ctl-title">സ്ക്രീൻ ഓഫ് ആകരുത്:</span>' +
       '<label class="opt"><input type="checkbox" id="opt-wake" checked> ' +
-      'ഓഫ് ആകരുത്</label>';
+      '</label>';
     panel.appendChild(row);
   }
 
