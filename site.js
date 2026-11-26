@@ -402,8 +402,7 @@
       masterBtn.addEventListener('click', function(e) {
         if (masterBtn.classList.contains('playing')) {
           e.stopImmediatePropagation();
-          if (typeof stopAll === 'function') stopAll();              // the player's own stop: ends the queue, speech and the highlighted buttons
-          else if (typeof stopSpeech === 'function') stopSpeech();
+          if (typeof stopSpeech === 'function') stopSpeech();
           if (typeof currentAudio !== 'undefined' && currentAudio) { 
             currentAudio.pause(); 
             currentAudio.currentTime = 0; 
@@ -843,110 +842,4 @@
       if (sw.origin === location.origin) navigator.serviceWorker.register(sw.pathname, { scope: sw.pathname.replace(/[^\/]*$/, '') }).catch(function () {});
     });
   }
-})();
-
-/* ---------- surah pages: three navigation buttons - previous page, top, next page (hide while audio plays) ----------
-   Shown on verse pages (002-1, 002-2 ...). A surah with more than 30 verses is split into pages of 20 verses; shorter surahs are one page.
-   Previous / next move between the parts of a surah; at the first / last part (and on one-page surahs) they continue to the previous / next surah.
-   Switch off on a page with:  window.QURAN_NO_PAGE_NAV = true  (before site.js loads). */
-(function () {
-  'use strict';
-  if (window.QURAN_NO_PAGE_NAV) return;
-  var AYAH = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];          // verses in each surah (114 values)
-  var SPLIT_OVER = 30, PER_PAGE = 20;                          // same rule as generate_quran.py
-  var CROSS_SURAH = true;                                      // false = previous / next stay inside the surah
-  var LBL = { prevS: "\u0d2e\u0d41\u0d7b \u0d38\u0d42\u0d31\u0d24\u0d4d\u0d24\u0d4d", nextS: "\u0d05\u0d1f\u0d41\u0d24\u0d4d\u0d24 \u0d38\u0d42\u0d31\u0d24\u0d4d\u0d24\u0d4d", prev: "\u0d2e\u0d41\u0d7b \u0d2d\u0d3e\u0d17\u0d02", top: "\u0d2e\u0d41\u0d15\u0d33\u0d3f\u0d7d", next: "\u0d05\u0d1f\u0d41\u0d24\u0d4d\u0d24 \u0d2d\u0d3e\u0d17\u0d02" };
-  var ICON = {
-    prev: '<path d="M14.5 5.5 8 12l6.5 6.5"/>',
-    top:  '<path d="M12 19V5"/><path d="M5.5 11.5 12 5l6.5 6.5"/>',
-    next: '<path d="M9.5 5.5 16 12l-6.5 6.5"/>'
-  };
-
-  function init() {
-    var path = location.pathname.replace(/\/+$/, '').replace(/\.html?$/i, '');
-    var m = /\/(\d{3})(?:-(\d+))?$/.exec(path);                // /002-3   /002   /112
-    if (!m || !document.getElementById('verses')) return;       // only pages that show verses
-    var s = parseInt(m[1], 10), part = m[2] ? parseInt(m[2], 10) : 1;
-    var count = AYAH[s - 1]; if (!count) return;
-    var parts = count > SPLIT_OVER ? Math.ceil(count / PER_PAGE) : 1;
-    var pad = m[1];
-    function pad3(n) { return ('00' + n).slice(-3); }
-    function partsOf(x) { return AYAH[x - 1] > SPLIT_OVER ? Math.ceil(AYAH[x - 1] / PER_PAGE) : 1; }
-    // address of a page of another surah: split surahs are NNN-k (002-1, 002-2 ...), one-page surahs are just NNN (112)
-    function pageOf(x, which) {
-      var p = partsOf(x);
-      return p > 1 ? pad3(x) + '-' + (which === 'last' ? p : 1) : pad3(x);
-    }
-
-    var css = document.createElement('style');
-    css.textContent =
-      '.qpn{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);z-index:900;display:flex;gap:6px;padding:6px;border-radius:999px;' +
-        'background:rgba(18,53,40,.9);border:1px solid rgba(212,175,55,.75);box-shadow:0 6px 20px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);' +
-        'opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100vw - 16px)}' +
-      '.qpn.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}' +
-      '.qpn a,.qpn button{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:68px;padding:6px 10px;border-radius:999px;border:0;' +
-        'background:transparent;color:#fff;font:inherit;font-size:.72rem;font-weight:600;line-height:1.15;text-decoration:none;cursor:pointer;white-space:nowrap}' +
-      '.qpn a:hover,.qpn button:hover,.qpn a:focus-visible,.qpn button:focus-visible{background:#d4af37;color:#123528;outline:none}' +
-      '.qpn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
-      '@media(max-width:380px){.qpn a,.qpn button{min-width:58px;padding:6px 7px;font-size:.68rem}}' +
-      'body.qpn-pad{padding-bottom:86px!important}';
-    document.head.appendChild(css);
-
-    function item(tag, key, href, shown) {
-      var e = document.createElement(tag);
-      if (href) e.href = href; else e.type = 'button';
-      e.className = 'qpn-' + key; e.setAttribute('aria-label', LBL[shown || key]); e.title = LBL[shown || key];
-      e.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + ICON[key] + '</svg><span>' + LBL[shown || key] + '</span>';
-      return e;
-    }
-    var bar = document.createElement('nav'); bar.className = 'qpn'; bar.setAttribute('aria-label', 'Page navigation');
-    if (parts > 1 && part > 1) bar.appendChild(item('a', 'prev', pad + '-' + (part - 1)));
-    else if (CROSS_SURAH && s > 1) bar.appendChild(item('a', 'prev', pageOf(s - 1, 'last'), 'prevS'));
-    var top = item('button', 'top');
-    top.addEventListener('click', function () {
-      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
-    });
-    bar.appendChild(top);
-    if (parts > 1 && part < parts) bar.appendChild(item('a', 'next', pad + '-' + (part + 1)));
-    else if (CROSS_SURAH && s < 114) bar.appendChild(item('a', 'next', pageOf(s + 1, 'first'), 'nextS'));
-    document.body.appendChild(bar);
-    document.body.classList.add('qpn-pad');
-
-    /* When the bar is visible
-         - while audio is playing:  hidden (it does not disturb listening); it appears only when you reach the bottom of the page
-         - reading (no audio):      hidden until you touch / scroll / move the mouse, then it hides again after IDLE_MS
-         - at the bottom of the page: always visible, so the next page is one tap away                                          */
-    var IDLE_MS = 3000;
-    var active = false, idleTimer = 0, inside = false, tick = false;
-    function isPlaying() { return !!document.querySelector('.play-btn.playing, #master.playing'); }
-    function update() {
-      tick = false;
-      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-      var H = document.documentElement.scrollHeight || 0, vh = window.innerHeight || 0;
-      var scrollable = H - vh > 200;                                   // a short page fits the screen: nothing to scroll
-      var atBottom = scrollable && y + vh >= H - 60;
-      var readingTouch = !isPlaying() && (active || inside) && (y > 250 || !scrollable);
-      bar.classList.toggle('show', atBottom || readingTouch);
-    }
-    function schedule() { if (!tick) { tick = true; requestAnimationFrame(update); } }
-    function wake() {                                                  // any touch / scroll / key shows the bar for a few seconds
-      active = true; clearTimeout(idleTimer);
-      idleTimer = setTimeout(function () { active = false; schedule(); }, IDLE_MS);
-      schedule();
-    }
-    ['touchstart', 'pointerdown', 'keydown', 'wheel'].forEach(function (ev) { window.addEventListener(ev, wake, { passive: true }); });
-    window.addEventListener('scroll', function () { wake(); }, { passive: true });
-    var moved = 0;
-    window.addEventListener('mousemove', function () { var n = Date.now(); if (n - moved > 400) { moved = n; wake(); } }, { passive: true });
-    bar.addEventListener('mouseenter', function () { inside = true; schedule(); });
-    bar.addEventListener('mouseleave', function () { inside = false; wake(); });
-    bar.addEventListener('focusin', function () { inside = true; schedule(); });
-    bar.addEventListener('focusout', function () { inside = false; schedule(); });
-    window.addEventListener('resize', schedule);
-    // play / stop changes the "playing" class on the play buttons - react to it straight away
-    try { new MutationObserver(schedule).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] }); } catch (e) {}
-    update();
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
