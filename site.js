@@ -74,7 +74,29 @@
     ["ro", "Română"],
     ["sw", "Kiswahili"],
     ["am", "አማርኛ"],
-    ["ha", "Hausa"]
+    ["ha", "Hausa"],
+    ["so", "Soomaali"],
+    ["sq", "Shqip"],
+    ["az", "Azərbaycan"],
+    ["bs", "Bosanski"],
+    ["bg", "Български"],
+    ["cs", "Čeština"],
+    ["ckb", "کوردی"],
+    ["no", "Norsk"],
+    ["sd", "سنڌي"],
+    ["tg", "Тоҷикӣ"],
+    ["tt", "Татарча"],
+    ["ug", "ئۇيغۇرچە"],
+    ["uz", "Oʻzbekcha"],
+    ["tl", "Tagalog"],
+    ["ps", "پښتو"],
+    ["km", "ភាសាខ្មែរ"],
+    ["yo", "Yorùbá"],
+    ["om", "Oromoo"],
+    ["as", "অসমীয়া"],
+    ["kk", "Қазақша"],
+    ["ky", "Кыргызча"],
+    ["rw", "Kinyarwanda"]
   ];
   function askLanguage() {
     try {
