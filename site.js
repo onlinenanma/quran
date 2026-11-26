@@ -74,7 +74,29 @@
     ["ro", "Română"],
     ["sw", "Kiswahili"],
     ["am", "አማርኛ"],
-    ["ha", "Hausa"]
+    ["ha", "Hausa"],
+    ["so", "Soomaali"],
+    ["sq", "Shqip"],
+    ["az", "Azərbaycan"],
+    ["bs", "Bosanski"],
+    ["bg", "Български"],
+    ["cs", "Čeština"],
+    ["ckb", "کوردی"],
+    ["no", "Norsk"],
+    ["sd", "سنڌي"],
+    ["tg", "Тоҷикӣ"],
+    ["tt", "Татарча"],
+    ["ug", "ئۇيغۇرچە"],
+    ["uz", "Oʻzbekcha"],
+    ["tl", "Tagalog"],
+    ["ps", "پښتو"],
+    ["km", "ភាសាខ្មែរ"],
+    ["yo", "Yorùbá"],
+    ["om", "Oromoo"],
+    ["as", "অসমীয়া"],
+    ["kk", "Қазақша"],
+    ["ky", "Кыргызча"],
+    ["rw", "Kinyarwanda"]
   ];
   function askLanguage() {
     try {
@@ -402,13 +424,15 @@
       masterBtn.addEventListener('click', function(e) {
         if (masterBtn.classList.contains('playing')) {
           e.stopImmediatePropagation();
-          if (typeof stopSpeech === 'function') stopSpeech();
-          if (typeof currentAudio !== 'undefined' && currentAudio) { 
-            currentAudio.pause(); 
-            currentAudio.currentTime = 0; 
+          /* Stop through the player's own stopAll(): it ends the queue (token), the browser voice AND the audio.
+             (The old code only paused the audio, so the spoken explanation / meaning kept going.) */
+          if (typeof stopAll === 'function') stopAll();
+          else {
+            try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (er) {}
+            if (typeof currentAudio !== 'undefined' && currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+            masterBtn.classList.remove('playing');
+            masterBtn.textContent = 'കേൾക്കാം';
           }
-          masterBtn.classList.remove('playing');
-          masterBtn.textContent = 'കേൾക്കാം';
         }
       }, true);
     }
@@ -505,7 +529,7 @@
   function shownText(el) {
     if (!el) return '';
     var src = el.querySelector('.pl') || el.querySelector('.text') || el, c = src.cloneNode(true);
-    c.querySelectorAll('.tag,.isti-ar,[translate="no"]').forEach(function (x) { x.remove(); });
+    c.querySelectorAll('.tag,.isti-ar,[translate="no"]:not(.mtrans)').forEach(function (x) { x.remove(); });
     return c.textContent.replace(/\s+/g, ' ').trim();
   }
 
@@ -650,6 +674,8 @@
       }
       var shown = el ? shownText(el) : text, translated = !!shown && mlFrac(shown) < 0.5;
       var code = translated ? spokenCode(shown) : 'ml';
+      var mt = el && el.querySelector('.mtrans');                  // API meaning: read it in its own language (e.g. English when that is the fallback)
+      if (mt && mt.lang) { code = mt.lang; translated = true; }
       
       ensureVoices(code, function () {
         if (my !== token) return;
