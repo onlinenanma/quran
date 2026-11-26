@@ -123,10 +123,10 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
           </div>
         </div>
 
-        ${(v.ml || v.mlT) ? `<div class="item it-ml" id="item-ml-${v.n}">
+        ${v.ml ? `<div class="item it-ml" id="item-ml-${v.n}">
           <div class="row">
             <button class="play-btn" id="btn-ml-${v.n}" title="Play / Stop" onclick="toggleItem('ml', ${v.n})">▶</button>
-            <p class="text"><span class="tag">സാരം:</span>${v.mlT ? `<span class="mtrans notranslate" translate="no" lang="${TR_INFO.lang}"${TR_RTL.has(TR_INFO.lang) ? ' dir="rtl"' : ""}>${v.mlT}</span>` : v.ml}</p>
+            <p class="text"><span class="tag">സാരം:</span>${v.ml}</p>
           </div>
         </div>` : ""}
 
@@ -549,8 +549,6 @@ body.hide-in #intro-wrap{display:none}
           playChunks(chunks, langCode, my, done, idx);
         };
         utterances[0] = u;                      // keep a reference so it is not garbage-collected
-        if (my !== token) return;
-        clearTimeout(killTimer);
         window.speechSynthesis.speak(u);
       };
       next();
@@ -571,7 +569,7 @@ body.hide-in #intro-wrap{display:none}
     if (hasIntro() && (on("show-in") || is("in", 0))) q.push({ kind: "in", n: 0 });
     VERSES.forEach(v => {
       if (on("show-ar") || is("ar", v.n)) q.push({ kind: "ar", n: v.n });
-      if ((v.ml || v.mlT) && (on("show-ml") || is("ml", v.n))) q.push({ kind: "ml", n: v.n });
+      if (v.ml && (on("show-ml") || is("ml", v.n))) q.push({ kind: "ml", n: v.n });
       if ((on("show-tf") || is("tf", v.n)) && v.tf) q.push({ kind: "tf", n: v.n });
     });
     return q;
@@ -798,29 +796,9 @@ function mlVoices() {   // voices for the language being spoken (name kept so th
   const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
   return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith(curLang));
 }
-/* Browsers (Chrome/Edge, especially with online "Natural" voices) sometimes ignore a single cancel() while a long
-   explanation is being spoken. So: detach the utterance handlers, cancel, and keep cancelling briefly until the engine is really silent. */
-let killTimer = null;
-function killSpeech() {
-  const ss = window.speechSynthesis; if (!ss) return;
-  try { const u = utterances[0]; if (u) { u.onend = u.onerror = u.onboundary = null; } } catch (e) {}
-  try { if (ss.paused) ss.resume(); } catch (e) {}
-  try { ss.cancel(); } catch (e) {}
-  clearTimeout(killTimer);
-  let tries = 0;
-  const again = () => {
-    if (tries++ >= 12) return;
-    let busy = false;
-    try { busy = ss.speaking || ss.pending; } catch (e) {}
-    if (!busy) return;
-    try { ss.pause(); ss.cancel(); } catch (e) {}
-    killTimer = setTimeout(again, 120);
-  };
-  killTimer = setTimeout(again, 60);
-}
 function stopAll() {
   token++; continuous = false;
-  killSpeech();
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
   sharedAudio.onended = sharedAudio.onerror = null; sharedAudio.pause(); currentAudio = null;
   clearMark();
   masterBtn.textContent = QL().listen; masterBtn.classList.remove("playing"); statusEl.textContent = "";
@@ -1049,131 +1027,11 @@ async function loadTafsir() {
   } catch (e) { /* no file for this chapter yet - fine */ }
 }
 
-  
-/* =====================================================
-   VERSE MEANING IN THE SITE LANGUAGE (from the Qur'an APIs - not Google)
-   Malayalam stays as written on the page. For every other language the meaning comes from alquran.cloud
-   (one request per chapter) or QuranEnc, the same editions as the quranlearning.app index page.
-   Matched by verse number, so 002-1, 002-2 ... all use the same chapter request. Cached in the browser.
-   If a language has no edition / the API fails: English (Sahih International); if that fails too, the page's Malayalam meaning stays.
-   Arabic site language: no Arabic translation is fetched (the page text is left to the page translator).
-   ===================================================== */
-const TR_EDITIONS = {
-  en: 'en.sahih', ur: 'ur.jalandhry', bn: 'bn.bengali', fr: 'fr.hamidullah', es: 'es.cortes', de: 'de.aburida',
-  id: 'id.indonesian', tr: 'tr.ates', ru: 'ru.kuliev', fa: 'fa.ayati', hi: 'hi.hindi', zh: 'zh.jian', ms: 'ms.basmeih',
-  ta: 'ta.jainulabdeen', ha: 'ha.gumi', sw: 'sw.barwani', so: 'so.abduh', sq: 'sq.ahmeti', az: 'az.mammadaliyev',
-  bs: 'bs.korkut', bg: 'bg.theophanov', cs: 'cs.hrabek', nl: 'nl.keyzer', it: 'it.piccardo', ja: 'ja.japanese',
-  ko: 'ko.korean', ku: 'ku.asan', no: 'no.berg', pl: 'pl.bielawskiego', pt: 'pt.elhayek', ro: 'ro.grigore',
-  sd: 'sd.amrohi', sv: 'sv.bernstrom', tg: 'tg.ayati', th: 'th.thai', tt: 'tt.nugman', ug: 'ug.saleh',
-  uz: 'uz.sodik', am: 'am.sadiq'
-};
-const TR_QURANENC = {
-  tl: ['tagalog_rwwad'], vi: ['vietnamese_rwwad'], si: ['sinhalese_mahir'], ps: ['pashto_zakaria'], km: ['khmer_rwwad'],
-  yo: ['yoruba_mikail'], om: ['oromo_rwwad', 'oromo_ababor'], te: ['telugu_abdurrahim', 'telugu_muhammad'],
-  mr: ['marathi_ansari'], gu: ['gujarati_omari'], kn: ['kannada_bashir', 'kannada_hamza'], as: ['assamese_rafeeq'],
-  pa: ['punjabi_arif', 'punjabi_haleem'], ne: ['nepali_central', 'nepali_ahlulhadith'], el: ['greek_rwwad'],
-  uk: ['ukrainian_yakubovych'], kk: ['kazakh_altai'], ky: ['kyrgyz_hakimov'], rw: ['kinyarwanda_assoc', 'kinyarwanda_rma']
-};
-const TR_RTL = new Set(["ur", "fa", "ps", "sd", "ku", "ug", "ar"]);
-let TR_INFO = { lang: "", label: "", fallback: false };
-
-function trSiteLang() {                     // same source as site.js: the googtrans cookie (/ml/hi -> hi)
-  const m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
-  let v = m ? m[1] : ""; try { v = decodeURIComponent(v); } catch (e) {}
-  const x = v.match(/^\/[^\/]*\/([A-Za-z-]+)/);
-  const l = x ? x[1] : "ml";
-  if (/^zh/i.test(l)) return "zh";
-  l = l.toLowerCase().split("-")[0];
-  return l === "ckb" ? "ku" : l === "nb" || l === "nn" ? "no" : l;   // Sorani Kurdish / Norwegian codes used by the page translator
-}
-let trLastSlot = 0;                         // same pacing as apiFetch on quranlearning.app: ~110 ms between alquran.cloud calls
-async function trThrottle(url) {
-  if (url.indexOf("api.alquran.cloud") < 0) return;
-  const now = Date.now(), slot = Math.max(now, trLastSlot + 110);
-  trLastSlot = slot;
-  if (slot > now) await new Promise(r => setTimeout(r, slot - now));
-}
-async function trFetch(url, ms) {           // timeout, plus one retry (after Retry-After on HTTP 429, max 5 s)
-  for (let i = 0; i < 2; i++) {
-    const ctl = typeof AbortController === "function" ? new AbortController() : null;
-    const timer = setTimeout(() => ctl && ctl.abort(), ms || 6000);
-    try {
-      await trThrottle(url);
-      const r = await fetch(url, ctl ? { signal: ctl.signal } : undefined);
-      clearTimeout(timer);
-      if (r.ok) return await r.json();
-      if (r.status === 404) return null;
-      if (r.status === 429) {
-        const wait = Math.min(parseInt(r.headers && r.headers.get && r.headers.get("Retry-After"), 10) || 1, 5);
-        await new Promise(res => setTimeout(res, wait * 1000));
-      }
-    } catch (e) { clearTimeout(timer); }
-  }
-  return null;
-}
-function trCacheGet(k) { try { const t = localStorage.getItem("qtr1:" + k); return t ? JSON.parse(t) : null; } catch (e) { return null; } }
-function trCacheSet(k, o) { try { localStorage.setItem("qtr1:" + k, JSON.stringify(o)); } catch (e) { /* storage full: just skip caching */ } }
-
-async function trFromAlq(edition) {
-  const ck = edition + ":" + SURAH, hit = trCacheGet(ck);
-  if (hit) return { map: new Map(hit.rows), label: hit.label };
-  const j = await trFetch("https://api.alquran.cloud/v1/surah/" + SURAH + "/" + edition);
-  if (!j || j.code !== 200 || !j.data || !Array.isArray(j.data.ayahs)) return null;
-  const rows = j.data.ayahs.map(a => [a.numberInSurah, String(a.text || "").trim()]).filter(r => r[1]);
-  if (!rows.length) return null;
-  const label = (j.data.edition && (j.data.edition.englishName || j.data.edition.name)) || edition;
-  trCacheSet(ck, { rows, label });
-  return { map: new Map(rows), label };
-}
-async function trFromQE(key) {
-  const ck = key + ":" + SURAH, hit = trCacheGet(ck);
-  if (hit) return { map: new Map(hit.rows), label: hit.label };
-  const j = await trFetch("https://quranenc.com/api/v1/translation/sura/" + key + "/" + SURAH);
-  const list = j ? (Array.isArray(j) ? j : (j.result || [])) : [];
-  const rows = list.map(r => [parseInt(r.aya, 10), String(r.translation || "").trim()]).filter(r => r[0] && r[1]);
-  if (!rows.length) return null;
-  trCacheSet(ck, { rows, label: key });
-  return { map: new Map(rows), label: key.replace(/_/g, " ") };
-}
-async function trGet(lang) {
-  if (TR_QURANENC[lang]) {
-    for (const key of TR_QURANENC[lang]) { const r = await trFromQE(key); if (r) return r; }
-    return null;
-  }
-  return TR_EDITIONS[lang] ? trFromAlq(TR_EDITIONS[lang]) : null;
-}
-async function loadVerseTranslations() {
-  const lang = trSiteLang();
-  if (lang === "ml" || lang === "ar") return;
-  const work = (async () => {
-    let r = await trGet(lang), used = lang, fb = false;
-    if (!r && lang !== "en") { r = await trGet("en"); used = "en"; fb = true; }
-    if (!r) return;
-    VERSES.forEach(v => { const t = r.map.get(v.n); if (t) v.mlT = escHtml(t); });
-    TR_INFO = { lang: used, label: r.label, fallback: fb };
-  })();
-  try { await Promise.race([work, new Promise(res => setTimeout(res, 12000))]); } catch (e) { /* keep the page's Malayalam meaning */ }
-}
-function showTranslationCredit() {
-  if (!TR_INFO.lang || !VERSES.some(v => v.mlT)) return;
-  if (!$("tr-style")) {
-    const st = document.createElement("style"); st.id = "tr-style";
-    st.textContent = '.mtrans[dir="rtl"]{display:block;text-align:right}.tr-credit{max-width:1000px;margin:-6px auto 14px;font-size:12px;color:var(--muted);text-align:center}';
-    document.head.appendChild(st);
-  }
-  const d = document.createElement("div");
-  d.className = "tr-credit notranslate"; d.setAttribute("translate", "no");
-  d.textContent = "Meaning: " + TR_INFO.label + " \u00B7 " + (TR_QURANENC[TR_INFO.lang] ? "QuranEnc" : "alquran.cloud") +
-    (TR_INFO.fallback ? " \u00B7 (no translation for your language yet \u2013 English shown)" : "");
-  $("verses").insertAdjacentElement("afterend", d);
-}
-
-/* =====================================================
+  /* =====================================================
      START
      ===================================================== */
 function startPage() {
   buildPage();
-  showTranslationCredit();
   initReciters();
   ensureShareStyle();
   ensureIntroOption();
@@ -1202,4 +1060,4 @@ function startPage() {
     if (el && el.scrollIntoView) setTimeout(() => el.scrollIntoView({ block: "start" }), 150);
   }
 }
-Promise.all([loadTafsir(), loadExtras(), loadVerseTranslations()]).then(startPage);
+Promise.all([loadTafsir(), loadExtras()]).then(startPage);
