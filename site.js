@@ -38,7 +38,7 @@
   var LANGS = [
     ["ml", "മലയാളം"],
     ["en", "English"],
-    ["hi", "हिंदी"],
+    ["hi", "ഹിन्दी"],
     ["ta", "தமிழ்"],
     ["te", "తెలుగు"],
     ["kn", "കನ್ನಡ"],
@@ -376,7 +376,7 @@
     var optBtn = document.getElementById('opt-toggle');
     var panel = document.getElementById('panel');
     var controls = document.querySelector('.controls');
-    
+
     if (optBtn && panel) {
       panel.classList.remove('open');
       panel.style.display = 'none';
@@ -477,19 +477,19 @@
   function isM(v) { return MALE.test(v.name) && !FEMALE.test(v.name); }
   function vscore(v) {
     var n = v.name || '', s = 0;
-    if (/natural|neural/i.test(n)) s += 10;            
-    if (/enhanced|premium|siri/i.test(n)) s += 8;      
+    if (/natural|neural/i.test(n)) s += 10;
+    if (/enhanced|premium|siri/i.test(n)) s += 8;
     if (/online/i.test(n)) s += 6;
-    if (/google/i.test(n)) s += 5;                     
+    if (/google/i.test(n)) s += 5;
     if (v.localService === false) s += 2;
-    if (/compact|espeak|festival/i.test(n)) s -= 6;    
+    if (/compact|espeak|festival/i.test(n)) s -= 6;
     return s;
   }
   function byLang(l) {
     return window.speechSynthesis ? speechSynthesis.getVoices().filter(function (v) {
       return v.lang.toLowerCase().replace('_', '-').indexOf(l) === 0; }) : [];
   }
-  function pick(kind, lang) {          
+  function pick(kind, lang) {
     var vs = lang ? byLang(lang) : (typeof window.mlVoices === 'function' ? window.mlVoices() : byLang('ml'));
     if (!vs.length) return null;
     vs = vs.slice().sort(function (a, b) { return vscore(b) - vscore(a) || a.name.localeCompare(b.name); });
@@ -557,7 +557,7 @@
   function speakIn(code, text, my, done, kind, label) {
     var chunks = splitText(cleanForSpeech(text));
     if (!chunks.length) { done(); return; }
-    
+
     if (typeof window.speechSynthesis === 'undefined') {
       done();
       return;
@@ -646,7 +646,7 @@
         if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (kind === 'tf' ? 'Sobhana' : 'Midhun') + ' (recorded)';
         a.play().catch(bad);
       });
-    }).catch(function () { if (my !== token) fallback(); });
+    }).catch(function () { if (my === token) fallback(); });
   }
   onReady(function () { if (typeof SURAH !== 'undefined') recManifest(); });
 
@@ -676,7 +676,7 @@
       var code = translated ? spokenCode(shown) : 'ml';
       var mt = el && el.querySelector('.mtrans');                  // API meaning: read it in its own language (e.g. English when that is the fallback)
       if (mt && mt.lang) { code = mt.lang; translated = true; }
-      
+
       ensureVoices(code, function () {
         if (my !== token) return;
         if (translated) {
@@ -698,7 +698,7 @@
               if (my !== token) return;
               if (idx >= chunks.length) { done(); return; }
               if (typeof statusEl !== 'undefined' && statusEl) statusEl.textContent = (typeof curLabel !== 'undefined' ? curLabel + ' · ' : '') + (found.name || 'Malayalam Voice') + ' (' + (idx+1) + '/' + chunks.length + ')';
-              
+
               if (typeof window.speechSynthesis === 'undefined') {
                 done();
                 return;
@@ -707,18 +707,18 @@
               var u = new SpeechSynthesisUtterance(chunks[idx]);
               if (typeof utterances !== 'undefined') utterances[0] = u;
               u.voice = found.voice || found; u.lang = u.voice.lang || 'ml-IN'; u.pitch = 1; u.rate = 0.95;
-              
+
               var doneCalled = false, tmr;
               var advance = function() {
                 if (doneCalled) return; doneCalled = true;
                 clearTimeout(tmr);
                 nextChunk(idx + 1);
               };
-              
-              tmr = setTimeout(advance, 7000); 
+
+              tmr = setTimeout(advance, 7000);
               u.onend = advance;
               u.onerror = advance;
-              
+
               try {
                 speechSynthesis.speak(u);
               } catch(e) {
@@ -808,11 +808,11 @@
     if (typeof window.fail !== 'function') return;
     var origFail = window.fail;
     window.fail = function (my, msg) {
-      msg = msg || '';
+      var cleanMsg = msg || '';
       var recitation = typeof activeKey !== 'undefined' && /^ar-/.test(activeKey || '');
-      if (recitation) msg = VERSE_ERROR;
-      else if (msg.indexOf(TRY_AGAIN) !== 0) msg = TRY_AGAIN + msg;
-      origFail(msg);
+      if (recitation) cleanMsg = VERSE_ERROR;
+      else if (cleanMsg.indexOf(TRY_AGAIN) !== 0) cleanMsg = TRY_AGAIN + cleanMsg;
+      origFail(my, cleanMsg);
     };
   });
 
@@ -835,7 +835,7 @@
     if (typeof SURAH === 'undefined') return;
     var hasVerse1 = (typeof VERSES !== 'undefined' && VERSES.length && VERSES[0].n === 1);
     var bismiDiv = document.querySelector('body > div:has(h1)') || document.querySelector('body > div');
-    
+
     if (!hasVerse1 && SURAH !== 1 && SURAH !== 9) {
       if (bismiDiv && bismiDiv.textContent.indexOf('بِسْمِ') > -1) {
         bismiDiv.remove();
@@ -848,7 +848,7 @@
     if (SURAH === 1 || SURAH === 9) return;
     if (typeof window.playItem !== 'function' || typeof window.toggleContinuous !== 'function' ||
         typeof fullQueue !== 'function' || typeof runQueue !== 'function' || typeof VERSES === 'undefined') return;
-    
+
     var origPlay = window.playItem, origToggle = window.toggleContinuous;
     window.playItem = function (kind, n, my, done) { return kind === 'bm' ? playBismillah(my, done) : origPlay(kind, n, my, done); };
     window.toggleContinuous = function () {
@@ -870,7 +870,7 @@
   }
 })();
 
-/* ---------- surah pages: three navigation buttons - previous page, top, next page ----------
+/* ---------- surah pages: fixed bottom navigation bar - previous page, top, next page ----------
    Shown on verse pages (002-1, 002-2 ...). A surah with more than 30 verses is split into pages of 20 verses; shorter surahs are one page.
    Previous / next move between the parts of a surah; at the first / last part (and on one-page surahs) they continue to the previous / next surah.
    Switch off on a page with:  window.QURAN_NO_PAGE_NAV = true  (before site.js loads). */
@@ -905,16 +905,15 @@
 
     var css = document.createElement('style');
     css.textContent =
-      '.qpn{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translate(-50%,14px);z-index:900;display:flex;gap:6px;padding:6px;border-radius:999px;' +
-        'background:rgba(18,53,40,.9);border:1px solid rgba(212,175,55,.75);box-shadow:0 6px 20px rgba(0,0,0,.35);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);' +
-        'opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100vw - 16px)}' +
-      '.qpn.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}' +
-      '.qpn a,.qpn button{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:68px;padding:6px 10px;border-radius:999px;border:0;' +
-        'background:transparent;color:#fff;font:inherit;font-size:.72rem;font-weight:600;line-height:1.15;text-decoration:none;cursor:pointer;white-space:nowrap}' +
+      '.qpn{position:fixed;left:0;right:0;bottom:0;z-index:900;display:flex;justify-content:center;align-items:stretch;gap:6px;' +
+        'width:100%;padding:6px calc(10px + env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) calc(10px + env(safe-area-inset-left,0px));' +
+        'background:rgba(18,53,40,.96);border-top:1px solid rgba(212,175,55,.75);box-shadow:0 -4px 16px rgba(0,0,0,.28)}' +
+      '.qpn a,.qpn button{flex:1 1 0;max-width:190px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:6px 10px;border-radius:12px;border:0;' +
+        'background:transparent;color:#fff;font:inherit;font-size:.74rem;font-weight:600;line-height:1.15;text-decoration:none;cursor:pointer;white-space:nowrap}' +
       '.qpn a:hover,.qpn button:hover,.qpn a:focus-visible,.qpn button:focus-visible{background:#d4af37;color:#123528;outline:none}' +
       '.qpn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
-      '@media(max-width:380px){.qpn a,.qpn button{min-width:58px;padding:6px 7px;font-size:.68rem}}' +
-      'body.qpn-pad{padding-bottom:86px!important}';
+      '@media(max-width:380px){.qpn{gap:4px}.qpn a,.qpn button{padding:6px 6px;font-size:.68rem}}' +
+      'body.qpn-pad{padding-bottom:76px!important}';
     document.head.appendChild(css);
 
     function item(tag, key, href, shown) {
@@ -937,17 +936,6 @@
     else if (CROSS_SURAH && s < 114) bar.appendChild(item('a', 'next', pageOf(s + 1, 'first'), 'nextS'));
     document.body.appendChild(bar);
     document.body.classList.add('qpn-pad');
-
-    var tick = false;
-    function update() {
-      tick = false;
-      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-      var nearEnd = y + window.innerHeight >= (document.documentElement.scrollHeight || 0) - 40;
-      bar.classList.toggle('show', y > 250 || nearEnd);          // hidden at the very top, shown once you scroll (and at the end of the page)
-    }
-    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
-    window.addEventListener('resize', update);
-    update();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
