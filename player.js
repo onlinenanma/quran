@@ -272,7 +272,7 @@ const QL = () => Object.assign({ listen: "\u0d15\u0d47\u0d7e\u0d15\u0d4d\u0d15\u
   let wakeLock = null, waking = false;
   let nsVideo = null, nsTimer = null, nsCanvas = null;
 
-  const wakeOn = () => { const c = $("opt-wake"); return !c || c.checked; };
+  const wakeOn = () => { const c = $(""); return !c || c.checked; };
   const wantWake = () => wakeOn() && (continuous || !!activeKey);
 
   /* Preface (short surahs): shows the "preface" section with the same look and "show preface" option as 001.html.
@@ -343,7 +343,7 @@ body.hide-in #intro-wrap{display:none}
     row.className = "ctl-row";
     row.innerHTML = '<span class="ctl-title">സ്ക്രീൻ:</span>' +
       '<label class="opt"><input type="checkbox" id="opt-wake" checked> ' +
-      'പ്ലേ ചെയ്യുമ്പോഴും സ്ക്രീൻ ഓഫ് ആകരുത്</label>';
+      'ഓഫ് ആകരുത്</label>';
     panel.appendChild(row);
   }
 
