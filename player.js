@@ -343,7 +343,7 @@ body.hide-in #intro-wrap{display:none}
     row.className = "ctl-row";
     row.innerHTML = '<span class="ctl-title">സ്ക്രീൻ:</span>' +
       '<label class="opt"><input type="checkbox" id="opt-wake" checked> ' +
-      'പ്ലേ ചെയ്യുമ്പോഴും സ്ക്രീൻ ഓഫ് ആകരുത്</label>';
+      'ഓഫ് ആകരുത്</label>';
     panel.appendChild(row);
   }
 
