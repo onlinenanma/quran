@@ -260,8 +260,8 @@
   st.textContent = '.goog-te-banner-frame,.skiptranslate iframe{display:none!important}body{top:0!important}' +
     '.goog-text-highlight{background:none!important;box-shadow:none!important}#goog-gt-tt,.goog-tooltip{display:none!important}' +
     '.controls{margin:0 auto!important;padding:6px 12px 8px 12px!important;border:none!important;border-radius:0 0 10px 10px!important;position:sticky;top:0;z-index:100;background:var(--bg, #fff);box-shadow:0 1px 4px rgba(0,0,0,0.05);display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;min-height:auto!important}' +
-    '.controls .banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
-    '.controls .banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
+    '.banner{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;width:100%!important;gap:4px!important;margin:0!important;padding:0!important}' +
+    '.banner-row{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:8px!important;width:100%!important}' +
     '#panel:not(.open):not([style*="display: block"]) { display: none !important; }' +
     '#status,#audio-status,.status-text{width:100%!important;text-align:center!important;display:block!important;margin:4px auto 0 auto!important;float:none!important;clear:both!important;font-size:0.85rem!important;color:var(--acc, #1d5240)!important}' +
     'body>.hero{margin-bottom:0!important;border-bottom:2px solid var(--gold)!important;padding-bottom:8px!important}' +
@@ -402,8 +402,7 @@
       masterBtn.addEventListener('click', function(e) {
         if (masterBtn.classList.contains('playing')) {
           e.stopImmediatePropagation();
-          if (typeof stopAll === 'function') stopAll();              // the player's own stop: ends the queue, speech and the highlighted buttons
-          else if (typeof stopSpeech === 'function') stopSpeech();
+          if (typeof stopSpeech === 'function') stopSpeech();
           if (typeof currentAudio !== 'undefined' && currentAudio) { 
             currentAudio.pause(); 
             currentAudio.currentTime = 0; 
@@ -845,7 +844,7 @@
   }
 })();
 
-/* ---------- surah pages: three navigation buttons - previous page, top, next page (hide while audio plays) ----------
+/* ---------- surah pages: three navigation buttons - previous page, top, next page ----------
    Shown on verse pages (002-1, 002-2 ...). A surah with more than 30 verses is split into pages of 20 verses; shorter surahs are one page.
    Previous / next move between the parts of a surah; at the first / last part (and on one-page surahs) they continue to the previous / next surah.
    Switch off on a page with:  window.QURAN_NO_PAGE_NAV = true  (before site.js loads). */
@@ -913,39 +912,15 @@
     document.body.appendChild(bar);
     document.body.classList.add('qpn-pad');
 
-    /* When the bar is visible
-         - while audio is playing:  hidden (it does not disturb listening); it appears only when you reach the bottom of the page
-         - reading (no audio):      hidden until you touch / scroll / move the mouse, then it hides again after IDLE_MS
-         - at the bottom of the page: always visible, so the next page is one tap away                                          */
-    var IDLE_MS = 3000;
-    var active = false, idleTimer = 0, inside = false, tick = false;
-    function isPlaying() { return !!document.querySelector('.play-btn.playing, #master.playing'); }
+    var tick = false;
     function update() {
       tick = false;
       var y = window.pageYOffset || document.documentElement.scrollTop || 0;
-      var H = document.documentElement.scrollHeight || 0, vh = window.innerHeight || 0;
-      var scrollable = H - vh > 200;                                   // a short page fits the screen: nothing to scroll
-      var atBottom = scrollable && y + vh >= H - 60;
-      var readingTouch = !isPlaying() && (active || inside) && (y > 250 || !scrollable);
-      bar.classList.toggle('show', atBottom || readingTouch);
+      var nearEnd = y + window.innerHeight >= (document.documentElement.scrollHeight || 0) - 40;
+      bar.classList.toggle('show', y > 250 || nearEnd);          // hidden at the very top, shown once you scroll (and at the end of the page)
     }
-    function schedule() { if (!tick) { tick = true; requestAnimationFrame(update); } }
-    function wake() {                                                  // any touch / scroll / key shows the bar for a few seconds
-      active = true; clearTimeout(idleTimer);
-      idleTimer = setTimeout(function () { active = false; schedule(); }, IDLE_MS);
-      schedule();
-    }
-    ['touchstart', 'pointerdown', 'keydown', 'wheel'].forEach(function (ev) { window.addEventListener(ev, wake, { passive: true }); });
-    window.addEventListener('scroll', function () { wake(); }, { passive: true });
-    var moved = 0;
-    window.addEventListener('mousemove', function () { var n = Date.now(); if (n - moved > 400) { moved = n; wake(); } }, { passive: true });
-    bar.addEventListener('mouseenter', function () { inside = true; schedule(); });
-    bar.addEventListener('mouseleave', function () { inside = false; wake(); });
-    bar.addEventListener('focusin', function () { inside = true; schedule(); });
-    bar.addEventListener('focusout', function () { inside = false; schedule(); });
-    window.addEventListener('resize', schedule);
-    // play / stop changes the "playing" class on the play buttons - react to it straight away
-    try { new MutationObserver(schedule).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['class'] }); } catch (e) {}
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
     update();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
