@@ -48,6 +48,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 @media(prefers-color-scheme:dark){.trans-title{color:var(--gold)}}
 .trans-text{font-size:var(--hfs);line-height:1.9;white-space:pre-line;overflow-wrap:anywhere}
 
+.disclaimer{font-size:.75rem;line-height:1.6;color:var(--muted);text-align:center;margin:-4px 0 12px}
 .trans-note{font-size:.8rem;color:var(--muted);margin-top:8px}
 .err{color:#d93025;text-align:center;margin-top:8px}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
@@ -83,6 +84,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
 <main class="wrap">
   <section class="card">
     <h2>ഹദീസ് തെരഞ്ഞെടുക്കുക</h2>
+    <p class="disclaimer">(ഹദീഥിന്റെ തർജ്ജമ ഗൂഗിൾ വഴി ആയതിനാൽ വാക്കുകളുടെ പ്രയോഗം ചിലപ്പോൾ സാഹചര്യങ്ങൾക്കും വ്യക്തികൾക്കും അതാത് ഭാഷയുടെ രീതിയോട് യോജിക്കുന്ന രൂപത്തിലോ, അർഹിക്കുന്ന ബഹുമാനത്തോടോടെയോ  ആയിക്കൊള്ളണം എന്നില്ല. ഏകദേശ ആശയം മനസ്സിലാക്കാനുള്ള ഒരു മാർഗ്ഗമായി മാത്രം തർജ്ജമയെ കാണണം എന്ന് അപേക്ഷിക്കുന്നു. പൂർണ്ണമായ രൂപത്തിലുള്ള അർത്ഥവും ആശയവും മനസ്സിലാക്കാൻ നിങ്ങളുടെ ഭാഷയിലുള്ള അംഗീകൃത തര്ജ്ജമയേയോ പണ്ഡിതന്മാരെയോ ആശ്രയിക്കേണ്ടതാണ്.)</p>
     <div class="controls">
       <div class="control-row">
         <label style="flex:2;">ഹദീസ് ഗ്രന്ഥം:
@@ -115,14 +117,14 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
     
     <!-- Hadith text container open for site/browser auto-translation -->
     <div class="trans-box">
-      <div class="trans-title">ഹദീസ് വിവരണവും ആശയവും:(ഹദീഥിന്റെ തർജ്ജമ ഗൂഗിൾ വഴി ആയതിനാൽ വാക്കുകളുടെ പ്രയോഗം ചിലപ്പോൾ സാഹചര്യങ്ങൾക്കും വ്യക്തികൾക്കും അതാത് ഭാഷയുടെ രീതിയോട് യോജിക്കുന്ന രൂപത്തിലോ, അർഹിക്കുന്ന ബഹുമാനത്തോടോടെയോ  ആയിക്കൊള്ളണം എന്നില്ല. ഏകദേശ ആശയം മനസ്സിലാക്കാനുള്ള ഒരു മാർഗ്ഗമായി മാത്രം തർജ്ജമയെ കാണണം എന്ന് അപേക്ഷിക്കുന്നു. പൂർണ്ണമായ രൂപത്തിലുള്ള അർത്ഥവും ആശയവും മനസ്സിലാക്കാൻ നിങ്ങളുടെ ഭാഷയിലുള്ള അംഗീകൃത തര്ജ്ജമയേയോ പണ്ഡിതന്മാരെയോ ആശ്രയിക്കേണ്ടതാണ്.)</div>
+      <div class="trans-title">ഹദീസ് വിവരണവും ആശയവും:</div>
       <div class="trans-text notranslate" id="enToMl" translate="no">ലോഡ് ചെയ്യുന്നു...</div>
       <div class="trans-note" id="transNote"></div>
     </div>
   </section>
 </main>
 
-<footer>ഖുർആൻ സാരം</footer>
+<footer>© ഖുർആൻ മലയാള സാരം</footer>
 
 <script>
 const $ = id => document.getElementById(id);
