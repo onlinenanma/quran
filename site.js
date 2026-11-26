@@ -185,6 +185,55 @@
   }
   onReady(keepShortLabels);
 
+  /* ---------- keep screen-on option off by default until toggled by user ---------- */
+  function findWakeCheckbox() {
+    var direct = document.getElementById('opt-wake');
+    if (direct) return direct;
+    var inputs = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < inputs.length; i++) {
+      var cb = inputs[i];
+      var idName = ((cb.id || '') + ' ' + (cb.name || '')).toLowerCase();
+      var lblText = ((cb.closest && cb.closest('label') ? cb.closest('label').textContent : '') || '').toLowerCase();
+      if (/wake|screen|സ്ക്രീൻ|സ്‌ക്രീൻ/.test(idName + ' ' + lblText)) return cb;
+    }
+    return null;
+  }
+  function initScreenWakeDefaultOff() {
+    try {
+      for (var i = localStorage.length - 1; i >= 0; i--) {
+        var k = localStorage.key(i);
+        if (k && /wake/i.test(k)) localStorage.removeItem(k);
+      }
+    } catch (e) {}
+
+    var userInteracted = false;
+    var wakeCb = findWakeCheckbox();
+    if (wakeCb) {
+      wakeCb.checked = false;
+      wakeCb.removeAttribute('checked');
+      wakeCb.addEventListener('change', function () {
+        userInteracted = true;
+        if (!wakeCb.checked && typeof window.releaseWake === 'function') {
+          try { window.releaseWake(); } catch (e) {}
+        }
+      });
+    }
+
+    if (typeof window.requestWake === 'function') {
+      var origRequestWake = window.requestWake;
+      window.requestWake = function () {
+        var cb = wakeCb || findWakeCheckbox();
+        if (!userInteracted && (!cb || !cb.checked)) return Promise.resolve();
+        return origRequestWake.apply(this, arguments);
+      };
+    }
+
+    if (typeof window.releaseWake === 'function' && (!wakeCb || !wakeCb.checked)) {
+      try { window.releaseWake(); } catch (e) {}
+    }
+  }
+  onReady(initScreenWakeDefaultOff);
+
   /* ---------- top panel: the same pill buttons (icon + label) on every page ---------- */
   var ICONS = {
     home:    '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
@@ -870,8 +919,8 @@
   }
 })();
 
-/* ---------- surah pages: fixed bottom navigation bar - previous page, top, next page ----------
-   Shown on verse pages (002-1, 002-2 ...). A surah with more than 30 verses is split into pages of 20 verses; shorter surahs are one page.
+/* ---------- surah pages: end-of-page navigation panel - previous page, top, next page ----------
+   Shown at the end of verse pages (002-1, 002-2 ...). A surah with more than 30 verses is split into pages of 20 verses; shorter surahs are one page.
    Previous / next move between the parts of a surah; at the first / last part (and on one-page surahs) they continue to the previous / next surah.
    Switch off on a page with:  window.QURAN_NO_PAGE_NAV = true  (before site.js loads). */
 (function () {
@@ -880,7 +929,7 @@
   var AYAH = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];          // verses in each surah (114 values)
   var SPLIT_OVER = 30, PER_PAGE = 20;                          // same rule as generate_quran.py
   var CROSS_SURAH = true;                                      // false = previous / next stay inside the surah
-  var LBL = { prevS: "\u0d2e\u0d41\u0d7b \u0d38\u0d42\u0d31\u0d24\u0d4d\u0d24\u0d4d", nextS: "\u0d05\u0d1f\u0d41\u0d24\u0d4d\u0d24 \u0d38\u0d42\u0d31\u0d24\u0d4d\u0d24\u0d4d", prev: "\u0d2e\u0d41\u0d7b \u0d2d\u0d3e\u0d17\u0d02", top: "\u0d2e\u0d41\u0d15\u0d33\u0d3f\u0d7d", next: "\u0d05\u0d1f\u0d41\u0d24\u0d4d\u0d24 \u0d2d\u0d3e\u0d17\u0d02" };
+  var LBL = { prevS: "\u0d2e\u0d41\u0d7b \u0d38\u0d42\u0d31\u0d4d\u0d24\u0d4d\u0d24\u0d4d", nextS: "\u0d05\u0d1f\u0d41\u0d24\u0d4d\u0d24 \u0d38\u0d42\u0d31\u0d4d\u0d24\u0d4d\u0d24\u0d4d", prev: "\u0d2e\u0d41\u0d7b \u0d2d\u0d3e\u0d17\u0d02", top: "\u0d2e\u0d41\u0d15\u0d33\u0d3f\u0d7d", next: "\u0d05\u0d1f\u0d41\u0d24\u0d4d\u0d24 \u0d2d\u0d3e\u0d17\u0d02" };
   var ICON = {
     prev: '<path d="M14.5 5.5 8 12l6.5 6.5"/>',
     top:  '<path d="M12 19V5"/><path d="M5.5 11.5 12 5l6.5 6.5"/>',
@@ -905,15 +954,16 @@
 
     var css = document.createElement('style');
     css.textContent =
-      '.qpn{position:fixed;left:0;right:0;bottom:0;z-index:900;display:flex;justify-content:center;align-items:stretch;gap:6px;' +
-        'width:100%;padding:6px calc(10px + env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) calc(10px + env(safe-area-inset-left,0px));' +
-        'background:rgba(18,53,40,.96);border-top:1px solid rgba(212,175,55,.75);box-shadow:0 -4px 16px rgba(0,0,0,.28)}' +
-      '.qpn a,.qpn button{flex:1 1 0;max-width:190px;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:0;padding:6px 10px;border-radius:12px;border:0;' +
+      '.qpn{position:static;display:flex;justify-content:center;align-items:stretch;gap:6px;' +
+        'width:100%;max-width:560px;margin:18px auto calc(16px + env(safe-area-inset-bottom,0px));padding:8px;' +
+        'border-radius:16px;background:rgba(18,53,40,.96);border:1px solid rgba(212,175,55,.75);box-shadow:0 4px 16px rgba(0,0,0,.22);' +
+        'opacity:0;pointer-events:none;transition:opacity .2s}' +
+      '.qpn.show{opacity:1;pointer-events:auto}' +
+      '.qpn a,.qpn button{flex:1 1 0;min-width:0;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 10px;border-radius:12px;border:0;' +
         'background:transparent;color:#fff;font:inherit;font-size:.74rem;font-weight:600;line-height:1.15;text-decoration:none;cursor:pointer;white-space:nowrap}' +
       '.qpn a:hover,.qpn button:hover,.qpn a:focus-visible,.qpn button:focus-visible{background:#d4af37;color:#123528;outline:none}' +
       '.qpn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
-      '@media(max-width:380px){.qpn{gap:4px}.qpn a,.qpn button{padding:6px 6px;font-size:.68rem}}' +
-      'body.qpn-pad{padding-bottom:76px!important}';
+      '@media(max-width:380px){.qpn{gap:4px;padding:6px}.qpn a,.qpn button{padding:6px 6px;font-size:.68rem}}';
     document.head.appendChild(css);
 
     function item(tag, key, href, shown) {
@@ -935,7 +985,17 @@
     if (parts > 1 && part < parts) bar.appendChild(item('a', 'next', pad + '-' + (part + 1)));
     else if (CROSS_SURAH && s < 114) bar.appendChild(item('a', 'next', pageOf(s + 1, 'first'), 'nextS'));
     document.body.appendChild(bar);
-    document.body.classList.add('qpn-pad');
+
+    var tick = false;
+    function update() {
+      tick = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var nearEnd = y + window.innerHeight >= (document.documentElement.scrollHeight || 0) - 120;
+      bar.classList.toggle('show', nearEnd);
+    }
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
