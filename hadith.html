@@ -49,6 +49,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .trans-text{font-size:var(--hfs);line-height:1.9;white-space:pre-line;overflow-wrap:anywhere}
 
 .disclaimer{font-size:.75rem;line-height:1.6;color:var(--muted);text-align:center;margin:-4px 0 12px}
+.tr-bar{display:flex;justify-content:flex-start;margin-bottom:8px}
+.tr-btn{flex:none;min-width:0;padding:6px 14px;font-size:.85rem}
 .trans-note{font-size:.8rem;color:var(--muted);margin-top:8px}
 .err{color:#d93025;text-align:center;margin-top:8px}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
@@ -118,13 +120,14 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc
     <!-- Hadith text container open for site/browser auto-translation -->
     <div class="trans-box">
       <div class="trans-title">ഹദീസ് വിവരണവും ആശയവും:</div>
+      <div class="tr-bar"><button type="button" class="alt tr-btn" id="trBtn" onclick="toggleTranslate()" hidden>തർജ്ജമ ചെയ്യുക</button></div>
       <div class="trans-text notranslate" id="enToMl" translate="no">ലോഡ് ചെയ്യുന്നു...</div>
       <div class="trans-note" id="transNote"></div>
     </div>
   </section>
 </main>
 
-<footer>© ഖുർആൻ മലയാള സാരം</footer>
+<footer>ഖുർആൻ സാരം</footer>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -139,6 +142,7 @@ function cleanText(html) {
 /* ===== Translate the English hadith into the site's selected language (Malayalam included) ===== */
 let currentEn = "";          // English source of the hadith on screen
 let shownLang = null;        // language currently displayed
+let translated = false;      // false = English (default), true = translated into the site language
 let trReq = 0;
 const trCache = new Map();
 
@@ -186,21 +190,31 @@ async function translateEnglish(text, lang) {
   return out;
 }
 
+function updateTrBtn() {
+  const b = $('trBtn');
+  b.hidden = !currentEn || siteLang() === "en";
+  b.textContent = translated ? "ഇംഗ്ലീഷ് പാഠം കാണിക്കുക" : "തർജ്ജമ ചെയ്യുക";
+}
+
+function toggleTranslate() { translated = !translated; renderHadithText(); }
+
 async function renderHadithText() {
   const el = $('enToMl'), note = $('transNote');
+  updateTrBtn();
   if (!currentEn) return;
   const lang = siteLang(), my = ++trReq;
   shownLang = lang;
-  el.lang = lang;
-  if (lang === "en") { el.textContent = currentEn; note.textContent = ""; return; }
-  el.textContent = 'വിവർത്തനം ചെയ്യുന്നു...';
   note.textContent = "";
+  if (!translated || lang === "en") { el.lang = "en"; el.textContent = currentEn; return; }   // English: no translation request at all
+  el.lang = lang;
+  el.textContent = 'വിവർത്തനം ചെയ്യുന്നു...';
   try {
     const t = await translateEnglish(currentEn, lang);
     if (my !== trReq) return;
     el.textContent = t || currentEn;
   } catch (e) {
     if (my !== trReq) return;
+    translated = false; updateTrBtn();
     el.lang = "en";
     el.textContent = currentEn;
     note.textContent = "വിവർത്തനം ലഭ്യമായില്ല – ഇംഗ്ലീഷ് പാഠം കാണിക്കുന്നു.";
@@ -208,9 +222,10 @@ async function renderHadithText() {
 }
 
 // re-translate when the visitor changes the site language
-new MutationObserver(() => { if (currentEn && siteLang() !== shownLang) renderHadithText(); })
+const onLangChange = () => { if (currentEn && siteLang() !== shownLang) { if (translated) renderHadithText(); else { shownLang = siteLang(); updateTrBtn(); } } };
+new MutationObserver(onLangChange)
   .observe(document.documentElement, { attributes: true, attributeFilter: ["lang", "class"] });
-setInterval(() => { if (currentEn && siteLang() !== shownLang) renderHadithText(); }, 1000);   // cookie changes
+setInterval(onLangChange, 1000);   // cookie changes
 
 async function loadHadith() {
   const reqId = ++activeReq;
@@ -219,6 +234,8 @@ async function loadHadith() {
   $('enToMl').textContent = 'ലോഡ് ചെയ്യുന്നു...';
   $('transNote').textContent = '';
   currentEn = '';
+  translated = false;
+  updateTrBtn();
   $('ref').textContent = '';
 
   const collection = $('cSel').value;
