@@ -198,42 +198,79 @@
     }
     return null;
   }
-  function initScreenWakeDefaultOff() {
+ function initScreenWakeDefaultOff() {
+  var userChangedWake = false;
+
+  function clearWakeStorage() {
     try {
       for (var i = localStorage.length - 1; i >= 0; i--) {
         var k = localStorage.key(i);
         if (k && /wake/i.test(k)) localStorage.removeItem(k);
       }
     } catch (e) {}
+  }
 
-    var userInteracted = false;
-    var wakeCb = findWakeCheckbox();
-    if (wakeCb) {
-      wakeCb.checked = false;
-      wakeCb.removeAttribute('checked');
-      wakeCb.addEventListener('change', function () {
-        userInteracted = true;
-        if (!wakeCb.checked && typeof window.releaseWake === 'function') {
-          try { window.releaseWake(); } catch (e) {}
-        }
-      });
-    }
+  function setUnchecked(cb) {
+    if (!cb) return;
+    cb.checked = false;
+    cb.removeAttribute('checked');
+  }
 
-    if (typeof window.requestWake === 'function') {
-      var origRequestWake = window.requestWake;
-      window.requestWake = function () {
-        var cb = wakeCb || findWakeCheckbox();
-        if (!userInteracted && (!cb || !cb.checked)) return Promise.resolve();
-        return origRequestWake.apply(this, arguments);
-      };
-    }
-
-    if (typeof window.releaseWake === 'function' && (!wakeCb || !wakeCb.checked)) {
+  function enforceOff() {
+    if (userChangedWake) return;
+    clearWakeStorage();
+    var cb = findWakeCheckbox();
+    setUnchecked(cb);
+    if (typeof window.releaseWake === 'function') {
       try { window.releaseWake(); } catch (e) {}
     }
   }
-  onReady(initScreenWakeDefaultOff);
 
+  function attachListener() {
+    var cb = findWakeCheckbox();
+    if (!cb || cb.getAttribute('data-wake-off-init')) return;
+    cb.setAttribute('data-wake-off-init', '1');
+    setUnchecked(cb);
+    cb.addEventListener('change', function () {
+      userChangedWake = true;
+      if (!cb.checked && typeof window.releaseWake === 'function') {
+        try { window.releaseWake(); } catch (e) {}
+      }
+    });
+  }
+
+  enforceOff();
+  attachListener();
+
+  setTimeout(function () { enforceOff(); attachListener(); }, 0);
+  setTimeout(function () { enforceOff(); attachListener(); }, 250);
+  window.addEventListener('load', function () { enforceOff(); attachListener(); });
+  window.addEventListener('pageshow', function () { enforceOff(); attachListener(); });
+
+  if (typeof MutationObserver !== 'undefined') {
+    var root = document.getElementById('panel') || document.body;
+    if (root) {
+      var observer = new MutationObserver(function () {
+        if (userChangedWake) {
+          observer.disconnect();
+          return;
+        }
+        attachListener();
+        enforceOff();
+      });
+      observer.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['checked'] });
+    }
+  }
+
+  if (typeof window.requestWake === 'function') {
+    var origRequestWake = window.requestWake;
+    window.requestWake = function () {
+      var cb = findWakeCheckbox();
+      if (!userChangedWake && (!cb || !cb.checked)) return Promise.resolve();
+      return origRequestWake.apply(this, arguments);
+    };
+  }
+}
   /* ---------- top panel: the same pill buttons (icon + label) on every page ---------- */
   var ICONS = {
     home:    '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
