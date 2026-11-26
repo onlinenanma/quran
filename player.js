@@ -1082,7 +1082,9 @@ function trSiteLang() {                     // same source as site.js: the googt
   let v = m ? m[1] : ""; try { v = decodeURIComponent(v); } catch (e) {}
   const x = v.match(/^\/[^\/]*\/([A-Za-z-]+)/);
   const l = x ? x[1] : "ml";
-  return /^zh/i.test(l) ? "zh" : l.toLowerCase().split("-")[0];
+  if (/^zh/i.test(l)) return "zh";
+  l = l.toLowerCase().split("-")[0];
+  return l === "ckb" ? "ku" : l === "nb" || l === "nn" ? "no" : l;   // Sorani Kurdish / Norwegian codes used by the page translator
 }
 let trLastSlot = 0;                         // same pacing as apiFetch on quranlearning.app: ~110 ms between alquran.cloud calls
 async function trThrottle(url) {
