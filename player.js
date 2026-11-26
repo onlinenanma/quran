@@ -549,6 +549,8 @@ body.hide-in #intro-wrap{display:none}
           playChunks(chunks, langCode, my, done, idx);
         };
         utterances[0] = u;                      // keep a reference so it is not garbage-collected
+        if (my !== token) return;
+        clearTimeout(killTimer);
         window.speechSynthesis.speak(u);
       };
       next();
@@ -796,9 +798,29 @@ function mlVoices() {   // voices for the language being spoken (name kept so th
   const vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
   return vs.filter(v => v.lang.toLowerCase().replace("_", "-").startsWith(curLang));
 }
+/* Browsers (Chrome/Edge, especially with online "Natural" voices) sometimes ignore a single cancel() while a long
+   explanation is being spoken. So: detach the utterance handlers, cancel, and keep cancelling briefly until the engine is really silent. */
+let killTimer = null;
+function killSpeech() {
+  const ss = window.speechSynthesis; if (!ss) return;
+  try { const u = utterances[0]; if (u) { u.onend = u.onerror = u.onboundary = null; } } catch (e) {}
+  try { if (ss.paused) ss.resume(); } catch (e) {}
+  try { ss.cancel(); } catch (e) {}
+  clearTimeout(killTimer);
+  let tries = 0;
+  const again = () => {
+    if (tries++ >= 12) return;
+    let busy = false;
+    try { busy = ss.speaking || ss.pending; } catch (e) {}
+    if (!busy) return;
+    try { ss.pause(); ss.cancel(); } catch (e) {}
+    killTimer = setTimeout(again, 120);
+  };
+  killTimer = setTimeout(again, 60);
+}
 function stopAll() {
   token++; continuous = false;
-  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  killSpeech();
   sharedAudio.onended = sharedAudio.onerror = null; sharedAudio.pause(); currentAudio = null;
   clearMark();
   masterBtn.textContent = QL().listen; masterBtn.classList.remove("playing"); statusEl.textContent = "";
