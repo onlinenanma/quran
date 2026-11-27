@@ -1061,7 +1061,7 @@ async function loadTafsir() {
 const TR_EDITIONS = {
   en: 'en.sahih', ur: 'ur.jalandhry', bn: 'bn.bengali', fr: 'fr.hamidullah', es: 'es.cortes', de: 'de.aburida',
   id: 'id.indonesian', tr: 'tr.ates', ru: 'ru.kuliev', fa: 'fa.ayati', hi: 'hi.hindi', zh: 'zh.jian', ms: 'ms.basmeih',
-  ta: 'ta.jainulabdeen', ha: 'ha.gumi', sw: 'sw.barwani', so: 'so.abduh', sq: 'sq.ahmeti', az: 'az.mammadaliyev',
+  ta: 'ta.tamil', ha: 'ha.gumi', sw: 'sw.barwani', so: 'so.abduh', sq: 'sq.ahmeti', az: 'az.mammadaliyev',
   bs: 'bs.korkut', bg: 'bg.theophanov', cs: 'cs.hrabek', nl: 'nl.keyzer', it: 'it.piccardo', ja: 'ja.japanese',
   ko: 'ko.korean', ku: 'ku.asan', no: 'no.berg', pl: 'pl.bielawskiego', pt: 'pt.elhayek', ro: 'ro.grigore',
   sd: 'sd.amrohi', sv: 'sv.bernstrom', tg: 'tg.ayati', th: 'th.thai', tt: 'tt.nugman', ug: 'ug.saleh',
