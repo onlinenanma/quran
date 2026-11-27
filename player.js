@@ -1114,12 +1114,19 @@ async function trFetch(url, ms) {           // timeout, plus one retry (after Re
 function trCacheGet(k) { try { const t = localStorage.getItem("qtr1:" + k); return t ? JSON.parse(t) : null; } catch (e) { return null; } }
 function trCacheSet(k, o) { try { localStorage.setItem("qtr1:" + k, JSON.stringify(o)); } catch (e) { /* storage full: just skip caching */ } }
 
-async function trFromAlq(edition) {
+async function trFromAlq(edition, expectedLang) {
   const ck = edition + ":" + SURAH, hit = trCacheGet(ck);
-  if (hit) return { map: new Map(hit.rows), label: hit.label };
+  if (hit && Array.isArray(hit.rows) && hit.rows.length) {
+    return { map: new Map(hit.rows), label: hit.label };
+  }
   const j = await trFetch("https://api.alquran.cloud/v1/surah/" + SURAH + "/" + edition);
   if (!j || j.code !== 200 || !j.data || !Array.isArray(j.data.ayahs)) return null;
-  const rows = j.data.ayahs.map(a => [a.numberInSurah, String(a.text || "").trim()]).filter(r => r[1]);
+  if (expectedLang && j.data.edition && j.data.edition.language && j.data.edition.language !== expectedLang) {
+    return null;
+  }
+  const rows = j.data.ayahs
+    .map(a => [a.numberInSurah, String(a.text || "").trim()])
+    .filter(r => r[0] && r[1]);
   if (!rows.length) return null;
   const label = (j.data.edition && (j.data.edition.englishName || j.data.edition.name)) || edition;
   trCacheSet(ck, { rows, label });
@@ -1140,7 +1147,7 @@ async function trGet(lang) {
     for (const key of TR_QURANENC[lang]) { const r = await trFromQE(key); if (r) return r; }
     return null;
   }
-  return TR_EDITIONS[lang] ? trFromAlq(TR_EDITIONS[lang]) : null;
+  return TR_EDITIONS[lang] ? trFromAlq(TR_EDITIONS[lang], lang) : null;
 }
 const trNeeded = () => { const l = trSiteLang(); return l !== "ml" && l !== "ar"; };
 let TR_PENDING = false;                       // true while the meaning of the site language is being fetched
@@ -1378,7 +1385,7 @@ const PLAYER_DICT = {
     "om": { intro: "Seensa", screen: "Iskiriinii:", fontSize: "Hamma Barreeffamaa:", show: "Agarsiisi:", verse: "Aayata", meaning: "Hiika", tafsir: "Tafsiira", reciter: "Qaari'aa:", repeat: "Aayata irra deebi'i:", continuous: "Itti fufiinsaan taphachiisi", wake: "Iskiriinii banaa eegi" },
     "as": { intro: "মুখবন্ধ", screen: "স্ক্ৰীণ:", fontSize: "আখৰৰ আকাৰ:", show: "দেখুৱাওক:", verse: "আয়াত", meaning: "অৰ্থ", tafsir: "তাফসীৰ", reciter: "ক্বাৰী:", repeat: "আয়াত পুনৰাবৃত্তি:", continuous: "অবিৰতভাৱে বজাওক", wake: "স্ক্ৰীণ অন ৰাখক" },
     "kk": { intro: "Алғы сөз", screen: "Экран:", fontSize: "Қаріп өлшемі:", show: "Көрсету:", verse: "Аят", meaning: "Мағынасы", tafsir: "Тәпсір", reciter: "Қари:", repeat: "Аятты қайталау:", continuous: "Үздіксіз ойнату", wake: "Экранды қосулы ұстау" },
-    "ky": { intro: "Баш сөз", screen: "Экран:", fontSize: "Арип өлчөмү:", show: "Көрсөтүү:", verse: "Аят", meaning: "Мааниси", tafsir: "Тапсир", reciter: "Кары:", repeat: "Аятты кайталоо:", continuous: "Үзгүлтүксүз ойнотуу", wake: "Экранды күйүк кармоо" },
+    "ky": { intro: "Баш сөз", screen: "Экран:", fontSize: "Арип өлчөмү:", show: "Көрсөтүү:", verse: "Аят", meaning: "Мааниси", tafsir: "Тапсир", reciter: "Кары:", repeat: "Аятты қайталоо:", continuous: "Үзгүлтүксүз ойнотуу", wake: "Экранды күйүк кармоо" },
     "rw": { intro: "Ijambo ry'ibanze", screen: "Ecran:", fontSize: "Ingano y'inyuguti:", show: "Erekana:", verse: "Aya", meaning: "Ibisobanuro", tafsir: "Isobanuro", reciter: "Usoma:", repeat: "Subiramo Aya:", continuous: "Kina bikomeza", wake: "Komeza ecran irabagirana" }
   };
 
