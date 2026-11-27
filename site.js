@@ -259,7 +259,7 @@
     if (!grid || !toggle || !tts || !document.getElementById('summary')) return;      // not a part-picker page
     if (lang === 'ml') return;                                                       // page is already written in Malayalam
     var P = L.part || 'Part', PREF = L.preface || 'Preface', VS = L.verses || 'Verses';
-    var kept = function (e) { if (e) { e.classList.add('notranslate'); e.setAttribute('translate', 'no'); } };
+    var kept = function (e) { if (!e) return; if (!e.classList.contains('notranslate')) e.classList.add('notranslate'); if (e.getAttribute('translate') !== 'no') e.setAttribute('translate', 'no'); };   // only touch when needed: classList.add on an existing class still fires the observer
     var ttsText = function () { return (tts.classList.contains('playing') ? '\u25a0 ' + L.stop : '\u25b6 ' + L.listen + ' (' + PREF + ')'); };
     function fix() {
       var h2 = document.querySelector('main h2'); if (h2 && h2.textContent !== L.pages) { h2.textContent = L.pages; kept(h2); }
@@ -276,8 +276,9 @@
       if (sum.textContent !== sw) sum.textContent = sw; kept(sum);
       var tw = ttsText(); if (tts.textContent !== tw) tts.textContent = tw; kept(tts);
     }
-    new MutationObserver(fix).observe(tts, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] });  // page script resets the button text
-    fix();
+    var mo = new MutationObserver(function () { mo.disconnect(); try { fix(); } finally { watch(); } });
+    function watch() { mo.observe(tts, { childList: true, characterData: true, subtree: true, attributes: true, attributeFilter: ['class'] }); }   // page script resets the button text
+    fix(); watch();
   }
   onReady(translatePartPicker);
 
