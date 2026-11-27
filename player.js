@@ -354,6 +354,18 @@
     return isNaN(n) || n < 1 ? 1 : n;
   }
 
+  var SURAH_VERSE_COUNTS = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+
+  function getGlobalAyahNumber(surah, ayah) {
+    var sIdx = Math.max(1, Math.min(114, parseInt(surah, 10) || 1)) - 1;
+    var aNum = Math.max(1, parseInt(ayah, 10) || 1);
+    var offset = 0;
+    for (var i = 0; i < sIdx; i++) {
+      offset += SURAH_VERSE_COUNTS[i] || 0;
+    }
+    return offset + aNum;
+  }
+
   function playVerseAudio(verseNum, itemEl, repeatLeft, onDone) {
     stopSpeech();
     if (currentAudio) {
@@ -409,18 +421,6 @@
     audio.play().catch(function() {
       finishOnce();
     });
-  }
-
-  var SURAH_VERSE_COUNTS = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
-
-  function getGlobalAyahNumber(surah, ayah) {
-    var sIdx = Math.max(1, Math.min(114, parseInt(surah, 10) || 1)) - 1;
-    var aNum = Math.max(1, parseInt(ayah, 10) || 1);
-    var offset = 0;
-    for (var i = 0; i < sIdx; i++) {
-      offset += SURAH_VERSE_COUNTS[i] || 0;
-    }
-    return offset + aNum;
   }
 
   function playSequence(items, index) {
@@ -779,45 +779,3 @@
     if (typeof origStopSpeech === 'function') origStopSpeech.apply(this, arguments);
   };
 })();
-```[cite: 10]
-
----
-
-### `site.js`
-
-```javascript
-/* site.js - Shared navigation, language helper, and non-destructive page utilities */
-(function() {
-  'use strict';
-
-  function getSelectedLang() {
-    try {
-      var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
-      if (m && m[1]) {
-        var v = decodeURIComponent(m[1]);
-        var x = v.match(/^\/[^\/]*\/([A-Za-z0-9_-]+)/);
-        if (x && x[1]) return x[1];
-      }
-    } catch (e) {}
-    try {
-      return localStorage.getItem('quran-lang') || 'ml';
-    } catch (e) {
-      return 'ml';
-    }
-  }
-
-  window.getSiteLang = getSelectedLang;
-
-  // Keep #verses safe if already populated
-  document.addEventListener('DOMContentLoaded', function() {
-    try {
-      if (typeof window.renderVerses === 'function') {
-        var versesEl = document.getElementById('verses');
-        if (versesEl && versesEl.children.length === 0) {
-          window.renderVerses();
-        }
-      }
-    } catch (e) {}
-  });
-})();
-```[cite: 9]
