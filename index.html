@@ -138,7 +138,7 @@ div[id*="goog-gt-"] {
 
 <header class="banner">
  <div class="banner-top-bar">
-  <label class="pill" aria-label="Menu">
+  <label class="pill notranslate" translate="no" aria-label="Menu">
    <span class="ico" aria-hidden="true">☰</span><span class="lbl">പുസ്തകങ്ങൾ</span><span class="caret" aria-hidden="true">▾</span>
    <select id="topMenuNav" aria-label="Navigation Menu">
     <option value="" selected disabled>☰ പുസ്തകങ്ങൾ</option>
@@ -561,7 +561,7 @@ async function startSensors(manual) {
 function enableLiveCompass(e) { if (e) { e.preventDefault(); e.stopPropagation(); } startSensors(true); }
 
 function showHijri(h){
- try{ document.getElementById('hijriDateDisplay').innerText = `🌙 ഹിജ്റ തീയതി: ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`; }catch(e){}
+ try{ var _d=getIndexDict(); document.getElementById('hijriDateDisplay').innerText = `${_d.hijriPrefix} ${h.day} ${h.month.en} (${h.month.ar}) ${h.year} AH`; }catch(e){}
 }
 
 let locLocked = false;   // true once the visitor picks a city / uses GPS, so a late IP lookup cannot override it
@@ -576,7 +576,7 @@ async function fetchAndDisplayPrayerTimes(lat,lon,name=""){
  const t=new Date(), ds=`${t.getDate()}-${t.getMonth()+1}-${t.getFullYear()}`;
  const key=`qs-pt:${lat.toFixed(2)},${lon.toFixed(2)}:${ds}`;
  const label=name?`📍 ${name}`:`📍 (${lat.toFixed(2)}, ${lon.toFixed(2)})`;
- const names={Fajr:"ഫജ്ർ (Fajr)",Sunrise:"സൂര്യോദയം (Sunrise)",Dhuhr:"ദുഹ്ർ (Dhuhr)",Asr:"അസർ (Asr)",Maghrib:"മഗ്‌രിബ് (Maghrib)",Isha:"ഇശാഅ് (Isha)"};
+ const names=getIndexDict().prayers;
  const draw=c=>{
   sub.innerText=label; qsub.innerText=label;
   let h='';
@@ -705,6 +705,363 @@ document.getElementById('topMenuNav').addEventListener('change',function(){
   location.reload();  /* reliable on mobile: Google applies the cookie on load */
  });
 })();
+</script>
+
+
+<script>
+/* Native UI dictionary for index page (Malayalam + English + key supported languages, fallback to English/Malayalam) */
+const INDEX_UI_DICT = {
+  "ml": {
+    title: "ഖുർആൻ സാരം",
+    h1: "ഖുർആൻ സാരം",
+    menu: "പുസ്തകങ്ങൾ",
+    menuPlaceholder: "☰ പുസ്തകങ്ങൾ",
+    menuQuran: "📖 ഖുർആൻ (Qur'an)",
+    menuTafsir: "📚 തഫ്സീർ (Tafsir)",
+    menuHadith: "📜 ഹദീസ് (Hadith)",
+    menuHifz: "🧠 ഹിഫ്ള് (Hifz)",
+    selectSurahTitle: "സൂറത്ത് തിരഞ്ഞെടുക്കുക",
+    surahPlaceholder: "— സൂറത്ത് തിരഞ്ഞെടുക്കുക —",
+    openBtn: "തുറക്കുക",
+    tafsirTitle: "📖 വിശുദ്ധ ഖുർആൻ തഫ്സീറുകൾ",
+    tafsirDesc: "വിശുദ്ധ ഖുർആന്റെ സമഗ്രമായ വ്യാഖ്യാനങ്ങളും വിശദീകരണങ്ങളും വായിക്കുക.",
+    tafsirBtn: "തഫ്സീറുകൾ വായിക്കാം",
+    hadithTitle: "📜 പ്രവാചക ഹദീസുകൾ (Hadith)",
+    hadithDesc: "പ്രമാണബദ്ധമായ പ്രവാചക വചനങ്ങളും ഹദീസ് ഗ്രന്ഥങ്ങളും പരിശോധിക്കുക.",
+    hadithBtn: "ഹദീസുകൾ വായിക്കാം",
+    hifzTitle: "🧠 ഖുർആൻ ഹിഫ്ള് ട്രാക്കർ (Hifz)",
+    hifzDesc: "വിശുദ്ധ ഖുർആൻ മനഃപാഠമാക്കാനും വര്ദ് നിലനിർത്താനും ട്രാക്ക് ചെയ്യുക.",
+    hifzBtn: "ഹിഫ്ള് ട്രാക്കർ തുറക്കാം",
+    hijriPrefix: "🌙 ഹിജ്റ തീയതി:",
+    hijriLoading: "🌙 ഹിജ്റ തീയതി: ലോഡ് ചെയ്യുന്നു...",
+    hijriFallback: "🌙 ഹിജ്റ കലണ്ടർ ലഭ്യമാണ്",
+    prayerTitle: "🕌 നമസ്‌കാര സമയങ്ങൾ (Prayer Times)",
+    locFinding: "ലൊക്കേഷൻ കണ്ടെത്തുന്നു...",
+    qiblaWaiting: "ലൊക്കേഷൻ കാത്തിരിക്കുന്നു...",
+    cityPlaceholder: "Select Major International City",
+    gpsBtn: "📍 GPS Precision",
+    loadingTimes: "സമയങ്ങൾ ലോഡ് ചെയ്യുന്നു...",
+    noTimes: "സമയങ്ങൾ ലഭ്യമായില്ല.",
+    netErr: "ഇന്റർനെറ്റ് പിശക് സംഭവിച്ചു.",
+    qiblaTitle: "🕋 ഖിബ്‌ല ദിശ (Qibla)",
+    startCompass: "🧭 Calibrate / Start Compass",
+    calibGuideBtn: "ℹ️ Compass Calibration Guide",
+    compassReady: "Tap Start Compass · keep phone flat",
+    compassAligned: "✓ ഖിബ്‌ല ദിശയിൽ (Facing Qibla)",
+    compassTurn: "Turn until the gold arrow points to the top ▼",
+    sensorErr: "സെൻസർ ഡാറ്റ ലഭിക്കുന്നില്ല. പേജ് നേരിട്ട് തുറന്ന് നോക്കുക.",
+    permDenied: "Permission Denied",
+    notSupported: "Sensors Not Supported",
+    gpsErr: "Location access denied or unavailable.",
+    welcomeHeading: "സ്വാഗതം",
+    footerText: "ഖുർആൻ സാരം",
+    modalTitle: "🧭 Compass Calibration Guide",
+    modalBtn: "Close / മനസ്സിലായി",
+    prayers: { Fajr: "ഫജ്ർ (Fajr)", Sunrise: "സൂര്യോദയം (Sunrise)", Dhuhr: "ദുഹ്ർ (Dhuhr)", Asr: "അസർ (Asr)", Maghrib: "മഗ്‌രിബ് (Maghrib)", Isha: "ഇശാഅ് (Isha)" }
+  },
+  "en": {
+    title: "Quran Meaning",
+    h1: "Quran Meaning",
+    menu: "Books",
+    menuPlaceholder: "☰ Books",
+    menuQuran: "📖 Qur'an",
+    menuTafsir: "📚 Tafsir",
+    menuHadith: "📜 Hadith",
+    menuHifz: "🧠 Hifz",
+    selectSurahTitle: "Select Surah",
+    surahPlaceholder: "— Select Surah —",
+    openBtn: "Open",
+    tafsirTitle: "📖 Holy Quran Tafsir",
+    tafsirDesc: "Read comprehensive commentaries and explanations of the Holy Quran.",
+    tafsirBtn: "Read Tafsir",
+    hadithTitle: "📜 Prophetic Hadith",
+    hadithDesc: "Explore authentic narrations and Hadith collections.",
+    hadithBtn: "Read Hadith",
+    hifzTitle: "🧠 Quran Hifz Tracker",
+    hifzDesc: "Track your Quran memorization and daily revision (wird).",
+    hifzBtn: "Open Hifz Tracker",
+    hijriPrefix: "🌙 Hijri Date:",
+    hijriLoading: "🌙 Hijri Date: Loading...",
+    hijriFallback: "🌙 Hijri Calendar Available",
+    prayerTitle: "🕌 Prayer Times",
+    locFinding: "Detecting location...",
+    qiblaWaiting: "Waiting for location...",
+    cityPlaceholder: "Select Major International City",
+    gpsBtn: "📍 GPS Precision",
+    loadingTimes: "Loading prayer times...",
+    noTimes: "Prayer times unavailable.",
+    netErr: "Network error occurred.",
+    qiblaTitle: "🕋 Qibla Direction",
+    startCompass: "🧭 Calibrate / Start Compass",
+    calibGuideBtn: "ℹ️ Compass Calibration Guide",
+    compassReady: "Tap Start Compass · keep phone flat",
+    compassAligned: "✓ Facing Qibla",
+    compassTurn: "Turn until the gold arrow points to the top ▼",
+    sensorErr: "Sensor data unavailable. Open page directly to test.",
+    permDenied: "Permission Denied",
+    notSupported: "Sensors Not Supported",
+    gpsErr: "Location access denied or unavailable.",
+    welcomeHeading: "Welcome",
+    footerText: "Quran Meaning",
+    modalTitle: "🧭 Compass Calibration Guide",
+    modalBtn: "Close",
+    prayers: { Fajr: "Fajr", Sunrise: "Sunrise", Dhuhr: "Dhuhr", Asr: "Asr", Maghrib: "Maghrib", Isha: "Isha" }
+  },
+  "ar": {
+    title: "معاني القرآن",
+    h1: "معاني القرآن",
+    menu: "الكتب",
+    menuPlaceholder: "☰ الكتب",
+    menuQuran: "📖 القرآن الكريم",
+    menuTafsir: "📚 التفسير",
+    menuHadith: "📜 الحديث",
+    menuHifz: "🧠 متتبع الحفظ",
+    selectSurahTitle: "اختر السورة",
+    surahPlaceholder: "— اختر السورة —",
+    openBtn: "فتح",
+    tafsirTitle: "📖 تفاسير القرآن الكريم",
+    tafsirDesc: "اقرأ شروحات وتفاسير شاملة للقرآن الكريم.",
+    tafsirBtn: "قراءة التفسير",
+    hadithTitle: "📜 الأحاديث النبوية",
+    hadithDesc: "تصفح الأحاديث النبوية الصحيحة وكتب الحديث.",
+    hadithBtn: "قراءة الحديث",
+    hifzTitle: "🧠 متتبع حفظ القرآن",
+    hifzDesc: "تابع حفظ القرآن الكريم والمراجعة اليومية.",
+    hifzBtn: "فتح متتبع الحفظ",
+    hijriPrefix: "🌙 التاريخ الهجري:",
+    hijriLoading: "🌙 التاريخ الهجري: جاري التحميل...",
+    hijriFallback: "🌙 التقويم الهجري متاح",
+    prayerTitle: "🕌 مواقيت الصلاة",
+    locFinding: "جارٍ تحديد الموقع...",
+    qiblaWaiting: "بانتظار الموقع...",
+    cityPlaceholder: "اختر مدينة رئيسية",
+    gpsBtn: "📍 تحديد الموقع GPS",
+    loadingTimes: "جارٍ تحميل المواقيت...",
+    noTimes: "المواقيت غير متاحة.",
+    netErr: "حدث خطأ في الاتصال بالإنترنت.",
+    qiblaTitle: "🕋 اتجاه القبلة",
+    startCompass: "🧭 معايرة / تشغيل البوصلة",
+    calibGuideBtn: "ℹ️ دليل معايرة البوصلة",
+    compassReady: "اضغط تشغيل البوصلة · أبقِ الهاتف مسطحًا",
+    compassAligned: "✓ باتجاه القبلة",
+    compassTurn: "أدر الهاتف حتى يشير السهم الذهبي للأعلى ▼",
+    sensorErr: "تعذر قراءة مستشعر البوصلة.",
+    permDenied: "تم رفض الإذن",
+    notSupported: "المستشعرات غير مدعومة",
+    gpsErr: "تم رفض الوصول للموقع أو غير متاح.",
+    welcomeHeading: "مرحبًا بكم",
+    footerText: "معاني القرآن",
+    modalTitle: "🧭 دليل معايرة البوصلة",
+    modalBtn: "إغلاق",
+    prayers: { Fajr: "الفجر", Sunrise: "الشروق", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" }
+  },
+  "hi": {
+    title: "क़ुरआन अर्थ",
+    h1: "क़ुरआन अर्थ",
+    menu: "किताबें",
+    menuPlaceholder: "☰ किताबें",
+    menuQuran: "📖 क़ुरआन",
+    menuTafsir: "📚 तफ़सीर",
+    menuHadith: "📜 हदीस",
+    menuHifz: "🧠 हिफ़्ज़ ट्रैकर",
+    selectSurahTitle: "सूरह चुनें",
+    surahPlaceholder: "— सूरह चुनें —",
+    openBtn: "खोलें",
+    tafsirTitle: "📖 क़ुरआन तफ़सीर",
+    tafsirDesc: "पवित्र क़ुरआन की विस्तृत व्याख्या और तफ़सीर पढ़ें।",
+    tafsirBtn: "तफ़सीर पढ़ें",
+    hadithTitle: "📜 हदीस",
+    hadithDesc: "प्रामाणिक नबवी हदीस और संग्रह देखें।",
+    hadithBtn: "हदीस पढ़ें",
+    hifzTitle: "🧠 क़ुरआन हिफ़्ज़ ट्रैकर",
+    hifzDesc: "क़ुरआन हिफ़्ज़ और रोज़ाना दोहराव को ट्रैक करें।",
+    hifzBtn: "हिफ़्ज़ ट्रैकर खोलें",
+    hijriPrefix: "🌙 हिजरी तिथि:",
+    hijriLoading: "🌙 हिजरी तिथि: लोड हो रही है...",
+    hijriFallback: "🌙 हिजरी कैलेंडर उपलब्ध",
+    prayerTitle: "🕌 नमाज़ का समय",
+    locFinding: "स्थान खोजा जा रहा है...",
+    qiblaWaiting: "स्थान की प्रतीक्षा...",
+    cityPlaceholder: "प्रमुख शहर चुनें",
+    gpsBtn: "📍 GPS सटीकता",
+    loadingTimes: "समय लोड हो रहा है...",
+    noTimes: "समय उपलब्ध नहीं है।",
+    netErr: "इंटरनेट त्रुटि हुई।",
+    qiblaTitle: "🕋 क़िब्ला दिशा",
+    startCompass: "🧭 कम्पास शुरू करें",
+    calibGuideBtn: "ℹ️ कम्पास गाइड",
+    compassReady: "कम्पास शुरू करें · फ़ोन समतल रखें",
+    compassAligned: "✓ क़िब्ला की दिशा में",
+    compassTurn: "सुनहरे तीर को ऊपर ▼ की ओर घुमाएं",
+    sensorErr: "सेंसर डेटा उपलब्ध नहीं है।",
+    permDenied: "अनुमति अस्वीकृत",
+    notSupported: "सेंसर समर्थित नहीं है",
+    gpsErr: "स्थान की अनुमति अस्वीकृत या अनुपलब्ध।",
+    welcomeHeading: "स्वागत है",
+    footerText: "क़ुरआन अर्थ",
+    modalTitle: "🧭 कम्पास कैलिब्रेशन गाइड",
+    modalBtn: "बंद करें",
+    prayers: { Fajr: "फ़ज्र", Sunrise: "सूर्योदय", Dhuhr: "ज़ुहर", Asr: "अस्र", Maghrib: "मग़रिब", Isha: "ईशा" }
+  },
+  "ta": {
+    title: "குர்ஆன் பொருள்",
+    h1: "குர்ஆன் பொருள்",
+    menu: "நூல்கள்",
+    menuPlaceholder: "☰ நூல்கள்",
+    menuQuran: "📖 குர்ஆன்",
+    menuTafsir: "📚 தஃப்ஸீர்",
+    menuHadith: "📜 ஹதீஸ்",
+    menuHifz: "🧠 ஹிஃப்ழ் டிராக்கர்",
+    selectSurahTitle: "சூராவைத் தேர்ந்தெடுக்கவும்",
+    surahPlaceholder: "— சூராவைத் தேர்ந்தெடுக்கவும் —",
+    openBtn: "திற",
+    tafsirTitle: "📖 குர்ஆன் தஃப்ஸீர்",
+    tafsirDesc: "புனித குர்ஆனின் விரிவான விளக்கங்களைப் படிக்கவும்.",
+    tafsirBtn: "தஃப்ஸீர் படிக்கவும்",
+    hadithTitle: "📜 ஹதீஸ்",
+    hadithDesc: "நபிமொழிகள் மற்றும் ஹதீஸ் தொகுப்புகளைப் பார்க்கவும்.",
+    hadithBtn: "ஹதீஸ் படிக்கவும்",
+    hifzTitle: "🧠 குர்ஆன் ஹிஃப்ழ் டிராக்கர்",
+    hifzDesc: "குர்ஆன் மனனம் மற்றும் தினசரி ஓதலைக் கண்காணிக்கவும்.",
+    hifzBtn: "ஹிஃப்ழ் டிராக்கரைத் திற",
+    hijriPrefix: "🌙 ஹிஜ்ரி தேதி:",
+    hijriLoading: "🌙 ஹிஜ்ரி தேதி: ஏற்றப்படுகிறது...",
+    hijriFallback: "🌙 ஹிஜ்ரி நாட்காட்டி உள்ளது",
+    prayerTitle: "🕌 தொழுகை நேரங்கள்",
+    locFinding: "இடம் கண்டறியப்படுகிறது...",
+    qiblaWaiting: "இடத்திற்காகக் காத்திருக்கிறது...",
+    cityPlaceholder: "முக்கிய நகரத்தைத் தேர்ந்தெடுக்கவும்",
+    gpsBtn: "📍 GPS துல்லியம்",
+    loadingTimes: "நேரங்கள் ஏற்றப்படுகின்றன...",
+    noTimes: "நேரங்கள் கிடைக்கவில்லை.",
+    netErr: "இணையப் பிழை ஏற்பட்டது.",
+    qiblaTitle: "🕋 கிப்லா திசை",
+    startCompass: "🧭 திசைகாட்டியைத் தொடங்கு",
+    calibGuideBtn: "ℹ️ திசைகாட்டி வழிகாட்டி",
+    compassReady: "திசைகாட்டியைத் தொடங்குக · போனை சமமாக வைக்கவும்",
+    compassAligned: "✓ கிப்லா திசையில்",
+    compassTurn: "தங்க அம்பு மேல் ▼ நோக்கி வரும்வரை திருப்பவும்",
+    sensorErr: "சென்சார் தரவு கிடைக்கவில்லை.",
+    permDenied: "அனுமதி மறுக்கப்பட்டது",
+    notSupported: "சென்சார்கள் ஆதரிக்கப்படவில்லை",
+    gpsErr: "இட அனுமதி மறுக்கப்பட்டது அல்லது கிடைக்கவில்லை.",
+    welcomeHeading: "நல்வரவு",
+    footerText: "குர்ஆன் பொருள்",
+    modalTitle: "🧭 திசைகாட்டி வழிகாட்டி",
+    modalBtn: "மூடு",
+    prayers: { Fajr: "ஃபஜ்ர்", Sunrise: "சூரிய உதயம்", Dhuhr: "லுஹர்", Asr: "அஸர்", Maghrib: "மஃரிப்", Isha: "இஷா" }
+  }
+};
+
+function getCurrentIndexLang() {
+  var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
+  if (m) {
+    var v = m[1];
+    try { v = decodeURIComponent(v); } catch (e) {}
+    var x = v.match(/^\/[^\/]*\/([A-Za-z-]+)/);
+    if (x && x[1]) return x[1];
+  }
+  try { return localStorage.getItem('quran-lang') || 'ml'; } catch (e) { return 'ml'; }
+}
+
+function getIndexDict() {
+  var code = getCurrentIndexLang();
+  if (INDEX_UI_DICT[code]) return INDEX_UI_DICT[code];
+  var base = code.split('-')[0].toLowerCase();
+  return INDEX_UI_DICT[base] || INDEX_UI_DICT['en'];
+}
+
+function applyIndexUITranslations() {
+  var d = getIndexDict();
+  var code = getCurrentIndexLang();
+  document.title = d.title;
+
+  var h1 = document.querySelector('header.banner h1');
+  if (h1) h1.textContent = d.h1;
+
+  var menuLbl = document.querySelector('#topMenuNav')?.closest('.pill')?.querySelector('.lbl');
+  if (menuLbl) menuLbl.textContent = d.menu;
+  var menuSel = document.getElementById('topMenuNav');
+  if (menuSel && menuSel.options.length >= 5) {
+    menuSel.options[0].textContent = d.menuPlaceholder;
+    menuSel.options[1].textContent = d.menuQuran;
+    menuSel.options[2].textContent = d.menuTafsir;
+    menuSel.options[3].textContent = d.menuHadith;
+    menuSel.options[4].textContent = d.menuHifz;
+  }
+
+  var sh = document.getElementById('sh');
+  if (sh) sh.textContent = d.selectSurahTitle;
+  var surahSel = document.getElementById('surahSelect');
+  if (surahSel && surahSel.options.length > 0 && surahSel.options[0].value === '') {
+    surahSel.options[0].textContent = d.surahPlaceholder;
+  }
+  var openLink = document.getElementById('openLink');
+  if (openLink) openLink.textContent = d.openBtn;
+
+  var cards = document.querySelectorAll('.resource-grid .resource-card');
+  if (cards.length >= 3) {
+    cards[0].querySelector('h3').textContent = d.tafsirTitle;
+    cards[0].querySelector('p').textContent = d.tafsirDesc;
+    cards[0].querySelector('a').textContent = d.tafsirBtn;
+
+    cards[1].querySelector('h3').textContent = d.hadithTitle;
+    cards[1].querySelector('p').textContent = d.hadithDesc;
+    cards[1].querySelector('a').textContent = d.hadithBtn;
+
+    cards[2].querySelector('h3').textContent = d.hifzTitle;
+    cards[2].querySelector('p').textContent = d.hifzDesc;
+    cards[2].querySelector('a').textContent = d.hifzBtn;
+  }
+
+  var hijriEl = document.getElementById('hijriDateDisplay');
+  if (hijriEl && hijriEl.textContent.indexOf('ലോഡ് ചെയ്യുന്നു') > -1) {
+    hijriEl.textContent = d.hijriLoading;
+  }
+
+  var pTitle = document.querySelector('.prayer-widget-box .widget-title');
+  if (pTitle) pTitle.textContent = d.prayerTitle;
+  var locSub = document.getElementById('locationSubtitle');
+  if (locSub && locSub.textContent.indexOf('ലൊക്കേഷൻ കണ്ടെത്തുന്നു') > -1) locSub.textContent = d.locFinding;
+  var qSub = document.getElementById('qiblaSubtitle');
+  if (qSub && qSub.textContent.indexOf('ലൊക്കേഷൻ കാത്തിരിക്കുന്നു') > -1) qSub.textContent = d.qiblaWaiting;
+
+  var citySel = document.getElementById('citySelect');
+  if (citySel && citySel.options.length > 0 && citySel.options[0].value === '') {
+    citySel.options[0].textContent = d.cityPlaceholder;
+  }
+  var gpsBtn = document.querySelector('.city-selector button');
+  if (gpsBtn) gpsBtn.textContent = d.gpsBtn;
+
+  var qTitle = document.querySelector('.qibla-widget-box .widget-title');
+  if (qTitle) qTitle.textContent = d.qiblaTitle;
+  var startCompBtn = document.getElementById('btnStartCompass');
+  if (startCompBtn) startCompBtn.textContent = d.startCompass;
+  var guideBtns = document.querySelectorAll('.qibla-widget-box button');
+  if (guideBtns.length > 1) guideBtns[1].textContent = d.calibGuideBtn;
+  var compStatus = document.getElementById('compassStatus');
+  if (compStatus && compStatus.textContent.indexOf('Tap Start Compass') > -1) compStatus.textContent = d.compassReady;
+
+  var welcomeH2 = document.querySelector('.desc h2');
+  if (welcomeH2) welcomeH2.textContent = d.welcomeHeading;
+
+  var foot = document.querySelector('footer');
+  if (foot) foot.textContent = d.footerText;
+
+  var modalH4 = document.querySelector('#calibModal h4');
+  if (modalH4) modalH4.textContent = d.modalTitle;
+  var modalClose = document.querySelector('#calibModal .close-modal-btn');
+  if (modalClose) modalClose.textContent = d.modalBtn;
+
+  // Mark UI chrome as notranslate so Google Translate only translates prose/welcome/cards if needed, while keeping navigation/labels crisp
+  ['#topMenuNav', '#surahSelect', '#openLink', '.prayer-widget-box .widget-title', '.qibla-widget-box .widget-title', 'footer'].forEach(function(selStr) {
+    var el = document.querySelector(selStr);
+    if (el) { el.classList.add('notranslate'); el.setAttribute('translate', 'no'); }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', applyIndexUITranslations);
+window.addEventListener('load', applyIndexUITranslations);
 </script>
 
 <script src="https://quranmeaning.app/site.js" defer></script>
