@@ -1189,8 +1189,8 @@ function showTranslationCredit() {
 
 
 /* =====================================================
-   OPTIONS PANEL LABELS in the chosen language (Malayalam, English, Hindi, Tamil, Telugu, Kannada, Arabic).
-   Any other language: the panel is left to the page translator. Rows are recognised by their controls, not by their words.
+   OPTIONS PANEL LABELS in the chosen language (all 61 languages of the language picker).
+   A language without an entry: the panel is left to the page translator. Rows are recognised by their controls, not by their words.
    ===================================================== */
 const PLAYER_DICT = {
     "ml": {
@@ -1325,13 +1325,69 @@ const PLAYER_DICT = {
       listenBtn: "تشغيل",
       stopBtn: "إيقاف",
       optionsBtn: "خيارات ▾"
-    }
+    },
+    "mr": { intro: "प्रस्तावना", screen: "स्क्रीन:", fontSize: "अक्षर आकार:", show: "दाखवा:", verse: "आयत", meaning: "अर्थ", tafsir: "विवरण", reciter: "क़ारी:", repeat: "आयत पुनरावृत्ती:", continuous: "सतत चालवा", wake: "स्क्रीन चालू ठेवा" },
+    "gu": { intro: "પ્રસ્તાવના", screen: "સ્ક્રીન:", fontSize: "અક્ષર કદ:", show: "બતાવો:", verse: "આયત", meaning: "અર્થ", tafsir: "વિવરણ", reciter: "કારી:", repeat: "આયત પુનરાવર્તન:", continuous: "સતત ચલાવો", wake: "સ્ક્રીન ચાલુ રાખો" },
+    "pa": { intro: "ਭੂਮਿਕਾ", screen: "ਸਕ੍ਰੀਨ:", fontSize: "ਅੱਖਰ ਆਕਾਰ:", show: "ਦਿਖਾਓ:", verse: "ਆਇਤ", meaning: "ਅਰਥ", tafsir: "ਵਿਆਖਿਆ", reciter: "ਕਾਰੀ:", repeat: "ਆਇਤ ਦੁਹਰਾਓ:", continuous: "ਲਗਾਤਾਰ ਚਲਾਓ", wake: "ਸਕ੍ਰੀਨ ਚਾਲੂ ਰੱਖੋ" },
+    "bn": { intro: "ভূমিকা", screen: "স্ক্রিন:", fontSize: "ফন্টের আকার:", show: "দেখান:", verse: "আয়াত", meaning: "অর্থ", tafsir: "তাফসীর", reciter: "ক্বারী:", repeat: "আয়াত পুনরাবৃত্তি:", continuous: "একটানা চালান", wake: "স্ক্রিন চালু রাখুন" },
+    "ur": { intro: "تمہید", screen: "اسکرین:", fontSize: "فونٹ کا سائز:", show: "دکھائیں:", verse: "آیت", meaning: "ترجمہ", tafsir: "تفسیر", reciter: "قاری:", repeat: "آیت کی تکرار:", continuous: "مسلسل چلائیں", wake: "اسکرین آن رکھیں" },
+    "ne": { intro: "भूमिका", screen: "स्क्रिन:", fontSize: "फन्ट साइज:", show: "देखाउनुहोस्:", verse: "आयत", meaning: "अर्थ", tafsir: "व्याख्या", reciter: "क़ारी:", repeat: "आयत दोहोर्‍याउने:", continuous: "निरन्तर बजाउनुहोस्", wake: "स्क्रिन अन राख्नुहोस्" },
+    "si": { intro: "ප්‍රස්තාවනාව", screen: "තිරය:", fontSize: "අකුරු ප්‍රමාණය:", show: "පෙන්වන්න:", verse: "ආයත්", meaning: "අර්ථය", tafsir: "විග්‍රහය", reciter: "කාරී:", repeat: "ආයත් නැවත:", continuous: "අඛණ්ඩව වාදනය කරන්න", wake: "තිරය ක්‍රියාත්මකව තබන්න" },
+    "fa": { intro: "مقدمه", screen: "صفحه‌نمایش:", fontSize: "اندازه قلم:", show: "نمایش:", verse: "آیه", meaning: "ترجمه", tafsir: "تفسیر", reciter: "قاری:", repeat: "تکرار آیه:", continuous: "پخش پیوسته", wake: "روشن نگه داشتن صفحه" },
+    "tr": { intro: "Önsöz", screen: "Ekran:", fontSize: "Yazı Boyutu:", show: "Göster:", verse: "Ayet", meaning: "Meal", tafsir: "Tefsir", reciter: "Okuyan:", repeat: "Ayet Tekrarı:", continuous: "Sürekli Oynat", wake: "Ekranı Açık Tut" },
+    "id": { intro: "Pendahuluan", screen: "Layar:", fontSize: "Ukuran Huruf:", show: "Tampilkan:", verse: "Ayat", meaning: "Arti", tafsir: "Tafsir", reciter: "Qari:", repeat: "Ulangi Ayat:", continuous: "Putar Terus-menerus", wake: "Biarkan Layar Menyala" },
+    "ms": { intro: "Pendahuluan", screen: "Skrin:", fontSize: "Saiz Fon:", show: "Papar:", verse: "Ayat", meaning: "Maksud", tafsir: "Tafsir", reciter: "Qari:", repeat: "Ulang Ayat:", continuous: "Main Berterusan", wake: "Kekalkan Skrin Hidup" },
+    "th": { intro: "คำนำ", screen: "หน้าจอ:", fontSize: "ขนาดตัวอักษร:", show: "แสดง:", verse: "อายะฮ์", meaning: "ความหมาย", tafsir: "คำอธิบาย", reciter: "ผู้อ่าน:", repeat: "อ่านอายะฮ์ซ้ำ:", continuous: "เล่นต่อเนื่อง", wake: "เปิดหน้าจอไว้" },
+    "vi": { intro: "Lời nói đầu", screen: "Màn hình:", fontSize: "Cỡ chữ:", show: "Hiển thị:", verse: "Câu", meaning: "Nghĩa", tafsir: "Giải thích", reciter: "Người đọc:", repeat: "Lặp lại câu:", continuous: "Phát liên tục", wake: "Giữ màn hình sáng" },
+    "zh": { intro: "前言", screen: "屏幕：", fontSize: "字体大小：", show: "显示：", verse: "经文", meaning: "释义", tafsir: "注释", reciter: "诵读者：", repeat: "经文重复：", continuous: "连续播放", wake: "保持屏幕常亮" },
+    "zh-TW": { intro: "前言", screen: "螢幕：", fontSize: "字體大小：", show: "顯示：", verse: "經文", meaning: "釋義", tafsir: "註釋", reciter: "誦讀者：", repeat: "經文重複：", continuous: "連續播放", wake: "保持螢幕常亮" },
+    "ja": { intro: "はじめに", screen: "画面：", fontSize: "文字サイズ：", show: "表示：", verse: "節", meaning: "意味", tafsir: "解説", reciter: "朗誦者：", repeat: "節の繰り返し：", continuous: "連続再生", wake: "画面をオンにしておく" },
+    "ko": { intro: "머리말", screen: "화면:", fontSize: "글자 크기:", show: "표시:", verse: "구절", meaning: "뜻", tafsir: "해설", reciter: "낭송자:", repeat: "구절 반복:", continuous: "연속 재생", wake: "화면 켜 두기" },
+    "fr": { intro: "Préface", screen: "Écran :", fontSize: "Taille de police :", show: "Afficher :", verse: "Verset", meaning: "Sens", tafsir: "Tafsir", reciter: "Récitateur :", repeat: "Répéter le verset :", continuous: "Lecture continue", wake: "Garder l'écran allumé" },
+    "de": { intro: "Vorwort", screen: "Bildschirm:", fontSize: "Schriftgröße:", show: "Anzeigen:", verse: "Vers", meaning: "Bedeutung", tafsir: "Tafsir", reciter: "Rezitator:", repeat: "Vers wiederholen:", continuous: "Fortlaufend abspielen", wake: "Bildschirm anlassen" },
+    "es": { intro: "Prefacio", screen: "Pantalla:", fontSize: "Tamaño de letra:", show: "Mostrar:", verse: "Versículo", meaning: "Significado", tafsir: "Tafsir", reciter: "Recitador:", repeat: "Repetir versículo:", continuous: "Reproducción continua", wake: "Mantener pantalla encendida" },
+    "pt": { intro: "Prefácio", screen: "Tela:", fontSize: "Tamanho da fonte:", show: "Mostrar:", verse: "Versículo", meaning: "Significado", tafsir: "Tafsir", reciter: "Recitador:", repeat: "Repetir versículo:", continuous: "Reprodução contínua", wake: "Manter a tela ligada" },
+    "it": { intro: "Prefazione", screen: "Schermo:", fontSize: "Dimensione carattere:", show: "Mostra:", verse: "Versetto", meaning: "Significato", tafsir: "Tafsir", reciter: "Recitatore:", repeat: "Ripeti versetto:", continuous: "Riproduzione continua", wake: "Mantieni schermo acceso" },
+    "ru": { intro: "Предисловие", screen: "Экран:", fontSize: "Размер шрифта:", show: "Показать:", verse: "Аят", meaning: "Смысл", tafsir: "Тафсир", reciter: "Чтец:", repeat: "Повтор аята:", continuous: "Непрерывное воспроизведение", wake: "Не выключать экран" },
+    "nl": { intro: "Voorwoord", screen: "Scherm:", fontSize: "Lettergrootte:", show: "Tonen:", verse: "Vers", meaning: "Betekenis", tafsir: "Tafsir", reciter: "Reciteur:", repeat: "Vers herhalen:", continuous: "Doorlopend afspelen", wake: "Scherm aanhouden" },
+    "pl": { intro: "Przedmowa", screen: "Ekran:", fontSize: "Rozmiar czcionki:", show: "Pokaż:", verse: "Werset", meaning: "Znaczenie", tafsir: "Tafsir", reciter: "Recytator:", repeat: "Powtarzaj werset:", continuous: "Odtwarzaj ciągle", wake: "Nie wygaszaj ekranu" },
+    "uk": { intro: "Передмова", screen: "Екран:", fontSize: "Розмір шрифту:", show: "Показати:", verse: "Аят", meaning: "Значення", tafsir: "Тафсір", reciter: "Чтець:", repeat: "Повтор аяту:", continuous: "Безперервне відтворення", wake: "Не вимикати екран" },
+    "sv": { intro: "Förord", screen: "Skärm:", fontSize: "Teckenstorlek:", show: "Visa:", verse: "Vers", meaning: "Betydelse", tafsir: "Tafsir", reciter: "Reciterare:", repeat: "Upprepa vers:", continuous: "Spela kontinuerligt", wake: "Behåll skärmen på" },
+    "el": { intro: "Πρόλογος", screen: "Οθόνη:", fontSize: "Μέγεθος γραμματοσειράς:", show: "Εμφάνιση:", verse: "Στίχος", meaning: "Σημασία", tafsir: "Ερμηνεία", reciter: "Αναγνώστης:", repeat: "Επανάληψη στίχου:", continuous: "Συνεχής αναπαραγωγή", wake: "Διατήρηση οθόνης αναμμένης" },
+    "ro": { intro: "Prefață", screen: "Ecran:", fontSize: "Mărime font:", show: "Afișează:", verse: "Verset", meaning: "Înțeles", tafsir: "Tafsir", reciter: "Recitator:", repeat: "Repetă versetul:", continuous: "Redare continuă", wake: "Păstrează ecranul aprins" },
+    "sw": { intro: "Dibaji", screen: "Skrini:", fontSize: "Ukubwa wa Herufi:", show: "Onyesha:", verse: "Aya", meaning: "Maana", tafsir: "Tafsiri", reciter: "Msomaji:", repeat: "Rudia Aya:", continuous: "Cheza Mfululizo", wake: "Washa Skrini Daima" },
+    "am": { intro: "መቅድም", screen: "ማያ ገጽ:", fontSize: "የፊደል መጠን:", show: "አሳይ:", verse: "አያ", meaning: "ትርጉም", tafsir: "ተፍሲር", reciter: "አንባቢ:", repeat: "አያ መድገም:", continuous: "ያለማቋረጥ አጫውት", wake: "ማያ ገጹን ክፍት አድርግ" },
+    "ha": { intro: "Gabatarwa", screen: "Allo:", fontSize: "Girman Rubutu:", show: "Nuna:", verse: "Aya", meaning: "Ma'ana", tafsir: "Tafsiri", reciter: "Mai karatu:", repeat: "Maimaita Aya:", continuous: "Kunna a Jere", wake: "Bar Allo a Kunne" },
+    "so": { intro: "Hordhac", screen: "Shaashadda:", fontSize: "Cabbirka Far:", show: "Muuji:", verse: "Aayad", meaning: "Macnaha", tafsir: "Tafsiir", reciter: "Akhriyaha:", repeat: "Ku celi Aayadda:", continuous: "Sii wad ciyaarista", wake: "Shaashadda ha shidnaato" },
+    "sq": { intro: "Parathënie", screen: "Ekrani:", fontSize: "Madhësia e shkronjave:", show: "Shfaq:", verse: "Ajeti", meaning: "Kuptimi", tafsir: "Tefsiri", reciter: "Recituesi:", repeat: "Përsërit ajetin:", continuous: "Luaj pa ndërprerje", wake: "Mbaje ekranin ndezur" },
+    "az": { intro: "Ön söz", screen: "Ekran:", fontSize: "Şrift ölçüsü:", show: "Göstər:", verse: "Ayə", meaning: "Mənası", tafsir: "Təfsir", reciter: "Qari:", repeat: "Ayəni təkrarla:", continuous: "Fasiləsiz oxut", wake: "Ekranı açıq saxla" },
+    "bs": { intro: "Predgovor", screen: "Ekran:", fontSize: "Veličina fonta:", show: "Prikaži:", verse: "Ajet", meaning: "Značenje", tafsir: "Tefsir", reciter: "Učač:", repeat: "Ponovi ajet:", continuous: "Neprekidno reproduciraj", wake: "Ostavi ekran uključen" },
+    "bg": { intro: "Предговор", screen: "Екран:", fontSize: "Размер на шрифта:", show: "Показване:", verse: "Аят", meaning: "Значение", tafsir: "Тафсир", reciter: "Четец:", repeat: "Повтаряне на аята:", continuous: "Непрекъснато възпроизвеждане", wake: "Запази екрана включен" },
+    "cs": { intro: "Předmluva", screen: "Obrazovka:", fontSize: "Velikost písma:", show: "Zobrazit:", verse: "Verš", meaning: "Význam", tafsir: "Tafsír", reciter: "Recitátor:", repeat: "Opakovat verš:", continuous: "Přehrávat nepřetržitě", wake: "Ponechat obrazovku zapnutou" },
+    "ku": { intro: "پێشەکی", screen: "شاشە:", fontSize: "قەبارەی فۆنت:", show: "پیشاندان:", verse: "ئایەت", meaning: "واتا", tafsir: "تەفسیر", reciter: "قورئانخوێن:", repeat: "دووبارەکردنەوەی ئایەت:", continuous: "بەردەوام لێبدە", wake: "شاشە هەڵکراو بهێڵەرەوە" },
+    "no": { intro: "Forord", screen: "Skjerm:", fontSize: "Skriftstørrelse:", show: "Vis:", verse: "Vers", meaning: "Betydning", tafsir: "Tafsir", reciter: "Resitator:", repeat: "Gjenta vers:", continuous: "Spill av kontinuerlig", wake: "Hold skjermen på" },
+    "sd": { intro: "تمهيد", screen: "اسڪرين:", fontSize: "فونٽ جي سائيز:", show: "ڏيکاريو:", verse: "آيت", meaning: "ترجمو", tafsir: "تفسير", reciter: "قاري:", repeat: "آيت ورجاءِ:", continuous: "لڳاتار هلايو", wake: "اسڪرين آن رکو" },
+    "tg": { intro: "Пешгуфтор", screen: "Экран:", fontSize: "Андозаи ҳарф:", show: "Нишон диҳед:", verse: "Оят", meaning: "Маъно", tafsir: "Тафсир", reciter: "Қорӣ:", repeat: "Такрори оят:", continuous: "Пайваста пахш кунед", wake: "Экранро фурӯзон нигоҳ доред" },
+    "tt": { intro: "Кереш сүз", screen: "Экран:", fontSize: "Хәреф зурлыгы:", show: "Күрсәтү:", verse: "Аять", meaning: "Мәгънә", tafsir: "Тәфсир", reciter: "Кыйраәтче:", repeat: "Аятьне кабатлау:", continuous: "Өзлексез уйнату", wake: "Экранны кабыза тоту" },
+    "ug": { intro: "مۇقەددىمە", screen: "ئېكران:", fontSize: "خەت چوڭلۇقى:", show: "كۆرسەت:", verse: "ئايەت", meaning: "مەنىسى", tafsir: "تەپسىر", reciter: "قارى:", repeat: "ئايەت تەكرارلاش:", continuous: "ئۈزلۈكسىز قويۇش", wake: "ئېكراننى ئوچۇق تۇتۇش" },
+    "uz": { intro: "Muqaddima", screen: "Ekran:", fontSize: "Shrift o'lchami:", show: "Ko'rsatish:", verse: "Oyat", meaning: "Ma'nosi", tafsir: "Tafsir", reciter: "Qori:", repeat: "Oyatni takrorlash:", continuous: "Uzluksiz ijro", wake: "Ekranni yoniq tutish" },
+    "tl": { intro: "Paunang Salita", screen: "Screen:", fontSize: "Laki ng Font:", show: "Ipakita:", verse: "Ayah", meaning: "Kahulugan", tafsir: "Tafsir", reciter: "Mambabasa:", repeat: "Ulitin ang Ayah:", continuous: "Patuloy na I-play", wake: "Panatilihing Bukas ang Screen" },
+    "ps": { intro: "سریزه", screen: "پرده:", fontSize: "د فونټ اندازه:", show: "ښودل:", verse: "آیت", meaning: "ژباړه", tafsir: "تفسیر", reciter: "قاري:", repeat: "د آیت تکرار:", continuous: "ورپسې غږول", wake: "پرده روښانه وساتئ" },
+    "km": { intro: "បុព្វកថា", screen: "អេក្រង់:", fontSize: "ទំហំអក្សរ:", show: "បង្ហាញ:", verse: "អាយ៉ាត់", meaning: "អត្ថន័យ", tafsir: "អត្ថាធិប្បាយ", reciter: "អ្នកសូត្រ:", repeat: "ធ្វើម្ដងទៀតអាយ៉ាត់:", continuous: "លេងបន្តបន្ទាប់", wake: "ទុកអេក្រង់បើក" },
+    "yo": { intro: "Ọ̀rọ̀ Ìṣáájú", screen: "Ojú Ìfihàn:", fontSize: "Ìwọ̀n Lẹ́tà:", show: "Ṣàfihàn:", verse: "Ayah", meaning: "Ìtumọ̀", tafsir: "Àlàyé", reciter: "Olùkàwé:", repeat: "Tún Ayah Ṣe:", continuous: "Ṣeré Láìdúró", wake: "Jẹ́ kí Ojú Ìfihàn Wà Ní Títàn" },
+    "om": { intro: "Seensa", screen: "Iskiriinii:", fontSize: "Hamma Barreeffamaa:", show: "Agarsiisi:", verse: "Aayata", meaning: "Hiika", tafsir: "Tafsiira", reciter: "Qaari'aa:", repeat: "Aayata irra deebi'i:", continuous: "Itti fufiinsaan taphachiisi", wake: "Iskiriinii banaa eegi" },
+    "as": { intro: "মুখবন্ধ", screen: "স্ক্ৰীণ:", fontSize: "আখৰৰ আকাৰ:", show: "দেখুৱাওক:", verse: "আয়াত", meaning: "অৰ্থ", tafsir: "তাফসীৰ", reciter: "ক্বাৰী:", repeat: "আয়াত পুনৰাবৃত্তি:", continuous: "অবিৰতভাৱে বজাওক", wake: "স্ক্ৰীণ অন ৰাখক" },
+    "kk": { intro: "Алғы сөз", screen: "Экран:", fontSize: "Қаріп өлшемі:", show: "Көрсету:", verse: "Аят", meaning: "Мағынасы", tafsir: "Тәпсір", reciter: "Қари:", repeat: "Аятты қайталау:", continuous: "Үздіксіз ойнату", wake: "Экранды қосулы ұстау" },
+    "ky": { intro: "Баш сөз", screen: "Экран:", fontSize: "Арип өлчөмү:", show: "Көрсөтүү:", verse: "Аят", meaning: "Мааниси", tafsir: "Тапсир", reciter: "Кары:", repeat: "Аятты кайталоо:", continuous: "Үзгүлтүксүз ойнотуу", wake: "Экранды күйүк кармоо" },
+    "rw": { intro: "Ijambo ry'ibanze", screen: "Ecran:", fontSize: "Ingano y'inyuguti:", show: "Erekana:", verse: "Aya", meaning: "Ibisobanuro", tafsir: "Isobanuro", reciter: "Usoma:", repeat: "Subiramo Aya:", continuous: "Kina bikomeza", wake: "Komeza ecran irabagirana" }
   };
 
 
 function applyPanelLabels() {
   const panel = $("panel"); if (!panel) return;
-  const d = PLAYER_DICT[trSiteLang()];
+  let dk = trSiteLang();
+  if (dk === "zh" && /zh-TW/i.test(document.cookie)) dk = "zh-TW";       // Traditional Chinese has its own entry
+  const d = PLAYER_DICT[dk];
   if (!d) { panel.classList.remove("notranslate"); panel.removeAttribute("translate"); return; }
   panel.classList.add("notranslate"); panel.setAttribute("translate", "no");
   panel.querySelectorAll(".ctl-title").forEach(el => {
