@@ -467,10 +467,32 @@ div[id*="goog-gt-"] {
 <script>
 const SURAH_URL = n => `https://quranmeaning.app/${n}`;
 const SURAHS = "അൽ ഫാതിഹ,അൽ ബഖറ,ആലു ഇംറാൻ,അന്നിസാഅ്,അൽ മാഇദ,അൽ അൻആം,അൽ അഅ്റാഫ്,അൽ അൻഫാൽ,അത്തൗബ,യൂനുസ്,ഹൂദ്,യൂസുഫ്,അർറഅ്ദ്,ഇബ്റാഹീം,അൽ ഹിജ്ർ,അന്നഹ്ൽ,അൽ ഇസ്റാഅ്,അൽ കഹ്ഫ്,മർയം,ത്വാഹാ,അൽ അമ്പിയാഅ്,അൽ ഹജ്ജ്,അൽ മുഅ്മിനൂൻ,അന്നൂർ,അൽ ഫുർഖാൻ,അശ്ശുഅറാഅ്,അന്നംല്,അൽ ഖസ്വസ്വ്,അൽ അൻകബൂത്,അർറൂം,ലുഖ്മാൻ,അസ്സജ്ദ,അൽ അഹ്സാബ്,സബഅ്,ഫാത്വിർ,യാസീൻ,അസ്സ്വാഫ്ഫാത്,സ്വാദ്,അസ്സുമർ,ഗാഫിർ,ഫുസ്സിലത്,അശ്ശൂറാ,അസ്സുഖ്റുഫ്,അദ്ദുഖാൻ,അൽ ജാഥിയ,അൽ അഹ്ഖാഫ്,മുഹമ്മദ്,അൽ ഫതഹ്,അൽ ഹുജുറാത്ത്,ഖാഫ്,അദ്ദാരിയാത്,ത്വൂർ,അന്നജ്മ്,അൽ ഖമർ,അർറഹ്മാൻ,അൽ വാഖിഅ,അൽ ഹദീദ്,അൽ മുജാദില,അൽ ഹശ്ർ,അൽ മുംതഹന,അസ്സ്വഫ്ഫ്,അൽ ജുമുഅ,അൽ മുനാഫിഖൂൻ,അത്തഗാബുൻ,അത്വലാഖ്,അത്തഹ്രീം,അൽ മുൽക്,അൽ ഖലം,അൽ ഹാഖ്ഖ,അൽ മആരിജ്,നൂഹ്,അൽ ജിന്ന്,അൽ മുസ്സമ്മിൽ,അൽ മുദ്ദസ്സിർ,അൽ ഖിയാമ,അൽ ഇൻസാൻ,അൽ മുർസലാത്,അന്നബഅ്,അന്നാസിആത്,അബസ,അത്തക്വീർ,അൽ ഇൻഫിത്വാർ,അൽ മുത്വഫ്ഫിഫീൻ,അൽ ഇൻശിഖാഖ്,അൽ ബുറൂജ്,അത്വാരിഖ്,അൽ അഅ്ലാ,അൽ ഗാശിയ,അൽ ഫജ്ർ,അൽ ബലദ്,അശ്ശംസ്,അല്ലൈൽ,അള്ളുഹാ,അൽ ഇൻശിറാഹ്,അത്തീൻ,അൽ അലഖ്,അൽ ഖദ്ർ,അൽ ബയ്യിന,അസ്സൽസലഃ,അൽ ആദിയാത്,അൽ ഖാരിഅ,അത്തക്കാഥുർ,അൽ അസ്ർ,അൽ ഹുമസ,അൽ ഫീൽ,ഖുറൈശ്,അൽ മാഊൻ,അൽ കൗഥർ,അൽ കാഫിറൂൻ,അന്നസ്ർ,അൽ മസദ്,അൽ ഇഖ്ലാസ്,അൽ ഫലഖ്,അന്നാസ്".split(",");
+const SURAH_LAT = ["Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-'Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","'Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-'Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-'Adiyat","Al-Qari'ah","At-Takathur","Al-'Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
+const SURAH_AR = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+const SURAH_EN = ["The Opening","The Cow","Family of Imran","The Women","The Table Spread","The Cattle","The Heights","The Spoils of War","The Repentance","Jonah","Hud","Joseph","The Thunder","Abraham","The Rocky Tract","The Bee","The Night Journey","The Cave","Mary","Ta-Ha","The Prophets","The Pilgrimage","The Believers","The Light","The Criterion","The Poets","The Ant","The Stories","The Spider","The Romans","Luqman","The Prostration","The Combined Forces","Sheba","The Originator","Ya-Sin","Those Ranged in Ranks","Sad","The Groups","The Forgiver","Explained in Detail","The Consultation","The Gold Adornments","The Smoke","The Crouching","The Wind-Curved Sandhills","Muhammad","The Victory","The Rooms","Qaf","The Winnowing Winds","The Mount","The Star","The Moon","The Most Merciful","The Inevitable","The Iron","The Pleading Woman","The Exile","The Woman to be Examined","The Ranks","The Congregation","The Hypocrites","The Mutual Loss and Gain","The Divorce","The Prohibition","The Sovereignty","The Pen","The Reality","The Ascending Stairways","Noah","The Jinn","The Enshrouded One","The Cloaked One","The Resurrection","The Human","The Emissaries","The Tidings","Those Who Drag Forth","He Frowned","The Overthrowing","The Cleaving","The Defrauding","The Splitting Open","The Mansions of the Stars","The Nightcomer","The Most High","The Overwhelming","The Dawn","The City","The Sun","The Night","The Morning Hours","The Relief","The Fig","The Clot","The Power","The Clear Proof","The Earthquake","The Courser","The Calamity","Competition","The Declining Day","The Traducer","The Elephant","Quraysh","Small Kindnesses","Abundance","The Disbelievers","The Divine Support","The Palm Fiber","Sincerity","The Daybreak","Mankind"];
 (function(){
  const s=document.getElementById('surahSelect');
+ /* Language chosen in the picker (Google Translate cookie: /ml/xx) */
+ let lang='ml';
+ try{
+  const m=document.cookie.match(/(?:^|; )googtrans=([^;]*)/);
+  const c=m?decodeURIComponent(m[1]).match(/^\/[^/]+\/(.+)$/):null;
+  lang=(c&&c[1])||localStorage.getItem('quran-lang')||'ml';
+ }catch(e){}
+ lang=String(lang).toLowerCase();
+ if(lang==='ml'||lang.indexOf('ml-')===0) lang='ml';
  s.add(new Option('— സൂറത്ത് തിരഞ്ഞെടുക്കുക —',''));
- SURAHS.forEach((n,i)=>{const k=String(i+1).padStart(3,'0');s.add(new Option(`${k} - ${n}`,k));});
+ SURAHS.forEach((n,i)=>{
+  const k=String(i+1).padStart(3,'0');
+  let label;
+  if(lang==='ml') label=`${k} - ${n} · ${SURAH_AR[i]}`;
+  else if(lang==='ar') label=`${k} - ${SURAH_AR[i]} (${SURAH_LAT[i]})`;
+  else if(lang==='en') label=`${k} - ${SURAH_LAT[i]} (${SURAH_EN[i]}) · ${SURAH_AR[i]}`;
+  else label=`${k} - ${SURAH_LAT[i]} · ${SURAH_AR[i]}`;
+  const o=new Option(label,k);
+  if(lang!=='ml') o.className='notranslate'; /* keep names exactly as written */
+  s.add(o);
+ });
  s.addEventListener('change',openSurah);
 })();
 
