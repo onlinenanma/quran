@@ -29,6 +29,8 @@ body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:
 .nm b{font-weight:600;font-size:.95rem}
 .nm .ar{font-family:"Noto Naskh Arabic",serif;font-size:1.05rem;color:var(--muted)}
 .sr:hover .ar,.sr:focus-visible .ar{color:#fff}
+.nm .mn{font-size:.8rem;color:var(--muted)}
+.sr:hover .mn,.sr:focus-visible .mn{color:#fff}
 .empty{text-align:center;color:var(--muted);padding:20px}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 12px calc(24px + env(safe-area-inset-bottom,0px))}
 
@@ -75,12 +77,12 @@ const SURAHS = [
 ["അൽ ഫാതിഹ","الفاتحة"],["അൽ ബഖറഃ","البقرة"],["ആലു ഇംറാൻ","آل عمران"],["അന്നിസാഅ്","النساء"],
 ["അൽ മാഇദഃ","المائدة"],["അൽ അൻആം","الأنعام"],["അൽ അഅ്റാഫ്","الأعراف"],["അൽ അൻഫാൽ","الأنفال"],
 ["അത്തൗബഃ","التوبة"],["യൂനുസ്","يونس"],["ഹൂദ്","هود"],["യൂസുഫ്","يوسف"],
-["അർറഅ്ദ്","الرعد"],["ഇബ്റാഹീം","ഇബ്റാഹീം"],["അൽ ഹിജ്റ്","الحجر"],["അന്നഹ്ൽ","النحل"],
+["അർറഅ്ദ്","الرعد"],["ഇബ്റാഹീം","إبراهيم"],["അൽ ഹിജ്റ്","الحجر"],["അന്നഹ്ൽ","النحل"],
 ["അൽ ഇസ്റാഅ്","الإسراء"],["അൽ കഹ്ഫ്","الكهف"],["മർയം","مريم"],["ത്വാഹാ","طه"],
 ["അൽ അമ്പിയാഅ്","الأنبياء"],["അൽ ഹജ്ജ്","الحج"],["അൽ മുഅ്മിനൂൻ","المؤمنون"],["അന്നൂർ","النور"],
 ["അൽ ഫുർഖാൻ","الفرقان"],["അശ്ശുഅറാഅ്","الشعراء"],["അന്നംല്","النمل"],["അൽ ഖസ്വസ്വ്","القصص"],
 ["അൽ അൻകബൂത്ത്","العنكبوت"],["അർറൂം","الروم"],["ലുഖ്മാൻ","لقمان"],["അസ്സജ്ദഃ","السجدة"],
-["അൽ അഹ്സാബ്","الأحزاب"],["സബഅ്","سبأ"],["ഫാത്വിർ","ഫاطر"],["യാസീൻ","يس"],
+["അൽ അഹ്സാബ്","الأحزاب"],["സബഅ്","سبأ"],["ഫാത്വിർ","فاطر"],["യാസീൻ","يس"],
 ["അസ്സ്വാഫ്ഫാത്ത്","الصافات"],["സ്വാദ്","ص"],["അസ്സുമർ","الزمر"],["ഗാഫിർ","غافر"],
 ["ഫുസ്സിലത്ത്","فصلت"],["അശ്ശൂറാ","الشورى"],["അസ്സുഖ്റുഫ്","الزخرف"],["അദ്ദുഖാൻ","الدخان"],
 ["അൽ ജാസിയഃ","الجاثية"],["അൽ അഹ്ഖാഫ്","الأحقاف"],["മുഹമ്മദ്","محمد"],["അൽ ഫത്ഹ്","الفتح"],
@@ -103,17 +105,37 @@ const SURAHS = [
 ["അൽ ഫലഖ്","الفلق"],["അന്നാസ്","الناس"]
 ];
 
+const SURAH_LAT = ["Al-Fatihah","Al-Baqarah","Ali 'Imran","An-Nisa","Al-Ma'idah","Al-An'am","Al-A'raf","Al-Anfal","At-Tawbah","Yunus","Hud","Yusuf","Ar-Ra'd","Ibrahim","Al-Hijr","An-Nahl","Al-Isra","Al-Kahf","Maryam","Ta-Ha","Al-Anbiya","Al-Hajj","Al-Mu'minun","An-Nur","Al-Furqan","Ash-Shu'ara","An-Naml","Al-Qasas","Al-'Ankabut","Ar-Rum","Luqman","As-Sajdah","Al-Ahzab","Saba","Fatir","Ya-Sin","As-Saffat","Sad","Az-Zumar","Ghafir","Fussilat","Ash-Shura","Az-Zukhruf","Ad-Dukhan","Al-Jathiyah","Al-Ahqaf","Muhammad","Al-Fath","Al-Hujurat","Qaf","Adh-Dhariyat","At-Tur","An-Najm","Al-Qamar","Ar-Rahman","Al-Waqi'ah","Al-Hadid","Al-Mujadila","Al-Hashr","Al-Mumtahanah","As-Saff","Al-Jumu'ah","Al-Munafiqun","At-Taghabun","At-Talaq","At-Tahrim","Al-Mulk","Al-Qalam","Al-Haqqah","Al-Ma'arij","Nuh","Al-Jinn","Al-Muzzammil","Al-Muddaththir","Al-Qiyamah","Al-Insan","Al-Mursalat","An-Naba","An-Nazi'at","'Abasa","At-Takwir","Al-Infitar","Al-Mutaffifin","Al-Inshiqaq","Al-Buruj","At-Tariq","Al-A'la","Al-Ghashiyah","Al-Fajr","Al-Balad","Ash-Shams","Al-Layl","Ad-Duha","Ash-Sharh","At-Tin","Al-'Alaq","Al-Qadr","Al-Bayyinah","Az-Zalzalah","Al-'Adiyat","Al-Qari'ah","At-Takathur","Al-'Asr","Al-Humazah","Al-Fil","Quraysh","Al-Ma'un","Al-Kawthar","Al-Kafirun","An-Nasr","Al-Masad","Al-Ikhlas","Al-Falaq","An-Nas"];
+const SURAH_EN = ["The Opening","The Cow","Family of Imran","The Women","The Table Spread","The Cattle","The Heights","The Spoils of War","The Repentance","Jonah","Hud","Joseph","The Thunder","Abraham","The Rocky Tract","The Bee","The Night Journey","The Cave","Mary","Ta-Ha","The Prophets","The Pilgrimage","The Believers","The Light","The Criterion","The Poets","The Ant","The Stories","The Spider","The Romans","Luqman","The Prostration","The Combined Forces","Sheba","The Originator","Ya-Sin","Those Ranged in Ranks","Sad","The Groups","The Forgiver","Explained in Detail","The Consultation","The Gold Adornments","The Smoke","The Crouching","The Wind-Curved Sandhills","Muhammad","The Victory","The Rooms","Qaf","The Winnowing Winds","The Mount","The Star","The Moon","The Most Merciful","The Inevitable","The Iron","The Pleading Woman","The Exile","The Woman to be Examined","The Ranks","The Congregation","The Hypocrites","The Mutual Loss and Gain","The Divorce","The Prohibition","The Sovereignty","The Pen","The Reality","The Ascending Stairways","Noah","The Jinn","The Enshrouded One","The Cloaked One","The Resurrection","The Human","The Emissaries","The Tidings","Those Who Drag Forth","He Frowned","The Overthrowing","The Cleaving","The Defrauding","The Splitting Open","The Mansions of the Stars","The Nightcomer","The Most High","The Overwhelming","The Dawn","The City","The Sun","The Night","The Morning Hours","The Relief","The Fig","The Clot","The Power","The Clear Proof","The Earthquake","The Courser","The Calamity","Competition","The Declining Day","The Traducer","The Elephant","Quraysh","Small Kindnesses","Abundance","The Disbelievers","The Divine Support","The Palm Fiber","Sincerity","The Daybreak","Mankind"];
+
+/* Language chosen on the index page (Google Translate cookie /ml/xx or saved choice) */
+let lang = 'ml';
+try {
+ const m = document.cookie.match(/(?:^|; )googtrans=([^;]*)/);
+ const c = m ? decodeURIComponent(m[1]).match(/^\/[^/]+\/(.+)$/) : null;
+ lang = (c && c[1]) || localStorage.getItem('quran-lang') || 'ml';
+} catch (e) {}
+lang = String(lang).toLowerCase();
+if (lang === 'ml' || lang.indexOf('ml-') === 0) lang = 'ml';
+
 const grid = document.getElementById('grid'), empty = document.getElementById('empty');
 SURAHS.forEach(([ml, ar], i) => {
- const n = i + 1;
+ const n = i + 1, lat = SURAH_LAT[i], en = SURAH_EN[i];
  const a = document.createElement('a');
- a.className = 'sr'; 
- a.href = BASE + pad(n); 
- 
+ a.className = 'sr';
+ a.href = BASE + pad(n);
  a.target = '_parent';
 
- a.dataset.s = (n + ' ' + ml + ' ' + ar).toLowerCase();
- a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${ml}</b><span class="ar">${ar}</span></span>`;
+ let main, sub, extra = '';
+ if (lang === 'ml') { main = ml; sub = ar; }
+ else if (lang === 'ar') { main = ar; sub = lat; }
+ else { main = lat; sub = ar; if (lang === 'en') extra = `<span class="mn">${en}</span>`; }
+
+ /* names stay exactly as written, Google Translate must not alter them */
+ if (lang !== 'ml') a.classList.add('notranslate');
+
+ a.dataset.s = (n + ' ' + ml + ' ' + ar + ' ' + lat + ' ' + en).toLowerCase();
+ a.innerHTML = `<span class="no">${n}</span><span class="nm"><b>${main}</b>${extra}<span class="ar">${sub}</span></span>`;
  grid.appendChild(a);
 });
 
