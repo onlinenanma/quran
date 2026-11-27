@@ -20,7 +20,7 @@
 html,body{width:100%;overflow-x:hidden}
 .pill select{width:100%}
 body{font-family:"Noto Sans Malayalam",sans-serif;background:var(--paper);color:var(--ink);line-height:1.9}
-.banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(40px,8vw,64px);background:
+.banner{position:relative;text-align:center;color:#fff;padding:clamp(20px,7vw,40px) 18px clamp(62px,10vw,88px);background:
  radial-gradient(circle at 50% 120%,rgba(212,175,55,.28),transparent 60%),
  repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.035) 0 15deg,transparent 15deg 30deg),
  linear-gradient(160deg,var(--green),var(--green2));border-bottom:4px solid var(--gold)}
@@ -720,13 +720,13 @@ document.getElementById('topMenuNav').addEventListener('change',function(){
   const exp=';expires=Thu, 01 Jan 1970 00:00:00 GMT';
   const val=v?encodeURIComponent(v):'';
   const host=location.hostname||'';
-  document.cookie='googtrans='+val+(v?'':exp)+';path=/';
+  document.cookie='googtrans='+val+(v?';max-age=31536000':exp)+';path=/';
   if(host && host.indexOf('.')>0){
-   document.cookie='googtrans='+val+(v?'':exp)+';path=/;domain='+host;
+   document.cookie='googtrans='+val+(v?';max-age=31536000':exp)+';path=/;domain='+host;
    const parts=host.split('.');
    if(parts.length>2){
     const parentDomain='.'+parts.slice(-2).join('.');
-    document.cookie='googtrans='+val+(v?'':exp)+';path=/;domain='+parentDomain;
+    document.cookie='googtrans='+val+(v?';max-age=31536000':exp)+';path=/;domain='+parentDomain;
    }
   }
  }
@@ -770,6 +770,7 @@ document.getElementById('topMenuNav').addEventListener('change',function(){
  showLabel(cur);
 
  if(cur!==SRC){
+  if(!getCookie('googtrans')){ writeGoogtransCookie('/'+SRC+'/'+cur); }  /* cookie lost after browser restart: restore it from the saved choice */
   window.googleTranslateElementInit=function(){
    new google.translate.TranslateElement({pageLanguage:SRC,includedLanguages:cur,autoDisplay:false},'google_translate_element');
   };
