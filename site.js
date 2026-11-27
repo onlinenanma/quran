@@ -22,7 +22,9 @@
     return x ? x[1] : '';
   }
   function getPref() {                            // the cookie is the one source of truth, shared with the index page
-    return cookieLang() || 'ml';
+    var c = cookieLang(); if (c) return c;
+    try { var saved = localStorage.getItem(KEY); if (saved) return saved; } catch (e) {}   // mobile browsers drop session cookies when closed; the saved choice survives
+    return 'ml';
   }
   function setCookie(l) {                         // Google reads this cookie to translate
     var gone = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
