@@ -356,6 +356,11 @@
         padding: 1.25rem;
       }
     }
+
+    /* hide the Google Translate toolbar */
+    .goog-te-banner-frame, .skiptranslate > iframe { display: none !important; }
+    body { top: 0 !important; }
+    #gt_el { display: none; }
   </style>
 </head>
 <body>
@@ -363,7 +368,7 @@
     <div class="topbar-inner">
       <a class="brand" href="https://quranmeaning.app">
         <span class="brand-dot" aria-hidden="true"></span>
-        <span>Quran Meaning</span>
+        <span class="notranslate" translate="no">Quran Meaning</span>
       </a>
       <nav class="nav-links" aria-label="Page navigation">
         <a href="https://quranmeaning.app">Home</a>
@@ -377,7 +382,7 @@
     <section class="hero">
       <span class="eyebrow">Get in Touch</span>
       <h1>Contact Us</h1>
-      <p>Have feedback on <strong>Quran Meaning</strong> (<code>https://quranmeaning.app</code>), spotted an issue with text, translation, or audio, or have a privacy question? Send a note below.</p>
+      <p>Have feedback on <strong class="notranslate" translate="no">Quran Meaning</strong> (<code class="notranslate" translate="no">https://quranmeaning.app</code>), spotted an issue with text, translation, or audio, or have a privacy question? Send a note below.</p>
     </section>
 
     <div class="grid">
@@ -424,8 +429,9 @@
 
           <div id="statusBox" class="status-box info" role="status" aria-live="polite"></div>
 
-          <p class="Note:">
+          <p class="hint">
             Kindly mention chapter name, verse number in your message
+          </p>
         </form>
       </section>
 
@@ -435,12 +441,12 @@
           <ul class="info-list">
             <li>
               <span class="info-label">Website</span>
-              <a href="https://quranmeaning.app">https://quranmeaning.app</a>
+              <a class="notranslate" translate="no" href="https://quranmeaning.app">https://quranmeaning.app</a>
             </li>
             <li>
               <span class="info-label">Email</span>
               <div class="email-pill">
-                <a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a>
+                <a class="notranslate" translate="no" href="mailto:appnanma@gmail.com">appnanma@gmail.com</a>
               </div>
               <div class="btn-row" style="margin-top: 0.55rem;">
                 <button type="button" id="copyEmailBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.85rem;">Copy Email Address</button>
@@ -462,7 +468,7 @@
   </main>
 
   <footer>
-    <div>&copy; <span id="yr">2026</span> Quran Meaning (<a href="https://quranmeaning.app">quranmeaning.app</a>). All rights reserved.</div>
+    <div>&copy; <span id="yr">2026</span> <span class="notranslate" translate="no">Quran Meaning (<a href="https://quranmeaning.app">quranmeaning.app</a>)</span>. All rights reserved.</div>
     <div>
       <a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="contact-us.html">Contact Us</a>
     </div>
@@ -574,6 +580,35 @@
         submitBtn.textContent = originalText;
       }
     });
+  </script>
+
+  <!-- Language: follows the choice made on the index page (shared googtrans cookie / saved choice) -->
+  <script>
+  (function () {
+    var KEY = 'quran-lang', pref = '';
+    try {
+      var m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
+      if (m) { var v = decodeURIComponent(m[1]); var x = v.match(/^\/[^\/]*\/([A-Za-z-]+)/); if (x) pref = x[1]; }
+    } catch (e) {}
+    if (!pref) { try { pref = localStorage.getItem(KEY) || ''; } catch (e) {} }
+    if (!pref || pref === 'en') return;                       // no choice made, or English: leave the page as written
+
+    // this page is written in English, so Google must translate from "en" (the other pages are from "ml")
+    var val = encodeURIComponent('/en/' + pref), host = location.hostname, parts = host.split('.');
+    var parent = parts.length >= 2 ? '.' + parts.slice(-2).join('.') : '';
+    var base = 'googtrans=' + val + ';max-age=31536000;path=/';
+    document.cookie = base;
+    if (host.indexOf('.') > -1) document.cookie = base + ';domain=' + host;
+    if (parent) document.cookie = base + ';domain=' + parent;
+
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement({ pageLanguage: 'en', autoDisplay: false }, 'gt_el');
+    };
+    var d = document.createElement('div'); d.id = 'gt_el'; document.body.appendChild(d);
+    var sc = document.createElement('script');
+    sc.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    sc.async = true; document.body.appendChild(sc);
+  })();
   </script>
 </body>
 </html>
