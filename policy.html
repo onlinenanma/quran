@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Privacy Policy for Quran Meaning (https://quranmeaning.app) — how we handle your privacy, browser storage, audio/TTS, and data." />
+  <title>Privacy Policy — Quran Meaning</title>
+  <style>
+    :root {
+      --bg: #f7f9f8;
+      --surface: #ffffff;
+      --surface-alt: #eef4f1;
+      --text: #16231d;
+      --muted: #4b6157;
+      --primary: #14533a;
+      --primary-hover: #0e3d2a;
+      --accent: #b5892e;
+      --border: #d7e2dc;
+      --shadow: 0 8px 24px rgba(20, 83, 58, 0.06);
+      --radius: 14px;
+      --max-w: 880px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links a {
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      background: var(--surface-alt);
+      text-decoration: none;
+    }
+
+    .nav-links a.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    main {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #14533a 0%, #1d6b4c 100%);
+      color: #ffffff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.14);
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(1.65rem, 3.2vw, 2.25rem);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.98rem;
+    }
+
+    .meta-row {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.65rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.35rem;
+    }
+
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.25rem;
+      color: var(--primary);
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card h3 {
+      margin: 1.1rem 0 0.35rem;
+      font-size: 1.02rem;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0 0 0.85rem;
+      color: var(--text);
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 0.4rem 0 0.9rem;
+      padding-left: 1.35rem;
+    }
+
+    li {
+      margin-bottom: 0.45rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--surface-alt);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .callout {
+      background: var(--surface-alt);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+      padding: 0.95rem 1.1rem;
+      margin-top: 0.85rem;
+      font-size: 0.94rem;
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .toc a {
+      font-size: 0.86rem;
+      padding: 0.35rem 0.7rem;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .toc a:hover {
+      background: #e1ece6;
+      text-decoration: none;
+    }
+
+    footer {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .hero, .card {
+        padding: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="https://quranmeaning.app">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>Quran Meaning</span>
+      </a>
+      <nav class="nav-links" aria-label="Page navigation">
+        <a href="https://quranmeaning.app">Home</a>
+        <a class="active" href="privacy-policy.html">Privacy Policy</a>
+        <a href="contact-us.html">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">Legal &amp; Privacy</span>
+      <h1>Privacy Policy</h1>
+      <p>How <strong>Quran Meaning</strong> (<code>https://quranmeaning.app</code>) respects your privacy when you browse meanings, listen to audio or text-to-speech, use the app offline, or reach out to us.</p>
+      <div class="meta-row">
+        <span><strong>Website:</strong> https://quranmeaning.app</span>
+        <span><strong>Effective Date:</strong> November 28, 2026</span>
+        <span><strong>Contact:</strong> <a href="mailto:appnanma@gmail.com" style="color: #fff; text-decoration: underline;">appnanma@gmail.com</a></span>
+      </div>
+    </section>
+
+    <div class="card">
+      <h2>On This Page</h2>
+      <div class="toc">
+        <a href="#summary">1. At a Glance</a>
+        <a href="#info-collected">2. Information We Handle</a>
+        <a href="#storage-pwa">3. Local Storage, Caching &amp; TTS</a>
+        <a href="#third-parties">4. Third-Party Services &amp; Links</a>
+        <a href="#retention-security">5. Retention &amp; Security</a>
+        <a href="#your-rights">6. Your Choices &amp; Rights</a>
+        <a href="#children">7. Children's Privacy</a>
+        <a href="#changes">8. Policy Updates &amp; Contact</a>
+      </div>
+    </div>
+
+    <section id="summary" class="card">
+      <h2>1. At a Glance</h2>
+      <p>We aim to keep <strong>Quran Meaning</strong> lightweight, calm, and privacy-respecting. You do not need to create an account or submit personal details simply to read or listen to content on the site.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>How Quran Meaning Handles It</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Account &amp; Sign-In</strong></td>
+              <td>No user accounts or login walls are required to browse the website.</td>
+            </tr>
+            <tr>
+              <td><strong>Reading &amp; Audio Preferences</strong></td>
+              <td>Settings such as language choices, reading progress, or playback preferences may be stored locally in your browser (e.g., <code>localStorage</code> or Service Worker cache).</td>
+            </tr>
+            <tr>
+              <td><strong>Contact Messages</strong></td>
+              <td>If you email us at <a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a> or submit a contact form, we use your message only to reply and support the site.</td>
+            </tr>
+            <tr>
+              <td><strong>Selling Personal Data</strong></td>
+              <td>We do not sell your personal information to data brokers.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="info-collected" class="card">
+      <h2>2. Information We Handle</h2>
+      <h3>Information You Provide Directly</h3>
+      <p>When you contact us by email (<a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a>) or through a contact form, you may share your name, email address, subject, and message content. Please avoid sending sensitive personal or confidential information in messages.</p>
+
+      <h3>Technical &amp; Connection Data</h3>
+      <p>When you visit a website or load static assets and media over the internet, your browser or device naturally transmits standard technical details—such as IP address, browser type, operating system, referring page, and requested URLs—to the servers or content delivery networks serving those files so pages and audio can load properly.</p>
+    </section>
+
+    <section id="storage-pwa" class="card">
+      <h2>3. Local Storage, Offline Caching &amp; Text-to-Speech</h2>
+      <ul>
+        <li><strong>Browser Storage &amp; Service Workers:</strong> If the site or Progressive Web App (PWA) uses <code>localStorage</code>, session storage, or Service Worker caching, those files stay on your own device to remember preferences, improve load speed, or support offline access. You can clear them anytime through your browser or device settings.</li>
+        <li><strong>Audio &amp; Speech Synthesis:</strong> Audio files or browser Text-to-Speech (TTS) features may rely on hosted audio files or voices provided by your browser or operating system. Speech synthesis is typically processed on your device or via your browser's speech engine according to its own settings.</li>
+        <li><strong>Screen Wake Lock:</strong> If a reading or audio feature keeps your screen awake during active playback, it only runs while you use that feature and can be controlled or stopped by you.</li>
+      </ul>
+    </section>
+
+    <section id="third-parties" class="card">
+      <h2>4. Third-Party Services &amp; External Links</h2>
+      <p>Our website or app may link to external websites, host media on external storage, or offer optional third-party tools (such as web translation helpers, audio hosts, or form/email handlers). When you interact with or follow links to third-party services, their own privacy policies apply.</p>
+      <p>We are not responsible for the privacy practices or content of external websites and services outside <code>https://quranmeaning.app</code>.</p>
+    </section>
+
+    <section id="retention-security" class="card">
+      <h2>5. Data Retention &amp; Security</h2>
+      <p>We keep direct correspondence (such as emails sent to <a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a>) only as long as reasonably needed to answer inquiries, resolve issues, maintain records of requests, or comply with applicable law.</p>
+      <p>We use HTTPS encryption in transit where supported and take reasonable steps to protect the site. However, no method of internet transmission or electronic storage is 100% secure.</p>
+    </section>
+
+    <section id="your-rights" class="card">
+      <h2>6. Your Choices &amp; Privacy Rights</h2>
+      <p>Depending on where you live, you may have rights regarding your personal information, such as requesting access to, correction of, or deletion of personal data you have directly sent us, or withdrawing consent where applicable.</p>
+      <ul>
+        <li>Clear site data, cookies, or cached files anytime in your browser settings.</li>
+        <li>Email <a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a> if you want us to review or delete an email message you sent us.</li>
+      </ul>
+    </section>
+
+    <section id="children" class="card">
+      <h2>7. Children's Privacy</h2>
+      <p><strong>Quran Meaning</strong> is intended for general audiences seeking Quranic meanings and study resources. We do not knowingly collect personal information directly from children without appropriate parental or guardian involvement where required by law. If you believe a child has shared personal information with us via email, please contact <a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a> so we can address it.</p>
+    </section>
+
+    <section id="changes" class="card">
+      <h2>8. Changes to This Policy &amp; Contact</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in features, hosting, or legal requirements. The <strong>Effective Date</strong> at the top shows when this version was last revised.</p>
+      <div class="callout">
+        <strong>Questions or privacy requests?</strong> Contact us at <a href="mailto:appnanma@gmail.com">appnanma@gmail.com</a> or visit our <a href="contact-us.html">Contact Us</a> page.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>&copy; <span id="yr">2026</span> Quran Meaning (<a href="https://quranmeaning.app">quranmeaning.app</a>). All rights reserved.</div>
+    <div>
+      <a href="privacy-policy.html">Privacy Policy</a> &middot; <a href="contact-us.html">Contact Us</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("yr").textContent = String(Math.max(2026, new Date().getFullYear()));
+  </script>
+</body>
+</html>
