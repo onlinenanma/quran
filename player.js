@@ -250,6 +250,7 @@ const introSpeech = () => hasIntro() ? [P_INTRO.title, P_INTRO.sub, P_INTRO.body
     document.body.classList.toggle("hide-tf", !on("show-tf"));
     if (activeKey && !on("show-" + activeKey.split("-")[0])) stopAll();   // what is playing was just hidden
     VERSES.forEach(v => { if (v.tf) setTafseerVisible(v.n, on("show-tf")); });
+    try { applyRtlLayout(); } catch (e) {}
   }
 
   /* =====================================================
@@ -1057,7 +1058,9 @@ async function loadTafsir() {
    (one request per chapter) or QuranEnc, the same editions as the quranlearning.app index page.
    Matched by verse number, so 002-1, 002-2 ... all use the same chapter request. Cached in the browser.
    If a language has no edition / the API fails: English (Sahih International); if that fails too, the page's Malayalam meaning stays.
-   Arabic site language: no Arabic translation is fetched (the page text is left to the page translator).
+   Arabic site language: the short tafsir Al-Mukhtasar (QuranEnc 'arabic_mokhtasar') is shown as the meaning; verses it does not cover
+   come from Tafsir al-Muyassar (alquran.cloud 'ar.muyassar').
+   Any language whose listed source fails is looked up in the APIs' own edition lists (alquran.cloud, then QuranEnc) before English is used.
    ===================================================== */
 const TR_EDITIONS = {
   en: 'en.sahih', ur: 'ur.jalandhry', bn: 'bn.bengali', fr: 'fr.hamidullah', es: 'es.cortes', de: 'de.aburida',
@@ -1066,17 +1069,20 @@ const TR_EDITIONS = {
   bs: 'bs.korkut', bg: 'bg.theophanov', cs: 'cs.hrabek', nl: 'nl.keyzer', it: 'it.piccardo', ja: 'ja.japanese',
   ko: 'ko.korean', ku: 'ku.asan', no: 'no.berg', pl: 'pl.bielawskiego', pt: 'pt.elhayek', ro: 'ro.grigore',
   sd: 'sd.amrohi', sv: 'sv.bernstrom', tg: 'tg.ayati', th: 'th.thai', tt: 'tt.nugman', ug: 'ug.saleh',
-  uz: 'uz.sodik', am: 'am.sadiq'
+  uz: 'uz.sodik', am: 'am.sadiq', ar: 'ar.muyassar'
 };
 const TR_QURANENC = {
   tl: ['tagalog_rwwad'], vi: ['vietnamese_rwwad'], si: ['sinhalese_mahir'], ps: ['pashto_zakaria'], km: ['khmer_rwwad'],
   yo: ['yoruba_mikail'], om: ['oromo_rwwad', 'oromo_ababor'], te: ['telugu_abdurrahim', 'telugu_muhammad'],
   mr: ['marathi_ansari'], gu: ['gujarati_omari'], kn: ['kannada_bashir', 'kannada_hamza'], as: ['assamese_rafeeq'],
   pa: ['punjabi_arif', 'punjabi_haleem'], ne: ['nepali_central', 'nepali_ahlulhadith'], el: ['greek_rwwad'],
-  uk: ['ukrainian_yakubovych'], kk: ['kazakh_altai'], ky: ['kyrgyz_hakimov'], rw: ['kinyarwanda_assoc', 'kinyarwanda_rma']
+  uk: ['ukrainian_yakubovych'], kk: ['kazakh_altai'], ky: ['kyrgyz_hakimov'], rw: ['kinyarwanda_assoc', 'kinyarwanda_rma'],
+  ar: ['arabic_mokhtasar']
 };
-const TR_RTL = new Set(["ur", "fa", "ps", "sd", "ku", "ug", "ar"]);
-let TR_INFO = { lang: "", label: "", fallback: false };
+const TR_QE_NAMES = { arabic_mokhtasar: "Al-Mukhtasar fi Tafsir al-Quran al-Karim (Tafsir Center)" };
+const qeLabel = key => TR_QE_NAMES[key] || key.replace(/_/g, " ");
+const TR_RTL = new Set(["ur", "fa", "ps", "sd", "ku", "ug", "ar", "he"]);
+let TR_INFO = { lang: "", label: "", fallback: false, src: "" };
 
 function trSiteLang() {                     // same source as site.js: the googtrans cookie (/ml/hi -> hi)
   const m = document.cookie.match(/(?:^|;\s*)googtrans=([^;]*)/);
@@ -1118,7 +1124,7 @@ function trCacheSet(k, o) { try { localStorage.setItem("qtr1:" + k, JSON.stringi
 async function trFromAlq(edition, expectedLang) {
   const ck = edition + ":" + SURAH, hit = trCacheGet(ck);
   if (hit && Array.isArray(hit.rows) && hit.rows.length) {
-    return { map: new Map(hit.rows), label: hit.label };
+    return { map: new Map(hit.rows), label: hit.label, src: "alquran.cloud" };
   }
   const j = await trFetch("https://api.alquran.cloud/v1/surah/" + SURAH + "/" + edition);
   if (!j || j.code !== 200 || !j.data || !Array.isArray(j.data.ayahs)) return null;
@@ -1131,26 +1137,54 @@ async function trFromAlq(edition, expectedLang) {
   if (!rows.length) return null;
   const label = (j.data.edition && (j.data.edition.englishName || j.data.edition.name)) || edition;
   trCacheSet(ck, { rows, label });
-  return { map: new Map(rows), label };
+  return { map: new Map(rows), label, src: "alquran.cloud" };
 }
 async function trFromQE(key) {
   const ck = key + ":" + SURAH, hit = trCacheGet(ck);
-  if (hit) return { map: new Map(hit.rows), label: hit.label };
+  if (hit && Array.isArray(hit.rows) && hit.rows.length) return { map: new Map(hit.rows), label: qeLabel(key), src: "QuranEnc" };
   const j = await trFetch("https://quranenc.com/api/v1/translation/sura/" + key + "/" + SURAH);
   const list = j ? (Array.isArray(j) ? j : (j.result || [])) : [];
   const rows = list.map(r => [parseInt(r.aya, 10), String(r.translation || "").trim()]).filter(r => r[0] && r[1]);
   if (!rows.length) return null;
   trCacheSet(ck, { rows, label: key });
-  return { map: new Map(rows), label: key.replace(/_/g, " ") };
+  return { map: new Map(rows), label: qeLabel(key), src: "QuranEnc" };
+}
+async function trDiscover(lang) {              // the listed source failed: ask the APIs which editions exist for this language
+  const j = await trFetch("https://api.alquran.cloud/v1/edition/language/" + lang);
+  const eds = j && j.code === 200 && Array.isArray(j.data) ? j.data : [];
+  let tries = 0;
+  for (const type of (lang === "ar" ? ["tafsir", "translation"] : ["translation"])) {
+    for (const e of eds) {
+      if (e.format !== "text" || e.type !== type || e.language !== lang || !e.identifier || tries >= 4) continue;
+      tries++;
+      const r = await trFromAlq(e.identifier, lang); if (r) return r;
+    }
+  }
+  const q = await trFetch("https://quranenc.com/api/v1/translations/list/" + lang);
+  const list = q ? (Array.isArray(q) ? q : (q.translations || q.result || [])) : [];
+  let n = 0;
+  for (const e of list) {
+    if (!e || !e.key || (e.language_iso_code && e.language_iso_code !== lang) || n >= 3) continue;
+    n++;
+    const r = await trFromQE(e.key); if (r) return r;
+  }
+  return null;
 }
 async function trGet(lang) {
-  if (TR_QURANENC[lang]) {
-    for (const key of TR_QURANENC[lang]) { const r = await trFromQE(key); if (r) return r; }
-    return null;
-  }
-  return TR_EDITIONS[lang] ? trFromAlq(TR_EDITIONS[lang], lang) : null;
+  for (const key of (TR_QURANENC[lang] || [])) { const r = await trFromQE(key); if (r) return r; }
+  if (TR_EDITIONS[lang]) { const r = await trFromAlq(TR_EDITIONS[lang], lang); if (r) return r; }
+  return trDiscover(lang);
 }
-const trNeeded = () => { const l = trSiteLang(); return l !== "ml" && l !== "ar"; };
+async function trFillGaps(r, lang) {           // Arabic: Al-Mukhtasar explains verses in groups, so a verse can have no text of its own
+  if (lang !== "ar" || !r || r.src !== "QuranEnc") return r;
+  if (!VERSES.some(v => !r.map.get(v.n))) return r;
+  const m = await trFromAlq("ar.muyassar", "ar");
+  if (!m) return r;
+  const map = new Map(r.map);
+  VERSES.forEach(v => { if (!map.get(v.n) && m.map.get(v.n)) map.set(v.n, m.map.get(v.n)); });
+  return { map, label: r.label + " + " + m.label, src: "QuranEnc + alquran.cloud" };
+}
+const trNeeded = () => trSiteLang() !== "ml";
 let TR_PENDING = false;                       // true while the meaning of the site language is being fetched
 function meaningInner(v) {                    // what goes after the "സാരം:" label
   if (v.mlT) return `<span class="mtrans notranslate" translate="no" lang="${TR_INFO.lang}"${TR_RTL.has(TR_INFO.lang) ? ' dir="rtl"' : ""}>${v.mlT}</span>`;
@@ -1164,8 +1198,9 @@ async function loadVerseTranslations() {
     let r = await trGet(lang), used = lang, fb = false;
     if (!r && lang !== "en") { r = await trGet("en"); used = "en"; fb = true; }
     if (!r) return;
+    r = await trFillGaps(r, used);
     VERSES.forEach(v => { const t = r.map.get(v.n); if (t) v.mlT = escHtml(t); });
-    TR_INFO = { lang: used, label: r.label, fallback: fb };
+    TR_INFO = { lang: used, label: r.label, fallback: fb, src: r.src || "" };
   })();
   try { await Promise.race([work, new Promise(res => setTimeout(res, 15000))]); } catch (e) { /* the page's own Malayalam meaning stays */ }
 }
@@ -1190,7 +1225,7 @@ function showTranslationCredit() {
   }
   const d = document.createElement("div");
   d.id = "tr-credit"; d.className = "tr-credit notranslate"; d.setAttribute("translate", "no");
-  d.textContent = "Meaning: " + TR_INFO.label + " \u00B7 " + (TR_QURANENC[TR_INFO.lang] ? "QuranEnc" : "alquran.cloud") +
+  d.textContent = (TR_INFO.lang === "ar" ? "Tafsir: " : "Meaning: ") + TR_INFO.label + " \u00B7 " + (TR_INFO.src || "alquran.cloud") +
     (TR_INFO.fallback ? " \u00B7 (no translation for your language yet \u2013 English shown)" : "");
   $("verses").insertAdjacentElement("afterend", d);
 }
@@ -1321,7 +1356,7 @@ const PLAYER_DICT = {
       fontSize: "حجم الخط:",
       show: "إظهار:",
       verse: "الآية",
-      meaning: "الترجمة",
+      meaning: "المعنى",
       tafsir: "التفسير",
       reciter: "القارئ:",
       repeat: "تكرار الآية:",
@@ -1391,6 +1426,21 @@ const PLAYER_DICT = {
   };
 
 
+/* Right-to-left site languages (Arabic, Persian, Urdu, Pashto, Sindhi, Kurdish, Uyghur ...):
+   the explanation (and the preface) are laid out right to left, like the verse meaning already is. */
+function applyRtlLayout() {
+  const rtl = TR_RTL.has(trSiteLang());
+  if (!$("rtl-style")) {
+    const st = document.createElement("style"); st.id = "rtl-style";
+    st.textContent = ".rtl-lang .it-tf .text,.rtl-lang #item-in-0 .text{direction:rtl;text-align:right}";
+    document.head.appendChild(st);
+  }
+  document.body.classList.toggle("rtl-lang", rtl);
+  document.querySelectorAll(".it-tf .text, #item-in-0 .text").forEach(el => {
+    if (rtl) el.setAttribute("dir", "rtl"); else el.removeAttribute("dir");
+  });
+}
+
 function applyPanelLabels() {
   const panel = $("panel"); if (!panel) return;
   let dk = trSiteLang();
@@ -1459,4 +1509,4 @@ Promise.all([loadTafsir(), loadExtras()]).then(() => {
   startPage();                                                  // the verses appear immediately ...
   if (TR_PENDING) loadVerseTranslations().then(applyMeaningTranslations).catch(applyMeaningTranslations);   // ... the meaning in the site language follows
 });
-window.addEventListener("load", () => { try { applyPanelLabels(); } catch (e) {} });
+window.addEventListener("load", () => { try { applyPanelLabels(); applyRtlLayout(); } catch (e) {} });
